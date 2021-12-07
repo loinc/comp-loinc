@@ -1,6 +1,6 @@
 # LOINC Information Schema
 
-A schema/model to demonstrate use of LinkML.
+A schema/model to demonstrate use of LinkML (https://linkml.io/linkml/index.html)
 
  * [loincinfo.yaml](Schema/loincinfo.yaml) -- schema source
  * [Data/](Data) -- LOINC data files
