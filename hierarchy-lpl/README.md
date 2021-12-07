@@ -2,9 +2,9 @@
 
 A schema/model to demonstrate use of LinkML.
 
- * [loincinfo.yaml](schema/loincinfo.yaml) -- schema source
- * [data/](data) -- LOINC data files
- * [output/](output) -- derived data files
+ * [loincinfo.yaml](Schema/loincinfo.yaml) -- schema source
+ * [Data/](Data) -- LOINC data files
+ * [Output/](Output) -- derived data files
 
 ## Schema Diagram
 
