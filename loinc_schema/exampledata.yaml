@@ -1,0 +1,19 @@
+LOINCData:
+- LOINCId: LOINC:LOINC_0000000000
+  LOINCCode: 28654-2
+  LOINCName: Attending Initial evaluation note
+  has_part:
+  - PartCode: LP173061-5
+    PartName: '{Setting}'
+    part_type:
+    - PartTypeCode: '24'
+      PartTypeName: Document.Setting
+- LOINCId: LOINC:LOINC_0000000001
+  LOINCCode: 28654-2
+  LOINCName: Attending Initial evaluation note
+  has_part:
+  - PartCode: LP173204-1
+    PartName: Initial evaluation
+    part_type:
+    - PartTypeCode: '23'
+      PartTypeName: Document.TypeOfService

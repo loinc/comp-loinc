@@ -1,0 +1,112 @@
+id: https://w3id.org/linkml/examples/loincinfo
+name: loincinfo
+prefixes:
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  loincinfo: https://w3id.org/linkml/examples/loincinfo/
+  LOINC: https://loinc.org/
+imports:
+  - linkml:types
+default_curi_maps:
+  - semweb_context
+default_prefix: loincinfo
+default_range: string
+
+
+classes:
+  LOINC:
+    slots:
+      - LOINCId
+      - LOINCCode
+      - LOINCName
+      - has_part
+    id_prefixes:
+      - LOINC
+  Kindofdocument:
+    is_a: Part
+  Role:
+    is_a: Part
+  Setting:
+    is_a: Part
+  Subjectmatterdomain:
+    is_a: Part
+  Typeofservice:
+    is_a: Part
+  Part:
+    slots:
+      - PartCode
+      - PartName
+      - part_type
+      - part_of
+  PartType:
+    slots:
+      - PartTypeCode
+      - PartTypeName
+  Container: #holding instances of loinc data
+    slots:
+      - LOINCData
+
+
+slots:
+  LOINCId:
+    identifier: true #unique ID for a loinc data
+  LOINCCode:
+    required: true
+  LOINCName:
+    required: true
+    slot_uri: schema:name
+  has_part:
+    range: Part
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  PartCode:
+    required: true
+    pattern: "[LP]"
+  PartName:
+    required: true
+  part_type:
+    range: PartType
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  part_of:
+    range: LOINC
+    multivalued: true
+    inlined: true
+    inlined_as_list: true
+  PartTypeCode:
+    range: integer #an int between 0 and 200
+    minimum_value: 0
+    maximum_value: 200
+    required: true
+  PartTypeName:
+    required: true
+    range: part_type_name
+  LOINCData:
+    range: LOINC #expected values in the data should be
+    multivalued: true #holds a list
+    inlined: true #values are nested underneath container
+    inlined_as_list: true
+
+enums:
+  part_type_name:
+    permissible_values:
+      Document.Kind:
+        description: Document, Kind
+        meaning:
+      Document.Role:
+        description: Document, Role
+        meaning:
+      Document.Setting:
+        description: Document, Setting
+        meaning:
+      Document.SubjectMatterDomain:
+        description: Document, Subject Matter Domain
+        meaning:
+      Document.TypeOfService:
+        description: Document, Type Of Service
+        meaning:
+
+
+
