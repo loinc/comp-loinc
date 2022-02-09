@@ -1,5 +1,5 @@
 # Auto generated from loincinfo.yaml by pythongen.py version: 0.9.0
-# Generation date: 2022-01-11T13:15:18
+# Generation date: 2022-02-09T16:04:49
 # Schema: loincinfo
 #
 # id: https://w3id.org/linkml/examples/loincinfo
@@ -94,7 +94,6 @@ class Part(YAMLRoot):
     PartName: str = None
     part_type: Optional[Union[Union[dict, "PartType"], List[Union[dict, "PartType"]]]] = empty_list()
     part_of: Optional[Union[Dict[Union[str, LOINCLOINCId], Union[dict, LOINC]], List[Union[dict, LOINC]]]] = empty_dict()
-    subclass_of: Optional[Union[dict, "Part"]] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.PartCode):
@@ -112,9 +111,6 @@ class Part(YAMLRoot):
         self.part_type = [v if isinstance(v, PartType) else PartType(**as_dict(v)) for v in self.part_type]
 
         self._normalize_inlined_as_list(slot_name="part_of", slot_type=LOINC, key_name="LOINCId", keyed=True)
-
-        if self.subclass_of is not None and not isinstance(self.subclass_of, Part):
-            self.subclass_of = Part(**as_dict(self.subclass_of))
 
         super().__post_init__(**kwargs)
 
@@ -192,9 +188,6 @@ slots.part_type = Slot(uri=LOINCINFO.part_type, name="part_type", curie=LOINCINF
 
 slots.part_of = Slot(uri=LOINCINFO.part_of, name="part_of", curie=LOINCINFO.curie('part_of'),
                    model_uri=LOINCINFO.part_of, domain=None, range=Optional[Union[Dict[Union[str, LOINCLOINCId], Union[dict, LOINC]], List[Union[dict, LOINC]]]])
-
-slots.subclass_of = Slot(uri=LOINCINFO.subclass_of, name="subclass_of", curie=LOINCINFO.curie('subclass_of'),
-                   model_uri=LOINCINFO.subclass_of, domain=None, range=Optional[Union[dict, Part]])
 
 slots.PartTypeCode = Slot(uri=LOINCINFO.PartTypeCode, name="PartTypeCode", curie=LOINCINFO.curie('PartTypeCode'),
                    model_uri=LOINCINFO.PartTypeCode, domain=None, range=str)
