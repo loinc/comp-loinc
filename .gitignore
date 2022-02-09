@@ -1,15 +1,25 @@
+# Apple stuff
 .DS_Store
+
+# Jupyter
 .ipynb_checkpoints
 
-# virtualenv
-.env
-.venv
+# Distribution / packaging
 env/
+
+# .dotenv
+.env
+
+# virtualenv
+.venv
 venv/
 ENV/
 env.bak/
 venv.bak/
 **/venv
 
-#pycharm
+# Editors
 .idea/
+
+# Byte-compiled / optimized / DLL files
+__pycache__
