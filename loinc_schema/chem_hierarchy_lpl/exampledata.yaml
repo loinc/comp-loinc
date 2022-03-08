@@ -1,0 +1,19 @@
+LOINCData:
+- LOINCId: LOINC:LOINC_0000000000
+  LOINCCode: 59275-8
+  LOINCName: Oxygen capacity [Volume Fraction] in Arterial blood
+  has_part:
+  - PartCode: LP100008-4
+    PartName: Oxygen capacity
+    part_type:
+    - PartTypeCode: '1'
+      PartTypeName: COMPONENT
+- LOINCId: LOINC:LOINC_0000000001
+  LOINCCode: 2106-3
+  LOINCName: Choriogonadotropin (pregnancy test) [Presence] in Urine
+  has_part:
+  - PartCode: LP104997-4
+    PartName: Choriogonadotropin (pregnancy test)
+    part_type:
+    - PartTypeCode: '1'
+      PartTypeName: COMPONENT
