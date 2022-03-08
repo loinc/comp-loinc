@@ -22,6 +22,17 @@ classes:
     id_prefixes:
       - LOINC
 
+  KindOfDocument:
+    is_a: Part
+  Role:
+    is_a: Part
+  Setting:
+    is_a: Part
+  SubjectMatterDomain:
+    is_a: Part
+  TypeOfService:
+    is_a: Part
+
   Part:
     slots:
       - PartCode
