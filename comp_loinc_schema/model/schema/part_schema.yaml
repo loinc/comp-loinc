@@ -1,0 +1,87 @@
+id: https://loinc.org/
+name: loinc-owl-schema
+prefixes:
+  linkml: https://w3id.org/linkml/
+  loinc: https://loinc.org/
+imports:
+  - linkml:types
+default_curi_maps:
+  - semweb_context
+
+classes:
+  LoincCodeOntology:
+    tree_root: true
+    slots:
+      - component_class_set
+      - system_class_set
+      - code_class_set
+  Thing:
+    slots:
+      - id
+      - label
+      - description
+    class_uri: owl:Class
+  LoincCodeClass:
+    is_a: Thing
+    attributes:
+      has_component:
+        range: ComponentClass
+      has_system:
+        range: SystemClass
+  PartClass:
+    is_a: Thing
+    slots:
+      - subClassOf
+
+
+  ComponentClass:
+    is_a: PartClass
+    slot_usage:
+      subClassOf:
+        range: ComponentClass
+  SystemClass:
+    is_a: PartClass
+    slot_usage:
+      subClassOf:
+        range: SystemClass
+
+
+slots:
+  id:
+    identifier: true
+    range:
+      uriorcurie
+  label:
+    slot_uri: rdfs:label
+    annotations:
+      owl: AnnotationAssertion
+  description:
+    slot_uri: rdfs:description
+    annotations:
+      owl: AnnotationAssertion
+  subClassOf:
+    annotations:
+      owl: SubClassOf
+    slot_uri: rdfs:subClassOf
+    multivalued: true
+    range: PartClass
+    required: true
+  component_class_set:
+    description: >-
+    domain: LoincCodeOntology
+    range: ComponentClass
+    multivalued: true
+    inlined_as_list: true
+  system_class_set:
+    description: >-
+    domain: LoincCodeOntology
+    range: SystemClass
+    multivalued: true
+    inlined_as_list: true
+  code_class_set:
+    description: >-
+    domain: LoincCodeOntology
+    range: LoincCodeClass
+    multivalued: true
+    inlined_as_list: true
+
