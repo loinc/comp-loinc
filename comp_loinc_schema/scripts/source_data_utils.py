@@ -1,6 +1,8 @@
 import pandas as pd
 import json
 
+def loincify(id):
+    return f"loinc:{id}"
 
 def generate_part_hierarchy(path_to_chem_hierarchy_file):
     hierarchy = pd.read_excel(path_to_chem_hierarchy_file, sheet_name="Hierarchy")
@@ -21,5 +23,5 @@ def generate_part_type_lookup(path_to_loinc_part_file):
     with open("part_type_lookup.json", 'w') as ptl:
         json.dump(part_type_lookup, ptl)
 
-generate_part_hierarchy("../data/CHEM_HIERARCHY_LPL_DATA.xlsx")
-generate_part_type_lookup("../../../Loinc_2.72/AccessoryFiles/PartFile/Part.csv")
+# generate_part_hierarchy("../data/CHEM_HIERARCHY_LPL_DATA.xlsx")
+# generate_part_type_lookup("../../../Loinc_2.72/AccessoryFiles/PartFile/Part.csv")
