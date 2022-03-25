@@ -2,7 +2,7 @@ import pandas as pd
 from linkml_owl.owl_dumper import OWLDumper
 from linkml_runtime import SchemaView
 from linkml_runtime.utils.introspection import package_schemaview
-
+from source_data_utils import loincify
 from loinc_owl.part_schema import ComponentClass, LoincCodeOntology
 from linkml_runtime.dumpers import json_dumper
 import json
@@ -21,9 +21,6 @@ def get_parent_code(parent_node_id, dataframe):
     parent_code = dataframe.loc[dataframe["NODE_ID"] == parent_node_id, 'FK_ID']
     return parent_code.values[0]
 
-
-def loincify(id):
-    return f"loinc:{id}"
 with open ("../data/part_type_lookup.json", 'r') as ptl:
     part_type_lookup = json.load(ptl)
 component = pd.read_csv('../data/part_hierarchy.tsv', sep="\t")
@@ -53,6 +50,3 @@ with open("../data/output/component_classes.json", 'w') as ccl_json:
     ccl_json.write(json_dumper.dumps(loinc_ontology_class))
     joined = ',\n'.join([json_dumper.dumps(x) for x in component_classes])
     ccl_json.write(f"[\n{joined}\n]")
-
-#
-#
