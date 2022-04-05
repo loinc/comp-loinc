@@ -22,10 +22,14 @@ slots:
     multivalued: false
     range: ComponentClass
     required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
   has_system:
     slot_uri: loinc:hasSystem
     multivalued: false
     range: SystemClass
     required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
 
 
