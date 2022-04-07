@@ -1,8 +1,11 @@
 import pandas as pd
 import json
+from collections import defaultdict
+
 
 def loincify(id):
     return f"loinc:{id}"
+
 
 def generate_part_hierarchy(path_to_chem_hierarchy_file):
     hierarchy = pd.read_excel(path_to_chem_hierarchy_file, sheet_name="Hierarchy")
@@ -12,16 +15,23 @@ def generate_part_hierarchy(path_to_chem_hierarchy_file):
         if node_id in node_id_to_part_id.keys():
             return node_id_to_part_id[node_id]
         else:
-            print(node_id)
+            print(f"No part id for node {node_id}")
     hierarchy["parent_part_id"] = hierarchy['PARENT_ID'].apply(node_to_part)
-    hierarchy.to_csv("../data/part_hierarchy.tsv", sep="\t")
+    return hierarchy
 
 
 def generate_part_type_lookup(path_to_loinc_part_file):
-    part_data = pd.read_csv(path_to_loinc_part_file)
-    part_type_lookup = {x.PartNumber: x.PartTypeName for x in part_data.itertuples()}
-    with open("part_type_lookup.json", 'w') as ptl:
-        json.dump(part_type_lookup, ptl)
+    with open(path_to_loinc_part_file) as pf:
+        part_data = json.load(pf)
+    return part_data
 
-# generate_part_hierarchy("../data/CHEM_HIERARCHY_LPL_DATA.xlsx")
-# generate_part_type_lookup("../../../Loinc_2.72/AccessoryFiles/PartFile/Part.csv")
+
+def generate_label_map(hierarchy_data_df):
+    return {x.FK_ID: x.PART for x in hierarchy_data_df[["FK_ID", "PART"]].drop_duplicates().itertuples()}
+
+
+def generate_parent_relationships(hierarchy_data_df):
+    d = defaultdict(list)
+    for index, comp in enumerate(hierarchy_data_df.itertuples()):
+        d[comp.FK_ID].append(comp.parent_part_id)
+    return d
