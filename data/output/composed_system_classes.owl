@@ -1,0 +1,25 @@
+Prefix( xml: = <http://www.w3.org/XML/1998/namespace> )
+Prefix( rdf: = <http://www.w3.org/1999/02/22-rdf-syntax-ns#> )
+Prefix( rdfs: = <http://www.w3.org/2000/01/rdf-schema#> )
+Prefix( xsd: = <http://www.w3.org/2001/XMLSchema#> )
+Prefix( owl: = <http://www.w3.org/2002/07/owl#> )
+Prefix( linkml: = <https://w3id.org/linkml/> )
+Prefix( loinc: = <https://loinc.org/> )
+
+Ontology( loinc:grouping_classes
+    AnnotationAssertion( rdfs:label loinc:CC01 "LOINCUrineClass" )
+    EquivalentClasses(
+        loinc:CC01
+            ObjectSomeValuesFrom( loinc:hasSystem loinc:LP7681-2 )
+    )
+    AnnotationAssertion( rdfs:label loinc:CC02 "LOINCBloodClass" )
+    EquivalentClasses(
+        loinc:CC02
+            ObjectSomeValuesFrom( loinc:hasSystem loinc:LP71680-0 )
+    )
+    AnnotationAssertion( rdfs:label loinc:CC03 "LOINCCSFClass" )
+    EquivalentClasses(
+        loinc:CC03
+            ObjectSomeValuesFrom( loinc:hasSystem loinc:LP7156-5 )
+    )
+)
