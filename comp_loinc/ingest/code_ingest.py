@@ -19,7 +19,6 @@ class CodeIngest(object):
         self.lpl = pd.read_excel(code_file_path, sheet_name="LPL") #'../data/CHEM_HIERARCHY_LPL_DATA.xlsx'
         self.sv = SchemaView(schema_path) # '../model/schema/code_schema.yaml'
         self.od = OWLDumper()
-        self.code_classes = []
 
     def generate_codes(self):
         for index, code in enumerate(self.lpl.itertuples()):
@@ -27,7 +26,8 @@ class CodeIngest(object):
                 code_class = LoincCodeClass(
                     id=loincify(code.LOINC_NUM),
                     label=code.LONG_COMMON_NAME,
-                    has_component=loincify(code.PART_NUM))
+                    has_component=loincify(code.PART_NUM)
+                )
                 self.code_classes.append(code_class)
             if code.NAME == "SYSTEM":
                 code_class = LoincCodeClass(
