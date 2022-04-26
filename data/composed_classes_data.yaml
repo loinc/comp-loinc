@@ -1,0 +1,12 @@
+- id: loinc:CC01
+  "@type": CodeBySystem
+  label: LOINCUrineClass
+  has_system: loinc:LP7681-2
+- id: loinc:CC02
+  "@type": CodeBySystem
+  label: LOINCBloodClass
+  has_system: loinc:LP71680-0
+- id: loinc:CC03
+  "@type": CodeBySystem
+  label: LOINCCSFClass
+  has_system: loinc:LP7156-5

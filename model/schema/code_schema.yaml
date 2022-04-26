@@ -1,0 +1,33 @@
+id: https://loinc.org/code
+name: loinc-owl-code-schema
+prefixes:
+  linkml: https://w3id.org/linkml/
+  loinc: https://loinc.org/
+imports:
+  - linkml:types
+  - core_schema
+  - part_schema
+default_curi_maps:
+  - semweb_context
+
+classes:
+  LoincCodeClass:
+    is_a: Thing
+    slots:
+      - has_component
+      - has_system
+slots:
+  has_component:
+    slot_uri: loinc:hasComponent
+    multivalued: false
+    range: ComponentClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_system:
+    slot_uri: loinc:hasSystem
+    multivalued: false
+    range: SystemClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
