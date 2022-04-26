@@ -1,6 +1,9 @@
 import typer
+from typing import List
 from ingest.part_ingest import PartOntology
 from ingest.code_ingest import CodeIngest
+import os
+import subprocess
 from pprint import pprint
 import json
 
@@ -27,6 +30,16 @@ def build_codes(
     cp = CodeIngest(schema_path=schema_file, code_file_path=code_file)
     cp.generate_codes()
     cp.write_output_to_file(output_path=output)
+
+@app.command(name="merge")
+def merge_owl(
+        owl_directory: str,
+        output: str):
+    files = [f'{owl_directory}{x}' for x in os.listdir(owl_directory) if ".owl" in x]
+    subprocess.call(["./robot", "merge", "-i"] + " -i ".join(files).split() + ['-o', output])
+
+
+
 
 if __name__ == "__main__":
     app()
