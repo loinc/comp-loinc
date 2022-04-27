@@ -1,9 +1,13 @@
 # Apple stuff
 .DS_Store
 
+# Local Data
+local_data/
+
+
 # Jupyter
 .ipynb_checkpoints
-
+*.ipynb
 # Distribution / packaging
 env/
 
