@@ -4,8 +4,6 @@ from ingest.part_ingest import PartOntology
 from ingest.code_ingest import CodeIngest
 import os
 import subprocess
-from pprint import pprint
-import json
 
 app = typer.Typer()
 
@@ -38,7 +36,14 @@ def merge_owl(
     files = [f'{owl_directory}{x}' for x in os.listdir(owl_directory) if ".owl" in x]
     subprocess.call(["./robot", "merge", "-i"] + " -i ".join(files).split() + ['-o', output])
 
-
+@app.command(name="reason")
+def reason_owl(
+        owl_directory: str,
+        merged_owl: str,
+        owl_reasoner: str,
+        output: str):
+    call_list = ["./robot", "reason", "-r", owl_reasoner, '-i', f"{owl_directory}{merged_owl}", '-o', f"{owl_directory}{output}"]
+    subprocess.call(call_list)
 
 
 if __name__ == "__main__":

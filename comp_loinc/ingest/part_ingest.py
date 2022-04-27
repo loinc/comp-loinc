@@ -90,12 +90,11 @@ class PartOntology(object):
                     parents_list.append(self.system_root.id)
                 system_class = SystemClass(id=part_curie, subClassOf=parents_list, label=part_name)
                 self.part_classes.append(system_class)
-
-            # if part_type == "CLASS":
-            #     if superclass:
-            #         parents_list.append(self.class_root.id)
-            #     class_class = PartClass(id=part_curie, subClassOf=parents_list, label=part_name)
-            #     self.part_classes.append(class_class)
+            if part_type == "CLASS":
+                if superclass:
+                    parents_list.append(self.class_root.id)
+                class_class = PartClass(id=part_curie, subClassOf=parents_list, label=part_name)
+                self.part_classes.append(class_class)
 
     def write_to_output(self, output_path):
         """

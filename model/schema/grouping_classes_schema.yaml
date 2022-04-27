@@ -26,7 +26,7 @@ classes:
     slots:
       - has_component
     slot_usage:
-      has_system:
+      has_component:
         annotations:
           owl: EquivalentClasses
 

@@ -3,7 +3,7 @@
 
 # Jupyter
 .ipynb_checkpoints
-
+scratch.ipynb
 # Distribution / packaging
 env/
 
