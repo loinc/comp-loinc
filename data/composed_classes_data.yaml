@@ -1,0 +1,159 @@
+- id: loinc:CC-LP14913-5
+  "@type": CodeByComponent
+  label: Porphyrins Component Class
+  has_component: loinc:LP14913-5
+
+- id: loinc:CC-LP15157-8
+  "@type": CodeByComponent
+  label: Iodine Component Class
+  has_component: loinc:LP15157-8
+
+- id: loinc:CC-LP15677-5
+  "@type": CodeByComponent
+  label: Iron Component Class
+  has_component: loinc:LP15677-5
+
+- id: loinc:CC-LP15705-4
+  "@type": CodeByComponent
+  label: Lipids Component Class
+  has_component: loinc:LP15705-4
+
+- id: loinc:CC-LP15711-2
+  "@type": CodeByComponent
+  label: Lipoprotein Component Class
+  has_component: loinc:LP15711-2
+
+- id: loinc:CC-LP15838-3
+  "@type": CodeByComponent
+  label: Protein Component Class
+  has_component: loinc:LP15838-3
+
+- id: loinc:CC-LP18033-8
+  "@type": CodeByComponent
+  label: Amino acids Component Class
+  has_component: loinc:LP18033-8
+
+- id: loinc:CC-LP187192-2
+  "@type": CodeByComponent
+  label: Rheumatoid arthritis disease activity Component Class
+  has_component: loinc:LP187192-2
+
+- id: loinc:CC-LP19203-6
+  "@type": CodeByComponent
+  label: Prostaglandins Component Class
+  has_component: loinc:LP19203-6
+
+- id: loinc:CC-LP19403-2
+  "@type": CodeByComponent
+  label: Electrolytes Component Class
+  has_component: loinc:LP19403-2
+
+- id: loinc:CC-LP31391-3
+  "@type": CodeByComponent
+  label: Cytokines Component Class
+  has_component: loinc:LP31391-3
+
+- id: loinc:CC-LP31392-1
+  "@type": CodeByComponent
+  label: Enzymes Component Class
+  has_component: loinc:LP31392-1
+
+- id: loinc:CC-LP31395-4
+  "@type": CodeByComponent
+  label: Vitamins Component Class
+  has_component: loinc:LP31395-4
+
+- id: loinc:CC-LP31396-2
+  "@type": CodeByComponent
+  label: Endocrine Component Class
+  has_component: loinc:LP31396-2
+
+- id: loinc:CC-LP31397-0
+  "@type": CodeByComponent
+  label: Liver function Component Class
+  has_component: loinc:LP31397-0
+
+- id: loinc:CC-LP31398-8
+  "@type": CodeByComponent
+  label: Renal function Component Class
+  has_component: loinc:LP31398-8
+
+- id: loinc:CC-LP31399-6
+  "@type": CodeByComponent
+  label: Sugars/Sugar metabolism Component Class
+  has_component: loinc:LP31399-6
+
+- id: loinc:CC-LP31400-2
+  "@type": CodeByComponent
+  label: Gases and acid/Base Component Class
+  has_component: loinc:LP31400-2
+
+- id: loinc:CC-LP31403-6
+  "@type": CodeByComponent
+  label: Neuromuscular Component Class
+  has_component: loinc:LP31403-6
+
+- id: loinc:CC-LP31405-1
+  "@type": CodeByComponent
+  label: Nucleotides Component Class
+  has_component: loinc:LP31405-1
+
+- id: loinc:CC-LP31406-9
+  "@type": CodeByComponent
+  label: Inborn errors metabolism lysosomal Component Class
+  has_component: loinc:LP31406-9
+
+- id: loinc:CC-LP31409-3
+  "@type": CodeByComponent
+  label: Cardiovascular Component Class
+  has_component: loinc:LP31409-3
+
+- id: loinc:CC-LP31410-1
+  "@type": CodeByComponent
+  label: Physical properties Component Class
+  has_component: loinc:LP31410-1
+
+- id: loinc:CC-LP31412-7
+  "@type": CodeByComponent
+  label: Tumor markers Component Class
+  has_component: loinc:LP31412-7
+
+- id: loinc:CC-LP31413-5
+  "@type": CodeByComponent
+  label: Mineral and bone Component Class
+  has_component: loinc:LP31413-5
+
+- id: loinc:CC-LP31415-0
+  "@type": CodeByComponent
+  label: Small molecules Component Class
+  has_component: loinc:LP31415-0
+
+- id: loinc:CC-LP31418-4
+  "@type": CodeByComponent
+  label: General terms Component Class
+  has_component: loinc:LP31418-4
+
+- id: loinc:CC-LP31419-2
+  "@type": CodeByComponent
+  label: Gastrointestinal function Component Class
+  has_component: loinc:LP31419-2
+
+- id: loinc:CC-LP31771-6
+  "@type": CodeByComponent
+  label: Crystals & calculi Component Class
+  has_component: loinc:LP31771-6
+
+- id: loinc:CC-LP33025-5
+  "@type": CodeByComponent
+  label: Newborn screening panel Component Class
+  has_component: loinc:LP33025-5
+
+- id: loinc:CC-LP36815-6
+  "@type": CodeByComponent
+  label: Peptides Component Class
+  has_component: loinc:LP36815-6
+
+- id: loinc:CC-LP70625-6
+  "@type": CodeByComponent
+  label: Maternal screens Component Class
+  has_component: loinc:LP70625-6A
