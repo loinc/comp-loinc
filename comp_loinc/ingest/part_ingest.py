@@ -37,13 +37,14 @@ class PartOntology(object):
         self.class_root = PartClass(id="loinc:LP000004", label="Class", subClassOf=["loinc:LP000001"])
         self.part_classes = [self.part_root, self.component_root, self.system_root, self.class_root]
 
-    def generate_part_type_lookup(self, loinc_part_file):
+    def generate_part_type_lookup(self, loinc_primary_part_file, loinc_supplement_part_file):
         """
 
-        :param loinc_part_file:
+        :param loinc_primary_part_file:
+        :param loinc_supplement_part_file:
         :return:
         """
-        part_lookups = PartLookups(loinc_part_file) #"../local_data/Part.csv"
+        part_lookups = PartLookups(loinc_primary_part_file, loinc_supplement_part_file)
         self.part_type_lookup = part_lookups.generate_part_type_lookup()
         self.part_name_lookup.update(part_lookups.generate_part_name_lookup())
 

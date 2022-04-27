@@ -38,8 +38,8 @@ class PartHierarchy(object):
             else:
                 print(f"No part id for node {node_id}")
         self.hierarchy["parent_part_id"] = self.hierarchy['PARENT_ID'].apply(node_to_part)
+
     def generate_parent_relationships(self):
-        print("start generate_parent_relationships")
         d = defaultdict(list)
         for index, comp in enumerate(self.hierarchy.itertuples()):
             d[comp.FK_ID].append(comp.parent_part_id)
@@ -55,10 +55,13 @@ class PartLookups(object):
     """
     Generates  part type lookup dictionaries from the Part.csv file (too big to push to git)
     """
-    def __init__(self, part_file_path):
-        self.part_file_path = part_file_path
-        print(self.part_file_path)
-        self.part_file = pd.read_csv(part_file_path)
+    def __init__(self, part_primary_file_path, part_supplementarty_file_path):
+        self.part_primary_file_path = part_primary_file_path
+        self.part_supplementarty_file_path = part_supplementarty_file_path
+        self.part_file = self.combine_part_files_to_df()
+
+    def combine_part_files_to_df(self):
+        return pd.concat([pd.read_csv(self.part_primary_file_path), pd.read_csv(self.part_supplementarty_file_path)])
 
     def generate_part_type_lookup(self):
         """
@@ -73,5 +76,3 @@ class PartLookups(object):
         :return: dict
         """
         return dict(zip(self.part_file['PartNumber'].tolist(), self.part_file['PartName']))
-
-
