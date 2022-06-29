@@ -1,7 +1,7 @@
 import pandas as pd
 from linkml_owl.owl_dumper import OWLDumper
 from linkml_runtime import SchemaView
-from linkml_runtime.utils.introspection import package_schemaview
+# from linkml_runtime.utils.introspection import package_schemaview
 
 from pathlib import Path
 import sys
