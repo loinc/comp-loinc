@@ -4,7 +4,6 @@
 # Local Data
 local_data/
 
-
 # Jupyter
 .ipynb_checkpoints
 *.ipynb
