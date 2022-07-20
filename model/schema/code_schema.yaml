@@ -16,6 +16,10 @@ classes:
     slots:
       - has_component
       - has_system
+      - has_method
+      - has_property
+      - has_time
+
 slots:
   has_component:
     slot_uri: loinc:hasComponent
@@ -28,6 +32,27 @@ slots:
     slot_uri: loinc:hasSystem
     multivalued: false
     range: SystemClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_method:
+    slot_uri: loinc:hasMethod
+    multivalued: false
+    range: MethodClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_property:
+    slot_uri: loinc:hasProperty
+    multivalued: false
+    range: PropertyClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_time:
+    slot_uri: loinc:hasTime
+    multivalued: false
+    range: TimeClass
     required: false
     annotations:
       owl: ObjectSomeValuesFrom

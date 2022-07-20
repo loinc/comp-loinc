@@ -1,5 +1,5 @@
 # Auto generated from code_schema.yaml by pythongen.py version: 0.9.0
-# Generation date: 2022-03-25T15:32:48
+# Generation date: 2022-06-29T09:10:26
 # Schema: loinc-owl-code-schema
 #
 # id: https://loinc.org/code
@@ -62,6 +62,18 @@ class SystemClassId(PartClassId):
     pass
 
 
+class MethodClassId(PartClassId):
+    pass
+
+
+class TimeClassId(PartClassId):
+    pass
+
+
+class PropertyClassId(PartClassId):
+    pass
+
+
 @dataclass
 class Thing(YAMLRoot):
     _inherited_slots: ClassVar[List[str]] = []
@@ -102,6 +114,9 @@ class LoincCodeClass(Thing):
     id: Union[str, LoincCodeClassId] = None
     has_component: Optional[Union[str, ComponentClassId]] = None
     has_system: Optional[Union[str, SystemClassId]] = None
+    has_method: Optional[Union[str, MethodClassId]] = None
+    has_property: Optional[Union[str, PropertyClassId]] = None
+    has_time: Optional[Union[str, TimeClassId]] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -114,6 +129,15 @@ class LoincCodeClass(Thing):
 
         if self.has_system is not None and not isinstance(self.has_system, SystemClassId):
             self.has_system = SystemClassId(self.has_system)
+
+        if self.has_method is not None and not isinstance(self.has_method, MethodClassId):
+            self.has_method = MethodClassId(self.has_method)
+
+        if self.has_property is not None and not isinstance(self.has_property, PropertyClassId):
+            self.has_property = PropertyClassId(self.has_property)
+
+        if self.has_time is not None and not isinstance(self.has_time, TimeClassId):
+            self.has_time = TimeClassId(self.has_time)
 
         super().__post_init__(**kwargs)
 
@@ -199,6 +223,87 @@ class SystemClass(PartClass):
         super().__post_init__(**kwargs)
 
 
+@dataclass
+class MethodClass(PartClass):
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = LOINC["part/MethodClass"]
+    class_class_curie: ClassVar[str] = "loinc:part/MethodClass"
+    class_name: ClassVar[str] = "MethodClass"
+    class_model_uri: ClassVar[URIRef] = URIRef("https://loinc.org/code/MethodClass")
+
+    id: Union[str, MethodClassId] = None
+    subClassOf: Union[Union[str, MethodClassId], List[Union[str, MethodClassId]]] = None
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, MethodClassId):
+            self.id = MethodClassId(self.id)
+
+        if self._is_empty(self.subClassOf):
+            self.MissingRequiredField("subClassOf")
+        if not isinstance(self.subClassOf, list):
+            self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
+        self.subClassOf = [v if isinstance(v, MethodClassId) else MethodClassId(v) for v in self.subClassOf]
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class TimeClass(PartClass):
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = LOINC["part/TimeClass"]
+    class_class_curie: ClassVar[str] = "loinc:part/TimeClass"
+    class_name: ClassVar[str] = "TimeClass"
+    class_model_uri: ClassVar[URIRef] = URIRef("https://loinc.org/code/TimeClass")
+
+    id: Union[str, TimeClassId] = None
+    subClassOf: Union[Union[str, TimeClassId], List[Union[str, TimeClassId]]] = None
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, TimeClassId):
+            self.id = TimeClassId(self.id)
+
+        if self._is_empty(self.subClassOf):
+            self.MissingRequiredField("subClassOf")
+        if not isinstance(self.subClassOf, list):
+            self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
+        self.subClassOf = [v if isinstance(v, TimeClassId) else TimeClassId(v) for v in self.subClassOf]
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class PropertyClass(PartClass):
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = LOINC["part/PropertyClass"]
+    class_class_curie: ClassVar[str] = "loinc:part/PropertyClass"
+    class_name: ClassVar[str] = "PropertyClass"
+    class_model_uri: ClassVar[URIRef] = URIRef("https://loinc.org/code/PropertyClass")
+
+    id: Union[str, PropertyClassId] = None
+    subClassOf: Union[Union[str, PropertyClassId], List[Union[str, PropertyClassId]]] = None
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, PropertyClassId):
+            self.id = PropertyClassId(self.id)
+
+        if self._is_empty(self.subClassOf):
+            self.MissingRequiredField("subClassOf")
+        if not isinstance(self.subClassOf, list):
+            self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
+        self.subClassOf = [v if isinstance(v, PropertyClassId) else PropertyClassId(v) for v in self.subClassOf]
+
+        super().__post_init__(**kwargs)
+
+
 # Enumerations
 
 
@@ -211,6 +316,15 @@ slots.has_component = Slot(uri=LOINC.hasComponent, name="has_component", curie=L
 
 slots.has_system = Slot(uri=LOINC.hasSystem, name="has_system", curie=LOINC.curie('hasSystem'),
                    model_uri=DEFAULT_.has_system, domain=None, range=Optional[Union[str, SystemClassId]])
+
+slots.has_method = Slot(uri=LOINC.hasMethod, name="has_method", curie=LOINC.curie('hasMethod'),
+                   model_uri=DEFAULT_.has_method, domain=None, range=Optional[Union[str, MethodClassId]])
+
+slots.has_property = Slot(uri=LOINC.hasProperty, name="has_property", curie=LOINC.curie('hasProperty'),
+                   model_uri=DEFAULT_.has_property, domain=None, range=Optional[Union[str, PropertyClassId]])
+
+slots.has_time = Slot(uri=LOINC.hasTime, name="has_time", curie=LOINC.curie('hasTime'),
+                   model_uri=DEFAULT_.has_time, domain=None, range=Optional[Union[str, TimeClassId]])
 
 slots.id = Slot(uri=LOINC['core/id'], name="id", curie=LOINC.curie('core/id'),
                    model_uri=DEFAULT_.id, domain=None, range=URIRef)
@@ -229,3 +343,12 @@ slots.ComponentClass_subClassOf = Slot(uri=RDFS.subClassOf, name="ComponentClass
 
 slots.SystemClass_subClassOf = Slot(uri=RDFS.subClassOf, name="SystemClass_subClassOf", curie=RDFS.curie('subClassOf'),
                    model_uri=DEFAULT_.SystemClass_subClassOf, domain=SystemClass, range=Union[Union[str, SystemClassId], List[Union[str, SystemClassId]]])
+
+slots.MethodClass_subClassOf = Slot(uri=RDFS.subClassOf, name="MethodClass_subClassOf", curie=RDFS.curie('subClassOf'),
+                   model_uri=DEFAULT_.MethodClass_subClassOf, domain=MethodClass, range=Union[Union[str, MethodClassId], List[Union[str, MethodClassId]]])
+
+slots.TimeClass_subClassOf = Slot(uri=RDFS.subClassOf, name="TimeClass_subClassOf", curie=RDFS.curie('subClassOf'),
+                   model_uri=DEFAULT_.TimeClass_subClassOf, domain=TimeClass, range=Union[Union[str, TimeClassId], List[Union[str, TimeClassId]]])
+
+slots.PropertyClass_subClassOf = Slot(uri=RDFS.subClassOf, name="PropertyClass_subClassOf", curie=RDFS.curie('subClassOf'),
+                   model_uri=DEFAULT_.PropertyClass_subClassOf, domain=PropertyClass, range=Union[Union[str, PropertyClassId], List[Union[str, PropertyClassId]]])
