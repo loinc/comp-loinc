@@ -42,13 +42,6 @@ classes:
         range: PropertyClass
 
 slots:
-  subClassOf:
-    annotations:
-      owl: SubClassOf
-    slot_uri: rdfs:subClassOf
-    multivalued: true
-    range: PartClass
-    required: true
   partType:
     slot_uri: loinc:partType
     multivalued: false

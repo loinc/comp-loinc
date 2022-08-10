@@ -10,26 +10,42 @@ app = typer.Typer()
 @app.command(name='parts')
 def build_part_ontology(
         schema_file: str,
-        part_primary_file: str,
-        part_supplementary_file: str,
-        hierarchy_file: str,
+        part_directory: str,
         output: str):
-    po = PartOntology(schema_path=schema_file)
-    po.generate_part_type_lookup(loinc_primary_part_file=part_primary_file,
-                                 loinc_supplement_part_file=part_supplementary_file)
-    po.generate_part_hierarchy_lookup(chem_hierarchy_file=hierarchy_file)
+    """
+    TODO: REfactor this to use the new simplified part_ingest.py
+    :param schema_file:
+    :param part_directory:
+    :param output:
+    :return:
+    """
+    ## Example
+    # po = PartOntology("./model/schema/part_schema.yaml", "./local_data/part_files")
+    # po.generate_ontology()
+    # po.write_to_output('./data/output/owl_files/part_ontology.owl')
+    po = PartOntology(schema_file, part_directory)
     po.generate_ontology()
-    po.write_to_output(output_path=output)
+    po.write_to_output(output)
 
 
 @app.command(name='codes')
 def build_codes(
         schema_file: str,
-        code_file: str,
+        part_directory: str,
         output: str):
-    cp = CodeIngest(schema_path=schema_file, code_file_path=code_file)
-    cp.generate_codes()
-    cp.write_output_to_file(output_path=output)
+    """
+    TODO: Refactor this to use the new simplified code_ingest.py
+    :param schema_file:
+    :param part_directory:
+    :param output:
+    :return:
+    """
+    ## Example
+    # lcc = CodeIngest("./model/schema/code_schema.yaml", "./data/part_files")
+    # lcc.write_output_to_file("./data/output/owl_files/code_classes.owl")
+    lcc = CodeIngest(schema_file, part_directory)
+    lcc.write_output_to_file(output)
+
 
 @app.command(name='composed')
 def build_composed_classes(
@@ -37,7 +53,7 @@ def build_composed_classes(
         composed_classes_data_file: str,
         output: str):
     """
-    TODO this is just calling a linkml owl cli, should be written as code
+    todo: this is just calling a linkml owl cli, should be written as code with python
     :param schema_file:
     :param code_file:
     :param output:
@@ -49,6 +65,7 @@ def build_composed_classes(
 def merge_owl(
         owl_directory: str,
         output: str):
+    # TODO: Consider removing the files created from this point on each time this code executes e.g. any file with 'merge_*'
     files = [f'{owl_directory}{x}' for x in os.listdir(owl_directory) if ".owl" in x]
     subprocess.call(["./robot", "merge", "-i"] + " -i ".join(files).split() + ['-o', output])
 

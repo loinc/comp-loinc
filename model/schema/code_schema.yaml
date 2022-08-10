@@ -19,6 +19,10 @@ classes:
       - has_method
       - has_property
       - has_time
+      - subClassOf
+    slot_usage:
+      subClassOf:
+        range: LoincCodeClass
 
 slots:
   has_component:
