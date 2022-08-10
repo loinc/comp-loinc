@@ -4,7 +4,7 @@
 
 
 
-URI: [https://loinc.org/code/SystemClass_subClassOf](https://loinc.org/code/SystemClass_subClassOf)
+URI: [https://loinc.org/grouping_classes/SystemClass_subClassOf](https://loinc.org/grouping_classes/SystemClass_subClassOf)
 
 
 ## Domain and Range

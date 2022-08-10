@@ -5,18 +5,18 @@ python 3.9.7
 pip install -r requirements.txt
 
 # Required Loinc Files
-- stored in comp_loinc/local_data because they are too big to push to git. (should eventually be programattically pulled)
-- local/data/CHEM_HIERARCHY_LPL_DATA.xlsx
-- local_data/LoincPartLink_Primary.csv
-- local_data/LoincPartLink_Supplementary.csv
+- data/part_files/CHEM_HIERARCHY_REVISED.TSV
+- data/part_files/METHOD_CHEM_HIERARCHY.TSV
+- data/part_files/PROPERTY_CHEM_HIERARCHY.TSV
+- data/part_files/SYSTEM_CHEM_HIERARCHY.TSV
+- data/part_files/TIME_CHEM_HIERARCHY.TSV
 
 
+# Build the part ontology from the intermediate Part Hierarchy files
+python comp_loinc/build.py parts  ./model/schema/part_schema.yaml ./local_data/part_files ./data/output/owl_files/part_ontology.owl
 
-# Build the part ontology the downloaded LOINC part source tabular data and the intermediate CHEM_HIERARCHY_LPL_DATA.xlsx file
-python comp_loinc/build.py parts  ./model/schema/part_schema.yaml ./local_data/LoincPartLink_Primary.csv ./local_data/LoincPartLink_Supplementary.csv ./local_data/CHEM_HIERARCHY_LPL_DATA.xlsx ./data/output/part_classes.owl
-
-# Build the code classes with linked parts from  the intermediate CHEM_HIERARCHY_LPL_DATA.xlsx file
-python comp_loinc/build.py codes ./model/schema/code_schema.yaml ./local_data/CHEM_HIERARCHY_LPL_DATA.xlsx ./data/output/code_classes_cli.owl
+# Build the code classes from the intermediate Part Hierarchy files
+python comp_loinc/build.py codes  ./model/schema/code_schema.yaml ./local_data/part_files ./data/output/owl_files/part_ontology.owl
 
 # Build the composed class axioms for the reasoner to group classes (this is pretty bespoke, and hardcoded at the moment)
 python comp_loinc/build.py composed model/schema/grouping_classes_schema.yaml data/composed_classes_data.yaml data/output/composed_component_classes.owl

@@ -12,8 +12,6 @@ from comp_loinc.loinc_owl.part_schema import ComponentClass, SystemClass, PartCl
 # from scripts.source_data_utils import generate_part_hierarchy, generate_part_type_lookup, generate_label_map, generate_parent_relationships
 
 
-
-
 class PartOntology(object):
     """
 
@@ -79,7 +77,8 @@ class PartOntology(object):
         with open(output_path, 'w') as ccl_owl: # "../data/output/part_classes_test.owl"
             ccl_owl.write(self.od.dumps(self.part_classes, schema=self.sv.schema,))
 
-## Example
+# ## Example
 # po = PartOntology("./model/schema/part_schema.yaml", "./local_data/part_files")
 # po.generate_ontology()
-# po.write_to_output('./local_data/part_ontology_files/part_ontology.owl')
+# po.write_to_output('./data/output/owl_files/part_ontology.owl')
+# # po.write_to_output('./local_data/part_ontology_files/part_ontology.owl')

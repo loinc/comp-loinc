@@ -4,7 +4,7 @@
 
 
 
-URI: [https://loinc.org/code/has_component](https://loinc.org/code/has_component)
+URI: [https://loinc.org/grouping_classes/has_component](https://loinc.org/grouping_classes/has_component)
 
 
 ## Domain and Range
@@ -16,6 +16,7 @@ None &#8594;  <sub>0..1</sub> [ComponentClass](ComponentClass.md)
 
 ## Children
 
+ *  [CodeByComponent➞has_component](CodeByComponent_has_component.md)
 
 ## Used by
 

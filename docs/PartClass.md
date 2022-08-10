@@ -4,10 +4,10 @@
 
 
 
-URI: [https://loinc.org/code/PartClass](https://loinc.org/code/PartClass)
+URI: [https://loinc.org/grouping_classes/PartClass](https://loinc.org/grouping_classes/PartClass)
 
 
-[![img](https://yuml.me/diagram/nofunky;dir:TB/class/[Thing],[SystemClass],[PartClass]<subClassOf%201..*-%20[PartClass&#124;id(i):uriorcurie;label(i):string%20%3F;description(i):string%20%3F],[PartClass]^-[SystemClass],[PartClass]^-[ComponentClass],[Thing]^-[PartClass],[ComponentClass])](https://yuml.me/diagram/nofunky;dir:TB/class/[Thing],[SystemClass],[PartClass]<subClassOf%201..*-%20[PartClass&#124;id(i):uriorcurie;label(i):string%20%3F;description(i):string%20%3F],[PartClass]^-[SystemClass],[PartClass]^-[ComponentClass],[Thing]^-[PartClass],[ComponentClass])
+[![img](https://yuml.me/diagram/nofunky;dir:TB/class/[TimeClass],[Thing],[SystemClass],[PropertyClass],[Thing]<subClassOf%201..*-%20[PartClass&#124;partType:string%20%3F;id(i):uriorcurie;label(i):string%20%3F;description(i):string%20%3F],[PartClass]^-[TimeClass],[PartClass]^-[SystemClass],[PartClass]^-[PropertyClass],[PartClass]^-[MethodClass],[PartClass]^-[ComponentClass],[Thing]^-[PartClass],[MethodClass],[ComponentClass])](https://yuml.me/diagram/nofunky;dir:TB/class/[TimeClass],[Thing],[SystemClass],[PropertyClass],[Thing]<subClassOf%201..*-%20[PartClass&#124;partType:string%20%3F;id(i):uriorcurie;label(i):string%20%3F;description(i):string%20%3F],[PartClass]^-[TimeClass],[PartClass]^-[SystemClass],[PartClass]^-[PropertyClass],[PartClass]^-[MethodClass],[PartClass]^-[ComponentClass],[Thing]^-[PartClass],[MethodClass],[ComponentClass])
 
 ## Parents
 
@@ -16,11 +16,13 @@ URI: [https://loinc.org/code/PartClass](https://loinc.org/code/PartClass)
 ## Children
 
  * [ComponentClass](ComponentClass.md)
+ * [MethodClass](MethodClass.md)
+ * [PropertyClass](PropertyClass.md)
  * [SystemClass](SystemClass.md)
+ * [TimeClass](TimeClass.md)
 
 ## Referenced by Class
 
- *  **None** *[subClassOf](subClassOf.md)*  <sub>1..\*</sub>  **[PartClass](PartClass.md)**
 
 ## Attributes
 
@@ -28,7 +30,9 @@ URI: [https://loinc.org/code/PartClass](https://loinc.org/code/PartClass)
 ### Own
 
  * [subClassOf](subClassOf.md)  <sub>1..\*</sub>
-     * Range: [PartClass](PartClass.md)
+     * Range: [Thing](Thing.md)
+ * [partType](partType.md)  <sub>0..1</sub>
+     * Range: [String](types/String.md)
 
 ### Inherited from Thing:
 
