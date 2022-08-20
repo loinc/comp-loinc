@@ -14,6 +14,7 @@ classes:
     is_a: Thing
     slots:
       - subClassOf
+      - partType
   ComponentClass:
     is_a: PartClass
     slot_usage:
@@ -24,15 +25,25 @@ classes:
     slot_usage:
       subClassOf:
         range: SystemClass
-
+  MethodClass:
+    is_a: PartClass
+    slot_usage:
+      subClassOf:
+        range: MethodClass
+  TimeClass:
+    is_a: PartClass
+    slot_usage:
+      subClassOf:
+        range: TimeClass
+  PropertyClass:
+    is_a: PartClass
+    slot_usage:
+      subClassOf:
+        range: PropertyClass
 
 slots:
-  subClassOf:
-    annotations:
-      owl: SubClassOf
-    slot_uri: rdfs:subClassOf
-    multivalued: true
-    range: PartClass
-    required: true
-
+  partType:
+    slot_uri: loinc:partType
+    multivalued: false
+    range: string
 

@@ -29,4 +29,11 @@ slots:
     slot_uri: rdfs:description
     annotations:
       owl: AnnotationAssertion
+  subClassOf:
+    annotations:
+      owl: SubClassOf
+    slot_uri: rdfs:subClassOf
+    multivalued: true
+    range: Thing
+    required: true
 

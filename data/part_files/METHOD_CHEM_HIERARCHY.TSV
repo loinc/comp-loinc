@@ -1,0 +1,1035 @@
+ParentPartNumber	ParentPart	ParentPartTypeName	ChildPartNumber	ChildPart	ChildPartName	LoincNumber	LoincFormalName
+LP432811-0	{method}	METHOD	LP432811-0	{method}	METHOD		
+LP432811-0	{method}	METHOD	LP31943-1	Cardiac study methods	METHOD		
+LP31943-1	Cardiac study methods	METHOD	LP344936-2	Calculated.CardioIQ	METHOD	92845-7	Insulin resistance score:Score:Pt:Ser:Qn:Calculated.CardioIQ
+LP432811-0	{method}	METHOD	LP31675-9	Laboratory	METHOD		
+LP31675-9	Laboratory	METHOD	LP31953-0	Chemistry methods	METHOD		
+LP31953-0	Chemistry methods	METHOD	LP189606-9	1-14C-glutamate substrate	METHOD	76618-8	Mitochondrial respiratory chain enzymes:CCnt:Pt:Fibroblasts:Qn:1-14C-glutamate substrate
+LP31953-0	Chemistry methods	METHOD	LP189607-7	1-14C-leucine substrate	METHOD	76620-4	Mitochondrial respiratory chain enzymes:CCnt:Pt:Fibroblasts:Qn:1-14C-leucine substrate
+LP31953-0	Chemistry methods	METHOD	LP189603-6	1-14C-pyruvate substrate	METHOD	76616-2	Mitochondrial respiratory chain enzymes:CCnt:Pt:Fibroblasts:Qn:1-14C-pyruvate substrate
+LP31953-0	Chemistry methods	METHOD	LP189608-5	"2,3-14C-succinate substrate"	METHOD	76619-6	"Mitochondrial respiratory chain enzymes:CCnt:Pt:Fibroblasts:Qn:2,3-14C-succinate substrate"
+LP31953-0	Chemistry methods	METHOD	LP189604-4	2-14C-pyruvate substrate	METHOD	76617-0	Mitochondrial respiratory chain enzymes:CCnt:Pt:Fibroblasts:Qn:2-14C-pyruvate substrate
+LP31953-0	Chemistry methods	METHOD	LP189528-5	4-MU-oleate substrate	METHOD	76614-7	Lysosomal acid lipase:CCnt:Pt:Fibroblasts:Qn:4-MU-oleate substrate
+LP31953-0	Chemistry methods	METHOD	LP189527-7	4-MU-palmitate substrate	METHOD	76615-4	Lysosomal acid lipase:CCnt:Pt:Fibroblasts:Qn:4-MU-palmitate substrate
+LP31953-0	Chemistry methods	METHOD	LP189527-7	4-MU-palmitate substrate	METHOD	82883-0	Lysosomal acid lipase:CCnt:Pt:WBC:Qn:4-MU-palmitate substrate
+LP31953-0	Chemistry methods	METHOD	LP199479-9	"[9,10-3H] myristate substrate"	METHOD	78360-5	"Acyl CoA dehydrogenases:CCnt:Pt:Fibroblasts:Qn:[9,10-3H] myristate substrate"
+LP31953-0	Chemistry methods	METHOD	LP199480-7	"[9,10-3H] palmitate substrate"	METHOD	78358-9	"Acyl CoA dehydrogenases:CCnt:Pt:Fibroblasts:Qn:[9,10-3H] palmitate substrate"
+LP31953-0	Chemistry methods	METHOD	LP102323-5	BCG	METHOD	61151-7	Albumin:MCnc:Pt:Ser/Plas:Qn:BCG
+LP31953-0	Chemistry methods	METHOD	LP102323-5	BCG	METHOD	62235-7	Albumin:SCnc:Pt:Ser/Plas:Qn:BCG
+LP31953-0	Chemistry methods	METHOD	LP102324-3	BCP	METHOD	61152-5	Albumin:MCnc:Pt:Ser/Plas:Qn:BCP
+LP31953-0	Chemistry methods	METHOD	LP102324-3	BCP	METHOD	62234-0	Albumin:SCnc:Pt:Ser/Plas:Qn:BCP
+LP31953-0	Chemistry methods	METHOD	LP102324-3	BCP	METHOD	77148-5	Albumin:MCnc:Pt:Ser/Plas/Bld:Qn:BCP
+LP31953-0	Chemistry methods	METHOD	LP102324-3	BCP	METHOD	76631-1	Albumin:MCnc:Pt:Bld:Qn:BCP
+LP31953-0	Chemistry methods	METHOD	LP6177-2	Chemical separation	METHOD	2535-3	Lactate dehydrogenase 1:CCnc:Pt:Ser/Plas:Qn:Chemical separation
+LP31953-0	Chemistry methods	METHOD	LP6177-2	Chemical separation	METHOD	2538-7	Lactate dehydrogenase 2:CCnc:Pt:Ser/Plas:Qn:Chemical separation
+LP31953-0	Chemistry methods	METHOD	LP6177-2	Chemical separation	METHOD	2541-1	Lactate dehydrogenase 3:CCnc:Pt:Ser/Plas:Qn:Chemical separation
+LP31953-0	Chemistry methods	METHOD	LP6177-2	Chemical separation	METHOD	2544-5	Lactate dehydrogenase 4:CCnc:Pt:Ser/Plas:Qn:Chemical separation
+LP31953-0	Chemistry methods	METHOD	LP6177-2	Chemical separation	METHOD	2547-8	Lactate dehydrogenase 5:CCnc:Pt:Ser/Plas:Qn:Chemical separation
+LP31953-0	Chemistry methods	METHOD	LP33283-0	Cockcroft-Gault formula	METHOD	35591-7	Creatinine renal clearance.predicted:VRat:Pt:Ser/Plas:Qn:Cockcroft-Gault formula
+LP31953-0	Chemistry methods	METHOD	LP33283-0	Cockcroft-Gault formula	METHOD		
+LP33283-0	Cockcroft-Gault formula	METHOD	LP33284-8	"Cockcroft-Gault formula, BSA formula"	METHOD	35592-5	"Creatinine renal clearance/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas:Qn:Cockcroft-Gault formula, BSA formula"
+LP33283-0	Cockcroft-Gault formula	METHOD	LP33284-8	"Cockcroft-Gault formula, BSA formula"	METHOD	50380-5	"Creatinine renal clearance/1.73 sq M.predicted.female:ArVRat:Pt:Ser/Plas:Qn:Cockcroft-Gault formula, BSA formula"
+LP33283-0	Cockcroft-Gault formula	METHOD	LP33284-8	"Cockcroft-Gault formula, BSA formula"	METHOD	50381-3	"Creatinine renal clearance/1.73 sq M.predicted.male:ArVRat:Pt:Ser/Plas:Qn:Cockcroft-Gault formula, BSA formula"
+LP31953-0	Chemistry methods	METHOD	LP201269-0	Creatine uptake	METHOD	79411-5	Creatine transport protein:CCnt:Pt:Fibroblasts:Qn:Creatine uptake
+LP31953-0	Chemistry methods	METHOD	LP36715-8	Creatinine-based formula (MDRD)	METHOD	76633-7	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Bld:Qn:Creatinine-based formula (MDRD)
+LP31953-0	Chemistry methods	METHOD	LP36715-8	Creatinine-based formula (MDRD)	METHOD	77147-7	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (MDRD)
+LP31953-0	Chemistry methods	METHOD	LP36715-8	Creatinine-based formula (MDRD)	METHOD	70969-1	Glomerular filtration rate/1.73 sq M.predicted.male:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (MDRD)
+LP31953-0	Chemistry methods	METHOD	LP36715-8	Creatinine-based formula (MDRD)	METHOD	50044-7	Glomerular filtration rate/1.73 sq M.predicted.female:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (MDRD)
+LP31953-0	Chemistry methods	METHOD	LP36715-8	Creatinine-based formula (MDRD)	METHOD	48642-3	Glomerular filtration rate/1.73 sq M.predicted.non black:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (MDRD)
+LP31953-0	Chemistry methods	METHOD	LP36715-8	Creatinine-based formula (MDRD)	METHOD	48643-1	Glomerular filtration rate/1.73 sq M.predicted.black:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (MDRD)
+LP31953-0	Chemistry methods	METHOD	LP36715-8	Creatinine-based formula (MDRD)	METHOD	33914-3	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas:Qn:Creatinine-based formula (MDRD)
+LP31953-0	Chemistry methods	METHOD	LP65370-6	Creatinine-based formula (Schwartz)	METHOD	50383-9	Glomerular filtration rate.predicted:VRat:Pt:Ser/Plas:Qn:Creatinine-based formula (Schwartz)
+LP31953-0	Chemistry methods	METHOD	LP65370-6	Creatinine-based formula (Schwartz)	METHOD	50384-7	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (Schwartz)
+LP31953-0	Chemistry methods	METHOD	LP105134-3	Creatinine-based formula (CKD-EPI)	METHOD	62238-1	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (CKD-EPI)
+LP31953-0	Chemistry methods	METHOD	LP105134-3	Creatinine-based formula (CKD-EPI)	METHOD	88293-6	Glomerular filtration rate/1.73 sq M.predicted.black:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (CKD-EPI)
+LP31953-0	Chemistry methods	METHOD	LP105134-3	Creatinine-based formula (CKD-EPI)	METHOD	88294-4	Glomerular filtration rate/1.73 sq M.predicted.non black:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (CKD-EPI)
+LP31953-0	Chemistry methods	METHOD	LP105134-3	Creatinine-based formula (CKD-EPI)	METHOD	97952-6	Glomerular filtration rate/Body surface area:ArVRat:Pt:Ser/Plas:Qn:Creatinine-based formula (CKD-EPI)
+LP31953-0	Chemistry methods	METHOD	LP429719-0	Creatinine-based formula (CKD-EPI 2021)	METHOD	98979-8	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine-based formula (CKD-EPI 2021)
+LP31953-0	Chemistry methods	METHOD	LP417855-6	Creatinine and Cystatin C-based formula (CKD-EPI)	METHOD	94677-2	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine and Cystatin C-based formula (CKD-EPI)
+LP31953-0	Chemistry methods	METHOD	LP429720-8	Creatinine and Cystatin C-based formula (CKD-EPI 2021)	METHOD	98980-6	Glomerular filtration rate/1.73 sq M.predicted:ArVRat:Pt:Ser/Plas/Bld:Qn:Creatinine and Cystatin C-based formula (CKD-EPI 2021)
+LP31953-0	Chemistry methods	METHOD	LP6226-7	Dialysis	METHOD	6892-4	Thyroxine.free:MCnc:Pt:Ser/Plas:Qn:Dialysis
+LP31953-0	Chemistry methods	METHOD	LP6226-7	Dialysis	METHOD	70217-5	Thyroxine.free:SCnc:Pt:Ser/Plas:Qn:Dialysis
+LP31953-0	Chemistry methods	METHOD	LP6226-7	Dialysis	METHOD	29239-1	Triiodothyronine.free:MCnc:Pt:Ser/Plas:Qn:Dialysis
+LP31953-0	Chemistry methods	METHOD	LP6230-9	Direct assay	METHOD	18262-6	Cholesterol.in LDL:MCnc:Pt:Ser/Plas:Qn:Direct assay
+LP31953-0	Chemistry methods	METHOD	LP6230-9	Direct assay	METHOD	69419-0	Cholesterol.in LDL:SCnc:Pt:Ser/Plas:Qn:Direct assay
+LP31953-0	Chemistry methods	METHOD	LP6230-9	Direct assay	METHOD	96597-0	Cholesterol.in LDL:MCnc:Pt:Bld.dot:Qn:Direct assay
+LP31953-0	Chemistry methods	METHOD	LP6264-8	Estimated from glycated hemoglobin	METHOD	27353-2	Estimated average glucose:MCnc:Pt:Bld:Qn:Estimated from glycated hemoglobin
+LP31953-0	Chemistry methods	METHOD	LP6264-8	Estimated from glycated hemoglobin	METHOD	13453-6	Glucose mean value:ACnc:Pt:Bld:Qn:Estimated from glycated hemoglobin
+LP31953-0	Chemistry methods	METHOD	LP6264-8	Estimated from glycated hemoglobin	METHOD	53553-4	Estimated average glucose:SCnc:Pt:Bld:Qn:Estimated from glycated hemoglobin
+LP31953-0	Chemistry methods	METHOD	LP65000-9	Glock & McLean	METHOD	49925-1	Glucose-6-Phosphate dehydrogenase:CCnt:Pt:RBC:Qn:Glock & McLean
+LP31953-0	Chemistry methods	METHOD	LP6298-6	Glucometer	METHOD	41653-7	Glucose:MCnc:Pt:BldC:Qn:Glucometer
+LP31953-0	Chemistry methods	METHOD	LP6298-6	Glucometer	METHOD	14743-9	Glucose:SCnc:Pt:BldC:Qn:Glucometer
+LP31953-0	Chemistry methods	METHOD	LP6303-4	Guthrie test	METHOD	12803-3	Phenylalanine:PrThr:Pt:Bld:Ord:Guthrie test
+LP31953-0	Chemistry methods	METHOD	LP6307-5	Heat stability	METHOD	16182-8	Alkaline phosphatase isoenzymes:CCnc:Pt:Ser/Plas:Qn:Heat stability
+LP31953-0	Chemistry methods	METHOD	LP6307-5	Heat stability	METHOD	32351-9	Alkaline phosphatase.heat labile:CCnc:Pt:Ser/Plas:Qn:Heat stability
+LP31953-0	Chemistry methods	METHOD	LP6307-5	Heat stability	METHOD	32352-7	Alkaline phosphatase.heat stable:CCnc:Pt:Ser/Plas:Qn:Heat stability
+LP31953-0	Chemistry methods	METHOD	LP6307-5	Heat stability	METHOD	32135-6	Alkaline phosphatase.liver:CCnc:Pt:Ser/Plas:Qn:Heat stability
+LP31953-0	Chemistry methods	METHOD	LP6307-5	Heat stability	METHOD	42718-7	Alkaline phosphatase.heat labile/Alkaline phosphatase.total:CFr:Pt:Ser/Plas:Qn:Heat stability
+LP31953-0	Chemistry methods	METHOD	LP6307-5	Heat stability	METHOD	43382-1	Alkaline phosphatase.heat stable/Alkaline phosphatase.total:CFr:Pt:Ser/Plas:Qn:Heat stability
+LP31953-0	Chemistry methods	METHOD	LP6307-5	Heat stability	METHOD	43710-3	Alkaline phosphatase.heat stable:PrThr:Pt:Ser/Plas:Ord:Heat stability
+LP31953-0	Chemistry methods	METHOD	LP191793-1	Isotopic	METHOD	87378-6	Tubular extraction rate/1.73 sq M:ArVRat:Pt:Ser/Bld:Qn:Isotopic
+LP31953-0	Chemistry methods	METHOD	LP191793-1	Isotopic	METHOD	78006-4	Glomerular filtration rate/1.73 sq M:ArVRat:Pt:Urine+Ser/Plas:Qn:Isotopic
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	76486-0	C reactive protein:SCnc:Pt:Ser/Plas:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	72873-3	Estradiol:SCnc:Pt:Ser/Plas:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	71426-1	C reactive protein:MCnc:Pt:Bld:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	67151-1	Troponin T.cardiac:MCnc:Pt:Ser/Plas:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	89575-5	Troponin T.cardiac:Imp:Pt:Ser/Plas:Ord:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	89578-9	Troponin I.cardiac:Imp:Pt:Ser/Plas:Ord:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	89579-7	Troponin I.cardiac:MCnc:Pt:Ser/Plas:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD		
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	51005-7	Testosterone.free+weakly bound:MCnc:Pt:Ser/Plas:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	59182-6	C reactive protein:MCnc:Pt:CSF:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	30522-7	C reactive protein:MCnc:Pt:Ser/Plas:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	35648-5	C reactive protein:Quintile:Pt:Ser/Plas:Qn:High sensitivity
+LP31953-0	Chemistry methods	METHOD	LP29325-5	High sensitivity	METHOD	35384-7	Estradiol:MCnc:Pt:Ser/Plas:Qn:High sensitivity
+LP29325-5	High sensitivity	METHOD	LP33340-8	Detection limit <= 0.01 ng/mL	METHOD	35741-8	Prostate specific Ag:MCnc:Pt:Ser/Plas:Qn:Detection limit <= 0.01 ng/mL
+LP29325-5	High sensitivity	METHOD	LP33340-8	Detection limit <= 0.01 ng/mL	METHOD	49563-0	Troponin I.cardiac:MCnc:Pt:Ser/Plas:Qn:Detection limit <= 0.01 ng/mL
+LP29325-5	High sensitivity	METHOD	LP6223-4	Detection limit <= 0.005 mIU/L	METHOD	11580-8	Thyrotropin:ACnc:Pt:Ser/Plas:Qn:Detection limit <= 0.005 mIU/L
+LP29325-5	High sensitivity	METHOD	LP6224-2	Detection limit <= 0.05 mIU/L	METHOD	11579-0	Thyrotropin:ACnc:Pt:Ser/Plas:Qn:Detection limit <= 0.05 mIU/L
+LP29325-5	High sensitivity	METHOD	LP63621-4	Detection limit <= 1.0 ng/dL	METHOD	49041-7	Testosterone:MCnc:Pt:Ser/Plas:Qn:Detection limit <= 1.0 ng/dL
+LP29325-5	High sensitivity	METHOD	LP63621-4	Detection limit <= 1.0 ng/dL	METHOD	49042-5	Testosterone.free:MCnc:Pt:Ser/Plas:Qn:Detection limit <= 1.0 ng/dL
+LP29325-5	High sensitivity	METHOD	LP63621-4	Detection limit <= 1.0 ng/dL	METHOD	49043-3	Testosterone.free/Testosterone.total:MFr:Pt:Ser/Plas:Qn:Detection limit <= 1.0 ng/dL
+LP29325-5	High sensitivity	METHOD	LP70454-1	Detection limit <= 1.0 mg/L	METHOD	53529-4	Albumin:MCnc:Pt:Body fld:Qn:Detection limit <= 1.0 mg/L
+LP29325-5	High sensitivity	METHOD	LP70454-1	Detection limit <= 1.0 mg/L	METHOD	53530-2	Albumin:MCnc:24H:Urine:Qn:Detection limit <= 1.0 mg/L
+LP29325-5	High sensitivity	METHOD	LP70454-1	Detection limit <= 1.0 mg/L	METHOD	53531-0	Albumin:MCnc:Pt:Urine:Qn:Detection limit <= 1.0 mg/L
+LP29325-5	High sensitivity	METHOD	LP70454-1	Detection limit <= 1.0 mg/L	METHOD	53532-8	Albumin:MRat:24H:Urine:Qn:Detection limit <= 1.0 mg/L
+LP29325-5	High sensitivity	METHOD	LP70454-1	Detection limit <= 1.0 mg/L	METHOD	77253-3	Albumin/Creatinine:Ratio:Pt:Urine:Qn:Detection limit <= 1.0 mg/L
+LP29325-5	High sensitivity	METHOD	LP70454-1	Detection limit <= 1.0 mg/L	METHOD	77254-1	Albumin/Creatinine:Ratio:24H:Urine:Qn:Detection limit <= 1.0 mg/L
+LP29325-5	High sensitivity	METHOD	LP189766-1	Detection limit <= 3.0 mg/L	METHOD	77158-4	Albumin:SCnc:Pt:Urine:Qn:Detection limit <= 3.0 mg/L
+LP29325-5	High sensitivity	METHOD	LP145955-3	Detection limit <= 3.47 pmol/L	METHOD	70239-9	Testosterone:SCnc:Pt:Ser/Plas:Qn:Detection limit <= 3.47 pmol/L
+LP29325-5	High sensitivity	METHOD	LP145955-3	Detection limit <= 3.47 pmol/L	METHOD	70240-7	Testosterone.free:SCnc:Pt:Ser/Plas:Qn:Detection limit <= 3.47 pmol/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	63474-1	Albumin:MRat:18H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	59159-4	Albumin/Creatinine:Ratio:24H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	58448-2	Albumin ug/min:MRat:24H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	56553-1	Albumin:MRat:8H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	57369-1	Albumin:MCnc:12H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	47558-2	Albumin/Protein.total:MFr:24H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	49023-5	Albumin:MRat:XXX:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	43605-5	Albumin:MCnc:4H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	43606-3	Albumin:MRat:4H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	43607-1	Albumin:MRat:12H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	44292-1	Albumin/Creatinine:MRto:12H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	14956-7	Albumin:MRat:24H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	14957-5	Albumin:MCnc:Pt:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	14958-3	Albumin/Creatinine:MRto:24H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	14959-1	Albumin/Creatinine:MRto:Pt:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	30003-8	Albumin:MCnc:24H:Urine:Qn:Detection limit <= 20 mg/L
+LP29325-5	High sensitivity	METHOD	LP6222-6	Detection limit <= 20 mg/L	METHOD	30000-4	Albumin/Creatinine:Ratio:Pt:Urine:Qn:Detection limit <= 20 mg/L
+LP31953-0	Chemistry methods	METHOD	LP99992-7	IFCC	METHOD	59261-8	Hemoglobin A1c/Hemoglobin.total:SFr:Pt:Bld:Qn:IFCC
+LP31953-0	Chemistry methods	METHOD	LP111462-0	JDS/JSCC	METHOD	62388-4	Hemoglobin A1c/Hemoglobin.total:MFr:Pt:Bld:Qn:JDS/JSCC
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	74434-2	Bilirubin/Total:MFr:Pt:Calculus:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	59015-8	Carbohydrates:MCnt:Pt:Stool:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	59016-6	Water:MCnt:Pt:Stool:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	59385-5	Nitrogen:MCnt:Pt:Stool:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	59386-3	Starch:MCnt:Pt:Stool:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	54437-9	Sodium urate/Total:MFr:Pt:Calculus:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	40787-4	Calculus analysis:Imp:Pt:Calculus:Nom:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	49255-3	Calculus analysis:Imp:Pt:Calculus:Nar:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	49500-2	Calcium oxalate dihydrate/Total:MFr:Pt:Calculus:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	49501-0	Calcium oxalate monohydrate/Total:MFr:Pt:Calculus:Qn:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16257-8	Sodium urate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16258-6	Ammonium urate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16259-4	Urate dihydrate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16260-2	Triamterene crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16261-0	Calcium bilirubinate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16262-8	Newberyite crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16263-6	Calcium oxalate dihydrate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16264-4	Calcium oxalate monohydrate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16265-1	Triple phosphate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16266-9	Calcium hydrogen phosphate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16267-7	Calcium carbonate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16268-5	Calcium phosphate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16269-3	Urate crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16613-2	Cholesterol crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP6344-8	Infrared spectroscopy	METHOD	16710-6	Cystine crystals:PrThr:Pt:Calculus:Ord:Infrared spectroscopy
+LP31953-0	Chemistry methods	METHOD	LP31896-1	International standards	METHOD		
+LP31896-1	International standards	METHOD	LP6084-0	2nd IRP	METHOD	34306-1	Follitropin:ACnc:24H:Urine:Qn:2nd IRP
+LP31896-1	International standards	METHOD	LP6084-0	2nd IRP	METHOD	20433-9	Follitropin:ACnc:Pt:Ser/Plas:Qn:2nd IRP
+LP31896-1	International standards	METHOD	LP6084-0	2nd IRP	METHOD	25639-6	Follitropin:ACnc:Pt:Urine:Qn:2nd IRP
+LP31896-1	International standards	METHOD	LP6078-2	1st IRP	METHOD	20419-8	Lutropin:ACnc:Pt:Ser/Plas:Qn:1st IRP
+LP31896-1	International standards	METHOD	LP6078-2	1st IRP	METHOD	25716-2	Lutropin:ACnc:Pt:Urine:Qn:1st IRP
+LP31896-1	International standards	METHOD	LP6078-2	1st IRP	METHOD	34333-5	Lutropin:ACnc:24H:Urine:Qn:1st IRP
+LP31896-1	International standards	METHOD	LP6087-3	3rd IS	METHOD	20434-7	Prolactin:ACnc:Pt:Ser/Plas:Qn:3rd IS
+LP31896-1	International standards	METHOD	LP6087-3	3rd IS	METHOD	49220-7	Prolactin:MCnc:Pt:Ser/Plas:Qn:3rd IS
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	47596-2	Calcium.ionized:SCnc:Pt:Bld:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	53088-1	Calcium.ionized:SCnc:Pt:Flu.nonbiological:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	59472-1	Calcium.ionized^^adjusted to pH 7.4:MCnc:Pt:BldA:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	59473-9	Calcium.ionized^^adjusted to pH 7.4:MCnc:Pt:BldV:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	57333-7	Calcium.ionized^^adjusted to pH 7.4:MCnc:Pt:Ser/Plas:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	17864-0	Calcium.ionized:MCnc:Pt:Ser/Plas:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	12180-6	Calcium.ionized:SCnc:Pt:Ser/Plas:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	73572-0	Magnesium.ionized:SCnc:Pt:Bld:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP6351-3	ISE	METHOD	73573-8	Magnesium.ionized^^adjusted to pH 7.4:SCnc:Pt:Bld:Qn:ISE
+LP31953-0	Chemistry methods	METHOD	LP95062-3	LC/MS/MS	METHOD	90360-9	Trimethylamine N-oxide:SCnc:Pt:Ser/Plas:Qn:LC/MS/MS
+LP31953-0	Chemistry methods	METHOD	LP95062-3	LC/MS/MS	METHOD	89324-8	Insulin.intact:ACnc:Pt:Ser:Qn:LC/MS/MS
+LP31953-0	Chemistry methods	METHOD	LP95062-3	LC/MS/MS	METHOD	92726-9	17-Hydroxyprogesterone:MCnc:Pt:Bld.dot:Qn:LC/MS/MS
+LP31953-0	Chemistry methods	METHOD	LP95062-3	LC/MS/MS	METHOD	79567-4	Lysophosphatidylcholine(26:0):SCnc:Pt:Bld.dot:Qn:LC/MS/MS
+LP31953-0	Chemistry methods	METHOD	LP95062-3	LC/MS/MS	METHOD	97004-6	Insulin type:Prid:Pt:Ser/Plas:Nom:LC/MS/MS
+LP31953-0	Chemistry methods	METHOD	LP30818-6	Levamisole inhibition	METHOD	33063-9	Alkaline phosphatase isoenzymes:CCnc:Pt:Ser/Plas:Qn:Levamisole inhibition
+LP31953-0	Chemistry methods	METHOD	LP6367-9	Light scattering	METHOD		
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	80515-0	Immunoglobulin light chains.kappa.free:MCnc:Pt:Ser:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	80516-8	Immunoglobulin light chains.lambda.free:MCnc:Pt:Ser:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	80517-6	Immunoglobulin light chains.kappa.free/Immunoglobulin light chains.lambda.free:MRto:Pt:Ser:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	82721-2	Intravenous lipid emulsion:MCnc:Pt:Ser:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	6771-0	Alpha 1 antitrypsin:MCnc:Pt:Ser/Plas:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	12466-9	Alpha 1 antitrypsin:MCnc:Pt:Amnio fld:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	46129-3	Alpha 1 antitrypsin:MCnc:Pt:Ser/Plas:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6415-6	Nephelometry	METHOD	46130-1	Prealbumin:MCnc:Pt:Ser/Plas:Qn:Nephelometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	44933-0	Specific gravity:Rden:24H:Urine:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14345-3	Specific gravity:Rden:Pt:Amnio fld:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14346-1	Specific gravity:Rden:Pt:CSF:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14347-9	Specific gravity:Rden:Pt:Gast fld:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14348-7	Specific gravity:Rden:Pt:Periton fld:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14349-5	Specific gravity:Rden:Pt:Plr fld:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14350-3	Specific gravity:Rden:Pt:Synv fld:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14351-1	Specific gravity:Rden:Pt:Stool:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	14352-9	Specific gravity:Rden:Pt:Water:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	35414-2	Specific gravity:Rden:Pt:Body fld:Qn:Refractometry
+LP6367-9	Light scattering	METHOD	LP6484-2	Refractometry	METHOD	68384-7	Specific gravity:Rden:Pt:Pericard fld:Qn:Refractometry
+LP31953-0	Chemistry methods	METHOD	LP186074-3	MS.MALDI-TOF	METHOD	90990-3	Protein.monoclonal isotype:Prid:Pt:Ser/Plas:Nom:MS.MALDI-TOF
+LP31953-0	Chemistry methods	METHOD	LP97748-5	Post hydrolysis	METHOD	57796-5	Reducing substances:PrThr:Pt:Stool:Ord:Post hydrolysis
+LP31953-0	Chemistry methods	METHOD	LP97748-5	Post hydrolysis	METHOD	57797-3	Glucose:MCnc:Pt:Stool:Qn:Post hydrolysis
+LP31953-0	Chemistry methods	METHOD	LP270162-3	Production of 6-Methylmercaptopurine	METHOD	91141-2	Thiopurine methyltransferase:CCnc:Pt:RBC:Qn:Production of 6-Methylmercaptopurine
+LP31953-0	Chemistry methods	METHOD	LP270164-9	Production of 6-Methylmercaptopurine riboside	METHOD	91142-0	Thiopurine methyltransferase:CCnc:Pt:RBC:Qn:Production of 6-Methylmercaptopurine riboside
+LP31953-0	Chemistry methods	METHOD	LP270165-6	Production of 6-Methylthioguanine riboside	METHOD	91143-8	Thiopurine methyltransferase:CCnc:Pt:RBC:Qn:Production of 6-Methylthioguanine riboside
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	81430-1	Lactate dehydrogenase:CCnc:Pt:Dial fld prt:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	68387-0	Lactate dehydrogenase:CCnc:Pt:Periton fld:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	68453-0	Lactate dehydrogenase:CCnc:Pt:Synv fld:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	60019-7	Lactate dehydrogenase:CCnc:Pt:Pericard fld:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	60022-1	Lactate dehydrogenase:CCnc:Pt:Plr fld:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	60024-7	Lactate dehydrogenase:CCnc:Pt:CSF:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	56759-4	Lactate dehydrogenase:CCnc:Pt:Semen:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	14803-1	Lactate dehydrogenase:CCnc:Pt:Body fld:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6479-2	Reaction: lactate to pyruvate	METHOD	14804-9	Lactate dehydrogenase:CCnc:Pt:Ser/Plas:Qn:Reaction: lactate to pyruvate
+LP31953-0	Chemistry methods	METHOD	LP6480-0	Reaction: pyruvate to lactate	METHOD	14805-6	Lactate dehydrogenase:CCnc:Pt:Ser/Plas:Qn:Reaction: pyruvate to lactate
+LP31953-0	Chemistry methods	METHOD	LP6480-0	Reaction: pyruvate to lactate	METHOD	60023-9	Lactate dehydrogenase:CCnc:Pt:CSF:Qn:Reaction: pyruvate to lactate
+LP31953-0	Chemistry methods	METHOD	LP6480-0	Reaction: pyruvate to lactate	METHOD	60020-5	Lactate dehydrogenase:CCnc:Pt:Periton fld:Qn:Reaction: pyruvate to lactate
+LP31953-0	Chemistry methods	METHOD	LP6480-0	Reaction: pyruvate to lactate	METHOD	60021-3	Lactate dehydrogenase:CCnc:Pt:Plr fld:Qn:Reaction: pyruvate to lactate
+LP31953-0	Chemistry methods	METHOD	LP6480-0	Reaction: pyruvate to lactate	METHOD	60017-1	Lactate dehydrogenase:CCnc:Pt:Body fld:Qn:Reaction: pyruvate to lactate
+LP31953-0	Chemistry methods	METHOD	LP6480-0	Reaction: pyruvate to lactate	METHOD	60018-9	Lactate dehydrogenase:CCnc:Pt:Pericard fld:Qn:Reaction: pyruvate to lactate
+LP31953-0	Chemistry methods	METHOD	LP6480-0	Reaction: pyruvate to lactate	METHOD	68452-2	Lactate dehydrogenase:CCnc:Pt:Synv fld:Qn:Reaction: pyruvate to lactate
+LP31953-0	Chemistry methods	METHOD	LP6525-2	Spectrophotometry	METHOD	85379-6	Purine/pyrimidine:Ratio:Pt:RBC:Qn:Spectrophotometry
+LP31953-0	Chemistry methods	METHOD	LP6525-2	Spectrophotometry	METHOD		
+LP31953-0	Chemistry methods	METHOD	LP6525-2	Spectrophotometry	METHOD	50964-6	Liley Zone:PrThr:Pt:Amnio fld:Ord:Spectrophotometry
+LP31953-0	Chemistry methods	METHOD	LP6525-2	Spectrophotometry	METHOD	14335-4	Optical density:OD:Pt:Amnio fld:Qn:Spectrophotometry
+LP6525-2	Spectrophotometry	METHOD	LP6232-5	Direct spectrophotometry	METHOD	12476-8	Bilirubin:MCnc:Pt:Amnio fld:Qn:Direct spectrophotometry
+LP6525-2	Spectrophotometry	METHOD	LP6232-5	Direct spectrophotometry	METHOD	27198-1	Bilirubin:ACnc:Pt:Amnio fld:Qn:Direct spectrophotometry
+LP6525-2	Spectrophotometry	METHOD	LP6232-5	Direct spectrophotometry	METHOD	43887-9	Bilirubin:PrThr:Pt:Amnio fld:Ord:Direct spectrophotometry
+LP31953-0	Chemistry methods	METHOD	LP70450-9	SSA	METHOD	53525-2	Protein:PrThr:Pt:Urine:Ord:SSA
+LP31953-0	Chemistry methods	METHOD	LP136501-6	Tablet	METHOD	68955-4	Ketones:PrThr:Pt:Bld:Ord:Tablet
+LP31953-0	Chemistry methods	METHOD	LP6544-3	Tartrate inhibited	METHOD	16315-4	Acid phosphatase:CCnc:Pt:Bld:Qn:Tartrate inhibited
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	27319-3	Reducing substances:ACnc:Pt:Stool:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	20621-9	Albumin/Creatinine:PrThr:Pt:Urine:Ord:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	2514-8	Ketones:PrThr:Pt:Urine:Ord:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	32547-2	Ketones:SCnc:Pt:Ser/Plas:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	30002-0	Creatinine:SCnc:Pt:Urine:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	30004-6	Creatinine:MCnc:Pt:Urine:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	5914-7	Glucose:PrThr:Pt:Bld:Ord:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	58457-3	Sulfites:PrThr:Pt:Urine:Ord:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	5818-0	Urobilinogen:PrThr:Pt:Urine:Ord:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	50895-2	pH:LsCnc:Pt:Plr fld:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	50896-0	pH:LsCnc:Pt:Body fld:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	50897-8	pH:LsCnc:24H:Urine:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	50949-7	Albumin:PrThr:Pt:Urine:Ord:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	66441-7	Beta hydroxybutyrate:SCnc:Pt:Bld:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	68381-3	pH:LsCnc:Pt:Synv fld:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	68382-1	pH:LsCnc:Pt:Pericard fld:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	68459-7	pH:LsCnc:Pt:Periton fld:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	72269-4	pH:LsCnc:Pt:Vag:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	5932-9	Cholesterol:PrThr:Pt:Bld:Ord:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	75366-5	Lactate:SCnc:Pt:BldC^Fetus:Qn:Test strip
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD		
+LP31953-0	Chemistry methods	METHOD	LP6548-4	Test strip	METHOD	98121-7	Protein/Creatinine:PrThr:Pt:Urine:Ord:Test strip
+LP6548-4	Test strip	METHOD	LP6550-0	Test strip manual	METHOD	2341-6	Glucose:MCnc:Pt:Bld:Qn:Test strip manual
+LP6548-4	Test strip	METHOD	LP32215-3	Detection limit <= 20 mg/L test strip	METHOD	30001-2	Albumin/Creatinine:Ratio:Pt:Urine:Qn:Detection limit <= 20 mg/L test strip
+LP6548-4	Test strip	METHOD	LP32215-3	Detection limit <= 20 mg/L test strip	METHOD	11218-5	Albumin:MCnc:Pt:Urine:Qn:Detection limit <= 20 mg/L test strip
+LP6548-4	Test strip	METHOD	LP32215-3	Detection limit <= 20 mg/L test strip	METHOD	95232-5	Albumin:PrThr:Pt:Urine:Ord:Detection limit <= 20 mg/L test strip
+LP6548-4	Test strip	METHOD	LP32215-3	Detection limit <= 20 mg/L test strip	METHOD	95233-3	Albumin/Creatinine:PrThr:Pt:Urine:Ord:Detection limit <= 20 mg/L test strip
+LP6548-4	Test strip	METHOD	LP65527-1	Test strip.automated	METHOD	72516-8	Glucose:SCnc:Pt:Bld:Qn:Test strip.automated
+LP6548-4	Test strip	METHOD	LP65527-1	Test strip.automated	METHOD	2340-8	Glucose:MCnc:Pt:Bld:Qn:Test strip.automated
+LP31953-0	Chemistry methods	METHOD	LP94759-5	VAP	METHOD	55440-2	Cholesterol.in LDL:MCnc:Pt:Ser/Plas:Qn:VAP
+LP31953-0	Chemistry methods	METHOD	LP65001-7	WHO method	METHOD	49926-9	Glucose-6-Phosphate dehydrogenase:CCnt:Pt:RBC:Qn:WHO method
+LP31953-0	Chemistry methods	METHOD	LP6762-1	With P-5'-P	METHOD	30239-8	Aspartate aminotransferase:CCnc:Pt:Ser/Plas:Qn:With P-5'-P
+LP31953-0	Chemistry methods	METHOD	LP6762-1	With P-5'-P	METHOD	1743-4	Alanine aminotransferase:CCnc:Pt:Ser/Plas:Qn:With P-5'-P
+LP31953-0	Chemistry methods	METHOD	LP264591-1	No addition of P-5'-P	METHOD	1744-2	Alanine aminotransferase:CCnc:Pt:Ser/Plas:Qn:No addition of P-5'-P
+LP31953-0	Chemistry methods	METHOD	LP264591-1	No addition of P-5'-P	METHOD	44785-4	Alanine aminotransferase:CCnc:Stdy^max:Ser/Plas:Qn:No addition of P-5'-P
+LP31953-0	Chemistry methods	METHOD	LP264591-1	No addition of P-5'-P	METHOD	88112-8	Aspartate aminotransferase:CCnc:Pt:Ser/Plas:Qn:No addition of P-5'-P
+LP31953-0	Chemistry methods	METHOD	LP100028-2	XR diffraction	METHOD	93504-9	Cholesterol crystals:PrThr:Pt:Calculus:Ord:XR diffraction
+LP31953-0	Chemistry methods	METHOD	LP100028-2	XR diffraction	METHOD	59276-6	Calcium hydrogen phosphate dihydrate crystals:PrThr:Pt:Calculus:Ord:XR diffraction
+LP31953-0	Chemistry methods	METHOD	LP100028-2	XR diffraction	METHOD	59277-4	Cystine crystals:PrThr:Pt:Calculus:Ord:XR diffraction
+LP31953-0	Chemistry methods	METHOD	LP100028-2	XR diffraction	METHOD	59278-2	Calcium oxalate dihydrate crystals:PrThr:Pt:Calculus:Ord:XR diffraction
+LP31953-0	Chemistry methods	METHOD	LP100028-2	XR diffraction	METHOD	59279-0	Urate crystals:PrThr:Pt:Calculus:Ord:XR diffraction
+LP31953-0	Chemistry methods	METHOD	LP100028-2	XR diffraction	METHOD	59280-8	Urate dihydrate crystals:PrThr:Pt:Calculus:Ord:XR diffraction
+LP31675-9	Laboratory	METHOD	LP31937-3	Chromatography methods	METHOD		
+LP31937-3	Chromatography methods	METHOD	LP6319-0	HPLC	METHOD	17856-6	Hemoglobin A1c/Hemoglobin.total:MFr:Pt:Bld:Qn:HPLC
+LP31937-3	Chromatography methods	METHOD	LP6319-0	HPLC	METHOD	25883-0	Cortisol.free:SCnc:24H:Urine:Qn:HPLC
+LP31937-3	Chromatography methods	METHOD	LP6319-0	HPLC	METHOD	25885-5	Cortisol.free:SRat:24H:Urine:Qn:HPLC
+LP31937-3	Chromatography methods	METHOD	LP6319-0	HPLC	METHOD	30072-3	Cortisone:MCnc:24H:Urine:Qn:HPLC
+LP31937-3	Chromatography methods	METHOD	LP6319-0	HPLC	METHOD	34909-2	Cortisol.free:MCnc:24H:Urine:Qn:HPLC
+LP31937-3	Chromatography methods	METHOD	LP6319-0	HPLC	METHOD	35261-7	Cortisol.free:MSCnc:24H:Urine:Qn:HPLC
+LP31937-3	Chromatography methods	METHOD	LP6292-9	GC	METHOD	74435-9	Cholesterol.non-esterified/Cholesterol.total:SFr:Pt:Ser/Plas:Qn:GC
+LP31937-3	Chromatography methods	METHOD	LP6292-9	GC	METHOD	78749-9	Glycolate:MCnc:Pt:Ser/Plas:Qn:GC
+LP31675-9	Laboratory	METHOD	LP32512-3	Hematology methods	METHOD		
+LP32512-3	Hematology methods	METHOD	LP31938-1	Sedimentation rate methods	METHOD		
+LP31938-1	Sedimentation rate methods	METHOD	LP6758-9	Westergren	METHOD		
+LP6758-9	Westergren	METHOD	LP6529-4	Spun Westergren tube	METHOD	71834-6	Cryoglobulin/Serum.total:VFr.DF:Pt:Ser:Qn:Spun Westergren tube
+LP6758-9	Westergren	METHOD	LP6529-4	Spun Westergren tube	METHOD	15174-6	Cryoglobulin/Serum.total:VFr:Pt:Ser:Qn:Spun Westergren tube
+LP31675-9	Laboratory	METHOD	LP31901-9	Microbiology methods	METHOD		
+LP31901-9	Microbiology methods	METHOD	LP6464-4	Probe.amp.tar	METHOD	62320-7	T-cell receptor excision circle:NCnc:Pt:Bld.dot:Qn:Probe.amp.tar
+LP31675-9	Laboratory	METHOD	LP6404-0	Molgen	METHOD		
+LP6404-0	Molgen	METHOD	LP185800-2	Based on maternal age	METHOD	47223-3	Fetal trisomy 18 risk:Likelihood:Pt:^Fetus:Qn:Based on maternal age
+LP6404-0	Molgen	METHOD	LP185800-2	Based on maternal age	METHOD	49090-4	Fetal trisomy 21 risk:Likelihood:Pt:^Fetus:Qn:Based on maternal age
+LP6404-0	Molgen	METHOD	LP185800-2	Based on maternal age	METHOD	49091-2	Neural tube defect risk:Likelihood:Pt:^Fetus:Qn:Based on maternal age
+LP31675-9	Laboratory	METHOD	LP31899-5	Immunological methods	METHOD		
+LP31899-5	Immunological methods	METHOD	LP6320-8	IB	METHOD	99308-9	Acid alpha glucosidase cross-reactive immunologic material (CRIM):PrThr:Pt:WBC:Ord:IB
+LP31899-5	Immunological methods	METHOD	LP6320-8	IB	METHOD	99309-7	Acid alpha glucosidase cross-reactive immunologic material (CRIM):PrThr:Pt:Tissue:Ord:IB
+LP31899-5	Immunological methods	METHOD	LP6321-6	ICA	METHOD	23884-0	Interleukin 2 receptor:PrThr:Pt:Tiss:Ord:ICA
+LP31899-5	Immunological methods	METHOD	LP6322-4	Immune diffusion	METHOD	20855-3	IgG.bovine:MCnc:Pt:Ser:Qn:Immune diffusion
+LP31899-5	Immunological methods	METHOD	LP6322-4	Immune diffusion	METHOD	20856-1	IgG.equine:MCnc:Pt:Body Fld^Fetus:Qn:Immune diffusion
+LP31899-5	Immunological methods	METHOD	LP6322-4	Immune diffusion	METHOD	20857-9	IgG.equine:MCnc:Pt:Col:Qn:Immune diffusion
+LP31899-5	Immunological methods	METHOD	LP6322-4	Immune diffusion	METHOD	48614-2	Cryoglobulin:PrThr:Pt:Ser:Ord:Immune diffusion
+LP31899-5	Immunological methods	METHOD	LP6322-4	Immune diffusion	METHOD	55974-0	IgG:MCnc:Pt:Ser:Qn:Immune diffusion
+LP31899-5	Immunological methods	METHOD	LP6322-4	Immune diffusion	METHOD	55975-7	IgG:MCnc:Pt:Body fld:Qn:Immune diffusion
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	55844-5	Cortisol.free:MRat:24H:Urine:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	55845-2	Cortisol.free:MCnc:24H:Urine:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	48138-2	Enolase.neuron specific:MCnc:Pt:Ser/Plas:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	25987-9	Testosterone.free:SCnc:Pt:Ser/Plas:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	25882-2	Cortisol.free:SCnc:24H:Urine:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	25884-8	Cortisol.free:SRat:24H:Urine:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	26892-0	Intrinsic factor blocking Ab.IgG:ACnc:Pt:Ser:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	16652-0	Corticotropin:MCnc:Pt:Amnio fld:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	12213-5	Estradiol:MCnc:Pt:Ser:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	6879-1	Corticotropin:MCnc:Pt:Plas:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	92896-0	Aldosterone:MCnc:Pt:Ser/Plas:Qn:RIA
+LP31899-5	Immunological methods	METHOD	LP6493-3	RIA	METHOD	9537-2	Intrinsic factor blocking Ab:PrThr:Pt:Ser:Ord:RIA
+LP31899-5	Immunological methods	METHOD	LP6228-3	Dilution	METHOD	15156-3	Cancer Ag 125:ACnc:Pt:Body fld:Qn:Dilution
+LP31899-5	Immunological methods	METHOD	LP6228-3	Dilution	METHOD	15157-1	Cancer Ag 125:ACnc:Pt:Ser/Plas:Qn:Dilution
+LP31899-5	Immunological methods	METHOD	LP6323-2	IF	METHOD	44875-3	IgM Ag:PrThr:Pt:Skin:Ord:IF
+LP31899-5	Immunological methods	METHOD	LP6323-2	IF	METHOD	44582-5	IgA:PrThr:Pt:Skin:Ord:IF
+LP31899-5	Immunological methods	METHOD	LP6323-2	IF	METHOD	82658-6	Glutamate decarboxylase Ab:PrThr:Pt:CSF:Ord:IF
+LP31899-5	Immunological methods	METHOD	LP6323-2	IF	METHOD	82660-2	Glutamate decarboxylase Ab:PrThr:Pt:Ser/Plas:Ord:IF
+LP31899-5	Immunological methods	METHOD	LP6323-2	IF	METHOD	71796-7	Promyelocytic leukemia protein distribution pattern:Imp:Pt:Bld/Tiss:Ord:IF
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	71425-3	Natriuretic peptide.B prohormone N-Terminal:MCnc:Pt:Bld:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	6779-3	IgA:MCnc:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	6781-9	IgG:MCnc:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	6784-3	IgM:MCnc:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	6787-6	Immunoglobulin light chains.kappa:PrThr:Pt:Ser:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	6788-4	Immunoglobulin light chains.kappa/Immunoglobulin light chains.lambda:MRto:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	6791-8	Immunoglobulin light chains.lambda:PrThr:Pt:Ser:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	6793-4	Prealbumin:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	77620-3	Arginase-1:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	77621-1	Natriuretic peptide.B prohormone N-Terminal:MCnc:Pt:Plr fld:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	77622-9	Natriuretic peptide.B prohormone N-Terminal:MCnc:Pt:Dial fld prt:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	77370-5	Procollagen type I.N-terminal propeptide:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	76488-6	IgE:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	76651-9	Zinc transporter 8 Ab:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	72260-3	Tau protein.phosphorylated 181:MCnc:Pt:CSF:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	75241-0	Procalcitonin:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	74101-7	Tissue inhibitor of metalloproteinases 1:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	78987-5	Provasopressin.C-terminal:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	86271-4	Transferrin.gastrointestinal:MCnc:Pt:Stool:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	88054-2	Lipopolysaccharide binding protein:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	81768-4	U1 small nuclear ribonucleoprotein 70kD Ab.IgG:ACnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	81786-6	Chemokine (C-C motif) ligand 17:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	81787-4	Myeloperoxidase Ab.IgG:PrThr:Pt:Ser/Plas:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	80828-7	Pepsin A+Pepsinogen A:MCnc:Pt:Respiratory.lower:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83070-3	Calcidiol+ercalcidiol:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83071-1	Calcidiol+ercalcidiol:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83072-9	Alpha-1-Fetoprotein:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83073-7	Alpha-1-Fetoprotein:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83074-5	Alpha-1-Fetoprotein:ACnc:Pt:Amnio fld:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83075-2	Alpha-1-Fetoprotein:MCnc:Pt:Amnio fld:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83076-0	Beta-2-Microglobulin:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83077-8	Beta-2-Microglobulin:MCnc:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83078-6	Beta-2-Microglobulin:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83079-4	Beta-2-Microglobulin:ACnc:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83082-8	Cancer Ag 125:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83083-6	Cancer Ag 15-3:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83084-4	Cancer Ag 19-9:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83085-1	Carcinoembryonic Ag:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83086-9	Choriogonadotropin:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83088-5	Cortisol:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83089-3	Cortisol:MCnc:24H:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83090-1	Cortisol:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83091-9	Cortisol:SCnc:24H:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83092-7	Creatine kinase.MB:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83096-8	Estradiol:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83097-6	Estradiol:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83098-4	Follitropin:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83099-2	Galectin 3:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83102-4	IgE:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83103-2	Lutropin:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83104-0	Mullerian inhibiting substance:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83105-7	Mullerian inhibiting substance:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83106-5	Myoglobin:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83107-3	Natriuretic peptide.B prohormone N-Terminal:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83108-1	Natriuretic peptide.B prohormone N-Terminal:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83109-9	Progesterone:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83110-7	Progesterone:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83111-5	Prolactin:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83112-3	Prostate specific Ag:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83113-1	Prostate specific Ag.free:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83114-9	S100 calcium binding protein B:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83115-6	Testosterone:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83116-4	Testosterone:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83117-2	Thyroglobulin Ab.IgG:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83118-0	Thyroperoxidase Ab.IgG:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83119-8	Thyroxine:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83120-6	Thyroxine:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83121-4	Thyroxine.free:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83122-2	Thyroxine.free:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83124-8	Triiodothyronine:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83125-5	Triiodothyronine:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83126-3	Triiodothyronine.free:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	83127-1	Triiodothyronine.free:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	95768-8	Parathyrin.1-84:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	95847-0	Somatotropin^90M post dose macimorelin:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	95848-8	Somatotropin^60M post dose macimorelin:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	95849-6	Somatotropin^45M post dose macimorelin:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	95850-4	Somatotropin^30M post dose macimorelin:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	94718-4	Alpha defensins 1+2+3:PrThr:Pt:Synv fld:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	93493-5	3-Hydroxy-3-Methylglutaryl-Coenzyme A Reductase Ab.IgG:ACnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	94554-3	Soluble CD14 subtype:MCnc:Pt:Ser/Plas/Bld:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	96460-1	Thyroglobulin^post thyroglobulin antibody neutralization:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	96461-9	Gastrin releasing polypeptide prohormone:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	92897-8	Aldosterone:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	93369-7	Krebs von den Lungen-6:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	92665-9	Growth and differentiation factor 15:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	90741-0	Parathyrin.1-84:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	90239-5	Suppression of tumorigenicity 2.soluble:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	99407-9	Myeloperoxidase:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	99408-7	Matrix metallopeptidase 9:MCnc:Pt:Ser:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	98958-2	Periostin:SCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	99077-0	Alpha-1-Fetoprotein.L3:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	97105-1	Chemokine (C-C motif) ligand 2:MCnc:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	97106-9	Hepatitis A virus cellular receptor 1:MCnc:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	97107-7	Fibroblast growth factor 19:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	97149-9	Pro prostate specific Ag isoform 2:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	97604-3	Glial fibrillary acidic protein:MCnc:Pt:Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	97605-0	Ubiquitin carboxyl-terminal hydrolase-L1:MCnc:Pt:Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD		
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	44712-8	Collagen crosslinked N-telopeptide/Creatinine:SRto:Pt:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	44713-6	Collagen crosslinked N-telopeptide/Creatinine:SRto:Pt:XXX:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	47317-3	Interleukin 12:MCnc:Pt:Body fld:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	47053-4	Enolase.neuron specific:MCnc:Pt:CSF:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	40703-1	Lactoferrin:PrThr:Pt:Stool:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	44308-5	Collagen crosslinked N-telopeptide/Creatinine:SRto:24H:Urine:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	56490-6	Hemoglobin.gastrointestinal.lower^2nd specimen:PrThr:Pt:Stool:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	56491-4	Hemoglobin.gastrointestinal.lower^3rd specimen:PrThr:Pt:Stool:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	57697-5	Protein Z Ag:MCnc:Pt:Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	57905-2	Hemoglobin.gastrointestinal.lower^1st specimen:PrThr:Pt:Stool:Ord:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	57371-7	Enolase.neuron specific:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	56940-0	Inhibin B:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	58453-2	Hemoglobin.gastrointestinal.lower:MCnc:Pt:Stool:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	100359-9	Gliadin 33 mer peptide:MCnc:Pt:Stool:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	20567-4	Ferritin:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	20568-2	Prolactin:MCnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	30169-7	Chromogranin A:ACnc:Pt:Ser/Plas:Qn:IA
+LP31899-5	Immunological methods	METHOD	LP217197-5	IA	METHOD	29771-3	Hemoglobin.gastrointestinal.lower:PrThr:Pt:Stool:Ord:IA
+LP217197-5	IA	METHOD	LP6242-4	EIA.3rd IS	METHOD	20415-6	Choriogonadotropin.beta subunit:ACnc:Pt:Ser/Plas:Qn:EIA.3rd IS
+LP217197-5	IA	METHOD	LP217198-3	IA.rapid	METHOD	88888-3	Pancreatic stone protein:MCnc:Pt:Ser/Plas/Bld:Qn:IA.rapid
+LP217197-5	IA	METHOD	LP217198-3	IA.rapid	METHOD	80372-6	Hemoglobin.gastrointestinal:PrThr:Pt:Stool:Ord:IA.rapid
+LP217197-5	IA	METHOD	LP217198-3	IA.rapid	METHOD	80384-1	Choriogonadotropin (pregnancy test):PrThr:Pt:Urine:Ord:IA.rapid
+LP217197-5	IA	METHOD	LP217198-3	IA.rapid	METHOD	80385-8	Choriogonadotropin (pregnancy test):PrThr:Pt:Ser:Ord:IA.rapid
+LP217197-5	IA	METHOD	LP217198-3	IA.rapid	METHOD	76399-5	Troponin I.cardiac:PrThr:Pt:Ser/Plas/Bld:Ord:IA.rapid
+LP31899-5	Immunological methods	METHOD	LP6106-1	Aggl	METHOD		
+LP6106-1	Aggl	METHOD	LP6360-4	LA	METHOD	6443-6	Lactoferrin:PrThr:Pt:Stool:Ord:LA
+LP6106-1	Aggl	METHOD	LP6360-4	LA	METHOD	6444-4	Lactoferrin:PrThr:Pt:XXX:Ord:LA
+LP6106-1	Aggl	METHOD	LP28800-8	HA	METHOD		
+LP28800-8	HA	METHOD	LP6304-2	HAI	METHOD	44583-3	IgA Ab:PrThr:Pt:Ser/Plas:Ord:HAI
+LP31675-9	Laboratory	METHOD	LP31954-8	Toxicology methods	METHOD		
+LP31954-8	Toxicology methods	METHOD	LP6197-0	Confirm	METHOD	94487-6	Galactosylceramidase:CCnt:Pt:WBC:Qn:Confirm
+LP31954-8	Toxicology methods	METHOD	LP6197-0	Confirm	METHOD	94488-4	Acid alpha glucosidase:CCnt:Pt:WBC:Qn:Confirm
+LP31954-8	Toxicology methods	METHOD	LP6197-0	Confirm	METHOD	43194-0	Gamma hydroxybutyrate:MCnc:Pt:Ser/Plas:Qn:Confirm
+LP31954-8	Toxicology methods	METHOD	LP6197-0	Confirm	METHOD	43198-1	Gamma hydroxybutyrate:MCnc:Pt:Urine:Qn:Confirm
+LP31954-8	Toxicology methods	METHOD	LP6197-0	Confirm	METHOD	57746-0	Gamma hydroxybutyrate:PrThr:Pt:Urine:Ord:Confirm
+LP31954-8	Toxicology methods	METHOD	LP6503-9	Screen	METHOD	56448-4	Chloride:SCnc:Pt:Sweat:Qn:Screen
+LP31954-8	Toxicology methods	METHOD	LP6503-9	Screen	METHOD	43197-3	Gamma hydroxybutyrate:PrThr:Pt:Urine:Ord:Screen
+LP31954-8	Toxicology methods	METHOD	LP6503-9	Screen	METHOD	32160-4	Carboxyhemoglobin:PrThr:Pt:Bld:Ord:Screen
+LP31954-8	Toxicology methods	METHOD	LP6503-9	Screen	METHOD	93706-0	Ethyl sulfate+Ethyl glucuronide:MCnc:Pt:Urine:Qn:Screen
+LP31954-8	Toxicology methods	METHOD	LP6503-9	Screen	METHOD	82506-7	Oligosaccharides pattern:Imp:Pt:Fibroblasts:Nar:Screen
+LP31954-8	Toxicology methods	METHOD	LP6503-9	Screen	METHOD	82507-5	Oligosaccharides pattern:Imp:Pt:WBC:Nar:Screen
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	88709-1	Albumin/Globulin:MRto:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	94714-3	Beta globulin:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	94715-0	Gamma globulin:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	9734-5	Alpha 1 globulin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	9744-4	Beta globulin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	9745-1	Gamma globulin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6794-2	Alpha 1 globulin:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6795-9	Alpha 2 globulin:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6789-2	Immunoglobulin light chains.lambda:PrThr:Pt:Ser:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6790-0	Immunoglobulin light chains.lambda:PrThr:Pt:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6785-0	Immunoglobulin light chains.kappa:PrThr:Pt:Ser:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6786-8	Immunoglobulin light chains.kappa:PrThr:Pt:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6783-5	IgM:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6780-1	IgG:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6778-5	IgA:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72561-4	Creatine kinase.aberrant band/Creatine kinase.total:CFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72562-2	Creatine kinase.MM/Creatine kinase.total:CFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72563-0	Creatine kinase.MB/Creatine kinase.total:CFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	68930-7	Albumin/Globulin:MRto:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6941-9	Albumin:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	6942-7	Albumin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	77581-7	Alpha 2 globulin:MCnc:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	77340-8	Alpha 1 globulin:MCnc:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	77342-4	Beta 1 globulin:MCnc:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	77343-2	Gamma globulin:MCnc:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	77940-5	Albumin:MCnc:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	75517-3	Protein.monoclonal band 4:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	74636-2	Protein.monoclonal band 3:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	74637-0	Protein.monoclonal band 2:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72565-5	Creatine kinase.BB/Creatine kinase.total:CFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72577-0	Protein.monoclonal/Protein.total:MFr.DF:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72578-8	Prealbumin/Protein.total:MFr.DF:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72579-6	Prealbumin/Protein.total:MFr.DF:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72580-4	Gamma globulin/Protein.total:MFr.DF:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72581-2	Gamma globulin/Protein.total:MFr.DF:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72582-0	Gamma globulin/Protein.total:MFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72583-8	Gamma globulin/Protein.total:MFr.DF:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72584-6	Beta globulin/Protein.total:MFr.DF:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72585-3	Beta globulin/Protein.total:MFr.DF:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72586-1	Beta globulin/Protein.total:MFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72587-9	Beta globulin/Protein.total:MFr.DF:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72588-7	Alpha 2 globulin/Protein.total:MFr.DF:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72589-5	Alpha 2 globulin/Protein.total:MFr.DF:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72590-3	Alpha 2 globulin/Protein.total:MFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72591-1	Alpha 2 globulin/Protein.total:MFr.DF:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72592-9	Alpha 1 globulin/Protein.total:MFr.DF:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72593-7	Alpha 1 globulin/Protein.total:MFr.DF:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72594-5	Alpha 1 globulin/Protein.total:MFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72595-2	Alpha 1 globulin/Protein.total:MFr.DF:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72596-0	Albumin/Protein.total:MFr.DF:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72597-8	Albumin/Protein.total:MFr.DF:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72598-6	Albumin/Protein.total:MFr.DF:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72599-4	Albumin/Protein.total:MFr.DF:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	72600-0	Albumin/Protein.total:MFr.DF:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD		
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	97763-7	Beta 2 globulin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	97764-5	Beta 1 globulin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	97771-0	Protein.monoclonal band 1:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	97772-8	Protein.monoclonal band 1:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	99599-3	Protein.monoclonal band 1/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	99600-9	Beta 1 globulin:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	99601-7	Beta 2 globulin:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	98992-1	Alpha-1-Acid glycoprotein/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	98993-9	Alpha 1 antitrypsin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	98994-7	Alpha 1 antitrypsin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	98995-4	Transferrin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	98996-2	Transferrin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32210-7	Protein pattern:Imp:24H:Urine:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32728-8	Beta 1 globulin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32729-6	Beta 2 globulin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32730-4	Beta 1 globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32731-2	Beta 2 globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32732-0	Beta 1 globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32733-8	Beta 2 globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32734-6	Beta 1 globulin:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32735-3	Beta 2 globulin:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32736-1	Beta 1 globulin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32737-9	Beta 2 globulin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32738-7	Beta 1 globulin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32739-5	Beta 2 globulin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32740-3	Beta 1 globulin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	32741-1	Beta 2 globulin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	29945-3	Alpha 1 globulin:PrThr:24H:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	29946-1	Albumin:PrThr:24H:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	29947-9	Alpha 2 globulin:PrThr:24H:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	33018-3	Protein.monoclonal:ACnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	33358-3	Protein.monoclonal:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	33547-1	Creatine kinase.aberrant band/Creatine kinase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	33647-9	Protein.monoclonal/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	35559-4	Protein.monoclonal band 2:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	35568-5	Protein fractions.oligoclonal bands:Num:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	35573-5	Procollagen+Collagen:Prid:Pt:Fibroblasts:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	38186-3	Beta globulin:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	38189-7	Alpha 2 globulin:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	38190-5	Alpha 2 globulin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	38525-2	Protein fractions.oligoclonal bands:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	35708-7	Alpha 1 globulin:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	20577-3	Protein:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	20510-4	Lipoprotein pattern:Imp:Pt:Ser/Plas:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2152-7	Creatine kinase.BB:CCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2154-3	Creatine kinase.MB:CCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2155-0	Creatine kinase.MM:CCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	24038-2	Cryoglobulin type:Prid:Pt:Ser:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2539-5	Lactate dehydrogenase 2/Lactate dehydrogenase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2536-1	Lactate dehydrogenase 1/Lactate dehydrogenase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2542-9	Lactate dehydrogenase 3/Lactate dehydrogenase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2548-6	Lactate dehydrogenase 5/Lactate dehydrogenase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	26034-9	Protein:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2545-2	Lactate dehydrogenase 4/Lactate dehydrogenase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2861-3	Albumin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2862-1	Albumin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2863-9	Albumin:MCnc:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2864-7	Alpha 1 globulin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2865-4	Alpha 1 globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2866-2	Alpha 1 globulin:MCnc:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2867-0	Alpha 2 globulin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2868-8	Alpha 2 globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2869-6	Alpha 2 globulin:MCnc:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2870-4	Beta globulin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2871-2	Beta globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2872-0	Beta globulin:MCnc:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2873-8	Gamma globulin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2874-6	Gamma globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2875-3	Gamma globulin:MCnc:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2876-1	Prealbumin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	2877-9	Prealbumin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	12187-1	Creatine kinase.MB/Creatine kinase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	12771-2	Cholesterol.in HDL:PrThr:Pt:Ser/Plas:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	12772-0	Cholesterol.in HDL:ACnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	12773-8	Cholesterol.in LDL:ACnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	12782-9	Protein fractions.oligoclonal bands:Imp:Pt:CSF:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	12851-2	Protein pattern:Imp:Pt:Ser/Plas:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	14680-3	Creatine kinase isoenzymes:Imp:Pt:Ser/Plas:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13438-7	Protein pattern:Imp:Pt:Urine:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13439-5	Protein pattern:Imp:Pt:CSF:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13886-7	Lactate dehydrogenase 1/Lactate dehydrogenase.total:CFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13887-5	Lactate dehydrogenase 2/Lactate dehydrogenase.total:CFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13888-3	Lactate dehydrogenase 3/Lactate dehydrogenase.total:CFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13889-1	Lactate dehydrogenase 4/Lactate dehydrogenase.total:CFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13890-9	Lactate dehydrogenase 5/Lactate dehydrogenase.total:CFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13972-5	Alpha 1 globulin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13973-3	Prealbumin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13974-1	Albumin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13975-8	Alpha 2 globulin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13976-6	Beta globulin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13977-4	Gamma globulin/Protein.total:MFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13978-2	Alpha 1 globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13979-0	Prealbumin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13980-8	Albumin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13981-6	Alpha 2 globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13982-4	Beta globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13983-2	Gamma globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13984-0	Alpha 1 globulin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13985-7	Prealbumin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13986-5	Albumin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13987-3	Alpha 2 globulin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13988-1	Beta globulin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13989-9	Gamma globulin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13990-7	Alpha 1 globulin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13991-5	Prealbumin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13992-3	Albumin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13993-1	Alpha 2 globulin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13994-9	Beta globulin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	13995-6	Gamma globulin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	14340-4	Gammopathy:Imp:Pt:Ser/Plas:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	14341-2	Globulin/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	14816-3	Lipoprotein.pre-beta:SCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	14813-0	Lipoprotein.alpha:SCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	14814-8	Lipoprotein.beta:SCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	15048-2	Creatine kinase.BB/Creatine kinase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	15049-0	Creatine kinase.MM/Creatine kinase.total:CFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	15124-1	Albumin/Protein.total:MFr:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	15125-8	Alpha 1 globulin/Protein.total:MFr:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	15126-6	Alpha 2 globulin/Protein.total:MFr:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	15127-4	Beta globulin/Protein.total:MFr:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	15128-2	Gamma globulin/Protein.total:MFr:Pt:Synv fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	19248-4	Lactate dehydrogenase 2:CCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17496-1	Alpha 1 globulin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17497-9	Alpha 2 globulin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17498-7	Beta globulin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17499-5	Gamma globulin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17810-3	Prealbumin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17811-1	Alpha 1 globulin/Protein.total:MFr:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17812-9	Alpha 1 globulin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17813-7	Alpha 2 globulin/Protein.total:MFr:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17814-5	Alpha 2 globulin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17815-2	Beta globulin/Protein.total:MFr:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17816-0	Beta globulin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17817-8	Gamma globulin/Protein.total:MFr:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17818-6	Gamma globulin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17819-4	Albumin/Protein.total:MFr:XXX:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17820-2	Albumin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	17821-0	Protein fractions.oligoclonal bands:Imp:Pt:Body fld:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	43212-0	Albumin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44293-9	Albumin/Globulin:MRto:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44294-7	Albumin/Globulin:MRto:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	43836-6	Beta globulin:PrThr:Pt:Ser/Plas:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	40661-1	Protein.monoclonal:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	42482-0	Protein.monoclonal:MRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	42483-8	Protein.monoclonal/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	42484-6	Protein.monoclonal/Protein.total:MFr:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	40632-2	Gamma globulin/Beta globulin:MRto:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	4549-2	Hemoglobin A1c/Hemoglobin.total:MFr:Pt:Bld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44429-9	Albumin/Globulin:MRto:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44911-6	Beta 2 globulin+Gamma globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44912-4	Beta 2 globulin+Gamma globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44913-2	Beta globulin+Gamma globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44914-0	Beta globulin+Gamma globulin/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	44932-2	Protein.monoclonal band 2/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	48636-5	Cholesterol.in LDL pattern BII:PrThr:Pt:Ser/Plas:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	48637-3	Cholesterol.in LDL pattern BI:PrThr:Pt:Ser/Plas:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	48423-8	Protein pattern:Imp:Pt:Body fld:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49047-4	Globulin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49064-9	Gamma 2 globulin:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49130-8	Cholesterol.in HDL:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49132-4	Cholesterol.in LDL:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49133-2	Cholesterol.in VLDL:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49258-7	Creatine kinase isoenzymes:Imp:Pt:Ser/Plas:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49265-2	Gammopathy:Imp:Pt:Ser:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	50059-5	Protein fractions.oligoclonal bands/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	50408-4	Protein.abnormal band/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	50681-6	Thyroxine binding protein pattern:Imp:Pt:Ser/Plas:Nom:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	50792-1	Protein.monoclonal band 3/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	50793-9	Protein.monoclonal band 4/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	50796-2	Protein.monoclonal band 3:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	50797-0	Protein.monoclonal band 4:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49280-1	Lipoprotein pattern:Imp:Pt:Ser/Plas:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49293-4	Protein fractions.oligoclonal bands:Imp:Pt:CSF:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49295-9	Protein pattern:Imp:Pt:CSF:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49296-7	Protein pattern:Imp:Pt:Ser/Plas:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49299-1	Protein pattern:Imp:Pt:Urine:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	49301-5	Protein pattern:Imp:24H:Urine:Nar:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	56154-8	Protein.abnormal band/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	55925-2	IgM:MCnc:Pt:Ser:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	55914-6	Beta 1 globulin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	55915-3	Beta 2 globulin:MCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	55922-9	IgG:MCnc:Pt:Ser:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	57667-8	Protein.monoclonal.beta:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	56766-9	Protein.monoclonal band 1/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	56767-7	Protein.monoclonal.beta:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	56768-5	Protein.monoclonal.beta/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	59563-7	Protein.monoclonal band 4:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	59800-3	Protein.monoclonal band 2/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	59801-1	Protein.monoclonal band 3/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	59802-9	Protein.monoclonal band 4/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	55899-9	Immunoglobulin light chains.free:PrThr:Pt:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	55902-1	IgA:MCnc:Pt:Ser:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53539-3	Alpha globulin.abnormal band:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53540-1	Alpha globulin.abnormal band/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54464-3	Albumin/Protein.total:MFr:Pt:Dial fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54465-0	Alpha 1 globulin/Protein.total:MFr:Pt:Dial fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54466-8	Alpha 2 globulin/Protein.total:MFr:Pt:Dial fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54467-6	Cholesterol.in HDL 2a/Cholesterol.in HDL.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54468-4	Cholesterol.in HDL 2b/Cholesterol.in HDL.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54469-2	Cholesterol.in HDL 3a/Cholesterol.in HDL.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54470-0	Cholesterol.in HDL 3b/Cholesterol.in HDL.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54471-8	Cholesterol.in HDL 3c/Cholesterol.in HDL.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54493-2	Allantoine:SRat:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53771-2	Alpha 2 globulin:PrThr:Pt:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53772-0	Beta globulin:PrThr:Pt:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53773-8	Gamma globulin:PrThr:Pt:Urine:Ord:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54353-8	Beta 1 globulin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54354-6	Beta 2 globulin:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54357-9	Beta 2 globulin+Gamma globulin/Protein.total:MFr:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54358-7	Beta globulin/Protein.total:MFr:Pt:Dial fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	54391-8	Gamma globulin/Protein.total:MFr:Pt:Dial fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53046-9	Beta globulin+Gamma globulin:MCnc:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53051-9	Beta globulin+Gamma globulin/Protein.total:MFr:Pt:Body fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53452-9	Gamma 3 globulin.abnormal band:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53457-8	Gamma 3 globulin.abnormal band/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53587-2	Beta globulin.abnormal band:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53588-0	Beta globulin+Gamma globulin.abnormal band:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53589-8	Beta globulin.abnormal band/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53590-6	Gamma globulin.abnormal band/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53591-4	Gamma globulin.abnormal band:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53592-2	Gamma 2 globulin.abnormal band:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	53593-0	Gamma 2 globulin.abnormal band/Protein.total:MFr:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51190-7	Albumin:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51435-6	Protein.monoclonal band 1:MCnc:Pt:Ser/Plas:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51436-4	Protein.monoclonal:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51437-2	Protein.monoclonal band 2:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51438-0	Protein.monoclonal band 2:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51439-8	Protein.monoclonal band 3:MCnc:24H:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51440-6	Protein.monoclonal band 3:MCnc:Pt:Urine:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51505-6	Creatine kinase.BB:CCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51506-4	Creatine kinase.MB:CCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51507-2	Creatine kinase.MM:CCnc:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51508-0	Lactate dehydrogenase 1/Lactate dehydrogenase.total:CFr:Pt:Plr fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51509-8	Lactate dehydrogenase 1/Lactate dehydrogenase.total:CFr:Pt:Periton fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51510-6	Lactate dehydrogenase 1/Lactate dehydrogenase.total:CFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51511-4	Lactate dehydrogenase 2/Lactate dehydrogenase.total:CFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51512-2	Lactate dehydrogenase 2/Lactate dehydrogenase.total:CFr:Pt:Plr fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51513-0	Lactate dehydrogenase 2/Lactate dehydrogenase.total:CFr:Pt:Periton fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51514-8	Lactate dehydrogenase 3/Lactate dehydrogenase.total:CFr:Pt:Plr fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51515-5	Lactate dehydrogenase 3/Lactate dehydrogenase.total:CFr:Pt:Periton fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51516-3	Lactate dehydrogenase 3/Lactate dehydrogenase.total:CFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51517-1	Lactate dehydrogenase 4/Lactate dehydrogenase.total:CFr:Pt:Periton fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51518-9	Lactate dehydrogenase 4/Lactate dehydrogenase.total:CFr:Pt:Plr fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51519-7	Lactate dehydrogenase 4/Lactate dehydrogenase.total:CFr:Pt:CSF:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51520-5	Lactate dehydrogenase 5/Lactate dehydrogenase.total:CFr:Pt:Periton fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51521-3	Lactate dehydrogenase 5/Lactate dehydrogenase.total:CFr:Pt:Plr fld:Qn:Electrophoresis
+LP31675-9	Laboratory	METHOD	LP6247-3	Electrophoresis	METHOD	51522-1	Lactate dehydrogenase 5/Lactate dehydrogenase.total:CFr:Pt:CSF:Qn:Electrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6250-7	Electrophoresis.agarose gel	METHOD	49261-1	Cryoproteins:Imp:Pt:Ser:Nar:Electrophoresis.agarose gel
+LP6247-3	Electrophoresis	METHOD	LP6250-7	Electrophoresis.agarose gel	METHOD	15175-3	Cryoproteins:Imp:Pt:Ser/Plas:Nom:Electrophoresis.agarose gel
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	15182-9	IgA:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	15184-5	IgG:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	15186-0	IgM:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	13169-8	Interpretation:Imp:Pt:Ser/Plas:Nom:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	25444-1	IgA:PrThr:Pt:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	25445-8	IgG:PrThr:Pt:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	25446-6	IgM:PrThr:Pt:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	25681-8	Immunoglobulin light chains.kappa:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	25683-4	Immunoglobulin light chains.lambda:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	34440-8	Interpretation:Imp:Pt:Urine:Nom:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	30140-8	IgA:PrThr:24H:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	30141-6	IgG:PrThr:24H:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	30142-4	IgM:PrThr:24H:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	49274-4	Interpretation:Imp:Pt:Ser/Plas:Nar:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	49278-5	Interpretation:Imp:Pt:Urine:Nar:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	49272-8	Interpretation:Imp:Pt:CSF:Nar:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	40600-9	Alpha-1-Acid glycoprotein:PrThr:Pt:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	40601-7	Alpha-1-Acid glycoprotein:PrThr:Pt:Ser/Plas:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	40602-5	Alpha 1 antitrypsin:PrThr:Pt:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	40603-3	Alpha 1 antitrypsin:PrThr:Pt:Ser/Plas:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	40604-1	Alpha-2-Macroglobulin:PrThr:Pt:Urine:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	40605-8	Alpha-2-Macroglobulin:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	40685-0	Interpretation:Imp:Pt:CSF:Nom:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	55903-9	IgD.monoclonal:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	55904-7	IgE.monoclonal:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	55897-3	Immunoglobulin light chains.free:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	57457-4	Interpretation:Imp:24H:Urine:Nom:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	55924-5	IgM.monoclonal:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	55921-1	IgG.monoclonal:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6335-6	Immunoelectrophoresis	METHOD	55901-3	IgA.monoclonal:PrThr:Pt:Ser:Ord:Immunoelectrophoresis
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	56481-5	Immunoglobulin light chains.lambda.free:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	55898-1	Immunoglobulin light chains.free:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	55900-5	Immunoglobulin light chains.free:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	50978-6	Immunoglobulin light chains.lambda.free:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	40635-5	Immunoglobulin light chains.kappa:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	40636-3	Immunoglobulin light chains.kappa:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	40638-9	Immunoglobulin light chains.lambda:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	40639-7	Immunoglobulin light chains.lambda:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44388-7	IgA:PrThr:24H:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44555-1	Immunoglobulin light chains.kappa.free:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44587-4	IgA.monoclonal:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44588-2	IgA.monoclonal:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44589-0	IgA.monoclonal:PrThr:Pt:CSF:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44591-6	IgD:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44593-2	IgE:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44595-7	IgG:PrThr:24H:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44597-3	IgG.monoclonal:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44598-1	IgG.monoclonal:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44599-9	IgG.monoclonal:PrThr:Pt:CSF:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44600-5	IgM:PrThr:24H:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44601-3	IgM.monoclonal:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44602-1	IgM.monoclonal:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44603-9	IgM.monoclonal:PrThr:Pt:CSF:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44604-7	Immunoglobulin light chains.kappa.free:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	44605-4	Immunoglobulin light chains.kappa:PrThr:Pt:CSF:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49273-6	Interpretation:Imp:Pt:Body fld:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49297-5	Protein pattern:Imp:Pt:Ser/Plas:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49302-3	Protein pattern:Imp:Pt:XXX:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49300-7	Protein pattern:Imp:Pt:Urine:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49275-1	Interpretation:Imp:Pt:Ser/Plas:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49276-9	Interpretation:Imp:Pt:Urine:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49277-7	Interpretation:Imp:24H:Urine:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	49271-0	Interpretation:Imp:Pt:CSF:Nar:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	48638-1	Cryoglobulin type:Prid:Pt:Ser:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	30081-4	IgD:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	30082-2	IgE:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	32821-1	Interpretation:Imp:Pt:Body fld:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	33879-8	Protein.monoclonal:MCnc:Pt:XXX:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	34435-8	Protein pattern:Imp:Pt:XXX:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	33042-3	Interpretation:Imp:24H:Urine:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	32629-8	Protein.monoclonal/Protein.total:MFr:Pt:XXX:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	25700-6	Interpretation:Imp:Pt:Ser/Plas:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	21349-6	IgA:PrThr:Pt:CSF:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	21350-4	IgG:PrThr:Pt:CSF:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	21351-2	IgM:PrThr:Pt:CSF:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	13174-8	Interpretation:Imp:Pt:CSF:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	13440-3	Interpretation:Imp:Pt:Urine:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	14895-7	Protein pattern:Imp:Pt:Ser/Plas:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	14896-5	Protein pattern:Imp:Pt:Urine:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	18299-8	IgA:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	18300-4	IgA:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	18301-2	IgG:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	18302-0	IgG:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	18303-8	IgM:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	18304-6	IgM:PrThr:Pt:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	99412-9	Beta globulin:MCnc:Pt:Ser/Plas:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	99414-5	Gamma globulin:MCnc:Pt:Ser/Plas:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	99415-2	Protein.monoclonal band 1:MCnc:Pt:Ser/Plas:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	99416-0	Protein.monoclonal band 2:MCnc:Pt:Ser/Plas:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	74638-8	Monoclonal band 3 observed:Prid:Pt:Urine:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	74639-6	Monoclonal band 2 observed:Prid:Pt:Urine:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	74640-4	Monoclonal band 3 observed:Prid:Pt:Ser/Plas:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	74641-2	Monoclonal band 2 observed:Prid:Pt:Ser/Plas:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	74665-1	Monoclonal band observed:Prid:Pt:Ser/Plas:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	74666-9	Monoclonal band observed:Prid:Pt:Urine:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	6770-2	Alpha 1 antitrypsin phenotype:Prid:Pt:Ser/Plas:Nom:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	96420-5	Daratumumab:PrThr:Pt:Ser:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	88301-7	Immunoglobulin light chains.kappa.free:PrThr:24H:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	88302-5	Immunoglobulin light chains.lambda.free:PrThr:24H:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	88303-3	Immunoglobulin light chains.lambda:PrThr:24H:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	88304-1	Immunoglobulin light chains.kappa:PrThr:24H:Urine:Ord:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	87833-0	Protein.monoclonal band 3:MCnc:Pt:Urine:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	87834-8	Protein.monoclonal band 2:MCnc:Pt:Urine:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP6336-4	Immunofixation	METHOD	87835-5	Protein.monoclonal:MCnc:Pt:Urine:Qn:Immunofixation
+LP6247-3	Electrophoresis	METHOD	LP64867-2	Isoelectric focusing	METHOD	49852-7	Protein fractions.oligoclonal bands:Num:Pt:CSF:Qn:Isoelectric focusing
+LP6247-3	Electrophoresis	METHOD	LP64867-2	Isoelectric focusing	METHOD	56764-4	Protein fractions.oligoclonal bands.IgG:PrThr:Pt:CSF:Ord:Isoelectric focusing
+LP6247-3	Electrophoresis	METHOD	LP64867-2	Isoelectric focusing	METHOD	56765-1	Protein fractions.oligoclonal bands.IgM:PrThr:Pt:CSF:Ord:Isoelectric focusing
+LP6247-3	Electrophoresis	METHOD	LP64867-2	Isoelectric focusing	METHOD	57665-2	Protein fractions.oligoclonal bands.IgG:PrThr:Pt:Ser/Plas:Ord:Isoelectric focusing
+LP6247-3	Electrophoresis	METHOD	LP64867-2	Isoelectric focusing	METHOD	57666-0	Protein fractions.oligoclonal bands.IgM:PrThr:Pt:Ser/Plas:Ord:Isoelectric focusing
+LP6247-3	Electrophoresis	METHOD	LP64867-2	Isoelectric focusing	METHOD	56974-9	Protein fractions.oligoclonal bands:Imp:Pt:Ser/Plas:Nom:Isoelectric focusing
+LP6247-3	Electrophoresis	METHOD	LP64867-2	Isoelectric focusing	METHOD	58800-4	Protein fractions.oligoclonal bands:Imp:24H:Urine:Nom:Isoelectric focusing
+LP31675-9	Laboratory	METHOD	LP6274-7	Flow cytometry	METHOD	82937-4	Signaling lymphocytic activation molecule (SLAM)-associated & X-linked inhibitor of apoptosis protein:Imp:Pt:WBC:Nom:Flow cytometry
+LP31675-9	Laboratory	METHOD	LP31672-6	Incubation	METHOD		
+LP31672-6	Incubation	METHOD	LP6340-6	Incubation.1M	METHOD	18264-2	Bilirubin.glucuronidated+Bilirubin.albumin bound:MCnc:Pt:Ser/Plas:Qn:Incubation.1M
+LP31672-6	Incubation	METHOD	LP6090-7	4H cold incubation	METHOD	12196-2	Cryofibrinogen:PrThr:Pt:Plas:Ord:4H cold incubation
+LP31672-6	Incubation	METHOD	LP6090-7	4H cold incubation	METHOD	12200-2	Cryoglobulin:PrThr:Pt:Ser:Ord:4H cold incubation
+LP31672-6	Incubation	METHOD	LP6080-8	1D cold incubation	METHOD	12201-0	Cryoglobulin:PrThr:Pt:Ser:Ord:1D cold incubation
+LP31672-6	Incubation	METHOD	LP6080-8	1D cold incubation	METHOD	12197-0	Cryofibrinogen:PrThr:Pt:Plas:Ord:1D cold incubation
+LP31672-6	Incubation	METHOD	LP6081-6	2D cold incubation	METHOD	12198-8	Cryofibrinogen:PrThr:Pt:Plas:Ord:2D cold incubation
+LP31672-6	Incubation	METHOD	LP6081-6	2D cold incubation	METHOD	12202-8	Cryoglobulin:PrThr:Pt:Ser:Ord:2D cold incubation
+LP31672-6	Incubation	METHOD	LP6086-5	3D cold incubation	METHOD	12203-6	Cryoglobulin:PrThr:Pt:Ser:Ord:3D cold incubation
+LP31672-6	Incubation	METHOD	LP6086-5	3D cold incubation	METHOD	12199-6	Cryofibrinogen:PrThr:Pt:Plas:Ord:3D cold incubation
+LP31672-6	Incubation	METHOD	LP65696-4	3D RT incubation	METHOD	29743-2	Cryofibrinogen:PrThr:Pt:Plas:Ord:3D RT incubation
+LP31672-6	Incubation	METHOD	LP65696-4	3D RT incubation	METHOD	29745-7	Cryoglobulin:PrThr:Pt:Ser:Ord:3D RT incubation
+LP31672-6	Incubation	METHOD	LP29326-3	3D 37 deg C incubation	METHOD	29746-5	Cryoglobulin:PrThr:Pt:Ser:Ord:3D 37 deg C incubation
+LP31672-6	Incubation	METHOD	LP29326-3	3D 37 deg C incubation	METHOD	29744-0	Cryofibrinogen:PrThr:Pt:Plas:Ord:3D 37 deg C incubation
+LP31672-6	Incubation	METHOD	LP6089-9	4D cold incubation	METHOD	12204-4	Cryoglobulin:PrThr:Pt:Ser:Ord:4D cold incubation
+LP31672-6	Incubation	METHOD	LP6091-5	5D cold incubation	METHOD	12205-1	Cryoglobulin:PrThr:Pt:Ser:Ord:5D cold incubation
+LP31672-6	Incubation	METHOD	LP6092-3	6D cold incubation	METHOD	12206-9	Cryoglobulin:PrThr:Pt:Ser:Ord:6D cold incubation
+LP31672-6	Incubation	METHOD	LP6079-0	1W cold incubation	METHOD	12207-7	Cryoglobulin:PrThr:Pt:Ser:Ord:1W cold incubation
+LP31672-6	Incubation	METHOD	LP6079-0	1W cold incubation	METHOD	46265-5	Cryofibrinogen:PrThr:Pt:Plas:Ord:1W cold incubation
+LP31672-6	Incubation	METHOD	LP36469-2	1W 37 deg C incubation	METHOD	43401-9	Cryofibrinogen:PrThr:Pt:Plas:Ord:1W 37 deg C incubation
+LP31675-9	Laboratory	METHOD	LP6393-5	Microscopy	METHOD		
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD		
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	98027-6	Lecithin:PrThr:Pt:Semen:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	96733-1	Connective tissue:PrThr:Pt:Stool:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	96734-9	Fatty acid salts:PrThr:Pt:Stool:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	42524-9	Mucus:PrThr:Pt:Stool:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	47407-2	Fibers:Naric:Pt:Stool:Qn:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	55835-3	Vegetable fibers:PrThr:Pt:Stool:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	12469-3	Cystine crystals:Prid:Pt:Calculus:Nom:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	13496-5	Triple phosphate crystals:Prid:Pt:Calculus:Nom:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	38897-5	Fibers:PrThr:Pt:Stool:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	2967-8	Starch granules:PrThr:Pt:Stool:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	2605-4	Meat fibers:PrThr:Pt:Stool:Ord:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	28069-3	Meat fibers:Naric:Pt:Stool:Qn:Microscopy.light
+LP6393-5	Microscopy	METHOD	LP6398-4	Microscopy.light	METHOD	28070-1	Vegetable fibers:Naric:Pt:Stool:Qn:Microscopy.light
+LP6398-4	Microscopy.light	METHOD	LP6399-2	Microscopy.light.HPF	METHOD	42666-8	Fat.neutral:Naric:Pt:Plr fld:Qn:Microscopy.light.HPF
+LP6398-4	Microscopy.light	METHOD	LP6400-8	Microscopy.light.LPF	METHOD	72499-7	Oval fat bodies (globules):Naric:Pt:Stool:Qn:Microscopy.light.LPF
+LP6398-4	Microscopy.light	METHOD	LP6400-8	Microscopy.light.LPF	METHOD	75240-2	Meat fibers:Naric:Pt:Stool:Qn:Microscopy.light.LPF
+LP6393-5	Microscopy	METHOD	LP31671-8	Stains	METHOD		
+LP31671-8	Stains	METHOD	LP6540-1	Sudan IV stain	METHOD	10753-2	Fat.microscopic observation:Prid:Pt:Stool:Nom:Sudan IV stain
+LP31675-9	Laboratory	METHOD	LP186074-3	MS.MALDI-TOF	METHOD	90990-3	Protein.monoclonal isotype:Prid:Pt:Ser/Plas:Nom:MS.MALDI-TOF
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	93792-0	Insulin sensitivity index:Ratio:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	93876-1	Ceramide risk score:Score:Pt:Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	9346-8	Lipoprotein.beta:MCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	96803-2	24H predicted protein:MRat:Pt:Urine:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	96804-0	24H predicted protein:MRatRange:Pt:Urine:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	96559-0	Testosterone.free:SCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97505-2	Glucose standard deviation:MCnc:RptPeriod:Interstitial fluid:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97506-0	Glucose management indicator:NFr:RptPeriod:Interstitial fluid:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97507-8	Glucose:MCnc:RptPeriod^mean:Interstitial fluid:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97510-2	Glucose measurements in range/Total glucose measurements:NFr:RptPeriod:Interstitial fluid:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97546-6	Base excess:SCnc:Pt:BldCV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	94858-8	Glycerol:SCnc:Pt:Ser:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	86465-2	AST to platelet ratio index:Ratio:Pt:Ser+Bld:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	81637-1	Glucose meter to reference method correlation:Ratio:Pt:Ser/Plas/Bld:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	72720-6	Base excess.100% oxygenated^^standard:SCnc:Pt:BldC:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	72721-4	Base excess.100% oxygenated^^standard:SCnc:Pt:BldA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	72722-2	Base excess.100% oxygenated^^standard:SCnc:Pt:BldMV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	72723-0	Base excess.100% oxygenated^^standard:SCnc:Pt:BldV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	72821-2	Creatinine:MRat:XXX:Urine:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	77367-1	Cholinesterase^dibucaine:CCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	72564-8	Creatine kinase.MB/Creatine kinase.total:CFr.DF:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	64797-4	Oxygen content:VFr:Pt:BldCoV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	64798-2	Oxygen content:VFr:Pt:BldMV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	64799-0	Oxygen content:VFr:Pt:BldC:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	64800-6	Oxygen content:VFr:Pt:BldCoA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	66126-4	Cholesterol.in VLDL:SCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD		
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	98487-2	Alzheimer's disease risk:Score:Pt:CSF:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97150-7	Prostate health index:Score:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97773-6	Base excess^^standard:SCnc:Pt:BldCoA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97774-4	Base excess^^standard:SCnc:Pt:BldCoV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	97775-1	Base excess^^standard:SCnc:Pt:BldCo:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	10834-0	Globulin:MCnc:Pt:Ser:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	11555-0	Base excess:SCnc:Pt:Bld:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	12189-7	Creatine kinase.MB/Creatine kinase.total:CFr:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	12951-0	Triglyceride:MCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	13457-7	Cholesterol.in LDL:MCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	13458-5	Cholesterol.in VLDL:MCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	13959-2	Calcium.ionized:SCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	14116-8	IgG synthesis rate:MRat:Pt:Ser+CSF:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	18182-6	Osmolality:Osmol:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	1925-7	Base excess:SCnc:Pt:BldA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	1926-5	Base excess:SCnc:Pt:BldC:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	1927-3	Base excess:SCnc:Pt:BldV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	18320-2	Globulin:MCnc:Pt:Urine:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	19234-4	Base excess:SCnc:Pt:BldMV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	19235-1	Base excess^^standard:SCnc:Pt:BldA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	19236-9	Base excess^^standard:SCnc:Pt:BldC:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	19237-7	Base excess^^standard:SCnc:Pt:BldV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	19238-5	Base excess^^standard:SCnc:Pt:BldMV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	17855-8	Hemoglobin A1c/Hemoglobin.total:MFr:Pt:Bld:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	14815-5	Lipoprotein.beta:SCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	28639-3	Base excess:SCnc:Pt:BldCoV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	28638-5	Base excess:SCnc:Pt:BldCoA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	23839-4	Cholinesterase:ACnc:Pt:RBC:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	39469-2	Cholesterol.in LDL:SCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	34728-6	Carbon dioxide:SCnc:Pt:Bld:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	32215-6	Thyroxine free index:MCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	32300-6	Base excess:SCnc:Pt:BldCo:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	41647-9	Carbon dioxide:SCnc:Pt:BldA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	50820-0	Base excess:SCnc:Pt:BldC^Fetus:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	48148-1	Osmolality:Osmol:Pt:Urine:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	48391-7	Carbon dioxide:SCnc:Pt:BldV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	51781-3	Carbon dioxide:SCnc:Pt:BldC:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	53085-7	Base excess:SCnc:Pt:Flu.nonbiological:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	53089-9	Carbon dioxide:SCnc:Pt:Flu.nonbiological:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	53765-4	Estrogen:MCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	57800-5	Oxygen content:VFr:Pt:Bld:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	59274-1	Oxygen content:VFr:Pt:BldA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	60840-6	Base excess:SCnc:Pt:Extracellular fld:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	60841-4	Oxygen content:VFr:Pt:BldV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	57920-1	Carbon dioxide:SCnc:Pt:BldMV:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	57921-9	Carbon dioxide:SCnc:Pt:BldCoA:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	57922-7	Carbon dioxide:SCnc:Pt:Ser/Plas:Qn:Calculated
+LP432811-0	{method}	METHOD	LP6165-7	Calculated	METHOD	57923-5	Carbon dioxide:SCnc:Pt:BldCoV:Qn:Calculated
+LP6165-7	Calculated	METHOD	LP269365-5	Calculated.4Kscore	METHOD	90740-2	Aggressive prostate cancer risk:Likelihood:Pt:Ser/Plas:Qn:Calculated.4Kscore
+LP6165-7	Calculated	METHOD	LP263759-5	Calculated.ELF	METHOD	88055-9	Liver fibrosis score:Score:Pt:Ser/Plas:Qn:Calculated.ELF
+LP6165-7	Calculated	METHOD	LP428140-0	Calculated.FIB4	METHOD	98488-0	Liver fibrosis score:Score:Pt:Ser:Qn:Calculated.FIB4
+LP6165-7	Calculated	METHOD	LP203677-2	Calculated.FibroSure	METHOD	48795-9	Liver fibrosis score:Score:Pt:Ser/Plas:Qn:Calculated.FibroSure
+LP6165-7	Calculated	METHOD	LP199510-1	Calculated.HepaScore	METHOD	78894-3	Liver fibrosis score:Score:Pt:Ser/Plas:Qn:Calculated.HepaScore
+LP6165-7	Calculated	METHOD	LP420988-0	Calculated.Martin-Hopkins	METHOD	96258-9	Cholesterol.in LDL:SCnc:Pt:Ser/Plas:Qn:Calculated.Martin-Hopkins
+LP6165-7	Calculated	METHOD	LP420988-0	Calculated.Martin-Hopkins	METHOD	96259-7	Cholesterol.in LDL:MCnc:Pt:Ser/Plas:Qn:Calculated.Martin-Hopkins
+LP6165-7	Calculated	METHOD	LP267670-0	Calculated.NephroCheck	METHOD	88993-1	Acute kidney injury risk:Likelihood:Pt:^Patient:Qn:Calculated.NephroCheck
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	74105-8	Oxygen saturation:MFr:Pt:BldMV:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	71841-1	Oxygen saturation:MFr.DF:Pt:BldV:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	71842-9	Oxygen saturation:MFr.DF:Pt:BldC:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	71843-7	Oxygen saturation:MFr.DF:Pt:BldA:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	71844-5	Oxygen saturation:MFr.DF:Pt:Bld:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	51731-8	Oxygen saturation:MFr:Pt:BldV:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	51732-6	Oxygen saturation:MFr:Pt:BldC:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	51733-4	Oxygen saturation:MFr:Pt:BldA:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP149743-9	Calculated from oxygen partial pressure	METHOD	2713-6	Oxygen saturation:MFr:Pt:Bld:Qn:Calculated from oxygen partial pressure
+LP6165-7	Calculated	METHOD	LP221213-4	Calculated.SPINA	METHOD	82367-4	Peripheral deiodinase activity:SRat:Pt:Ser/Plas:Qn:Calculated.SPINA
+LP6165-7	Calculated	METHOD	LP221213-4	Calculated.SPINA	METHOD	82368-2	Thyroid secretory capacity:SRat:Pt:Ser/Plas:Qn:Calculated.SPINA
+LP6165-7	Calculated	METHOD	LP189709-1	Calculated.VectraDA	METHOD	75633-8	Rheumatoid arthritis disease activity score:Score:Pt:Ser/Plas:Qn:Calculated.VectraDA
+LP6165-7	Calculated	METHOD	LP421438-5	GALAD	METHOD	96450-2	Hepatocellular carcinoma risk:Score:Pt:^Patient:Qn:GALAD
+LP432811-0	{method}	METHOD	LP31948-0	Methods for estimating gestational age	METHOD		
+LP31948-0	Methods for estimating gestational age	METHOD	LP6260-6	Estimated	METHOD	48671-2	Prostate cancer risk:Likelihood:Pt:^Patient:Qn:Estimated
+LP432811-0	{method}	METHOD	LP177621-2	LOINC Document Ontology	METHOD		
+LP177621-2	LOINC Document Ontology	METHOD	LP182268-5	LOINC Document Ontology - Subject Matter Domain	METHOD		
+LP182268-5	LOINC Document Ontology - Subject Matter Domain	METHOD	LP136293-0	Internal medicine	METHOD		
+LP136293-0	Internal medicine	METHOD	LP32905-9	Nephrology	METHOD		
+LP32905-9	Nephrology	METHOD	LP6226-7	Dialysis	METHOD	70217-5	Thyroxine.free:SCnc:Pt:Ser/Plas:Qn:Dialysis
+LP32905-9	Nephrology	METHOD	LP6226-7	Dialysis	METHOD	6892-4	Thyroxine.free:MCnc:Pt:Ser/Plas:Qn:Dialysis
+LP32905-9	Nephrology	METHOD	LP6226-7	Dialysis	METHOD	29239-1	Triiodothyronine.free:MCnc:Pt:Ser/Plas:Qn:Dialysis
+LP432811-0	{method}	METHOD	LP31944-9	Pulmonary study methods	METHOD		
+LP31944-9	Pulmonary study methods	METHOD	LP31949-8	Oxygen in vitro methods	METHOD		
+LP31949-8	Oxygen in vitro methods	METHOD	LP6432-1	Oximetry	METHOD	71850-2	Oxygen saturation:MFr.DF:Pt:BldC:Qn:Oximetry
+LP31949-8	Oxygen in vitro methods	METHOD	LP6432-1	Oximetry	METHOD	97556-5	Hemoglobin:MCnc:Pt:BldC:Qn:Oximetry
+LP31949-8	Oxygen in vitro methods	METHOD	LP6469-3	Pulse oximetry	METHOD	89272-9	Oxygen saturation^during apnea:MFr:Pt:BldA:Qn:Pulse oximetry
+LP31949-8	Oxygen in vitro methods	METHOD	LP6469-3	Pulse oximetry	METHOD	89276-0	Oxygen saturation^W exercise:MFr:Pt:BldA:Qn:Pulse oximetry
+LP31949-8	Oxygen in vitro methods	METHOD	LP6469-3	Pulse oximetry	METHOD	89277-8	Oxygen saturation^during anesthesia:MFr:Pt:BldA:Qn:Pulse oximetry
+LP432811-0	{method}	METHOD	LP31947-2	Radiologic methods	METHOD		
+LP31947-2	Radiologic methods	METHOD	LP32266-6	Radnuc	METHOD	30897-3	Erythrocyte volume:Vol:Pt:^Patient:Qn:Radnuc
+LP31947-2	Radiologic methods	METHOD	LP32266-6	Radnuc	METHOD	30898-1	Plasma volume:Vol:Pt:^Patient:Qn:Radnuc
+LP31947-2	Radiologic methods	METHOD	LP32266-6	Radnuc	METHOD	30899-9	Blood volume:Vol:Pt:^Patient:Qn:Radnuc
+LP432811-0	{method}	METHOD	LP32432-4	Survey instruments	METHOD		
+LP32432-4	Survey instruments	METHOD	LP248941-9	KFRE	METHOD	85624-5	Kidney failure 2Y risk:Likelihood:Pt:^Patient:Qn:KFRE
+LP32432-4	Survey instruments	METHOD	LP248941-9	KFRE	METHOD	85625-2	Kidney failure 5Y risk:Likelihood:Pt:^Patient:Qn:KFRE
+LP432811-0	{method}	METHOD	LP33100-6	Methods not classified above	METHOD		
+LP33100-6	Methods not classified above	METHOD	LP185800-2	Based on maternal age	METHOD	49090-4	Fetal trisomy 21 risk:Likelihood:Pt:^Fetus:Qn:Based on maternal age
+LP33100-6	Methods not classified above	METHOD	LP185800-2	Based on maternal age	METHOD	49091-2	Neural tube defect risk:Likelihood:Pt:^Fetus:Qn:Based on maternal age
+LP33100-6	Methods not classified above	METHOD	LP185800-2	Based on maternal age	METHOD	47223-3	Fetal trisomy 18 risk:Likelihood:Pt:^Fetus:Qn:Based on maternal age
+LP33100-6	Methods not classified above	METHOD	LP185751-7	VectraDA	METHOD		
+LP33100-6	Methods not classified above	METHOD	LP185751-7	VectraDA	METHOD	75634-6	Rheumatoid arthritis disease activity score level:Imp:Pt:Ser/Plas:Ord:VectraDA
+LP33100-6	Methods not classified above	METHOD	LP185751-7	VectraDA	METHOD	76064-5	Rheumatoid arthritis disease activity score confidence interval:ScoreRange:Pt:Ser/Plas:Qn:VectraDA
+LP185751-7	VectraDA	METHOD	LP189709-1	Calculated.VectraDA	METHOD	75633-8	Rheumatoid arthritis disease activity score:Score:Pt:Ser/Plas:Qn:Calculated.VectraDA
