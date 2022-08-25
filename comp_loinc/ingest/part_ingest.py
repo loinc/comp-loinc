@@ -1,3 +1,11 @@
+"""Part ingest
+
+# ## Example
+# po = PartOntology("./model/schema/part_schema.yaml", "./local_data/part_files")
+# po.generate_ontology()
+# po.write_to_output('./data/output/owl_component_files/part_ontology.owl')
+# # po.write_to_output('./local_data/part_ontology_files/part_ontology.owl')
+"""
 import pandas as pd
 from linkml_owl.owl_dumper import OWLDumper
 from linkml_runtime import SchemaView
@@ -74,11 +82,5 @@ class PartOntology(object):
         :param output_path:
         :return:
         """
-        with open(output_path, 'w') as ccl_owl: # "../data/output/part_classes_test.owl"
+        with open(output_path, 'w') as ccl_owl:  # ./data/output/owl_component_files/part_ontology.owl
             ccl_owl.write(self.od.dumps(self.part_classes, schema=self.sv.schema,))
-
-# ## Example
-# po = PartOntology("./model/schema/part_schema.yaml", "./local_data/part_files")
-# po.generate_ontology()
-# po.write_to_output('./data/output/owl_files/part_ontology.owl')
-# # po.write_to_output('./local_data/part_ontology_files/part_ontology.owl')

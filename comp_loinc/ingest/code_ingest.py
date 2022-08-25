@@ -1,7 +1,13 @@
+"""Code ingest
+
+# ## Example
+# lcc = CodeIngest("./model/schema/code_schema.yaml", "./data/part_files")
+# lcc.write_output_to_file("./data/output/owl_component_files/code_classes.owl")
+"""
 import pandas as pd
 from linkml_owl.owl_dumper import OWLDumper
 from linkml_runtime import SchemaView
-from linkml_runtime.utils.introspection import package_schemaview
+# from linkml_runtime.utils.introspection import package_schemaview
 
 from pathlib import Path
 import os
@@ -70,7 +76,3 @@ class CodeIngest(object):
 
         # with open("../data/output/code_classes.json", 'w') as ccl_json:
         #     ccl_json.write(json_dumper.dumps(loinc_ontology_class))
-
-# ## Example
-# lcc = CodeIngest("./model/schema/code_schema.yaml", "./data/part_files")
-# lcc.write_output_to_file("./data/output/owl_files/code_classes.owl")
