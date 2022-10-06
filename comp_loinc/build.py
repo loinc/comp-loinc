@@ -48,17 +48,17 @@ DEFAULTS = {
 
 @app.command(name='parts')
 def build_part_ontology(
-    schema_file: Path = typer.Option(default=DEFAULTS['schema_file.parts'], resolve_path=True, exists=False),
-    part_directory: Path = typer.Option(default=DEFAULTS['part_directory'], resolve_path=True, exists=False),
-    output: Path = typer.Option(default=DEFAULTS['output.parts'], resolve_path=True, writable=True)
+    schema_file: str = typer.Option(default=DEFAULTS['schema_file.parts'], resolve_path=True, exists=False),
+    part_directory: str = typer.Option(default=DEFAULTS['part_directory'], resolve_path=True, exists=False),
+    output: str = typer.Option(default=DEFAULTS['output.parts'], resolve_path=True, writable=True)
 ):
     """Build ontology for LOINC term parts. Part 1/5 of the pipeline.
 
-    :param schema_file: Path to LinkML `.yaml` file that defines data model for LOINC term 'parts', which are
+    :param schema_file: str to LinkML `.yaml` file that defines data model for LOINC term 'parts', which are
     essentially subcomponents of LOINC terms.
-    :param part_directory: Path to directory containing TSV files which define the entire LOINC hierarchy of terms and
+    :param part_directory: str to directory containing TSV files which define the entire LOINC hierarchy of terms and
     their subcomponent parts.
-    :param output: Path where output will be saved.
+    :param output: str where output will be saved.
 
     # Example
     po = PartOntology("./model/schema/part_schema.yaml", "./local_data/part_files")
@@ -72,17 +72,17 @@ def build_part_ontology(
 
 @app.command(name='codes')
 def build_codes(
-    schema_file: Path = typer.Option(default=DEFAULTS['schema_file.codes'], resolve_path=True, exists=False),
-    part_directory: Path = typer.Option(default=DEFAULTS['part_directory'], resolve_path=True, exists=False),
-    output: Path = typer.Option(default=DEFAULTS['output.codes'], resolve_path=True, writable=True)
+    schema_file: str = typer.Option(default=DEFAULTS['schema_file.codes'], resolve_path=True, exists=False),
+    part_directory: str = typer.Option(default=DEFAULTS['part_directory'], resolve_path=True, exists=False),
+    output: str = typer.Option(default=DEFAULTS['output.codes'], resolve_path=True, writable=True)
 ):
     """Build ontology for LOINC codes.  Part 2/5 of the pipeline.
 
-    :param schema_file: Path to LinkML `.yaml` file that defines data model for LOINC terms, which are identified by
+    :param schema_file: str to LinkML `.yaml` file that defines data model for LOINC terms, which are identified by
     LOINC codes.
-    :param part_directory: Path to directory containing TSV files which define the entire LOINC hierarchy of terms and
+    :param part_directory: str to directory containing TSV files which define the entire LOINC hierarchy of terms and
     their subcomponent parts.
-    :param output: Path where output will be saved.
+    :param output: str where output will be saved.
 
     # Example
     lcc = CodeIngest("./model/schema/code_schema.yaml", "./data/part_files")
@@ -94,19 +94,19 @@ def build_codes(
 
 @app.command(name='composed')
 def build_composed_classes(
-    schema_file: Path = typer.Option(default=DEFAULTS['schema_file.composed'], resolve_path=True, exists=False),
-    composed_classes_data_file: Path = typer.Option(
+    schema_file: str = typer.Option(default=DEFAULTS['schema_file.composed'], resolve_path=True, exists=False),
+    composed_classes_data_file: str = typer.Option(
         default=DEFAULTS['composed_classes_data_file'], resolve_path=True, exists=False),
-    output: Path = typer.Option(default=DEFAULTS['output.composed'], resolve_path=True, writable=True)
+    output: str = typer.Option(default=DEFAULTS['output.composed'], resolve_path=True, writable=True)
 ):
     """Build composed classes ontology.  Part 3/5 of the pipeline.
 
-    :param schema_file: Path to LinkML `.yaml` file that defines data model for "grouping classes" of LOINC terms, that 
+    :param schema_file: str to LinkML `.yaml` file that defines data model for "grouping classes" of LOINC terms, that 
     is, classes that group sets of LOINC terms into specific categories.
-    :param composed_classes_data_file: Path to `.yaml` file which lists LOINC composed classes. These are lower-level,
+    :param composed_classes_data_file: str to `.yaml` file which lists LOINC composed classes. These are lower-level,
     more granular groupings of classes, and their are a greater number of them than the grouping classes in the
     `schema_file`.
-    :param output: Path where output will be saved.
+    :param output: str where output will be saved.
 
     todo: this is just calling a linkml owl cli, should be written as code with python code
     """
@@ -115,13 +115,13 @@ def build_composed_classes(
 
 @app.command(name="merge")
 def merge_owl(
-    owl_directory: Path = typer.Option(default=DEFAULTS['owl_directory'], resolve_path=True, exists=False),
-    output: Path = typer.Option(default=DEFAULTS['output.merge'], resolve_path=True, writable=True)
+    owl_directory: str = typer.Option(default=DEFAULTS['owl_directory'], resolve_path=True, exists=False),
+    output: str = typer.Option(default=DEFAULTS['output.merge'], resolve_path=True, writable=True)
 ):
     """Merge all OWL ontology files into a single ontology. Part 4/5 of the pipeline.
 
-    :param owl_directory: Path to directory where unmerged `.owl` files are stored.
-    :param output: Path where output will be saved.
+    :param owl_directory: str to directory where unmerged `.owl` files are stored.
+    :param output: str where output will be saved.
 
     TODO: Consider removing the files created from this point each time this code executes e.g. any file with 'merge_*'
     """
@@ -133,13 +133,13 @@ def merge_owl(
 def reason_owl(
     merged_owl: str = typer.Option(default=DEFAULTS['merged_owl']),
     owl_reasoner: str = typer.Option(default=DEFAULTS['owl_reasoner']),
-    output: Path = typer.Option(default=DEFAULTS['output.reason'], resolve_path=True, writable=True)
+    output: str = typer.Option(default=DEFAULTS['output.reason'], resolve_path=True, writable=True)
 ):
     """Add computational reasoning to the merged ontology. Creates a new, reasoned ontology. Part 5/5 of the pipeline.
 
     :param merged_owl: Name of the merged OWL file created from the `merge` command.
     :param owl_reasoner: The name of the OWL reasoner to use.
-    :param output: Path where output will be saved."""
+    :param output: str where output will be saved."""
     call_list = [
         "./robot", "reason", "-r", owl_reasoner, '-i', f"{merged_owl}", '-o', f"{output}"]
     subprocess.call(call_list)
