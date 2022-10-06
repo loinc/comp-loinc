@@ -9,12 +9,12 @@ python-dependencies:
 # Pipeline
 ## 1. Run: Build the part ontology from the intermediate Part Hierarchy files
 data/output/owl_component_files/part_ontology.owl: python-dependencies
-	python comp_loinc/build.py parts --schema-file ./model/schema/part_schema.yaml --part-directory ./local_data/part_files --output ./data/output/owl_component_files/part_ontology.owl
+	python comp_loinc/build.py parts --schema-file ./model/schema/part_schema.yaml --part-directory ./data/part_files --output ./data/output/owl_component_files/part_ontology.owl
 parts: data/output/owl_component_files
 
 ## 2. Run: Build the code classes from the intermediate Part Hierarchy files
 data/output/owl_component_files/code_classes.owl: data/output/owl_component_files/part_ontology.owl
-	python comp_loinc/build.py codes --schema-file ./model/schema/code_schema.yaml --part-directory ./local_data/part_files --output ./data/output/owl_component_files/code_classes.owl
+	python comp_loinc/build.py codes --schema-file ./model/schema/code_schema.yaml --part-directory ./data/part_files --output ./data/output/owl_component_files/code_classes.owl
 codes: parts data/output/owl_component_files
 
 ## 3. Run: Build the composed class axioms for the reasoner to group classes (this is pretty bespoke, and hardcoded at the moment)
