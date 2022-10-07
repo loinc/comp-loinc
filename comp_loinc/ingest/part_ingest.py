@@ -49,30 +49,31 @@ class PartOntology(object):
         part_groups = self.all_parts_df.groupby("ChildPartNumber")[['ChildPart', "ChildPartName", "ParentPartNumber"]]
         for pg in part_groups:
             params = {
-                "id": loincify(pg[0])
+                "id": loincify(pg[0]),
+                "part_number": pg[0]
             }
             part_attributes = pg[1].reset_index()
             params['label'] = list(set(part_attributes['ChildPart'].tolist()))[0]
-            params['partType'] = list(set(part_attributes['ChildPartName'].tolist()))[0]
+            params['part_type'] = list(set(part_attributes['ChildPartName'].tolist()))[0]
             parent_part_numbers = [loincify(x) for x in list(set(part_attributes['ParentPartNumber'].tolist())) if loincify(x) != params['id']]
             if len(parent_part_numbers):
                 params['subClassOf'] = parent_part_numbers
             else:
                 params['subClassOf'] = "owl:Thing"
 
-            if params['partType'] == "TIME":
+            if params['part_type'] == "TIME":
                 part = TimeClass(**params)
                 self.part_classes.append(part)
-            if params['partType'] == "METHOD":
+            if params['part_type'] == "METHOD":
                 part = MethodClass(**params)
                 self.part_classes.append(part)
-            if params['partType'] == "COMPONENT" or params['partType'] == "CLASS":
+            if params['part_type'] == "COMPONENT" or params['part_type'] == "CLASS":
                 part = ComponentClass(**params)
                 self.part_classes.append(part)
-            if params['partType'] == "PROPERTY":
+            if params['part_type'] == "PROPERTY":
                 part = PropertyClass(**params)
                 self.part_classes.append(part)
-            if params['partType'] == "SYSTEM":
+            if params['part_type'] == "SYSTEM":
                 part = SystemClass(**params)
                 self.part_classes.append(part)
 

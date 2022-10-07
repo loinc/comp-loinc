@@ -1,5 +1,5 @@
 # Auto generated from part_schema.yaml by pythongen.py version: 0.9.0
-# Generation date: 2022-06-29T15:52:19
+# Generation date: 2022-10-07T08:40:57
 # Schema: loinc-owl-part-schema
 #
 # id: https://loinc.org/part
@@ -108,8 +108,9 @@ class PartClass(Thing):
     class_model_uri: ClassVar[URIRef] = URIRef("https://loinc.org/part/PartClass")
 
     id: Union[str, PartClassId] = None
-    subClassOf: Union[Union[str, PartClassId], List[Union[str, PartClassId]]] = None
-    partType: Optional[str] = None
+    subClassOf: Union[Union[str, ThingId], List[Union[str, ThingId]]] = None
+    part_number: Optional[str] = None
+    part_type: Optional[str] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -121,10 +122,13 @@ class PartClass(Thing):
             self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
-        self.subClassOf = [v if isinstance(v, PartClassId) else PartClassId(v) for v in self.subClassOf]
+        self.subClassOf = [v if isinstance(v, ThingId) else ThingId(v) for v in self.subClassOf]
 
-        if self.partType is not None and not isinstance(self.partType, str):
-            self.partType = str(self.partType)
+        if self.part_number is not None and not isinstance(self.part_number, str):
+            self.part_number = str(self.part_number)
+
+        if self.part_type is not None and not isinstance(self.part_type, str):
+            self.part_type = str(self.part_type)
 
         super().__post_init__(**kwargs)
 
@@ -271,11 +275,11 @@ class PropertyClass(PartClass):
 class slots:
     pass
 
-slots.subClassOf = Slot(uri=RDFS.subClassOf, name="subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=DEFAULT_.subClassOf, domain=None, range=Union[Union[str, PartClassId], List[Union[str, PartClassId]]])
+slots.part_type = Slot(uri=LOINC.part_type, name="part_type", curie=LOINC.curie('part_type'),
+                   model_uri=DEFAULT_.part_type, domain=None, range=Optional[str])
 
-slots.partType = Slot(uri=LOINC.partType, name="partType", curie=LOINC.curie('partType'),
-                   model_uri=DEFAULT_.partType, domain=None, range=Optional[str])
+slots.part_number = Slot(uri=LOINC.part_number, name="part_number", curie=LOINC.curie('part_number'),
+                   model_uri=DEFAULT_.part_number, domain=None, range=Optional[str])
 
 slots.id = Slot(uri=LOINC['core/id'], name="id", curie=LOINC.curie('core/id'),
                    model_uri=DEFAULT_.id, domain=None, range=URIRef)
@@ -285,6 +289,9 @@ slots.label = Slot(uri=RDFS.label, name="label", curie=RDFS.curie('label'),
 
 slots.description = Slot(uri=RDFS.description, name="description", curie=RDFS.curie('description'),
                    model_uri=DEFAULT_.description, domain=None, range=Optional[str])
+
+slots.subClassOf = Slot(uri=RDFS.subClassOf, name="subClassOf", curie=RDFS.curie('subClassOf'),
+                   model_uri=DEFAULT_.subClassOf, domain=None, range=Union[Union[str, ThingId], List[Union[str, ThingId]]])
 
 slots.ComponentClass_subClassOf = Slot(uri=RDFS.subClassOf, name="ComponentClass_subClassOf", curie=RDFS.curie('subClassOf'),
                    model_uri=DEFAULT_.ComponentClass_subClassOf, domain=ComponentClass, range=Union[Union[str, ComponentClassId], List[Union[str, ComponentClassId]]])
