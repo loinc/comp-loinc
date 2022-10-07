@@ -14,6 +14,7 @@ classes:
   LoincCodeClass:
     is_a: Thing
     slots:
+      - code_number
       - has_component
       - has_system
       - has_method
@@ -25,6 +26,10 @@ classes:
         range: LoincCodeClass
 
 slots:
+  code_number:
+    slot_uri: loinc:code_number
+    annotations:
+      owl: AnnotationAssertion
   has_component:
     slot_uri: loinc:hasComponent
     multivalued: false
