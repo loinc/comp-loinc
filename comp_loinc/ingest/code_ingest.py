@@ -60,6 +60,7 @@ class CodeIngest(object):
         for loinc_number, data in self.group_map.items():
             params = {
                 "id": loincify(loinc_number),
+                "code_number": loinc_number,
                 "label": data['name'],
                 "subClassOf": loincify("lc0000001")
             }

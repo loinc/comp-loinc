@@ -14,7 +14,8 @@ classes:
     is_a: Thing
     slots:
       - subClassOf
-      - partType
+      - part_number
+      - part_type
   ComponentClass:
     is_a: PartClass
     slot_usage:
@@ -42,8 +43,12 @@ classes:
         range: PropertyClass
 
 slots:
-  partType:
-    slot_uri: loinc:partType
-    multivalued: false
-    range: string
+  part_type:
+    slot_uri: loinc:part_type
+    annotations:
+      owl: AnnotationAssertion
+  part_number:
+    slot_uri: loinc:part_number
+    annotations:
+      owl: AnnotationAssertion
 
