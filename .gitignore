@@ -26,3 +26,8 @@ venv.bak/
 
 # Byte-compiled / optimized / DLL files
 __pycache__
+
+# Custom
+backup/
+input/
+output/
