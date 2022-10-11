@@ -24,7 +24,7 @@ class PartOntology(object):
     """
 
     """
-    def __init__(self, schema_path, part_file_directory_path):
+    def __init__(self, schema_path: str, part_file_directory_path: str):
         """
 
         :param schema_path:
