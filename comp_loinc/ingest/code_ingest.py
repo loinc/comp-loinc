@@ -22,7 +22,7 @@ from comp_loinc.loinc_owl.code_schema import LoincCodeClass
 
 
 class CodeIngest(object):
-    def __init__(self, schema_path, code_file_path):
+    def __init__(self, schema_path: str, code_file_path: str):
         self.code_file_path = code_file_path
         self.code_dataframe = self.process_code_files()
         self.group_map = self.group_by_code()
