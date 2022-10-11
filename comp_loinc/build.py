@@ -65,7 +65,7 @@ def build_part_ontology(
     po.generate_ontology()
     po.write_to_output('./data/output/owl_component_files/part_ontology.owl')
     """
-    po = PartOntology(schema_file, part_directory)
+    po = PartOntology(str(schema_file), str(part_directory))
     po.generate_ontology()
     po.write_to_output(output)
 
@@ -88,7 +88,7 @@ def build_codes(
     lcc = CodeIngest("./model/schema/code_schema.yaml", "./data/part_files")
     lcc.write_output_to_file("./data/output/owl_component_files/code_classes.owl")
     """
-    lcc = CodeIngest(schema_file, part_directory)
+    lcc = CodeIngest(str(schema_file), str(part_directory))
     lcc.write_output_to_file(output)
 
 
