@@ -27,6 +27,7 @@ except ModuleNotFoundError:
 
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
 PROJECT_DIR = Path(os.path.dirname(__file__)).parent
+ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'robot')
 DEFAULTS = {
     'schema_file.parts': os.path.join(PROJECT_DIR, 'model', 'schema', 'part_schema.yaml'),
     'schema_file.codes': os.path.join(PROJECT_DIR, 'model', 'schema', 'code_schema.yaml'),
@@ -126,7 +127,7 @@ def merge_owl(
     TODO: Consider removing the files created from this point each time this code executes e.g. any file with 'merge_*'
     """
     files = [os.path.join(owl_directory, str(x)) for x in os.listdir(owl_directory) if ".owl" in str(x)]
-    subprocess.call(["./robot", "merge", "-i"] + " -i ".join(files).split() + ['-o', output])
+    subprocess.call([ROBOT_BIN_PATH, "merge", "-i"] + " -i ".join(files).split() + ['-o', output])
 
 
 @app.command(name="reason")
@@ -140,8 +141,7 @@ def reason_owl(
     :param merged_owl: Name of the merged OWL file created from the `merge` command.
     :param owl_reasoner: The name of the OWL reasoner to use.
     :param output: str where output will be saved."""
-    call_list = [
-        "./robot", "reason", "-r", owl_reasoner, '-i', f"{merged_owl}", '-o', f"{output}"]
+    call_list = [ROBOT_BIN_PATH, "reason", "-r", owl_reasoner, '-i', f"{merged_owl}", '-o', f"{output}"]
     subprocess.call(call_list)
 
 
