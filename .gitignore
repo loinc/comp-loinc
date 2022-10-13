@@ -4,6 +4,9 @@
 # Local Data
 local_data/
 
+# Python
+*.pyc
+
 # Jupyter
 .ipynb_checkpoints
 *.ipynb
