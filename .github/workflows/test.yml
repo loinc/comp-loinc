@@ -1,7 +1,5 @@
 name: Test
 
-# TODO: put in workflows/ when this fixed:
-#  ! [remote rejected] unit-tests-and-github-actions -> unit-tests-and-github-actions (refusing to allow a Personal Access Token to create or update workflow `.github/workflows/test.yml` without `workflow` scope)
 on:
   # workflow_dispatch: allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -18,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10"]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}

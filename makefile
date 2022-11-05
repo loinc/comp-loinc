@@ -1,4 +1,6 @@
-.PHONY: all all-force python-dependencies parts codes composed merge reason test
+# todo: `python3` will not always point to the virtual environment, so running these can sometimes fail.
+# - address by reading in a PYTHON env variable pointing to that path? Potentially an .env file?
+.PHONY: all all-force build python-dependencies parts codes composed merge reason test
 
 
 # Utils
@@ -38,6 +40,7 @@ all: data/output/merged_reasoned_loinc.owl
 ## all-force: Runs the pipeline, even if the end result `data/output/merged_reasoned_loinc.owl` already exists.
 all-force:
 	python3 comp_loinc/build.py all
+build: all-force
 
 # QC / test
 test:
