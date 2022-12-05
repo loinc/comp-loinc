@@ -1,0 +1,3 @@
+typer
+linkml-owl
+pandas
