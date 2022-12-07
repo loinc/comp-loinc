@@ -34,7 +34,8 @@ class CodeIngest(object):
     def process_code_files(self):
         code_dfs = []
         for file in os.listdir(self.code_file_path):
-            code_dfs.append(pd.read_csv(f"{self.code_file_path}/{file}", sep="\t"))
+            if '.tsv' in file.lower():
+                code_dfs.append(pd.read_csv(f"{self.code_file_path}/{file}", sep="\t"))
         return pd.concat(code_dfs)
 
     def group_by_code(self):
@@ -77,3 +78,4 @@ class CodeIngest(object):
 
         # with open("../data/output/code_classes.json", 'w') as ccl_json:
         #     ccl_json.write(json_dumper.dumps(loinc_ontology_class))
+

@@ -39,6 +39,7 @@ DEFAULTS = {
     'output.merge': os.path.join(PROJECT_DIR, 'data', 'output', 'merged_loinc.owl'),
     'output.reason': os.path.join(PROJECT_DIR, 'data', 'output', 'merged_reasoned_loinc.owl'),
     'part_directory': os.path.join(PROJECT_DIR, 'data', 'part_files'),
+    'part_data': os.path.join(PROJECT_DIR, 'data', 'part_data', 'part_data.tsv'),
     'code_file': os.path.join(PROJECT_DIR, 'model', 'schema', 'code_schema.yaml'),
     'composed_classes_data_file': os.path.join(PROJECT_DIR, 'data', 'composed_classes_data.yaml'),
     'owl_directory': os.path.join(PROJECT_DIR, 'data', 'output', 'owl_component_files'),
@@ -51,6 +52,7 @@ DEFAULTS = {
 def build_part_ontology(
     schema_file: str = typer.Option(default=DEFAULTS['schema_file.parts'], resolve_path=True, exists=False),
     part_directory: str = typer.Option(default=DEFAULTS['part_directory'], resolve_path=True, exists=False),
+    part_data: str = typer.Option(default=DEFAULTS['part_data'], resolve_path=True, exists=False),
     output: str = typer.Option(default=DEFAULTS['output.parts'], resolve_path=True, writable=True)
 ):
     """Build ontology for LOINC term parts. Part 1/5 of the pipeline.
@@ -62,11 +64,11 @@ def build_part_ontology(
     :param output: str where output will be saved.
 
     # Example
-    po = PartOntology("./model/schema/part_schema.yaml", "./local_data/part_files")
+    po = PartOntology("./model/schema/part_schema.yaml", "./data/part_files", "./data/part_data/part_data.tsv)
     po.generate_ontology()
     po.write_to_output('./data/output/owl_component_files/part_ontology.owl')
     """
-    po = PartOntology(str(schema_file), str(part_directory))
+    po = PartOntology(str(schema_file), str(part_directory), str(part_data))
     po.generate_ontology()
     po.write_to_output(output)
 

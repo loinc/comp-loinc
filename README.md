@@ -23,7 +23,7 @@ Help text can be run via `python comp_loinc/build.py --help`. You can see help t
 information about its parameters, by running `python comp_loinc/build.py COMMAND_NAME --help`.
 
 ### 1.1. `parts`: Build the part ontology from the intermediate Part Hierarchy files
-`python comp_loinc/build.py parts --schema-file ./model/schema/part_schema.yaml --part-directory ./data/part_files --output ./data/output/owl_component_files/part_ontology.owl`
+`python comp_loinc/build.py parts --schema-file ./model/schema/part_schema.yaml --part-directory ./data/part_files --output ./data/output/owl_component_files/part_ontology.owl --part-data ./data/part_data/part_data.tsv`
 
 ### 1.2. `codes`: Build the code classes from the intermediate Part Hierarchy files
 `python comp_loinc/build.py codes --schema-file ./model/schema/code_schema.yaml --part-directory ./data/part_files --output ./data/output/owl_component_files/code_classes.owl`
