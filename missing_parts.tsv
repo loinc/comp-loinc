@@ -1,0 +1,1206 @@
+	FK_ID	PARENT_PART	PART	PART_TYPE
+130	LP14047-2	LP14371-6	Bordetella pertussis.toxin	
+962	LP14799-8	LP98185-9	Acid fast bacteria	
+1400	LP15184-2	LP16651-9	HTLV 1	
+2306	LP15960-5	LP31624-7	Coagulation activated	
+3201	LP16636-0	LP16794-7	HLA-DR w52	
+3202	LP16637-8	LP16794-7	HLA-DR w53	
+4730	LP18276-3	LP15838-3	Protein.immunoacidic	
+4735	LP18284-7	LP344736-6	Streptococcus pneumoniae 51	
+4934	LP18516-2	LP16651-9	HTLV 1+2 gp46	
+4935	LP18518-8	LP16651-9	HTLV 1+2 p19	
+4936	LP18520-4	LP16651-9	HTLV 1+2 p24	
+4942	LP18532-9	LP16651-9	HTLV 1+2 rgp21	
+5327	LP18957-8	LP14661-0	Estriols	
+5338	LP18972-7	LP31432-5	Herbicides	
+5341	LP18978-4	LP16651-9	HTLV 2	
+5708	LP19413-1	LP64669-2	Reference lab test name	
+5709	LP19414-9	LP64096-8	Reference lab test results	
+5710	LP19415-6	LP343633-6	Reference lab test reference range	
+5731	LP19439-6	LP31435-8	Furacin.topical	
+5808	LP19536-9	LP18326-6	HLA-DQ Ag.locus	
+6372	LP21198-4	LP14398-9	Aureobasidium sp	
+6453	LP28515-2	LP344736-6	Streptococcus pneumoniae 68	
+6580	LP28749-7	LP14831-9	Cefotaxime.meningitis	
+6582	LP28750-5	LP15260-0	cefTRIAXone.meningitis	
+6584	LP28751-3	LP17165-9	Cefepime.meningitis	
+6720	LP29042-6	LP19693-8	CYP2D6 gene.1-BP	
+6773	LP29105-1	LP64669-2	Reference lab test identifier	
+6830	LP29191-1	LP20752-9	Nuclear Ab pattern.rim	
+6886	LP30494-6	LP98185-9	Bacillus sp	
+6887	LP30495-3	LP98185-9	Bacteroides sp	
+6889	LP30497-9	LP98185-9	Clostridium sp	
+6893	LP30544-8	LP14398-9	Absidia sp	
+6894	LP30545-5	LP98185-9	Afipia sp	
+6895	LP30559-6	LP98185-9	Calymmatobacterium sp	
+6896	LP30561-2	LP14398-9	Cryptostroma sp	
+6897	LP30565-3	LP98185-9	Escherichia sp	
+6898	LP30566-1	LP98185-9	Gardnerella sp	
+6899	LP30567-9	LP98185-9	Haemobartonella sp	
+6900	LP30568-7	LP98185-9	Helicobacter sp	
+6901	LP30573-7	LP98185-9	Orientia sp	
+6902	LP30574-5	LP98185-9	Pasteurella sp	
+6904	LP30577-8	LP14398-9	Rhizomucor sp	
+6905	LP30578-6	LP14398-9	Rhizopus sp	
+6906	LP30579-4	LP98185-9	Rhodococcus sp	
+6907	LP30580-2	LP98186-7	Saccharolpolyspora sp	
+6908	LP30581-0	LP98186-7	Saccharomonospora sp	
+6909	LP30585-1	LP14398-9	Sporothrix sp	
+6910	LP30586-9	LP98185-9	Streptobacillus sp	
+6911	LP30587-7	LP98185-9	Taylorella sp	
+6912	LP30588-5	LP14398-9	Trichoderma sp	
+6913	LP30590-1	LP98185-9	Tropheryma sp	
+6916	LP30594-3	LP98185-9	Cowdria sp	
+6917	LP30595-0	LP98185-9	Coxiella sp	
+6922	LP30600-8	LP98186-7	Neospora sp	
+6923	LP30608-1	LP7819-8	Misc toxins	
+6925	LP30610-7	LP14855-8	Non human viruses	
+6935	LP30672-7	LP7756-2	Molds & other microorganiisms	
+6936	LP30681-8	LP7756-2	Miscellaneous allergens	
+6937	LP30682-6	LP7756-2	Drug allergens	
+6938	LP30689-1	LP7756-2	Occupational allergens	
+6940	LP30694-1	LP31627-0	Mollusks	
+6941	LP30696-6	LP31630-4	Milk & constituents	
+6945	LP30710-5	LP31628-8	Plant mix	
+6946	LP30712-1	LP31627-0	Epidermal mix	
+6947	LP30713-9	LP30672-7	Mold mix	
+6948	LP30714-7	LP30689-1	Occupational mix	
+6949	LP30716-2	LP16999-2	Dust mix	
+6950	LP30727-9	LP30672-7	Mold singles	
+6951	LP30729-5	LP30689-1	Occupational singles	
+6952	LP30731-1	LP16999-2	Dust singles	
+6953	LP30734-5	LP30727-9	Ustilago sp	
+6971	LP30761-8	LP124549-9	Mycobacterium tuberculosis rpoB gene rifAMPin resistance mutation	
+7032	LP30865-7	LP7803-2	Misc hem	
+7033	LP30866-5	LP30786-5	Indices	
+7034	LP30867-3	LP31391-3	Interleukins	
+7072	LP30925-9	LP30786-5	Hemoglobin.abnormal	
+7073	LP30927-5	LP16873-9	Erythrocyte staining	
+7078	LP30934-1	LP16873-9	Leukocyte inclusions	
+7083	LP30939-0	LP30727-9	Nigrospora sp	
+7084	LP30940-8	LP30727-9	Stemphylium sp	
+7405	LP31390-5	LP31424-2	Anticholinergic	
+7419	LP31399-6	LP7786-9	Sugars/Sugar metabolism	
+7420	LP31399-6	LP7784-4	Sugars/Sugar metabolism	
+7421	LP31400-2	LP7786-9	Gases and acid/Base	
+7422	LP31400-2	LP7784-4	Gases and acid/Base	
+7424	LP31405-1	LP7786-9	Nucleotides	
+7425	LP31405-1	LP7784-4	Nucleotides	
+7426	LP31406-9	LP7786-9	Inborn errors metabolism lysosomal	
+7427	LP31407-7	LP15711-2	Apolipoproteins	
+7429	LP31410-1	LP7786-9	Physical properties	
+7430	LP31410-1	LP7784-4	Physical properties	
+7431	LP31412-7	LP7786-9	Tumor markers	
+7432	LP31412-7	LP7784-4	Tumor markers	
+7433	LP31413-5	LP7786-9	Mineral and bone	
+7434	LP31413-5	LP7784-4	Mineral and bone	
+7435	LP31415-0	LP7786-9	Small molecules	
+7436	LP31415-0	LP7784-4	Small molecules	
+7437	LP31418-4	LP7786-9	General terms	
+7438	LP31419-2	LP7786-9	Gastrointestinal function	
+7439	LP31419-2	LP7784-4	Gastrointestinal function	
+7440	LP31423-4	LP31450-7	Antivirals	
+7442	LP31423-4	LP7755-4	Antivirals	
+7443	LP31424-2	LP18046-0	Cardiac drugs	
+7444	LP31424-2	LP7791-9	Cardiac drugs	
+7445	LP31425-9	LP18046-0	Neurological drugs	
+7446	LP31425-9	LP7791-9	Neurological drugs	
+7451	LP31427-5	LP18046-0	Anticoagulants, pro- and antifibrinolytics	
+7452	LP31427-5	LP7791-9	Anticoagulants, pro- and antifibrinolytics	
+7453	LP31428-3	LP18046-0	Oncology drugs	
+7454	LP31428-3	LP7791-9	Oncology drugs	
+7455	LP31429-1	LP18046-0	Electrolyte and renal drugs	
+7456	LP31429-1	LP7791-9	Electrolyte and renal drugs	
+7457	LP31430-9	LP18046-0	Analgesics, NSAIDS	
+7458	LP31430-9	LP7791-9	Analgesics, NSAIDS	
+7459	LP31432-5	LP7790-1	Toxins and poisons	
+7460	LP31433-3	LP7790-1	Hydrocarbons and chemical classes	
+7461	LP31434-1	LP7790-1	Metals and elements in tox	
+7462	LP31435-8	LP31450-7	Antifungals	
+7464	LP31435-8	LP7755-4	Antifungals	
+7465	LP31438-2	LP31424-2	Calcium channel blockers	
+7467	LP31439-0	LP31473-9	Topical agents	
+7468	LP31440-8	LP31425-9	Antiparkinsonian	
+7470	LP31441-6	LP31451-5	Lax	
+7472	LP31442-4	LP31466-3	Local anesthetics	
+7473	LP31443-2	LP18046-0	Respiratory drugs	
+7474	LP31443-2	LP7791-9	Respiratory drugs	
+7475	LP31444-0	LP31453-1	ACE inhibitors	
+7476	LP31445-7	LP31450-7	Antiparasitic	
+7478	LP31445-7	LP7755-4	Antiparasitic	
+7480	LP31448-1	LP18046-0	Controlled substances	
+7481	LP31448-1	LP7791-9	Controlled substances	
+7482	LP31449-9	LP18046-0	Psychiatric drugs	
+7483	LP31449-9	LP7791-9	Psychiatric drugs	
+7484	LP31450-7	LP18046-0	Anti-infection drugs	
+7485	LP31450-7	LP7791-9	Anti-infection drugs	
+7486	LP31451-5	LP18046-0	Gastrointestinal drugs	
+7487	LP31451-5	LP7791-9	Gastrointestinal drugs	
+7488	LP31452-3	LP31424-2	Lipid lowering agents	
+7490	LP31453-1	LP31424-2	Antihypertensives	
+7492	LP31454-9	LP18046-0	Immunosuppressives	
+7493	LP31454-9	LP7791-9	Immunosuppressives	
+7494	LP31455-6	LP18046-0	Endocrine in tox	
+7495	LP31455-6	LP7791-9	Endocrine in tox	
+7496	LP31456-4	LP18046-0	Ophthalmologic drugs	
+7497	LP31456-4	LP7791-9	Ophthalmologic drugs	
+7498	LP31457-2	LP31451-5	Antinausea and antiemetic	
+7500	LP31458-0	LP31427-5	Antiplatelet agents	
+7501	LP31459-8	LP31424-2	Antiarrythmic drugs	
+7505	LP31461-4	LP31443-2	Respiratory stimulants	
+7506	LP31462-2	LP31443-2	Cough suppressants	
+7508	LP31463-0	LP31450-7	Antitubercular agents	
+7510	LP31463-0	LP7755-4	Antitubercular agents	
+7511	LP31464-8	LP31455-6	Anabolic - androgenic steroids	
+7513	LP31465-5	LP31466-3	General anesthetics	
+7515	LP31466-3	LP18046-0	Anesthetics	
+7516	LP31466-3	LP7791-9	Anesthetics	
+7517	LP31467-1	LP31451-5	Anorexic drugs	
+7519	LP31468-9	LP31482-0	H2 receptor blockers	
+7522	LP31471-3	LP18046-0	Musculoskeletal and orthopedic	
+7523	LP31472-1	LP31423-4	Antiretroviral/Anti HIV	
+7525	LP31473-9	LP18046-0	Dermatologic drugs	
+7526	LP31474-7	LP31449-9	Anti-bipolar	
+7528	LP31475-4	LP31424-2	Increase blood pressure	
+7529	LP31476-2	LP31424-2	Inotropic support	
+7530	LP31477-0	LP31451-5	Antidiarrheal	
+7531	LP31478-8	LP18149-2	Narcotic antagonists	
+7532	LP31479-6	LP31425-9	Myasthenia gravis treatment	
+7533	LP31480-4	LP18046-0	Vitamins - tox	
+7534	LP31480-4	LP7791-9	Vitamins - tox	
+7535	LP31481-2	LP31455-6	Progestational agents	
+7536	LP31482-0	LP31451-5	Anti-gastric acid secretion	
+7539	LP31484-6	LP18148-4	CNS stimulants	
+7541	LP31485-3	LP31424-2	Coronary vasodialator	
+7542	LP31486-1	LP31443-2	Decongestants	
+7544	LP31487-9	LP31455-6	Glucocorticoids	
+7545	LP31489-5	LP7790-1	Tox specimen and reporting information	
+7546	LP31490-3	LP31466-3	Neuromuscular blockade	
+7547	LP31491-1	LP31425-9	Migrane treatment	
+7548	LP31492-9	LP31425-9	Alzheimer's disease treatment	
+7549	LP31493-7	LP31424-2	Multiple cardiovascular effects	
+7551	LP31494-5	LP18893-5	Monoamine oxidase inhibitors	
+7552	LP31495-2	LP31455-6	Thyroid medications	
+7553	LP31496-0	LP18046-0	Reproductive medications	
+7554	LP31497-8	LP18047-8	Placeholder 94	
+7556	LP31498-6	LP31424-2	Cardiac glycosides	
+7639	LP31616-3	LP30865-7	Hemolysis tests	
+7640	LP31617-1	LP30786-5	Hemoglobin normal variant	
+7642	LP31621-3	LP7788-5	Platelet function header	
+7644	LP31623-9	LP7788-5	Clotting factors	
+7645	LP31624-7	LP7788-5	Routine coag	
+7646	LP31627-0	LP7756-2	Animal allergens	
+7647	LP31628-8	LP7756-2	Plant allergens	
+7648	LP31630-4	LP31627-0	Mammals	
+7649	LP31632-0	LP31627-0	Insects & venoms	
+7650	LP31633-8	LP31628-8	Trees & nuts	
+7651	LP31634-6	LP31628-8	Grasses	
+7652	LP31635-3	LP31628-8	Other plants	
+7654	LP31642-9	LP18708-5	Australian parrot	
+7659	LP31648-6	LP14272-6	Organothiophosphate pesticides	
+7660	LP31649-4	LP31651-0	Aminoisobutyrates	
+7661	LP31650-2	LP15705-4	Hydroxybutyrates	
+7662	LP31651-0	LP18033-8	Aminobutyrates	
+7663	LP31652-8	LP18033-8	Methylhistidines	
+7664	LP31653-6	LP31396-2	Adrenal cortex hormones	
+7666	LP31654-4	LP31396-2	Androgens	
+7668	LP31655-1	LP31396-2	Gastrointestinal hormones	
+7670	LP31656-9	LP31396-2	Hypothalamic hormones	
+7671	LP31657-7	LP31396-2	Pancreatic hormones	
+7673	LP31659-3	LP31396-2	Parathyroid hormones	
+7675	LP31660-1	LP31396-2	Pituitary hormones	
+7677	LP31661-9	LP31396-2	Placental hormones	
+7678	LP31662-7	LP31396-2	Pregnancy proteins	
+7679	LP31663-5	LP31396-2	Progestational hormones	
+7681	LP31665-0	LP31396-2	Thymus hormones	
+7682	LP31666-8	LP31396-2	Thyroid hormones	
+7684	LP31668-4	LP14597-6	Platelet indices	
+7685	LP31669-2	LP30866-5	Red cell indices	
+7699	LP31692-4	LP31703-9	Vitamin B4	
+7708	LP31698-1	LP31395-4	Vitamin H	
+7710	LP31700-5	LP31395-4	Vitamin K1	
+7711	LP31701-3	LP31395-4	Vitamin M	
+7712	LP31703-9	LP31395-4	Vitamin B complex	
+7734	LP31726-0	LP18033-8	Pentanoic acids	
+7735	LP31727-8	LP14488-8	Valerates	
+7736	LP31728-6	LP18033-8	Keto acids	
+7737	LP31729-4	LP18033-8	Hexanoic acids	
+7738	LP31732-8	LP31433-3	Isoflavone	
+7746	LP31742-7	LP15838-3	Insulin-like growth factor binding proteins	
+7752	LP31747-6	LP33264-0	Procollagen peptide	
+7761	LP31771-6	LP7786-9	Crystals & calculi	
+7762	LP31772-4	LP31400-2	Dyshemoglobin	
+7763	LP31773-2	LP16794-7	HLA-DR W Ag.locus	
+7890	LP32497-7	LP30865-7	WBC function	
+7903	LP32652-7	LP7776-0	Blood Group Systems	
+7904	LP32653-5	LP32652-7	Diego group	
+7905	LP32654-3	LP32652-7	Dombrock group	
+7906	LP32655-0	LP32652-7	H group	
+7907	LP32656-8	LP32652-7	Kidd group	
+7908	LP32657-6	LP32652-7	Lewis group	
+7909	LP32658-4	LP32652-7	Lutheran group	
+7910	LP32659-2	LP32652-7	P group	
+7911	LP32661-8	LP32652-7	Landsteiner-Weiner group	
+7912	LP32662-6	LP32652-7	Yt group	
+7913	LP32663-4	LP32652-7	Xg group	
+7915	LP32665-9	LP32652-7	Globoside group	
+7916	LP32666-7	LP32652-7	Not in ICCBBA tables	
+7952	LP32739-2	LP7806-5	Human Leukocyte Antigens	
+7953	LP32745-9	LP7806-5	HLA-D	
+7965	LP32762-4	LP32817-6	Specimen characteristics	
+7966	LP32763-2	LP16340-9	Cell types	
+7970	LP32769-9	LP14398-9	Pseudallescheria sp	
+7971	LP32772-3	LP7783-6	Multiple markers	
+7972	LP32773-1	LP32652-7	Bg group	
+7976	LP32788-9	LP16849-9	Calcium crystals	
+7991	LP32808-5	LP32805-1	Blood product (general)	
+7993	LP32810-1	LP32805-1	Coagulation Factors	
+7998	LP32817-6	LP7798-4	Male fertility	
+7999	LP32818-4	LP7798-4	Female fertility	
+8045	LP32938-0	LP7844-6	Tissue specific	
+8046	LP32939-8	LP7844-6	Gangliosides	
+8049	LP32942-2	LP7844-6	Neuron restricted	
+8050	LP32943-0	LP7783-6	Other markers	
+8051	LP32944-8	LP7783-6	Clusters of differentiation	
+8052	LP32945-5	LP7783-6	other FC components	
+8236	LP33240-0	LP18038-7	Mono-oligosaccharide	
+8237	LP33243-4	LP18038-7	A-oligosaccharide	
+8354	LP33421-6	LP33420-8	Views 2 portable	
+8360	LP33427-3	LP28726-5	Views oblique & (AP & lateral)	
+8373	LP33506-4	LP29684-5	Views for central vein catheter placement check	
+8375	LP33511-4	LP34220-1	Guidance for change of central catheter	
+8390	LP33529-6	LP34220-1	Guidance for substance removal of fluid	
+8402	LP33545-2	LP29684-5	Replacement of percutaneous gastrostomy	
+8425	LP33578-3	LP33577-5	View AP L-lateral-decubitus portable	
+8429	LP33585-8	LP34220-1	Guidance for exchange of percutaneous nephrostomy tube	
+8432	LP33588-2	LP33382-0	Percutaneous transluminal angioplasty of vessel	
+8435	LP33591-6	LP29684-5	Guidance for removal of foreign body from vascular space	
+8438	LP33597-3	LP33579-1	View L-lateral portable	
+8440	LP33599-9	LP33598-1	View L-lateral upright portable	
+8441	LP33600-5	LP33746-6	View L-oblique portable	
+8443	LP33602-1	LP33416-6	View oblique portable	
+8453	LP33618-7	LP33409-1	Views 3 portable	
+8455	LP33621-1	LP33426-5	Views AP & lateral portable	
+8456	LP33624-5	LP33990-0	Views AP portable	
+8462	LP33634-4	LP28726-5	Views PA & lateral & R-oblique & L-oblique portable	
+8463	LP33635-1	LP28726-5	Views PA+lateral+R-or-L-oblique	
+8464	LP33636-9	LP28726-5	Views PA & lateral upright portable	
+8466	LP33639-3	LP28726-5	Views R-or-L-oblique	
+8467	LP33641-9	LP33639-3	Views R-or-L-oblique portable	
+8490	LP33736-7	LP33735-9	View lateral crosstable portable	
+8513	LP33765-6	LP28725-7	View ulnar variance	
+8522	LP33812-6	LP33822-5	Views AP & lateral crosstable portable	
+8523	LP33815-9	LP33830-8	Views AP & lateral & odontoid portable	
+8529	LP33825-8	LP28726-5	Views AP & oblique & lateral	
+8531	LP33827-4	LP28726-5	Views AP + oblique + odontoid + lateral	
+8554	LP33855-5	LP28726-5	Views oblique & lateral	
+8577	LP33982-7	LP33405-9	Multisection spectroscopy	
+8614	LP34127-8	LP28726-5	View AP & view lateral frog	
+8635	LP34219-3	LP29684-5	Placements	
+8714	LP34443-9	LP33390-3	Guidance for biopsy.transjugular	
+8715	LP34444-7	LP28725-7	View lateral portable	
+8720	LP34451-2	LP28726-5	Views PA & R-lateral & R-oblique & L-oblique upright portable	
+8728	LP34478-5	LP34477-7	Views AP (R-lateral-decubitus & L-lateral-decubitus) portable	
+8898	LP34869-5	LP7790-1	EPA	
+8899	LP34870-3	LP32763-2	Spermatozoa structure	
+8951	LP35104-6	LP28726-5	Views 4+PA	
+8995	LP35208-5	LP14299-9	Cholinesterase.dibucaine inhibited	
+9015	LP35229-1	LP28726-5	Views 4+AP	
+9028	LP35243-2	LP28725-7	View AP (W internal rotation & W external rotation)	
+9048	LP35306-7	LP35305-9	Guidance for abscess localization whole body	
+9054	LP35332-3	LP28726-5	Views whole body	
+9061	LP35344-8	LP33405-9	Multisection whole body	
+9067	LP35374-5	LP35343-0	Views for tumor whole body	
+9075	LP35392-7	LP28726-5	Views flow	
+9076	LP35393-5	LP33405-9	Multisection flow	
+9078	LP35396-8	LP212271-3	Views for endocrine tumor whole body	
+9079	LP35398-4	LP35341-4	Views for infection whole body	
+9080	LP35399-2	LP35343-0	Views for tumor limited	
+9084	LP35413-1	LP35371-1	Views delayed static	
+9090	LP35419-8	LP33405-9	Multisection 1 phase	
+9093	LP35422-2	LP35423-0	Views 3 phase whole body	
+9123	LP35457-8	LP28726-5	Views for clearance	
+9127	LP35468-5	LP28726-5	Views static & flow	
+9202	LP35650-8	LP344736-6	Streptococcus pneumoniae 57	
+9219	LP35701-9	LP344736-6	Streptococcus pneumoniae 70	
+9220	LP35702-7	LP344736-6	Streptococcus pneumoniae 54	
+9344	LP35877-7	LP34127-8	Views AP & lateral frog portable	
+9370	LP35907-2	LP7835-4	Hepatitis E virus Ab.IgG & IgM panel	
+9415	LP36023-7	LP64096-8	Reference lab name	
+9425	LP36033-6	LP7824-8	RHD+RHC gene	
+9443	LP36059-1	LP344736-6	Streptococcus pneumoniae 58	
+9452	LP36077-3	LP28726-5	Views frontal stereo	
+9460	LP36092-2	LP34220-1	Guidance for stereotactic biopsy.core needle	
+9465	LP36111-0	LP28725-7	View stereo	
+9466	LP36113-6	LP33614-6	View Waters stereo	
+9528	LP36255-5	LP33426-5	Views (AP^W R-bending & W L-bending & WO bending) & lateral	
+9535	LP36339-7	LP14818-6	Angiostrongylus sp	
+9536	LP36340-5	LP98186-7	Encephalitiozoon sp	
+9541	LP36346-2	LP7846-1	Dosage information	
+9544	LP36349-6	LP57347-4	Mitogen-Activated Protein Kinases	
+9646	LP36462-7	LP98185-9	Serpulina sp	
+9686	LP36565-7	LP7824-8	ECGF1 gene	
+9791	LP36694-5	LP33827-4	Views AP & oblique & odontoid & lateral portable	
+9793	LP36696-0	LP36518-6	Views GE 3 portable	
+9796	LP36699-4	LP36537-6	Views 1 or 2 portable	
+9797	LP36705-9	LP36695-2	Views GE 3 & PA chest portable	
+9972	LP36952-7	LP14799-8	Acid fast bacteria identified	
+10364	LP37325-5	LP37324-8	Bordetella pertussis.toxin Ab.IgG	
+10917	LP37872-6	LP18175-7	Cytokeratin Ab	
+10918	LP37873-4	LP37872-6	Cytokeratin Ab.IgG	
+10929	LP37884-1	LP14255-1	Cytomegalovirus identified	
+11143	LP38110-0	LP14899-6	Escherichia coli O157:H7 identified	
+11275	LP38242-1	LP14817-8	Giardia sp identified	
+11513	LP38482-3	LP18319-1	HLA-A Ag	
+11514	LP38483-1	LP18321-7	HLA-A+B Ag	
+11515	LP38484-9	LP18322-5	HLA-A+B+Bw Ag	
+11517	LP38486-4	LP18320-9	HLA-B Ag	
+11519	LP38488-0	LP18324-1	HLA-C Ag	
+11520	LP38489-8	LP36178-9	HLA-C W Ag	
+11521	LP38490-6	LP18045-2	HLA-DP Ag	
+11522	LP38491-4	LP18326-6	HLA-DQ Ag	
+11523	LP38492-2	LP18328-2	HLA-DQ alpha Ag	
+11525	LP38494-8	LP18327-4	HLA-DR beta Ag	
+11526	LP38495-5	LP19531-0	HLA-DR+DQ Ag	
+11540	LP38509-3	LP15184-2	HTLV 1 Ab	
+11541	LP38510-1	LP38509-3	HTLV 1 Ab.IgG	
+11559	LP38528-3	LP18516-2	HTLV 1+2 gp46 Ab	
+11560	LP38529-1	LP18518-8	HTLV 1+2 p19 Ab	
+11562	LP38531-7	LP18520-4	HTLV 1+2 p24 Ab	
+11569	LP38538-2	LP18532-9	HTLV 1+2 rgp21 Ab	
+11570	LP38541-6	LP18978-4	HTLV 2 Ab	
+12445	LP39436-8	LP36439-5	Platelet glycoprotein Ab (HPA)	
+12725	LP39710-6	LP35807-4	SARS coronavirus identified	
+12850	LP39824-5	LP14323-7	Staphylococcus aureus toxin 1 Ab	
+12860	LP39833-6	LP14405-2	Streptococcus agalactiae identified	
+12909	LP39883-1	LP18284-7	Streptococcus pneumoniae 51 Ab	
+12910	LP39884-9	LP18284-7	Streptococcus pneumoniae 51 Ab.IgG	
+12911	LP39885-6	LP35702-7	Streptococcus pneumoniae 54 Ab.IgG	
+12912	LP39886-4	LP35702-7	Streptococcus pneumoniae 54 Ab	
+12915	LP39889-8	LP35650-8	Streptococcus pneumoniae 57 Ab.IgG	
+12916	LP39890-6	LP35650-8	Streptococcus pneumoniae 57 Ab	
+12917	LP39891-4	LP36059-1	Streptococcus pneumoniae 58 Ab.IgG	
+12918	LP39892-2	LP36059-1	Streptococcus pneumoniae 58 Ab	
+12921	LP39895-5	LP28515-2	Streptococcus pneumoniae 68 Ab.IgG	
+12922	LP39896-3	LP28515-2	Streptococcus pneumoniae 68 Ab	
+12927	LP39902-9	LP35701-9	Streptococcus pneumoniae 70 Ab.IgG	
+12928	LP39903-7	LP35701-9	Streptococcus pneumoniae 70 Ab	
+12940	LP39918-5	LP15188-3	Streptococcus pyogenes identified	
+13268	LP40245-0	LP36348-8	Length of fast	
+13290	LP40278-1	LP7788-5	Antiphospholipid syndrome	
+13291	LP40279-9	LP31482-0	Proton Pump Inhibitors	
+13293	LP40281-5	LP17764-9	Chlorophenols	
+13294	LP40282-3	LP98185-9	Bacteria Identification tests	
+13307	LP40302-9	LP16659-2	Mycobacterium tuberculosis DNA.rpoB	
+13321	LP40317-7	LP7851-1	Analytes	
+13444	LP40521-4	LP7824-8	RHC gene	
+13474	LP56772-4	LP56766-6	Primary congenital hypothyroidism	
+13529	LP57347-4	LP7839-6	Specific antigens	
+13571	LP57576-8	LP35630-0	AMPD1 gene.p.Q12X	
+13572	LP57577-6	LP35630-0	AMPD1 gene.p.P48L	
+13591	LP61561-4	LP7791-9	Dosage details	
+13613	LP61776-8	LP7824-8	BOR syndrome gene	
+13663	LP62055-6	LP232001-0	Genetic variant for display	
+13664	LP62056-4	LP70194-3	Gene region	
+13665	LP62057-2	LP32750-9	Chromosome number	
+13667	LP62059-8	LP232001-0	Genetic variant source	
+13668	LP62060-6	LP232001-0	Genetic variant ID	
+13678	LP62070-5	LP70194-3	Reference sequence ID	
+13682	LP62076-2	LP70593-6	Gene ID	
+13695	LP62089-5	LP7824-8	RHE gene	
+13908	LP63030-8	LP14492-0	Urea nitrogen clearance	
+14060	LP63629-7	LP31418-4	History of neural tube defect	
+14100	LP63731-1	LP32750-9	Chromosome disomy	
+14101	LP63732-9	LP7827-1	Chromosome trisomy	
+14102	LP63733-7	LP32750-9	Chromosome tetrasomy	
+14105	LP64092-7	LP31399-6	Sugar alcohols	
+14108	LP64095-0	LP7846-1	Analysis information	
+14109	LP64096-8	LP343634-4	Reference lab information	
+14112	LP64180-0	LP62865-8	Neural tube defect risk based on maternal age	
+14132	LP64213-9	LP7755-4	Genetic Antimicrobial Resistance	
+14172	LP64581-9	LP343633-6	Date reference lab test sent	
+14173	LP64582-7	LP343633-6	Reference lab test method	
+14189	LP64625-4	LP74249-1	Pathology procedure note	
+14200	LP64669-2	LP64096-8	Reference lab test identifier and name	
+14214	LP64683-3	LP32805-1	RhoGam	
+14276	LP64870-6	LP30682-6	Novocaine	
+14283	LP64901-9	LP14400-3	Hepatitis C virus Ag	
+14403	LP65273-2	LP56928-2	HLA-DP+DQ+DR Ag	
+14437	LP65363-1	LP29683-7	carBAMazepine free & total & 10,11-Epoxide panel	
+14512	LP65609-7	LP68427-1	Staphylococcus aureus toxin 1+Staphylococcus aureus enterotoxin B Ab	
+14698	LP66495-0	LP14855-8	Human parechovirus	
+14717	LP66618-7	LP66495-0	Human parechovirus RNA	
+14779	LP66837-3	LP66838-1	HLA-A+B+Bw+DR Ag	
+14781	LP66839-9	LP66841-5	Escherichia coli shiga-like toxin 2 Ag	
+14785	LP66878-7	LP66840-7	Escherichia coli shiga-like toxin 1 Ag	
+14805	LP66910-8	LP70194-3	DNA sequence variation type	
+14807	LP66912-4	LP70194-3	Amino acid marker type	
+14881	LP68403-2	LP16113-0	Digitoxin>12h post dose	
+14967	LP69984-0	LP69980-8	Views AP (supine & upright) portable	
+14969	LP69987-3	LP69986-5	Views AP & AP L-lateral-decubitus portable	
+14977	LP70064-8	LP70063-0	Views AP (supine & lateral-decubitus) portable	
+14979	LP70066-3	LP70065-5	View AP lateral-decubitus portable	
+14985	LP70074-7	LP70073-9	Views AP & AP R-lateral-decubitus portable	
+14986	LP70076-2	LP70062-2	View AP R-lateral-decubitus portable	
+14995	LP70089-5	LP15318-6	3-Hydroxytetradecadienylcarnitine (C14:2-OH)	
+15013	LP70156-2	LP32652-7	Colton group	
+15017	LP70194-3	LP7822-2	Genetics results	
+15050	LP70435-0	LP70367-5	Cytarabine C	
+15076	LP70625-6	LP7786-9	Maternal screens	
+15108	LP70982-1	LP35075-8	Mycobacterium avian tuberculin stimulated gamma interferon	
+15117	LP71022-5	LP32944-8	CD109	
+15120	LP71025-8	LP32944-8	CD120	
+15122	LP71027-4	LP32944-8	CD133	
+15123	LP71028-2	LP32944-8	CD134	
+15125	LP71030-8	LP32944-8	CD141	
+15126	LP71031-6	LP32944-8	CD142	
+15127	LP71032-4	LP32944-8	CD143	
+15128	LP71033-2	LP32944-8	CD144	
+15129	LP71034-0	LP32944-8	CD147	
+15130	LP71035-7	LP32944-8	CD151	
+15131	LP71036-5	LP32944-8	CD152	
+15133	LP71038-1	LP32944-8	CD166	
+15134	LP71039-9	LP32944-8	CD168	
+15135	LP71040-7	LP32944-8	CD184	
+15136	LP71041-5	LP32944-8	CD186	
+15137	LP71042-3	LP32944-8	CD202a	
+15138	LP71043-1	LP32944-8	CD209	
+15139	LP71044-9	LP32944-8	CD271	
+15140	LP71045-6	LP32944-8	CD303	
+15141	LP71046-4	LP32944-8	CD304	
+15145	LP71060-5	LP31398-8	Alpha 1 antitrypsin renal clearance	
+15186	LP71222-1	LP71215-5	HLA-DQA1*0102 Ag	
+15187	LP71223-9	LP71216-3	HLA-DQB1*2 Ag	
+15188	LP71224-7	LP71217-1	HLA-DQB1*9 Ag	
+15189	LP71225-4	LP71218-9	HLA-DRB1*17 Ag	
+15190	LP71226-2	LP71219-7	HLA-DRB1*7 Ag	
+15291	LP71598-4	LP36436-1	HLA-DQB1 Ag	
+15307	LP71662-8	LP66842-3	Escherichia coli shiga-like toxin Ag	
+15311	LP71679-2	LP19268-9	Erythrocyte ghosts	
+15457	LP72121-4	LP29677-9	Axis degree N 1	
+15458	LP72122-2	LP29677-9	Axis degree N 2	
+15461	LP72124-8	LP29674-6	Axis N 1	
+15481	LP72155-2	LP29672-0	Blood flow.end diastole	
+15482	LP72155-2	LP7830-5	Blood flow.end diastole	
+15492	LP72180-0	LP7771-1	Body temperature site	
+15746	LP72823-5	LP7797-6	Interpupillary	
+15805	LP72895-3	LP29672-0	Major axis.apical 2 chamber.diastole	
+15806	LP72896-1	LP29672-0	Major axis.apical 2 chamber.systole	
+15807	LP72897-9	LP29672-0	Major axis.apical 4 chamber.diastole	
+15808	LP72898-7	LP29672-0	Major axis.apical 4 chamber.systole	
+15830	LP72946-4	LP29672-0	Minor axis.end diastole.apical 4 chamber	
+15884	LP73112-2	LP29672-0	Plane.apical 2 chamber.diastole	
+15885	LP73113-0	LP29672-0	Plane.apical 2 chamber.systole	
+15886	LP73114-8	LP29672-0	Plane.apical 4 chamber.diastole	
+15887	LP73115-5	LP29672-0	Plane.apical 4 chamber.systole	
+15941	LP73184-1	LP29677-9	Prism base distance	
+15942	LP73184-1	LP29674-6	Prism base distance	
+15963	LP73217-9	LP29677-9	Pupillary distance near	
+15964	LP73217-9	LP29674-6	Pupillary distance near	
+15965	LP73217-9	LP418652-6	Pupillary distance near	
+16217	LP73683-2	LP33854-8	Views R- & L-oblique portable	
+16256	LP73759-0	LP7840-4	Capacity.inspiratory.measured	
+16257	LP73762-4	LP72220-4	Forced vital capacity.measured	
+16380	LP76168-1	LP29672-0	Blood flow.diastole.max	
+16381	LP76171-5	LP7830-5	Blood flow.diastolic.min	
+16385	LP76174-9	LP29672-0	Blood flow.systole.mean	
+16398	LP76190-5	LP29672-0	Coarctation.gradient.max	
+16455	LP76353-9	LP31432-5	Organophosphonates	
+16463	LP89232-0	LP32725-1	Midbody	
+16464	LP89233-8	LP89232-0	Midbody Ab	
+16534	LP89581-0	LP19251-5	Lipoprotein.beta.subparticle number	
+16592	LP93324-9	LP93323-1	Penicillin.parenteral.meningitis	
+16786	LP95501-0	LP343633-6	Date reference lab test results received	
+16918	LP95712-3	LP101263-4	Olive green Ab.IgG4	
+17094	LP96123-2	LP15503-3	Chymopapain Ab.IgG	
+17098	LP96127-3	LP17060-2	Red Pepper Ab.IgG	
+17281	LP97749-3	LP7834-7	Blood oximetry panel	
+17357	LP97951-5	LP19080-8	Monocytes.CD55	
+17373	LP97967-1	LP14445-8	Monocytes.CD14	
+17413	LP98133-9	LP32652-7	Chido/Rodgers group	
+17414	LP98134-7	LP32652-7	Indian group	
+17415	LP98135-4	LP32652-7	Knops group	
+17427	LP98152-9	LP32652-7	Cost group	
+17428	LP98153-7	LP32652-7	Gonzales group	
+17429	LP98154-5	LP32652-7	Jr group	
+17430	LP98155-2	LP32652-7	Wright group	
+17431	LP98156-0	LP32652-7	York group	
+17432	LP98157-8	LP32652-7	JMH group	
+17433	LP98158-6	LP32652-7	Vel group	
+17492	LP99354-0	LP16649-3	Haemophilus influenzae serogroup	
+17570	LP99662-6	LP18639-2	Ribonucleoprotein extractable nuclear 70kD Ab	
+17941	LP101891-2	LP188693-8	Tidal volume.expired mechanical	
+17944	LP101895-3	LP7840-4	Oxygen gas setting	
+17945	LP101895-3	LP7829-7	Oxygen gas setting	
+17947	LP101898-7	LP7840-4	Pressure.plateau static	
+17951	LP101912-6	LP201887-9	Infusion rate	
+17966	LP101960-5	LP7795-0	ST wave displacement.mid.lead AI	
+17967	LP101961-3	LP7795-0	ST wave displacement.mid.lead AS	
+18110	LP105014-7	LP17080-0	Helianthus annus seed Ab	
+18114	LP105047-7	LP98185-9	Klebsiella sp	
+18117	LP105050-1	LP98185-9	Stenotrophomonas sp	
+18165	LP111391-1	LP70194-3	Recommended action	
+18193	LP111525-4	LP34220-1	Guidance for placement of intraperitoneal catheter	
+18204	LP111538-7	LP34220-1	Guidance for placement of ilio-iliac tube endoprosthesis	
+18333	LP113732-4	LP135277-4	Bacterial intimin (eaeA) gene	
+18337	LP113736-5	LP135277-4	Escherichia coli shiga-like toxin 1 (stx1) gene	
+18338	LP113737-3	LP135277-4	Escherichia coli shiga-like toxin 2 (stx2) gene	
+18341	LP113772-0	LP35079-0	Influenza virus A hemagglutinin RNA	
+18379	LP115340-4	LP115341-2	Escherichia coli shiga-like toxin 1 & 2 Ag	
+18516	LP121009-7	LP36900-6	Lymphocyte subset panel	
+18581	LP121339-8	LP32652-7	Gerbich group	
+18582	LP121340-6	LP32652-7	RAPH group	
+18583	LP121341-4	LP32652-7	Scianna group	
+18584	LP121343-0	LP32652-7	Cromer group	
+18585	LP121345-5	LP98185-9	Kingella sp	
+18708	LP135277-4	LP98185-9	Bacterial genes	
+18780	LP135806-0	LP34220-1	Guidance for stereotactic biopsy.needle	
+18790	LP136118-9	LP34220-1	Guidance for chorionic villus sampling	
+18795	LP136292-2	LP14836-8	Human papilloma virus RNA	
+18835	LP140657-0	LP7840-4	Volume expired during 6.0 s of forced expiration measured	
+18837	LP140669-5	LP98185-9	Atopobium sp	
+18842	LP141158-8	LP145839-9	Bordetella pertussis+Bordetella parapertussis.filamentous hemagglutinin Ab.IgM	
+18843	LP141159-6	LP7835-4	Bordetella sp filamentous hemagglutinin & pertussis toxin.pertussis Ab.IgA & IgG panel	
+18925	LP145666-6	LP16487-8	Reticulocytes.low fluorescence	
+18926	LP145668-2	LP16487-8	Reticulocytes.medium fluorescence	
+18927	LP145669-0	LP16487-8	Reticulocytes.high fluorescence	
+18969	LP145843-1	LP145684-9	Hanta dobrova Ab	
+18981	LP145981-9	LP7840-4	Oxygen.alveolar - capillary	
+19476	LP147812-4	LP64870-6	Novocaine Ab.IgE	
+19514	LP147850-4	LP64871-4	Paecilomyces variotti Ab.IgE	
+19516	LP147852-0	LP65903-4	Omega 5 gliadin Ab.IgE	
+20072	LP148403-1	LP17439-8	Grass tall oak Ab.IgE	
+20280	LP149596-1	LP13942-5	Shrimp	
+20315	LP150155-2	LP98186-7	Blastocystis sp	
+20316	LP150156-0	LP14398-9	Dermatophyte sp	
+20317	LP150157-8	LP150156-0	Trichophyton sp	
+20318	LP150158-6	LP98186-7	Dientamoeba sp	
+20319	LP150159-4	LP98185-9	Plesiomonas sp	
+20337	LP156104-4	LP16659-2	Mycobacterium tuberculosis fluoroquinolone resistance gyrA gene	
+20384	LP157182-9	LP7844-6	Paraneoplastic Ma antigen 2	
+20385	LP157183-7	LP157182-9	Paraneoplastic Ma antigen 2 Ab	
+20386	LP157184-5	LP157183-7	Paraneoplastic Ma antigen 2 Ab.IgG	
+20482	LP157522-6	LP7835-4	Reagin Ab & Treponema pallidum Ab.IgG & IgM panel	
+20495	LP157576-2	LP34220-1	Guidance for laser ablation of vein(s)	
+20497	LP157578-8	LP34220-1	Guidance for intercostal nerve denervation	
+20498	LP157579-6	LP34220-1	Guidance for facet joint denervation	
+20499	LP157580-4	LP34220-1	Guidance for peripheral nerve denervation	
+20571	LP157815-4	LP98185-9	Exserohilum sp	
+21581	LP171707-5	LP32710-3	RHCE gene.c.676C>G (little e)	
+21582	LP171708-3	LP32710-3	RHCE gene.c.676C (E)	
+21604	LP171765-3	LP7844-6	Drug induced Ab	
+21610	LP171886-7	LP172585-4	Cancer related large scale gene mutation analysis	
+21649	LP172585-4	LP427513-9	Cancer related large scale gene	
+21725	LP172739-7	LP62875-7	X & Y chromosome analysis	
+21755	LP172795-9	LP14061-3	Adenovirus F(40+41)	
+21756	LP172796-7	LP172795-9	Adenovirus F(40+41) Ag	
+21773	LP172818-9	LP172890-8	Bacteria.extended spectrum beta lactamase resistant identified	
+21779	LP172876-7	LP173655-4	Platelet factor 4 polyanion (PVS) complex Ab.IgG	
+21791	LP173425-2	LP56740-1	Critical congenital heart disease	
+21794	LP173427-8	LP31426-7	Quinolone	
+21821	LP173559-8	LP7844-6	Platelet factor 4 polyanion (PVS) complex	
+21885	LP173655-4	LP173559-8	Platelet factor 4 polyanion (PVS) complex Ab	
+21971	LP174033-3	LP14459-9	F2 gene mutation analysis	
+21972	LP174034-1	LP19697-9	F5 gene mutation analysis	
+21974	LP174036-6	LP33555-1	FMR1 gene mutation analysis	
+21986	LP174048-1	LP19861-1	Hereditary pancreatitis gene mutation analysis	
+21987	LP174049-9	LP30742-8	HEXA gene mutation analysis	
+21988	LP174050-7	LP19724-1	HFE gene mutation analysis	
+22005	LP174067-1	LP19739-9	MTHFR gene mutation analysis	
+22032	LP174094-5	LP33553-6	TPMT gene mutation analysis	
+22355	LP175668-5	LP31427-5	Factor Xa inhibitors	
+22356	LP175669-3	LP175668-5	Direct Factor Xa inhibitors	
+22357	LP175670-1	LP175669-3	Direct Factor Xa inhibitors - oral	
+22358	LP175671-9	LP175669-3	Direct Factor Xa inhibitors - injectable	
+22359	LP175672-7	LP175668-5	Indirect Factor Xa inhibitors	
+22360	LP175673-5	LP175672-7	Indirect Factor Xa inhibitors - injectable	
+22361	LP175674-3	LP31427-5	Vitamin K antagonist - drug	
+22362	LP175675-0	LP31427-5	Glycoprotein IIb/IIIa inhibitors	
+22363	LP175676-8	LP31427-5	Other anticoagulants, pro- and antifibrinolytics	
+22364	LP175677-6	LP31427-5	Direct thrombin inhibitors	
+22365	LP175678-4	LP14272-6	Vitamin K antagonist - rodenticides	
+22369	LP175706-3	LP64606-4	Evaluation and management of a specific problem	
+22370	LP175707-1	LP16832-5	Aroclors	
+22386	LP175729-5	LP175728-7	Compensation and pension examination note	
+22456	LP182412-9	LP7834-7	Glucose & lactose & lactulose & XXX challenge panel	
+22460	LP182417-8	LP99348-2	Complement functional activity.alternative pathway	
+22462	LP182419-4	LP99348-2	Complement functional activity.classical pathway	
+22539	LP183588-5	LP7806-5	HLA-A+B+DR+DQ	
+22545	LP183617-2	LP15922-5	Triiodothyronine free index	
+22584	LP184352-5	LP31904-3	Vital signs master panel	
+22693	LP185922-4	LP19405-7	Noninvasive prenatal fetal aneuploidy and microdeletion overall interpretation	
+22725	LP185985-1	LP19405-7	Comment on overall fetal aneuploidy and microdeletion risk	
+22753	LP186101-4	LP7798-4	Inhouse lab test method	
+22790	LP186966-0	LP101882-1	Desflurane delivered	
+22795	LP186971-0	LP18610-3	Enflurane delivered	
+22796	LP186972-8	LP101888-8	Sevoflurane delivered	
+22801	LP186977-7	LP18067-6	Halothane delivered	
+22802	LP186978-5	LP17885-2	Isoflurane delivered	
+22807	LP186983-5	LP100617-2	Nitrous oxide delivered	
+22948	LP188528-6	LP101882-1	Desflurane.airway setting	
+22953	LP188534-4	LP186951-2	Nitrogen dioxide.airway setting	
+22955	LP188550-0	LP100617-2	Nitrous oxide target	
+22958	LP188558-3	LP7840-4	Airway pressure relief limit	
+22960	LP188564-1	LP7840-4	Apnea setting	
+22963	LP188570-8	LP72199-0	Breaths.assisted+supported	
+22964	LP188571-6	LP72199-0	Breaths.supported	
+22965	LP188572-4	LP72199-0	Breaths.supported+spontaneous	
+22969	LP188577-3	LP7840-4	Expiratory pause time setting	
+22971	LP188579-9	LP7840-4	Gas volume.inspired	
+22974	LP188584-9	LP188585-6	Inspiratory pressure.airway setting	
+22975	LP188585-6	LP7840-4	Inspiratory pressure.airway	
+22976	LP188586-4	LP7840-4	Airway pressure relief limit setting	
+22977	LP188587-2	LP72199-0	Breaths.controlled setting	
+22981	LP188595-5	LP7840-4	Inspiratory hold time backup setting	
+22985	LP188599-7	LP7840-4	Inspiratory phase end flow threshold	
+22991	LP188614-4	LP7840-4	Pressure.maximum	
+22992	LP188615-1	LP7840-4	Pressure.minimum	
+22996	LP188619-3	LP188693-8	Tidal volume.expired.ventilator supported+spontaneous breaths	
+22997	LP188620-1	LP188693-8	Tidal volume.expired.ventilator assisted+controlled breaths	
+22998	LP188621-9	LP188693-8	Tidal volume.expired.any breath type	
+23001	LP188626-8	LP7840-4	Rapid shallow breathing index	
+23007	LP188634-2	LP7840-4	Respirator mode	
+23009	LP188657-3	LP7840-4	Maximum airway pressure limit	
+23010	LP188658-1	LP7840-4	Maximum airway pressure limit setting	
+23011	LP188659-9	LP7840-4	Minimum airway pressure limit setting	
+23012	LP188660-7	LP7840-4	Minimum airway pressure limit	
+23013	LP188661-5	LP7840-4	Maximum inspiratory time.ventilator supported breath	
+23014	LP188662-3	LP7840-4	Maximum inspiratory time.ventilator supported breath setting	
+23015	LP188667-2	LP7840-4	Minimum airway pressure delta limit	
+23016	LP188668-0	LP7840-4	Minimum airway pressure delta limit setting	
+23018	LP188677-1	LP7840-4	Mandatory minute volume setting	
+23019	LP188678-9	LP7840-4	Minimum breaths setting	
+23020	LP188680-5	LP7840-4	Inspiratory pressure level	
+23021	LP188681-3	LP7840-4	Inspiratory pressure level setting	
+23030	LP188704-3	LP188585-6	Inspiratory pressure.airway delta	
+23031	LP188705-0	LP188585-6	Inspiratory pressure.airway delta setting	
+23048	LP188751-4	LP7840-4	Diffusion coefficient	
+23130	LP189737-2	LP33223-6	RHD genotype	
+23157	LP190352-7	LP7825-5	11q13 chromosome region rearrangements	
+23158	LP190354-3	LP7825-5	11q23 chromosome region rearrangements	
+23178	LP190743-7	LP190812-0	HLA class II	
+23421	LP199595-2	LP7834-7	Lead with demographics panel	
+23486	LP200238-6	LP36380-1	Coronary stent device panel	
+23487	LP200239-4	LP36380-1	Cardiac catheter device panel	
+23604	LP200517-3	LP7814-9	Fluid intake.enteral tube.nutritional formula concentration	
+23605	LP200517-3	LP7812-3	Fluid intake.enteral tube.nutritional formula concentration	
+23606	LP200518-1	LP7814-9	Fluid intake.intravascular.intermittent medication	
+23607	LP200518-1	LP7812-3	Fluid intake.intravascular.intermittent medication	
+23608	LP200519-9	LP7814-9	Fluid intake.intravascular.saline flush 0.9%	
+23609	LP200519-9	LP7812-3	Fluid intake.intravascular.saline flush 0.9%	
+23610	LP200520-7	LP7814-9	Fluid intake.intravascular.saline flush 0.45%	
+23611	LP200520-7	LP7812-3	Fluid intake.intravascular.saline flush 0.45%	
+23614	LP200522-3	LP7818-0	Fluid output.urine condom catheter	
+23615	LP200522-3	LP7817-2	Fluid output.urine condom catheter	
+23616	LP200523-1	LP7818-0	Fluid output.urine ileal conduit	
+23617	LP200523-1	LP7817-2	Fluid output.urine ileal conduit	
+23620	LP200525-6	LP7818-0	Fluid output.urine straight catheter	
+23621	LP200525-6	LP7817-2	Fluid output.urine straight catheter	
+23622	LP200526-4	LP7818-0	Fluid output.urine suprapubic catheter	
+23623	LP200526-4	LP7817-2	Fluid output.urine suprapubic catheter	
+23628	LP200529-8	LP7818-0	Fluid output.urine ostomy	
+23629	LP200529-8	LP7817-2	Fluid output.urine ostomy	
+23638	LP200534-8	LP7818-0	Output.stool fecal bag	
+23639	LP200534-8	LP7817-2	Output.stool fecal bag	
+23640	LP200535-5	LP7818-0	Output.stool rectal tube	
+23641	LP200535-5	LP7817-2	Output.stool rectal tube	
+23642	LP200536-3	LP7818-0	Output.stool rectal trumpet	
+23643	LP200536-3	LP7817-2	Output.stool rectal trumpet	
+23697	LP200630-4	LP32772-3	Cells.CD19+CD20+CD27+IgD+	
+23709	LP200645-2	LP32772-3	Cells.CD19+CD20+CD27+IgD-	
+23710	LP200646-0	LP32772-3	Cells.CD19+CD20+CD27-IgD+	
+23806	LP201737-6	LP201736-8	Leishmania infantum Ab	
+23807	LP201738-4	LP201736-8	Leishmania infantum Ab.IgG	
+23808	LP201739-2	LP201736-8	Leishmania infantum Ab.IgM	
+23820	LP201756-6	LP200316-0	Very long-chain acyl-CoA dehydrogenase	
+23831	LP201781-4	LP200316-0	Long-chain 3-hydroxyacyl-CoA dehydrogenase	
+23832	LP201783-0	LP31392-1	Phytanoyl-CoA dioxygenase	
+23834	LP201785-5	LP200316-0	Short branched-chain acyl-CoA dehydrogenase	
+23835	LP201786-3	LP31392-1	2-Methyl-3-hydroxybutyryl-CoA dehydrogenase	
+23836	LP201786-3	LP200316-0	2-Methyl-3-hydroxybutyryl-CoA dehydrogenase	
+23837	LP201787-1	LP200316-0	Short-chain 3-hydroxyacyl-CoA dehydrogenase	
+23849	LP201808-5	LP201806-9	Clostridium baratii toxin F gene DNA	
+23900	LP202925-6	LP202929-8	NAT2 gene product metabolic activity interpretation	
+23918	LP203177-3	LP97903-6	Clostridioides difficile glutamate dehydrogenase & toxin A & toxin B	
+23919	LP203178-1	LP7835-4	Clostridioides difficile glutamate dehydrogenase & toxin A & toxin B panel	
+23969	LP203629-3	LP7825-5	Dicentric chromosome	
+23982	LP203662-4	LP203652-5	Pediatric visual acuity exam method	
+23993	LP204142-6	LP130276-1	JWH-210 (synthetic cannabinoid)	
+24031	LP206578-9	LP206579-7	Campylobacter coli+jejuni+lari DNA	
+24077	LP207307-2	LP63049-8	HIV 1 proviral DNA reverse transcriptase & protease & integrase gene mutation analysis	
+24151	LP207886-5	LP72888-8	Number of involved non-regional lymph nodes	
+24195	LP208021-8	LP33388-7	Guidance limited for aspiration of cyst	
+24206	LP208057-2	LP175724-6	Multisection limited for pregnancy fetal abnormality	
+24226	LP208383-2	LP34220-1	Guidance for biopsy of transplanted pancreas	
+24365	LP209071-2	LP28726-5	Views multiple days for localization of tumor	
+24366	LP209072-0	LP28726-5	Views blood pool+ejection fraction+wall motion	
+24414	LP212180-6	LP173425-2	Other reason CCHD oxygen saturation screening not performed	
+24471	LP212302-6	LP212295-2	Simple variant ID+name+coding system	
+24472	LP212303-4	LP212306-7	Complex variant ID+name+coding system	
+24522	LP212429-7	LP36844-6	Semen collection panel	
+24546	LP213603-6	LP66615-3	Chikungunya virus structural proteins (E1+E2) Ab	
+24566	LP217193-4	LP14559-6	Bacteria & viruses	
+24650	LP220348-9	LP98185-9	Escherichia coli+Shigella sp	
+24663	LP220365-3	LP7844-6	Ma2	
+24668	LP220371-1	LP7844-6	Sox1	
+24726	LP220647-4	LP220648-2	Borrelia miyamotoi DNA	
+24749	LP222069-9	LP7839-6	Distance of tumor from non-peritonealized circumferential resection margin	
+24767	LP222110-1	LP95236-3	Type of margin positivity	
+24769	LP222113-5	LP7839-6	Tumor perforation is present	
+25216	LP227805-1	LP61776-8	BOR syndrome gene targeted mutation analysis	
+25669	LP228240-0	LP183664-4	CYP2C8 gene targeted mutation analysis	
+25758	LP228326-7	LP36565-7	ECGF1 gene targeted mutation analysis	
+26947	LP229487-6	LP40521-4	RHC gene targeted mutation analysis	
+26948	LP229488-4	LP32710-3	RHCE gene targeted mutation analysis	
+26949	LP229489-2	LP33223-6	RHD gene targeted mutation analysis	
+26950	LP229490-0	LP36033-6	RHD+RHC gene targeted mutation analysis	
+26951	LP229491-8	LP62089-5	RHE gene targeted mutation analysis	
+27634	LP234193-3	LP32652-7	Anton Group	
+27850	LP248167-1	LP118940-8	S little c super 1 Ag	
+27861	LP248180-4	LP118941-6	S little c super 2 Ag	
+27894	LP248332-1	LP182479-8	Porcine epidemic diarrhea virus genome	
+27895	LP248333-9	LP182479-8	Porcine epidemic diarrhea virus neutralizing Ab	
+28047	LP249713-1	LP249709-9	Senecavirus A identified	
+28052	LP249721-4	LP249934-3	Porcine circovirus type 2b ORF1 gene	
+28148	LP250844-0	LP250843-2	Vedolizumab.unbound	
+28149	LP250845-7	LP250843-2	Vedolizumab Ab.unbound	
+28153	LP250848-1	LP250847-3	Certolizumab.unbound	
+28154	LP250849-9	LP250847-3	Certolizumab Ab.unbound	
+28158	LP250852-3	LP250851-5	Ustekinumab.unbound	
+28159	LP250853-1	LP250851-5	Ustekinumab Ab.unbound	
+28163	LP250856-4	LP250855-6	Golimumab.unbound	
+28164	LP250857-2	LP250855-6	Golimumab Ab.unbound	
+28238	LP261247-3	LP32519-8	LOINC Document Ontology - Type of Service and Kind of Document	
+28251	LP262416-3	LP262435-3	Porcine parainfluenza virus 1 HN segment sequence identifier	
+28252	LP262417-1	LP262435-3	Porcine parainfluenza virus 1 F segment sequence identifier	
+28265	LP262449-4	LP262448-6	Escherichia coli paa gene DNA	
+28266	LP262451-0	LP262452-8	Escherichia coli eaeA gene DNA	
+28269	LP262454-4	LP262455-1	Escherichia coli aidA-I gene DNA	
+28274	LP262463-5	LP262464-3	Escherichia coli FimF41a gene DNA	
+28317	LP262545-9	LP262551-7	Borrelia afzelii+burgdorferi+garinii Ab band pattern	
+28336	LP262698-6	LP15061-2	o,p'- Dichlorodiphenyltrichloroethylene	
+28433	LP263609-2	LP7779-4	Intravascular diastolic with exercise	
+28593	LP266268-4	LP266269-2	Human coronavirus 229E+HKU1+OC43+NL63 RNA	
+28594	LP266269-2	LP35707-6	Human coronavirus 229E+HKU1+OC43+NL63	
+28628	LP266714-7	LP29682-9	Mycobacterium tuberculous fluoroquinolone & aminoglycoside & cyclic peptide susceptibility panel	
+28629	LP266715-4	LP29682-9	Nontuberculous mycobacterium macrolide & aminoglycoside susceptibility panel	
+28736	LP267923-3	LP263669-6	HBA1 & HBA2 gene deletion	
+28810	LP268314-4	LP94254-7	Name of event or disease associated with the public communication	
+28821	LP268362-3	LP7835-4	Acute hepatitis panel	
+28897	LP268967-9	LP343630-2	Comments text	
+28908	LP269149-3	LP7834-7	Transferrin.carbohydrate deficient & Creatinine panel	
+28999	LP269788-8	LP18112-0	O-desmethyltraMADol	
+29976	LP285531-2	LP19061-8	Cells.CD45RA/100 Cells.CD8	
+30352	LP285889-4	LP101882-1	Desflurane/Gas.total	
+31127	LP286664-0	LP100617-2	Nitrous oxide/Gas.total	
+31216	LP286757-2	LP14536-4	Oxygen/Inspired gas setting	
+31217	LP286757-2	LP7840-4	Oxygen/Inspired gas setting	
+31432	LP286975-0	LP145669-0	Reticulocytes.high fluorescence/100 erythrocytes	
+31437	LP286980-0	LP145666-6	Reticulocytes.low fluorescence/100 erythrocytes	
+31440	LP286983-4	LP145668-2	Reticulocytes.medium fluorescence/100 erythrocytes	
+31708	LP287240-8	LP188693-8	Tidal volume.expired/Ideal body weight	
+32038	LP305303-2	LP14161-1	Cortisol^11H post XXX challenge	
+32052	LP305319-8	LP14161-1	Cortisol^15M pre XXX challenge	
+32079	LP305347-9	LP14161-1	Cortisol^20M pre XXX challenge	
+32476	LP308243-7	LP100617-2	Nitrous oxide/Gas.total^during expiration	
+32572	LP308654-5	LP28442-9	HER2/CEP17	
+32597	LP308752-7	LP7840-4	Airway pressure delta setting^ventilator supported breath	
+32599	LP308754-3	LP7840-4	Airway pressure delta^ventilator supported breath	
+32600	LP308755-0	LP7840-4	Airway pressure limit setting^volume control mode	
+32601	LP308756-8	LP7840-4	Airway pressure limit^on ventilator W volume control mode	
+32602	LP308757-6	LP7840-4	Airway pressure risetime setting^ventilator controlled breath	
+32603	LP308758-4	LP7840-4	Airway pressure risetime setting^ventilator supported breaths	
+32604	LP308759-2	LP7840-4	Airway pressure risetime^ventilator controlled breath	
+32605	LP308760-0	LP7840-4	Airway pressure risetime^ventilator supported breath	
+32610	LP308765-9	LP7840-4	Argon^during a breath	
+32613	LP308769-1	LP72199-0	Breaths.assisted^on ventilator	
+32614	LP308770-9	LP72199-0	Breaths.assisted+controlled^on ventilator	
+32615	LP308771-7	LP72199-0	Breaths.assisted+supported+spontaneous^on ventilator	
+32616	LP308772-5	LP72199-0	Breaths.controlled^on ventilator	
+32620	LP308776-6	LP72199-0	Breaths.supported^on ventilator	
+32621	LP308777-4	LP72199-0	Breaths.supported+spontaneous^on ventilator	
+32622	LP308778-2	LP72199-0	Breaths.total all breath types^on ventilator	
+32632	LP308787-3	LP15150-3	Carbon dioxide setting^during mechanical ventilation W expiratory control	
+32633	LP308788-1	LP15150-3	Carbon dioxide setting^during mechanical ventilation W fresh gas control	
+32634	LP308789-9	LP15150-3	Carbon dioxide target^at end expiration	
+32638	LP308792-3	LP15150-3	Carbon dioxide^during a breath	
+32648	LP308803-8	LP101882-1	Desflurane setting^during mechanical ventilation W expiratory control	
+32649	LP308804-6	LP101882-1	Desflurane setting^during mechanical ventilation W fresh gas control	
+32651	LP308806-1	LP101882-1	Desflurane/Gas.total^during inspiration	
+32652	LP308807-9	LP101882-1	Desflurane^during a breath	
+32657	LP308814-5	LP18610-3	Enflurane setting^during mechanical ventilation W expiratory control	
+32658	LP308815-2	LP18610-3	Enflurane setting^during mechanical ventilation W fresh gas control	
+32668	LP308825-1	LP7840-4	Expiratory pressure level setting^APRV or Bi-level mode	
+32669	LP308826-9	LP7840-4	Expiratory pressure level^on ventilator W APRV or Bi-level mode	
+32676	LP308833-5	LP7840-4	Gas concentration.inspiratory-Gas concentration.expiratory^on ventilator	
+32688	LP308845-9	LP7840-4	Gas volume.inspired^since start of inspiration	
+32690	LP308847-5	LP18067-6	Halothane setting^during mechanical ventilation W expiratory control	
+32691	LP308848-3	LP18067-6	Halothane setting^during mechanical ventilation W fresh gas control	
+32693	LP308850-9	LP18067-6	Halothane^during a breath	
+32695	LP308852-5	LP101902-7	Helium^during a breath	
+32703	LP308860-8	LP7840-4	Inspiratory pressure level setting^APRV or Bi-level mode	
+32704	LP308861-6	LP7840-4	Inspiratory pressure level^on ventilator W APRV or Bi-level mode	
+32705	LP308862-4	LP188585-6	Inspiratory pressure.airway delta setting^ventilator backup inflation	
+32706	LP308863-2	LP188585-6	Inspiratory pressure.airway delta^ventilator backup inflation	
+32707	LP308864-0	LP188585-6	Inspiratory pressure.airway^ventilator backup inflation	
+32708	LP308865-7	LP188585-6	Inspiratory pressure.airway^ventilator pressure supported inflation	
+32712	LP308869-9	LP17885-2	Isoflurane setting^during mechanical ventilation W expiratory control	
+32713	LP308870-7	LP17885-2	Isoflurane setting^during mechanical ventilation W fresh gas control	
+32715	LP308872-3	LP17885-2	Isoflurane^during a breath	
+32716	LP308873-1	LP7840-4	Leak^on ventilator	
+32718	LP308875-6	LP7840-4	Maximum inspiratory time setting^ventilator supported breath	
+32719	LP308876-4	LP7840-4	Maximum inspiratory time^ventilator supported breath	
+32721	LP308878-0	LP7840-4	Minimum minute volume^total patient+ventilator breaths	
+32722	LP308879-8	LP7840-4	Minute volume^on ventilator	
+32729	LP308886-3	LP15746-8	Nitrogen^during a breath	
+32733	LP308890-5	LP100617-2	Nitrous oxide setting^during mechanical ventilation W expiratory control	
+32734	LP308891-3	LP100617-2	Nitrous oxide setting^during mechanical ventilation W fresh gas control	
+32735	LP308892-1	LP100617-2	Nitrous oxide target^at end expiration	
+32736	LP308893-9	LP100617-2	Nitrous oxide^during a breath	
+32737	LP308894-7	LP7840-4	Oxygen gas setting^during mechanical ventilation W fresh gas control	
+32753	LP308903-6	LP7840-4	Oxygen setting^during mechanical ventilation W expiratory control	
+32756	LP308906-9	LP7840-4	Oxygen.alveolar - capillary^^adjusted to patient's actual temperature	
+32757	LP308907-7	LP7840-4	Oxygen/Gas.total^during inspiration	
+32760	LP308910-1	LP7840-4	Oxygen^at end inspiration	
+32761	LP308911-9	LP7840-4	Oxygen^during a breath	
+32801	LP308951-5	LP7840-4	Pressure minimum^during inspiration	
+32816	LP308966-3	LP7840-4	Pressure^at end inspiration	
+32826	LP308976-2	LP101888-8	Sevoflurane setting^during mechanical ventilation W expiratory control	
+32827	LP308977-0	LP101888-8	Sevoflurane setting^during mechanical ventilation W fresh gas control	
+32829	LP308979-6	LP101888-8	Sevoflurane^during a breath	
+32837	LP308987-9	LP188693-8	Tidal volume.expired^any patient+ventilator breath	
+32839	LP308989-5	LP188693-8	Tidal volume.expired^ventilator assisted+controlled breaths	
+32840	LP308990-3	LP188693-8	Tidal volume.expired^ventilator supported+spontaneous breaths	
+32841	LP308991-1	LP188693-8	Tidal volume.expired^ventilator supported+spontaneous breaths/Ideal body weight	
+32913	LP310253-2	LP288654-9	VS Ab	
+32916	LP310272-2	LP188458-6	Aspergillus oryzae Ab.IgE.RAST class	
+33239	LP411093-0	LP232001-0	Genetic variant confers resistance to therapy	
+33245	LP411099-7	LP232001-0	Genetic variant interactions diagnostic significance category	
+33246	LP411100-3	LP232001-0	Genetic variant interactions prognostic significance category	
+33346	LP411711-7	LP427513-9	Metabolic disease multigene analysis	
+33444	LP412147-3	LP193279-9	UGT1A1 gene.TA repeats & c.211G>A	
+33462	LP412303-2	LP32674-1	KEL gene.c.578C>T	
+33463	LP412304-0	LP32710-3	RHCE gene.c.676G>C	
+33464	LP412305-7	LP32710-3	RHCE gene.c.307C>T & 109-bp insertion	
+33523	LP416907-6	LP64213-9	Bacterial resistance gene	
+33524	LP416908-4	LP64213-9	Bacterial gene drug resistance mutation	
+33679	LP417605-5	LP417866-3	SARS-like coronavirus	
+33774	LP417913-3	LP7835-4	SARS coronavirus 2 Ab.IgG & IgM panel	
+33800	LP418016-4	LP417541-2	SARS coronavirus 2 ORF8 gene	
+33978	LP418773-0	LP29677-9	Pupillary distance far	
+34064	LP418969-4	LP7839-6	Prostate cancer pathology	
+34067	LP419093-2	LP7839-6	Mitosis	
+34098	LP419711-9	LP262556-6	Candida auris 28S rDNA gene	
+34250	LP420411-3	LP94254-7	Total cases among healthcare personnel	
+34261	LP420511-0	LP14855-8	Nipah virus	
+34262	LP420512-8	LP420511-0	Nipah virus Ab	
+34268	LP420521-9	LP14855-8	Kokobera virus	
+34269	LP420522-7	LP420521-9	Kokobera virus Ab	
+34270	LP420523-5	LP420522-7	Kokobera virus Ab.IgG	
+34271	LP420524-3	LP420522-7	Kokobera virus Ab.IgM	
+34272	LP420525-0	LP420522-7	Kokobera virus Ab.total	
+34418	LP420853-6	LP97037-3	Pattern electroretinography measurements panel	
+34458	LP420957-5	LP420956-7	Thuja spp IgE	
+34603	LP421437-7	LP421341-1	Clot stiffness.tissue factor induced+platelet glycoprotein IIb-IIIa receptor inhibited^post heparin neutralization	
+34696	LP422367-5	LP31418-4	Fetal trisomy 13+trisomy 18+triploidy prior risk	
+34715	LP422452-5	LP20752-9	Nuclear Ab pattern.centromere	
+34719	LP422456-6	LP20752-9	Nuclear Ab pattern.PCNA	
+34725	LP422493-9	LP31907-6	Intravascular blood pressure panel	
+34747	LP422737-9	LP418046-1	SARS coronavirus 2 S gene mutation of unknown significance	
+34748	LP422738-7	LP418046-1	SARS coronavirus 2 S gene mutation of known significance	
+34838	LP426479-4	LP31893-8	Prolonged clotting time evaluation panel	
+34839	LP426480-2	LP31893-8	Clotting disorder evaluation panel	
+34858	LP426539-5	LP427513-9	Pan-ethnic carrier screening multigene analysis	
+34985	LP427300-1	LP422743-7	Clot initiation time^after addition of heparinase	
+35031	LP427513-9	LP7822-2	Multigene studies	
+35048	LP428095-6	LP7835-4	Borrelia burgdorferi Ab & Ab.IgG & IgM bands panel	
+35065	LP428170-7	LP428213-5	Histologic type of neuroendocrine tumor	
+35067	LP428174-9	LP428214-3	Carcinosarcoma tumor type	
+35082	LP428214-3	LP7839-6	Carcinosarcoma component	
+35084	LP428217-6	LP428183-0	Maximum depth of myometrial invasion	
+35103	LP428261-4	LP31391-3	Chemokine (C-C motif) ligand 3	
+35160	LP428508-8	LP73694-9	Visual acuity.binocular intermediate	
+35756	LP431620-6	LP98185-9	Providencia sp	
+35798	LP432695-7	LP432695-7	{component}	
+35896	LP7036-9	LP30607-3	Artificial cardiac pacemaker	
+35934	LP7092-2	LP7253-0	Brth	
+35954	LP7115-1	LP30607-3	Cardiac pacemaker prosthetic device	
+35955	LP7116-9	LP7115-1	Cardiac pacemaker prosthetic lead	
+36150	LP7350-4	LP30614-9	Hospitalization leading to rehabilitation treatment	
+36216	LP7436-1	LP30616-4	NAACCR case?	
+36272	LP7498-1	LP30613-1	Primary Dx for treatment plan	
+36330	LP7573-1	LP32515-6	Ser+Stool	
+36432	LP7705-9	LP30622-2	Venous.central	
+36485	LP29731-4	LP6990-8	Abdomen.XXX	
+36486	LP29732-2	LP6990-8	Abdomen.RUQ	
+36527	LP29809-8	LP29808-0	Extremity artery.bilateral	
+36531	LP29813-0	LP33454-7	Mammary artery.internal	
+36538	LP29822-1	LP30444-1	AV shunt.XXX	
+36544	LP29834-6	LP29159-8	Bone.XXX	
+36547	LP29843-7	LP7034-4	Brachial artery+Cephalic artery	
+36548	LP29847-8	LP29808-0	Brachial artery+Subclavian artery	
+36558	LP29862-7	LP7641-6	Breast specimen	
+36559	LP29862-7	LP29849-4	Breast specimen	
+36572	LP29880-9	LP30447-4	Catheter.XXX	
+36573	LP29882-5	LP30448-2	Cavity.XXX	
+36603	LP29936-9	LP7196-1	Elbow.bilateral	
+36607	LP29942-7	LP29943-5	Esophagus+Hypopharynx	
+36608	LP29943-5	LP7679-6	Esophagus+Stomach	
+36641	LP29968-2	LP33803-5	Facial bones+Sinuses	
+36659	LP29989-8	LP7245-6	Foot.bilateral	
+36711	LP30070-4	LP7256-3	Liver & Portal System	
+36715	LP30077-9	LP30231-2	Kidney arteries	
+36716	LP30078-7	LP32496-9	Kidney veins	
+36726	LP30101-7	LP30070-4	Liver+Diaphragm	
+36729	LP30106-6	LP30634-7	LM glasses	
+36730	LP30107-4	LP30106-6	LM glasses.lens.left	
+36731	LP30108-2	LP30106-6	LM glasses.lens.right	
+36734	LP30111-6	LP7344-7	Lymphatics	
+36735	LP30112-4	LP30111-6	Lymphatics.abdominal	
+36736	LP30113-2	LP30112-4	Lymphatics.abdominal.bilateral	
+36743	LP30125-6	LP7588-9	Meckels diverticulum	
+36775	LP30169-4	LP36559-0	Pelvis+Hip	
+36776	LP30170-2	LP30169-4	Pelvis+Hip.bilateral	
+36777	LP30171-0	LP30169-4	Pelvis+Hip.left	
+36778	LP30172-8	LP30169-4	Pelvis+Hip.right	
+36781	LP30177-7	LP30178-5	Peritoneovenous shunt	
+36783	LP30179-3	LP33715-1	Petrous bone	
+36817	LP30229-6	LP7406-4	Rectum+Colon	
+36845	LP30274-2	LP30467-2	Shunt.XXX	
+36847	LP30276-7	LP30468-0	Sinus tract.XXX	
+36858	LP30290-8	LP30643-8	Spinal canal	
+36873	LP30302-1	LP7596-2	Spine.cervical+Spine.thoracic+Spine.lumbar	
+36881	LP30309-6	LP7596-2	Spine.thoracic+Spine.lumbar	
+36907	LP30349-2	LP30346-8	Toes.right	
+36917	LP30379-9	LP32496-9	Central vein	
+36918	LP30380-7	LP30379-9	Central vein.bilateral	
+36919	LP30381-5	LP30379-9	Central vein.left	
+36920	LP30382-3	LP30379-9	Central vein.right	
+36937	LP30400-3	LP32496-9	Peripheral veins.XXX	
+36942	LP30415-1	LP33464-6	Carotid vessels+Neck vessels	
+36951	LP30427-6	LP30632-1	Vital signs	
+37045	LP30570-3	LP7593-9	Cell types	
+37046	LP30606-5	LP7281-1	Eye & eye parts	
+37047	LP30607-3	LP76034-5	Devices	
+37048	LP30613-1	LP76034-5	Attachments	
+37049	LP30614-9	LP30613-1	Rehab attachments	
+37050	LP30615-6	LP30613-1	Ambulance attachments	
+37051	LP30616-4	LP76034-5	Tumor registry	
+37054	LP30619-8	LP7218-3	Ciliary bod	
+37066	LP30632-1	LP76034-5	Miscellaneous systems	
+37067	LP30633-9	LP76034-5	Cardiology studies	
+37068	LP30634-7	LP30607-3	Glasses & contact lenses	
+37069	LP30635-4	LP32505-7	Obstetrical	
+37071	LP30637-0	LP7593-9	Misc specimens	
+37072	LP30638-8	LP7441-1	Nerve plexuses	
+37075	LP30643-8	LP76034-5	Body region	
+37081	LP32496-9	LP7700-0	Vein general heading	
+37082	LP32505-7	LP76034-5	Body systems	
+37083	LP32515-6	LP7593-9	Multiple specimens	
+37092	LP33437-2	LP30070-4	Biliary system	
+37106	LP33455-4	LP30386-4	Lower extremity vein.left	
+37107	LP33456-2	LP30386-4	Lower extremity vein.right	
+37108	LP33457-0	LP34717-6	Upper extremity veins.left	
+37109	LP33458-8	LP34717-6	Upper extremity veins.right	
+37111	LP33461-2	LP7705-9	Vena cava.inferior+Lower extremity veins	
+37161	LP33713-6	LP32496-9	Spinal vein	
+37162	LP33715-1	LP30281-7	Cranial bones	
+37171	LP33797-9	LP34217-7	Upper extremity>Olecranon.left	
+37175	LP33806-8	LP7596-2	Spine.lumbar+Sacrum+Sacroiliac joint+Coccyx	
+37176	LP33810-0	LP30347-6	Toe.bilateral	
+37178	LP33869-6	LP33868-8	Aorta+Femoral artery.left	
+37180	LP33901-7	LP7009-6	Aortic arch+Brachial artery	
+37181	LP33902-5	LP7009-6	Aortic arch+Carotid artery	
+37184	LP33905-8	LP7009-6	Aortic arch+Vertebral artery	
+37185	LP33906-6	LP33905-8	Aortic arch+Vertebral artery.left	
+37186	LP33907-4	LP33905-8	Aortic arch+Vertebral artery.right	
+37188	LP33909-0	LP7081-5	Brachial artery.bilateral	
+37192	LP33913-2	LP33912-4	Carotid artery+Vertebral artery.bilateral	
+37193	LP33914-0	LP33912-4	Carotid artery+Vertebral artery.left	
+37195	LP33916-5	LP29808-0	Extremity artery.left	
+37197	LP33918-1	LP34181-5	Upper extremity artery.bilateral	
+37202	LP33924-9	LP29805-6	Maxillary artery.internal	
+37205	LP33927-2	LP30069-6	Pudendal artery.internal	
+37212	LP33936-3	LP30384-9	Extremity vein.bilateral	
+37213	LP33937-1	LP30384-9	Extremity vein.left	
+37214	LP33938-9	LP30386-4	Lower extremity vein.bilateral	
+37215	LP33939-7	LP34717-6	Upper extremity veins.bilateral	
+37217	LP33941-3	LP32496-9	Gonadal veins	
+37224	LP33995-9	LP30301-3	Spine.disc.cervical	
+37261	LP34093-2	LP34100-5	Aortic arch+Carotid artery.bilateral+Vertebral artery.bilateral	
+37262	LP34094-0	LP34934-7	Aortic arch+Carotid artery.common.bilateral	
+37263	LP34095-7	LP34934-7	Aortic arch+Carotid artery.common.left	
+37264	LP34096-5	LP34934-7	Aortic arch+Carotid artery.common.right	
+37265	LP34097-3	LP34935-4	Aortic arch+Carotid artery.external.bilateral	
+37266	LP34098-1	LP34935-4	Aortic arch+Carotid artery.external.left	
+37267	LP34099-9	LP34935-4	Aortic arch+Carotid artery.external.right	
+37268	LP34100-5	LP7009-6	Aortic arch+Carotid artery+Vertebral artery	
+37269	LP34101-3	LP7289-4	Coronary graft	
+37270	LP34102-1	LP34103-9	Lymphatics.abdominal+Lymphatics.pelvic.left	
+37271	LP34103-9	LP30111-6	Lymphatics.abdominal+Lymphatics.pelvic	
+37272	LP34104-7	LP34103-9	Lymphatics.abdominal+Lymphatics.pelvic.bilateral	
+37273	LP34106-2	LP30111-6	Lymphatics.left	
+37274	LP34107-0	LP35274-7	Lymphatics.pelvic.bilateral	
+37286	LP34151-8	LP33912-4	Carotid artery+Vertebral artery.right	
+37287	LP34152-6	LP35100-4	Carotid artery+Cerebral artery.right	
+37290	LP34157-5	LP29808-0	Extremity artery.right	
+37291	LP34158-3	LP30384-9	Extremity vein.right	
+37293	LP34161-7	LP34939-6	Carotid artery+Cerebral artery internal.right	
+37315	LP34178-1	LP30167-8	Testicle vessels	
+37321	LP34217-7	LP29957-5	Upper extremity>Olecranon	
+37322	LP34233-4	LP34241-7	Breast implant.left	
+37323	LP34234-2	LP34241-7	Breast implant.right	
+37329	LP34241-7	LP29849-4	Breast implant	
+37330	LP34242-5	LP34241-7	Breast implant.bilateral	
+37335	LP34248-2	LP29862-7	Breast^Specimen.bilateral	
+37336	LP34249-0	LP29862-7	Breast^Specimen.left	
+37337	LP34257-3	LP30290-8	Spine.cavity	
+37348	LP34285-4	LP33917-3	Lower extremity artery.bilateral	
+37353	LP34292-0	LP7138-3	Chest XXX	
+37369	LP34303-5	LP29159-8	Superficial bone	
+37375	LP34596-4	LP33999-1	Thoracic outlet	
+37376	LP34597-2	LP34596-4	Thoracic outlet.bilateral	
+37377	LP34598-0	LP34596-4	Thoracic outlet.right	
+37378	LP34599-8	LP34596-4	Thoracic outlet.left	
+37380	LP34667-3	LP7714-1	Head vessels+Neck vessels	
+37381	LP34669-9	LP30421-9	Lower extremity vessels.left	
+37382	LP34670-7	LP30421-9	Lower extremity vessels.right	
+37384	LP34691-3	LP30421-9	Lower extremity vessels.bilateral	
+37385	LP34692-1	LP34695-4	Lower extremity veins.bilateral	
+37386	LP34693-9	LP34695-4	Lower extremity veins.right	
+37387	LP34694-7	LP34695-4	Lower extremity veins.left	
+37398	LP34708-5	LP34721-8	Extremity arteries.bilateral	
+37412	LP34763-0	LP7596-2	Spine.cervical+Spine.thoracic	
+37420	LP34904-0	LP30070-4	Liver transplant	
+37421	LP34905-7	LP7380-1	Kidney transplant	
+37423	LP34911-5	LP34217-7	Upper extremity>Olecranon.right	
+37424	LP34912-3	LP33868-8	Aorta+Femoral artery.right	
+37428	LP34916-4	LP34103-9	Lymphatics.abdominal+Lymphatics.pelvic.right	
+37429	LP34918-0	LP30111-6	Lymphatics.right	
+37430	LP34919-8	LP29862-7	Breast^Specimen.right	
+37435	LP34924-8	LP35100-4	Carotid artery+Cerebral artery.left	
+37438	LP34927-1	LP34939-6	Carotid artery+Cerebral artery internal.left	
+37447	LP34934-7	LP7009-6	Aortic Arch & Carotid Artery.Common	
+37448	LP34935-4	LP7009-6	Aortic Arch & Carotid Artery.External	
+37449	LP34938-8	LP29872-6	Internal Carotid Artery	
+37450	LP34939-6	LP29872-6	Carotid Artery & Cerebral Artery Internal	
+37451	LP34941-2	LP30465-6	Chest>Ribs.Anterior & Posterior	
+37465	LP35100-4	LP29872-6	Carotid artery+Cerebral artery	
+37466	LP35102-0	LP35100-4	Carotid artery.bilateral+Cerebral artery.bilateral	
+37475	LP35147-5	LP7256-3	Gastrointestinal system+Respiratory system	
+37498	LP35257-2	LP33438-0	Extremity vessels.bilateral	
+37499	LP35258-0	LP30394-8	Upper extremity vein.bilateral	
+37502	LP35261-4	LP33917-3	Lower extremity artery.left	
+37503	LP35262-2	LP34181-5	Upper extremity artery.left	
+37504	LP35263-0	LP30394-8	Upper extremity vein.left	
+37506	LP35265-5	LP33438-0	Extremity vessels.right	
+37508	LP35267-1	LP33917-3	Lower extremity artery.right	
+37509	LP35268-9	LP34181-5	Upper extremity artery.right	
+37510	LP35269-7	LP30394-8	Upper extremity vein.right	
+37511	LP35270-5	LP29766-0	Umbilical vessels	
+37512	LP35271-3	LP30158-7	Pancreas transplant	
+37513	LP35274-7	LP30111-6	Lymphatics.pelvic	
+37514	LP35432-1	LP7679-6	Liver+Lung	
+37515	LP35661-5	LP30465-6	Chest>Ribs.Upper.Anterior & Posterior	
+37516	LP35661-5	LP34943-8	Chest>Ribs.Upper.Anterior & Posterior	
+37528	LP36004-7	LP29813-0	Mammary artery.internal.left	
+37542	LP36103-7	LP30421-9	Lower extremity vessel graft.left	
+37543	LP36104-5	LP30421-9	Lower extremity vessel graft.right	
+37547	LP36114-4	LP40374-8	Upper extremity vessel graft.left	
+37548	LP36115-1	LP40374-8	Upper extremity vessel graft.right	
+37549	LP36116-9	LP30423-5	Kidney vessels transplant	
+37562	LP36530-1	LP30099-3	Lower leg vessels.bilateral	
+37563	LP36531-9	LP30099-3	Lower leg vessels.left	
+37564	LP36532-7	LP30327-8	Thigh vessels.left	
+37565	LP36533-5	LP30327-8	Thigh vessels.right	
+37566	LP36534-3	LP40276-5	Wrist vessels.left	
+37567	LP36535-0	LP40276-5	Wrist vessels.right	
+37571	LP36548-3	LP29872-6	Carotid artery.unilateral	
+37573	LP36553-3	LP30099-3	Lower leg vessels.right	
+37579	LP36561-6	LP33444-8	Superficial muscle	
+37587	LP36642-4	LP30457-3	Superficial lymph node	
+37589	LP36704-2	LP40374-8	Upper extremity vessel graft.bilateral	
+37603	LP40337-5	LP7057-5	Blood special sources	
+37604	LP40338-3	LP40337-5	Blood central	
+37605	LP40339-1	LP7479-1	Plasma for clotting studies	
+37606	LP40340-9	LP7057-5	Blood cellular components	
+37607	LP40341-7	LP7593-9	Fluid from closed body spaces (cavities)	
+37608	LP40342-5	LP40341-7	Eye source fluids	
+37609	LP40343-3	LP30569-5	Gastrointestinal fluids	
+37610	LP40344-1	LP30569-5	Breast source fluid	
+37611	LP40345-8	LP30569-5	Urogenital specimens	
+37612	LP40347-4	LP7593-9	Infected sources	
+37613	LP40348-2	LP30569-5	Lung bronchial system source	
+37614	LP40349-0	LP7681-2	Urine components	
+37615	LP40350-8	LP7593-9	Therapeutic external fluids or their containers	
+37617	LP40370-6	LP34241-7	Breast implant.unilateral	
+37621	LP40374-8	LP33438-0	Upper extremity vessel graft	
+37624	LP57368-0	LP30569-5	Nose, Trachea or Throat	
+37625	LP57369-8	LP7593-9	Pregnancy Related	
+37626	LP57382-1	LP30347-6	Lower extremity>Great toe	
+37627	LP57382-1	LP221471-8	Lower extremity>Great toe	
+37628	LP57492-8	LP7593-9	Environmental specimens	
+37746	LP101875-5	LP30607-3	Anesthesia gas machine	
+37766	LP115700-9	LP121344-8	Breast lymphatics.left	
+37767	LP115701-7	LP121344-8	Breast lymphatics.right	
+37773	LP118378-1	LP29813-0	Mammary artery.internal.right	
+37780	LP121344-8	LP30111-6	Breast lymphatics	
+37797	LP136116-3	LP33438-0	Extremity vessels.left	
+37799	LP136119-7	LP7687-9	Kidney.bilateral+Bladder	
+37800	LP145518-9	LP7714-1	Abdominal vessels+Pelvis vessels	
+37802	LP147333-1	LP7687-9	Kidney.bilateral+Renal vessels	
+37822	LP173474-0	LP7576-4	Ser/Plas.maternal	
+37823	LP173474-0	LP57369-8	Ser/Plas.maternal	
+37828	LP175688-3	LP76034-5	LOINC Document Ontology - Setting	
+37855	LP186203-8	LP7265-4	Vaginal	
+37882	LP190669-4	LP30622-2	Aorta.thoracic+Aorta.abdominal+Pelvic vessels+Lower extremity vessels.bilateral	
+37884	LP191590-1	LP33481-0	Abdomen+Pelvis>Vessels	
+37901	LP191606-5	LP7281-1	Head>Cerebral cisterns	
+37926	LP191637-0	LP7034-4	Aorta.abdominal+Pelvic vessels+Lower extremity vessels.bilateral	
+37941	LP192102-4	LP76034-5	Setting.other	
+37953	LP199279-3	LP7310-8	Heart.ventricle.left.apical inferior	
+38002	LP200388-9	LP202917-3	Chest>Pulmonary artery.bilateral	
+38008	LP200441-6	LP33481-0	Abdomen+Pelvis>Small bowel	
+38047	LP203624-4	LP191605-7	Head+Neck>Arteries	
+38057	LP206625-8	LP207283-5	Wrist.left>Vessels	
+38058	LP206626-6	LP207283-5	Wrist.right>Vessels	
+38082	LP206674-6	LP33475-2	Upper extremity.bilateral>Shoulder vessels	
+38085	LP206686-0	LP206685-2	Chest+Neck>Aortic arch+Neck vessels	
+38089	LP206692-8	LP202917-3	Chest>Pulmonary artery	
+38113	LP207145-6	LP6990-8	Abdomen>Hepatic vein	
+38124	LP207274-4	LP206715-7	Foot>Foot vessels	
+38127	LP207283-5	LP200373-1	Upper extremity>Wrist vessels	
+38135	LP207312-2	LP207283-5	Upper extremity.bilateral>Wrist vessels	
+38230	LP208144-8	LP208142-2	Head>Cerebral arteries.left	
+38231	LP208145-5	LP208142-2	Head>Cerebral arteries.right	
+38235	LP208370-9	LP33481-0	Abdomen+Pelvis>Rectum	
+38294	LP213720-8	LP76034-5	Radiology systems	
+38383	LP230299-2	LP230301-6	Chest>Aortic arch & Head+Neck>Carotid artery.left	
+38384	LP230300-8	LP230301-6	Chest>Aortic arch & Head+Neck>Carotid artery.right	
+38386	LP230302-4	LP206685-2	Chest>Aortic arch & Head+Neck>Carotid artery+Vertebral artery	
+38388	LP230304-0	LP230301-6	Chest>Aortic arch & Neck>Carotid artery.common.bilateral	
+38389	LP230305-7	LP230301-6	Chest>Aortic arch & Neck>Carotid artery.common.right	
+38390	LP230306-5	LP230301-6	Chest>Aortic arch & Neck>Carotid artery.common.left	
+38402	LP231786-7	LP7281-1	Head>Orbit.bilateral+Temporal bone.bilateral+Pituitary+Sella turcica	
+38441	LP232632-2	LP7735-6	XXX>Spinal vessel	
+38485	LP248471-7	LP7138-3	Chest>Heart && Chest>Heart.ventricle.left	
+38501	LP248573-0	LP6990-8	Abdomen>Mesenteric vein	
+38513	LP248755-3	LP191621-4	Pelvis>Pelvis artery	
+38514	LP248758-7	LP30630-5	Pelvis>Uterine artery.left	
+38515	LP248759-5	LP30630-5	Pelvis>Uterine artery.right	
+38576	LP249701-6	LP191605-7	Head+Neck>Cerebral artery.right	
+38577	LP249702-4	LP191605-7	Head+Neck>Cerebral artery.left	
+38599	LP250974-5	LP200342-6	Head+Neck>Carotid artery.left	
+38624	LP251048-7	LP33481-0	Abdomen>Kidney+Pelvis>Urinary bladder	
+38643	LP251100-6	LP191605-7	Head+Neck>Jugular vein.unilateral	
+38644	LP251101-4	LP191605-7	Head+Neck>Jugular vein.bilateral	
+38785	LP343294-7	LP230282-8	Abdomen>Spine.lumbar intrathecal space	
+38866	LP428477-6	LP221473-4	Upper extremity>Wrist.pisiform+triquetrum	
+38870	LP428481-8	LP221473-4	Upper extremity>Wrist.scaphoid+trapezium+trapezoid	
+39049	LP175756-8	LP7844-6	Major histocompatibility complex class I chain-related antigen A	
+39068	LP248770-2	LP29693-6	LAB.NOTYETCATEG	
+39069	LP248771-0	LP7787-7	CLINICAL.NOTYETCATEG	
+39070	LP248772-8	LP29696-9	SURVEY.NOTYETCATEG	
+39079	LP344736-6	LP14410-2	Deprecated Streptococcus pneumoniae U.S. serotypes	
+39080	LP348814-7	LP7822-2	Single nucleotide polymorphism	
+39083	LP36107-8	LP30632-1	Surgical specimen	
