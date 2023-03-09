@@ -21,7 +21,8 @@ Alternatively, you can run all of them at once using default values by running `
 
 Help text can be run via `python comp_loinc/build.py --help`. You can see help text for a specific command, including 
 information about its parameters, by running `python comp_loinc/build.py COMMAND_NAME --help`.
-
+### Refresh Mappings: Get CHEBI2LOINC Part mappings from the loinc FHIR server. Requires LOINC credentials.
+`python comp_loinc/build.py chebi_maps [username] [password]`
 ### 1.1. `parts`: Build the part ontology from the intermediate Part Hierarchy files
 `python comp_loinc/build.py parts --schema-file ./model/schema/part_schema.yaml --part-directory ./data/part_files --output ./data/output/owl_component_files/part_ontology.owl --part-data ./data/part_data/part_data.tsv`
 
