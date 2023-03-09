@@ -1,0 +1,2379 @@
+# curie_map:
+#   linkml: https://w3id.org/linkml/
+#   sempav: https://w3id.org/sempav
+#   loinc: https://loinc.org/ 
+#   CHEBI: http://purl.obolibrary.org/obo/CHEBI_
+#   skos: http://www.w3.org/2004/02/skos/core#
+# license: https://github.com/mapping-commons/mapping-commons.github.io/blob/main/docs/original_license_applies.md
+# mapping_date: '2022-02-23'
+# mapping_set_id: http://w3id.org/mapping_commons/disease-mappings/onto-icd10
+# mapping_tool: https://github.com/mapping-commons/sssom-py
+subject_id	predicate_id	object_id	object_label	mapping_justification
+loinc:LP100038-1	skos:exactMatch	CHEBI:33216	bisphenol A	sempav:HumanCuration
+loinc:LP100039-9	skos:exactMatch	CHEBI:65173	iloperidone	sempav:HumanCuration
+loinc:LP100040-7	skos:exactMatch	CHEBI:6432	levamisole	sempav:HumanCuration
+loinc:LP100041-5	skos:exactMatch	CHEBI:135939	lacosamide	sempav:HumanCuration
+loinc:LP100042-3	skos:exactMatch	CHEBI:291342	desloratadine	sempav:HumanCuration
+loinc:LP100043-1	skos:exactMatch	CHEBI:64312	memantine	sempav:HumanCuration
+loinc:LP100044-9	skos:exactMatch	CHEBI:6797	Metaxalone	sempav:HumanCuration
+loinc:LP100045-6	skos:exactMatch	CHEBI:135005	milnacipran	sempav:HumanCuration
+loinc:LP100047-2	skos:exactMatch	CHEBI:109549	N-[2-[(8S)-2,6,7,8-tetrahydro-1H-cyclopenta[e]benzofuran-8-yl]ethyl]propanamide	sempav:HumanCuration
+loinc:LP100048-0	skos:exactMatch	CHEBI:134966	rufinamide	sempav:HumanCuration
+loinc:LP100049-8	skos:exactMatch	CHEBI:67900	salvinorin A	sempav:HumanCuration
+loinc:LP100053-0	skos:exactMatch	CHEBI:9137	sibutramine	sempav:HumanCuration
+loinc:LP100054-8	skos:exactMatch	CHEBI:94435	1-(1,3-benzodioxol-5-yl)-4,4-dimethyl-1-penten-3-ol	sempav:HumanCuration
+loinc:LP100055-5	skos:exactMatch	CHEBI:71940	tadalafil	sempav:HumanCuration
+loinc:LP100056-3	skos:exactMatch	CHEBI:80555	4-Hydroxy-N-desmethyltamoxifen	sempav:HumanCuration
+loinc:LP100057-1	skos:exactMatch	CHEBI:44616	afimoxifene	sempav:HumanCuration
+loinc:LP100058-9	skos:exactMatch	CHEBI:80554	N-Desmethyltamoxifen	sempav:HumanCuration
+loinc:LP100060-5	skos:exactMatch	CHEBI:46295	vardenafil	sempav:HumanCuration
+loinc:LP100176-9	skos:exactMatch	CHEBI:19680	2-methylacetoacetate	sempav:HumanCuration
+loinc:LP100184-3	skos:exactMatch	CHEBI:28017	starch	sempav:HumanCuration
+loinc:LP100617-2	skos:exactMatch	CHEBI:17045	dinitrogen oxide	sempav:HumanCuration
+loinc:LP101032-3	skos:exactMatch	CHEBI:36740	alpha-pinene	sempav:HumanCuration
+loinc:LP101033-1	skos:exactMatch	CHEBI:5050	fexofenadine	sempav:HumanCuration
+loinc:LP101034-9	skos:exactMatch	CHEBI:5062	finasteride	sempav:HumanCuration
+loinc:LP101036-4	skos:exactMatch	CHEBI:45863	paclitaxel	sempav:HumanCuration
+loinc:LP101037-2	skos:exactMatch	CHEBI:7930	Pargyline	sempav:HumanCuration
+loinc:LP101038-0	skos:exactMatch	CHEBI:7956	penciclovir	sempav:HumanCuration
+loinc:LP101128-9	skos:exactMatch	CHEBI:83569	pendimethalin	sempav:HumanCuration
+loinc:LP101130-5	skos:exactMatch	CHEBI:35549	perfluorooctanoic acid	sempav:HumanCuration
+loinc:LP101131-3	skos:exactMatch	CHEBI:9331	sulfamethizole	sempav:HumanCuration
+loinc:LP101132-1	skos:exactMatch	CHEBI:38954	temephos	sempav:HumanCuration
+loinc:LP101133-9	skos:exactMatch	CHEBI:9445	terazosin	sempav:HumanCuration
+loinc:LP101134-7	skos:exactMatch	CHEBI:9544	thiethylperazine	sempav:HumanCuration
+loinc:LP101135-4	skos:exactMatch	CHEBI:9682	trichlopyr	sempav:HumanCuration
+loinc:LP101194-1	skos:exactMatch	CHEBI:6838	methotrimeprazine	sempav:HumanCuration
+loinc:LP101460-6	skos:exactMatch	CHEBI:78206	fatty acid ethyl ester	sempav:HumanCuration
+loinc:LP102316-9	skos:exactMatch	CHEBI:8435	prochlorperazine	sempav:HumanCuration
+loinc:LP102418-3	skos:exactMatch	CHEBI:82960	raltegravir	sempav:HumanCuration
+loinc:LP111163-4	skos:exactMatch	CHEBI:17823	calcitriol	sempav:HumanCuration
+loinc:LP111164-2	skos:exactMatch	CHEBI:86320	1alpha,25-dihydroxyvitamin D2	sempav:HumanCuration
+loinc:LP113963-5	skos:exactMatch	CHEBI:18319	SAICAR	sempav:HumanCuration
+loinc:LP121381-0	skos:exactMatch	CHEBI:6804	methacholine	sempav:HumanCuration
+loinc:LP130276-1	skos:exactMatch	CHEBI:67201	synthetic cannabinoid	sempav:HumanCuration
+loinc:LP134005-0	skos:exactMatch	CHEBI:59331	mephedrone	sempav:HumanCuration
+loinc:LP135443-2	skos:exactMatch	CHEBI:68606	rilpivirine	sempav:HumanCuration
+loinc:LP135650-2	skos:exactMatch	CHEBI:68579	rivaroxaban	sempav:HumanCuration
+loinc:LP135651-0	skos:exactMatch	CHEBI:70752	dabigatran	sempav:HumanCuration
+loinc:LP14041-5	skos:exactMatch	CHEBI:17026	progesterone	sempav:HumanCuration
+loinc:LP14045-6	skos:exactMatch	CHEBI:17347	testosterone	sempav:HumanCuration
+loinc:LP14071-2	skos:exactMatch	CHEBI:16134	ammonia	sempav:HumanCuration
+loinc:LP14084-5	skos:exactMatch	CHEBI:17574	biochanin A	sempav:HumanCuration
+loinc:LP14091-0	skos:exactMatch	CHEBI:15858	bromide	sempav:HumanCuration
+loinc:LP14106-6	skos:exactMatch	CHEBI:30742	ethylene glycol	sempav:HumanCuration
+loinc:LP14118-1	skos:exactMatch	CHEBI:87185	florfenicol	sempav:HumanCuration
+loinc:LP14120-7	skos:exactMatch	CHEBI:38224	fumonisin	sempav:HumanCuration
+loinc:LP14121-5	skos:exactMatch	CHEBI:28088	genistein	sempav:HumanCuration
+loinc:LP14123-1	skos:exactMatch	CHEBI:28584	gossypol	sempav:HumanCuration
+loinc:LP14161-1	skos:exactMatch	CHEBI:17650	cortisol	sempav:HumanCuration
+loinc:LP14176-9	skos:exactMatch	CHEBI:3478	cefaclor	sempav:HumanCuration
+loinc:LP14189-2	skos:exactMatch	CHEBI:474859	maleic anhydride	sempav:HumanCuration
+loinc:LP14257-7	skos:exactMatch	CHEBI:5631	Heavy metal	sempav:HumanCuration
+loinc:LP14259-3	skos:exactMatch	CHEBI:25016	lead atom	sempav:HumanCuration
+loinc:LP14261-9	skos:exactMatch	CHEBI:81931	Metaldehyde	sempav:HumanCuration
+loinc:LP14269-2	skos:exactMatch	CHEBI:17632	nitrate	sempav:HumanCuration
+loinc:LP14270-0	skos:exactMatch	CHEBI:16301	nitrite	sempav:HumanCuration
+loinc:LP14272-6	skos:exactMatch	CHEBI:25944	pesticide	sempav:HumanCuration
+loinc:LP14283-3	skos:exactMatch	CHEBI:27568	selenium atom	sempav:HumanCuration
+loinc:LP14284-1	skos:exactMatch	CHEBI:28973	strychnine	sempav:HumanCuration
+loinc:LP14288-2	skos:exactMatch	CHEBI:16199	urea	sempav:HumanCuration
+loinc:LP14295-7	skos:exactMatch	CHEBI:2953	azinphos-methyl	sempav:HumanCuration
+loinc:LP14301-3	skos:exactMatch	CHEBI:28119	2,3,7,8-tetrachlorodibenzodioxine	sempav:HumanCuration
+loinc:LP14319-5	skos:exactMatch	CHEBI:17334	penicillin	sempav:HumanCuration
+loinc:LP14324-5	skos:exactMatch	CHEBI:81540	trans-Nonachlor	sempav:HumanCuration
+loinc:LP14333-6	skos:exactMatch	CHEBI:22359	alloisoleucine	sempav:HumanCuration
+loinc:LP14335-1	skos:exactMatch	CHEBI:89912	Heptacarboxylporphyrin I	sempav:HumanCuration
+loinc:LP14342-7	skos:exactMatch	CHEBI:6104	kanamycin	sempav:HumanCuration
+loinc:LP14343-5	skos:exactMatch	CHEBI:25107	magnesium atom	sempav:HumanCuration
+loinc:LP14344-3	skos:exactMatch	CHEBI:25195	mercury atom	sempav:HumanCuration
+loinc:LP14346-8	skos:exactMatch	CHEBI:4975	famotidine	sempav:HumanCuration
+loinc:LP14347-6	skos:exactMatch	CHEBI:6649	malaoxon	sempav:HumanCuration
+loinc:LP14348-4	skos:exactMatch	CHEBI:16236	ethanol	sempav:HumanCuration
+loinc:LP14349-2	skos:exactMatch	CHEBI:17790	methanol	sempav:HumanCuration
+loinc:LP14350-0	skos:exactMatch	CHEBI:23012	carbon disulfide	sempav:HumanCuration
+loinc:LP14351-8	skos:exactMatch	CHEBI:62932	mycophenolate	sempav:HumanCuration
+loinc:LP14353-4	skos:exactMatch	CHEBI:2618	amantadine	sempav:HumanCuration
+loinc:LP14354-2	skos:exactMatch	CHEBI:17741	N,N-dimethylformamide	sempav:HumanCuration
+loinc:LP14355-9	skos:exactMatch	CHEBI:16737	creatinine	sempav:HumanCuration
+loinc:LP14357-5	skos:exactMatch	CHEBI:31622	Flunitrazepam	sempav:HumanCuration
+loinc:LP14368-2	skos:exactMatch	CHEBI:27638	cobalt atom	sempav:HumanCuration
+loinc:LP14369-0	skos:exactMatch	CHEBI:27727	androstane-3,17-diol	sempav:HumanCuration
+loinc:LP14370-8	skos:exactMatch	CHEBI:89886	2-Methoxy-4-methylphenol	sempav:HumanCuration
+loinc:LP14372-4	skos:exactMatch	CHEBI:27609	coproporphyrin III	sempav:HumanCuration
+loinc:LP14374-0	skos:exactMatch	CHEBI:17854	cyclohexanone	sempav:HumanCuration
+loinc:LP14375-7	skos:exactMatch	CHEBI:17824	propan-2-ol	sempav:HumanCuration
+loinc:LP14376-5	skos:exactMatch	CHEBI:5100	flucytosine	sempav:HumanCuration
+loinc:LP14377-3	skos:exactMatch	CHEBI:27584	aldosterone	sempav:HumanCuration
+loinc:LP14378-1	skos:exactMatch	CHEBI:64276	glutaraldehyde	sempav:HumanCuration
+loinc:LP14379-9	skos:exactMatch	CHEBI:81526	Endrin	sempav:HumanCuration
+loinc:LP14381-5	skos:exactMatch	CHEBI:5118	fluoxetine	sempav:HumanCuration
+loinc:LP14435-9	skos:exactMatch	CHEBI:45367	rifabutin	sempav:HumanCuration
+loinc:LP14463-1	skos:exactMatch	CHEBI:89633	Metanephrine	sempav:HumanCuration
+loinc:LP14466-4	skos:exactMatch	CHEBI:63621	saquinavir	sempav:HumanCuration
+loinc:LP14467-2	skos:exactMatch	CHEBI:89633	Metanephrine	sempav:HumanCuration
+loinc:LP14468-0	skos:exactMatch	CHEBI:77273	11-nor-9-carboxy-Delta(9)-tetrahydrocannabinol	sempav:HumanCuration
+loinc:LP14480-5	skos:exactMatch	CHEBI:137527	Valerylglycine	sempav:HumanCuration
+loinc:LP14481-3	skos:exactMatch	CHEBI:17381	porphobilinogen	sempav:HumanCuration
+loinc:LP14482-1	skos:exactMatch	CHEBI:17126	carnitine	sempav:HumanCuration
+loinc:LP14485-4	skos:exactMatch	CHEBI:89510	Deoxypyridinoline	sempav:HumanCuration
+loinc:LP14487-0	skos:exactMatch	CHEBI:81567	thyroid stimulating hormone	sempav:HumanCuration
+loinc:LP14488-8	skos:exactMatch	CHEBI:35366	fatty acid	sempav:HumanCuration
+loinc:LP14490-4	skos:exactMatch	CHEBI:60924	keratan sulfate	sempav:HumanCuration
+loinc:LP14491-2	skos:exactMatch	CHEBI:37397	chondroitin sulfate	sempav:HumanCuration
+loinc:LP14493-8	skos:exactMatch	CHEBI:22552	androstenedione	sempav:HumanCuration
+loinc:LP14497-9	skos:exactMatch	CHEBI:23965	estradiol	sempav:HumanCuration
+loinc:LP14499-5	skos:exactMatch	CHEBI:81569	Follicle stimulating hormone	sempav:HumanCuration
+loinc:LP14500-0	skos:exactMatch	CHEBI:18088	formononetin	sempav:HumanCuration
+loinc:LP14503-4	skos:exactMatch	CHEBI:23115	chlorohydrocarbon	sempav:HumanCuration
+loinc:LP14511-7	skos:exactMatch	CHEBI:86366	N-(2-methylbutanoyl)glycine	sempav:HumanCuration
+loinc:LP14512-5	skos:exactMatch	CHEBI:68499	3-methylcrotonyl glycine	sempav:HumanCuration
+loinc:LP14513-3	skos:exactMatch	CHEBI:89963	butyrylglycine	sempav:HumanCuration
+loinc:LP14514-1	skos:exactMatch	CHEBI:64390	N-hexanoylglycine	sempav:HumanCuration
+loinc:LP14515-8	skos:exactMatch	CHEBI:70979	N-isobutyrylglycine	sempav:HumanCuration
+loinc:LP14516-6	skos:exactMatch	CHEBI:70984	N-isovalerylglycine	sempav:HumanCuration
+loinc:LP14517-4	skos:exactMatch	CHEBI:88550	Phenylpropionylglycine	sempav:HumanCuration
+loinc:LP14518-2	skos:exactMatch	CHEBI:89836	propionylglycine	sempav:HumanCuration
+loinc:LP14519-0	skos:exactMatch	CHEBI:88811	Suberylglycine	sempav:HumanCuration
+loinc:LP14520-8	skos:exactMatch	CHEBI:73018	tiglylglycine	sempav:HumanCuration
+loinc:LP14522-4	skos:exactMatch	CHEBI:2453	acyclovir	sempav:HumanCuration
+loinc:LP14523-2	skos:exactMatch	CHEBI:51208	mecillinam	sempav:HumanCuration
+loinc:LP14524-0	skos:exactMatch	CHEBI:3493	cefoperazone	sempav:HumanCuration
+loinc:LP145287-1	skos:exactMatch	CHEBI:189669	2,5-dimethoxy-4-bromophenethylamine	sempav:HumanCuration
+loinc:LP14536-4	skos:exactMatch	CHEBI:25805	oxygen atom	sempav:HumanCuration
+loinc:LP14546-3	skos:exactMatch	CHEBI:22693	barbiturates	sempav:HumanCuration
+loinc:LP14548-9	skos:exactMatch	CHEBI:6965	Molindone	sempav:HumanCuration
+loinc:LP14550-5	skos:exactMatch	CHEBI:9332	sulfamethoxazole	sempav:HumanCuration
+loinc:LP14551-3	skos:exactMatch	CHEBI:9435	Temazepam	sempav:HumanCuration
+loinc:LP14552-1	skos:exactMatch	CHEBI:9652	tranylcypromine	sempav:HumanCuration
+loinc:LP14553-9	skos:exactMatch	CHEBI:9720	Trihexyphenidyl	sempav:HumanCuration
+loinc:LP14564-6	skos:exactMatch	CHEBI:68641	(-)-cotinine	sempav:HumanCuration
+loinc:LP14566-1	skos:exactMatch	CHEBI:8058	phencyclidine	sempav:HumanCuration
+loinc:LP145733-4	skos:relatedMatch	CHEBI:64646	amyloid-β polypeptide 40	sempav:HumanCuration
+loinc:LP14635-4	skos:exactMatch	CHEBI:17234	glucose	sempav:HumanCuration
+loinc:LP14638-8	skos:exactMatch	CHEBI:18222	xylose	sempav:HumanCuration
+loinc:LP14649-5	skos:exactMatch	CHEBI:3306	calcitonin	sempav:HumanCuration
+loinc:LP14651-1	skos:exactMatch	CHEBI:81570	Chorionic gonadotropin	sempav:HumanCuration
+loinc:LP14656-0	skos:exactMatch	CHEBI:3892	corticotropin	sempav:HumanCuration
+loinc:LP14661-0	skos:exactMatch	CHEBI:50114	estrogen	sempav:HumanCuration
+loinc:LP14665-1	skos:exactMatch	CHEBI:75436	gastrin	sempav:HumanCuration
+loinc:LP14667-7	skos:exactMatch	CHEBI:5391	glucagon	sempav:HumanCuration
+loinc:LP14669-3	skos:exactMatch	CHEBI:5883	Immunoglobulin A	sempav:HumanCuration
+loinc:LP14683-4	skos:exactMatch	CHEBI:81568	Luteinizing hormone	sempav:HumanCuration
+loinc:LP14686-7	skos:exactMatch	CHEBI:7044	myoglobin	sempav:HumanCuration
+loinc:LP14688-3	skos:exactMatch	CHEBI:81580	Prolactin	sempav:HumanCuration
+loinc:LP14693-3	skos:exactMatch	CHEBI:28790	serotonin	sempav:HumanCuration
+loinc:LP14694-1	skos:exactMatch	CHEBI:64628	somatostatin	sempav:HumanCuration
+loinc:LP14695-8	skos:exactMatch	CHEBI:37845	growth hormone	sempav:HumanCuration
+loinc:LP14698-2	skos:exactMatch	CHEBI:9765	Trypsin	sempav:HumanCuration
+loinc:LP14705-5	skos:exactMatch	CHEBI:2401	acetophenazine	sempav:HumanCuration
+loinc:LP14707-1	skos:exactMatch	CHEBI:2791	aprobarbital	sempav:HumanCuration
+loinc:LP14708-9	skos:exactMatch	CHEBI:3172	bretylium	sempav:HumanCuration
+loinc:LP14712-1	skos:exactMatch	CHEBI:46195	paracetamol	sempav:HumanCuration
+loinc:LP14713-9	skos:exactMatch	CHEBI:4495	diazoxide	sempav:HumanCuration
+loinc:LP14714-7	skos:exactMatch	CHEBI:4551	digoxin	sempav:HumanCuration
+loinc:LP14715-4	skos:exactMatch	CHEBI:4653	dipyridamole	sempav:HumanCuration
+loinc:LP14717-0	skos:exactMatch	CHEBI:4710	doxepin	sempav:HumanCuration
+loinc:LP14718-8	skos:exactMatch	CHEBI:141547	desmethyldoxepin	sempav:HumanCuration
+loinc:LP14719-6	skos:exactMatch	CHEBI:5384	glipizide	sempav:HumanCuration
+loinc:LP14720-4	skos:exactMatch	CHEBI:5441	glyburide	sempav:HumanCuration
+loinc:LP14721-2	skos:exactMatch	CHEBI:6759	mepivacaine	sempav:HumanCuration
+loinc:LP14724-6	skos:exactMatch	CHEBI:6846	Methsuximide	sempav:HumanCuration
+loinc:LP14729-5	skos:exactMatch	CHEBI:8069	phenobarbital	sempav:HumanCuration
+loinc:LP14730-3	skos:exactMatch	CHEBI:8412	primidone	sempav:HumanCuration
+loinc:LP14731-1	skos:exactMatch	CHEBI:8107	phenytoin	sempav:HumanCuration
+loinc:LP14732-9	skos:exactMatch	CHEBI:8107	phenytoin	sempav:HumanCuration
+loinc:LP14733-7	skos:exactMatch	CHEBI:135436	pirmenol	sempav:HumanCuration
+loinc:LP14734-5	skos:exactMatch	CHEBI:9671	triamterene	sempav:HumanCuration
+loinc:LP14735-2	skos:exactMatch	CHEBI:36809	tricyclic antidepressant	sempav:HumanCuration
+loinc:LP14737-8	skos:exactMatch	CHEBI:22258	adenosine triphosphate	sempav:HumanCuration
+loinc:LP14741-0	skos:exactMatch	CHEBI:30769	citric acid	sempav:HumanCuration
+loinc:LP14746-9	skos:exactMatch	CHEBI:28757	fructose	sempav:HumanCuration
+loinc:LP14749-3	skos:exactMatch	CHEBI:36313	glycerophosphocholine	sempav:HumanCuration
+loinc:LP14752-7	skos:exactMatch	CHEBI:49637	hydrogen atom	sempav:HumanCuration
+loinc:LP14753-5	skos:exactMatch	CHEBI:28852	prostaglandin F1alpha	sempav:HumanCuration
+loinc:LP14795-6	skos:exactMatch	CHEBI:27363	zinc atom	sempav:HumanCuration
+loinc:LP14831-9	skos:exactMatch	CHEBI:204928	cefotaxime	sempav:HumanCuration
+loinc:LP14866-5	skos:exactMatch	CHEBI:24021	fat	sempav:HumanCuration
+loinc:LP14884-8	skos:exactMatch	CHEBI:27573	silicon atom	sempav:HumanCuration
+loinc:LP14887-1	skos:exactMatch	CHEBI:32544	nicotinate	sempav:HumanCuration
+loinc:LP14888-9	skos:exactMatch	CHEBI:64709	organic acid	sempav:HumanCuration
+loinc:LP14889-7	skos:exactMatch	CHEBI:37712	O-phosphoserine	sempav:HumanCuration
+loinc:LP14891-3	skos:exactMatch	CHEBI:16684	atropine	sempav:HumanCuration
+loinc:LP14892-1	skos:exactMatch	CHEBI:6822	Methazolamide	sempav:HumanCuration
+loinc:LP14906-9	skos:exactMatch	CHEBI:28669	bacitracin	sempav:HumanCuration
+loinc:LP14908-5	skos:exactMatch	CHEBI:80229	Bombesin	sempav:HumanCuration
+loinc:LP14911-9	skos:exactMatch	CHEBI:34914	phenolphthalein	sempav:HumanCuration
+loinc:LP14912-7	skos:exactMatch	CHEBI:26020	phosphate	sempav:HumanCuration
+loinc:LP14913-5	skos:exactMatch	CHEBI:26214	porphyrins	sempav:HumanCuration
+loinc:LP14914-3	skos:exactMatch	CHEBI:88539	Pyridinoline	sempav:HumanCuration
+loinc:LP14916-8	skos:exactMatch	CHEBI:3125	Bisacodyl	sempav:HumanCuration
+loinc:LP14917-6	skos:exactMatch	CHEBI:135358	oxyphenisatine	sempav:HumanCuration
+loinc:LP14918-4	skos:exactMatch	CHEBI:7986	Pentoxifylline	sempav:HumanCuration
+loinc:LP14919-2	skos:exactMatch	CHEBI:35018	Trenbolone	sempav:HumanCuration
+loinc:LP149244-8	skos:exactMatch	CHEBI:80285	Liver-expressed antimicrobial peptide 1	sempav:HumanCuration
+loinc:LP14925-9	skos:exactMatch	CHEBI:80495	benzidine	sempav:HumanCuration
+loinc:LP14927-5	skos:exactMatch	CHEBI:22908	borate	sempav:HumanCuration
+loinc:LP14928-3	skos:exactMatch	CHEBI:82315	3,3'-Dichlorobenzidine	sempav:HumanCuration
+loinc:LP14930-9	skos:exactMatch	CHEBI:35413	methanediamine	sempav:HumanCuration
+loinc:LP14931-7	skos:exactMatch	CHEBI:33364	platinum	sempav:HumanCuration
+loinc:LP14974-7	skos:exactMatch	CHEBI:17252	17alpha-hydroxyprogesterone	sempav:HumanCuration
+loinc:LP14976-2	skos:exactMatch	CHEBI:17376	cystine	sempav:HumanCuration
+loinc:LP14977-0	skos:exactMatch	CHEBI:17230	homocysteine	sempav:HumanCuration
+loinc:LP14980-4	skos:exactMatch	CHEBI:2168	6-Acetylmorphine	sempav:HumanCuration
+loinc:LP14981-2	skos:exactMatch	CHEBI:2611	alprazolam	sempav:HumanCuration
+loinc:LP14983-8	skos:exactMatch	CHEBI:2666	amitriptyline	sempav:HumanCuration
+loinc:LP14984-6	skos:exactMatch	CHEBI:7640	nortriptyline	sempav:HumanCuration
+loinc:LP14985-3	skos:exactMatch	CHEBI:3419	carisoprodol	sempav:HumanCuration
+loinc:LP14986-1	skos:exactMatch	CHEBI:554446	cephapirin	sempav:HumanCuration
+loinc:LP14987-9	skos:exactMatch	CHEBI:46631	clonidine	sempav:HumanCuration
+loinc:LP14988-7	skos:exactMatch	CHEBI:4392	demeclocycline	sempav:HumanCuration
+loinc:LP14990-3	skos:exactMatch	CHEBI:4511	dicloxacillin	sempav:HumanCuration
+loinc:LP14991-1	skos:exactMatch	CHEBI:681848	doxapram	sempav:HumanCuration
+loinc:LP14992-9	skos:exactMatch	CHEBI:50845	doxycycline	sempav:HumanCuration
+loinc:LP14993-7	skos:exactMatch	CHEBI:46081	fluconazole	sempav:HumanCuration
+loinc:LP14994-5	skos:exactMatch	CHEBI:5138	fluvoxamine	sempav:HumanCuration
+loinc:LP14995-2	skos:exactMatch	CHEBI:6076	itraconazole	sempav:HumanCuration
+loinc:LP14997-8	skos:exactMatch	CHEBI:6909	metronidazole	sempav:HumanCuration
+loinc:LP14999-4	skos:exactMatch	CHEBI:7447	nafcillin	sempav:HumanCuration
+loinc:LP15000-0	skos:exactMatch	CHEBI:7465	naltrexone	sempav:HumanCuration
+loinc:LP15001-8	skos:exactMatch	CHEBI:7507	neomycin	sempav:HumanCuration
+loinc:LP15003-4	skos:exactMatch	CHEBI:7852	oxycodone	sempav:HumanCuration
+loinc:LP15004-2	skos:exactMatch	CHEBI:7921	Paramethadione	sempav:HumanCuration
+loinc:LP15005-9	skos:exactMatch	CHEBI:2637	amikacin	sempav:HumanCuration
+loinc:LP15006-7	skos:exactMatch	CHEBI:8461	promethazine	sempav:HumanCuration
+loinc:LP15007-5	skos:exactMatch	CHEBI:45285	pyrazinecarboxamide	sempav:HumanCuration
+loinc:LP15008-3	skos:exactMatch	CHEBI:16794	scopolamine	sempav:HumanCuration
+loinc:LP15009-1	skos:exactMatch	CHEBI:9588	ticlopidine	sempav:HumanCuration
+loinc:LP15010-9	skos:exactMatch	CHEBI:45924	trimethoprim	sempav:HumanCuration
+loinc:LP15014-1	skos:exactMatch	CHEBI:22720	benzodiazepine	sempav:HumanCuration
+loinc:LP15015-8	skos:exactMatch	CHEBI:6807	methadone	sempav:HumanCuration
+loinc:LP15016-6	skos:exactMatch	CHEBI:6821	methaqualone	sempav:HumanCuration
+loinc:LP15017-4	skos:exactMatch	CHEBI:8497	propoxyphene	sempav:HumanCuration
+loinc:LP15027-3	skos:exactMatch	CHEBI:33568	adrenaline	sempav:HumanCuration
+loinc:LP15032-3	skos:exactMatch	CHEBI:6121	ketamine	sempav:HumanCuration
+loinc:LP15036-4	skos:exactMatch	CHEBI:16796	melatonin	sempav:HumanCuration
+loinc:LP15041-4	skos:exactMatch	CHEBI:28728	thromboxane B2	sempav:HumanCuration
+loinc:LP15046-3	skos:exactMatch	CHEBI:102524	butalbital	sempav:HumanCuration
+loinc:LP15048-9	skos:exactMatch	CHEBI:62685	norfentanyl	sempav:HumanCuration
+loinc:LP15059-6	skos:exactMatch	CHEBI:39068	cis-chlordane	sempav:HumanCuration
+loinc:LP15060-4	skos:exactMatch	CHEBI:16598	DDE	sempav:HumanCuration
+loinc:LP15061-2	skos:exactMatch	CHEBI:16130	DDT	sempav:HumanCuration
+loinc:LP15062-0	skos:exactMatch	CHEBI:34696	dieldrin	sempav:HumanCuration
+loinc:LP15064-6	skos:exactMatch	CHEBI:32888	gamma-hexachlorocyclohexane	sempav:HumanCuration
+loinc:LP15065-3	skos:exactMatch	CHEBI:6842	methoxychlor	sempav:HumanCuration
+loinc:LP15066-1	skos:exactMatch	CHEBI:3499	cefotetan	sempav:HumanCuration
+loinc:LP15068-7	skos:exactMatch	CHEBI:17300	tetrachloroethene	sempav:HumanCuration
+loinc:LP15090-1	skos:exactMatch	CHEBI:33567	catecholamine	sempav:HumanCuration
+loinc:LP15096-8	skos:exactMatch	CHEBI:133744	homovanillate	sempav:HumanCuration
+loinc:LP15097-6	skos:exactMatch	CHEBI:62622	(5-hydroxyindol-3-yl)acetate	sempav:HumanCuration
+loinc:LP15098-4	skos:exactMatch	CHEBI:26216	potassium atom	sempav:HumanCuration
+loinc:LP15099-2	skos:exactMatch	CHEBI:26708	sodium atom	sempav:HumanCuration
+loinc:LP15115-6	skos:exactMatch	CHEBI:48923	erythromycin	sempav:HumanCuration
+loinc:LP15141-2	skos:exactMatch	CHEBI:30512	silver atom	sempav:HumanCuration
+loinc:LP15143-8	skos:exactMatch	CHEBI:45652	succinylcholine	sempav:HumanCuration
+loinc:LP15149-5	skos:exactMatch	CHEBI:80233	Atrial natriuretic peptide	sempav:HumanCuration
+loinc:LP15150-3	skos:exactMatch	CHEBI:16526	carbon dioxide	sempav:HumanCuration
+loinc:LP15151-1	skos:exactMatch	CHEBI:23388	coproporphyrin	sempav:HumanCuration
+loinc:LP15152-9	skos:exactMatch	CHEBI:65311	corticotropin-releasing hormone	sempav:HumanCuration
+loinc:LP15153-7	skos:exactMatch	CHEBI:12109	5-aminolevulinate	sempav:HumanCuration
+loinc:LP15157-8	skos:exactMatch	CHEBI:24859	iodine atom	sempav:HumanCuration
+loinc:LP15158-6	skos:exactMatch	CHEBI:36711	phosphoethanolamine	sempav:HumanCuration
+loinc:LP15160-2	skos:exactMatch	CHEBI:17452	[pyruvate kinase]	sempav:HumanCuration
+loinc:LP15161-0	skos:exactMatch	CHEBI:27259	uroporphyrin	sempav:HumanCuration
+loinc:LP15162-8	skos:exactMatch	CHEBI:82913	3-O-methyldopa	sempav:HumanCuration
+loinc:LP15163-6	skos:exactMatch	CHEBI:2673	amobarbital	sempav:HumanCuration
+loinc:LP15164-4	skos:exactMatch	CHEBI:2896	astemizole	sempav:HumanCuration
+loinc:LP15165-1	skos:exactMatch	CHEBI:3181	bromocriptine	sempav:HumanCuration
+loinc:LP15166-9	skos:exactMatch	CHEBI:3183	brompheniramine	sempav:HumanCuration
+loinc:LP15167-7	skos:exactMatch	CHEBI:119915	fentanyl	sempav:HumanCuration
+loinc:LP15168-5	skos:exactMatch	CHEBI:5296	gemfibrozil	sempav:HumanCuration
+loinc:LP15169-3	skos:exactMatch	CHEBI:5775	hydralazine	sempav:HumanCuration
+loinc:LP15171-9	skos:exactMatch	CHEBI:5818	hydroxyzine	sempav:HumanCuration
+loinc:LP15172-7	skos:exactMatch	CHEBI:24756	hyoscyamine	sempav:HumanCuration
+loinc:LP15173-5	skos:exactMatch	CHEBI:50667	mercaptopurine	sempav:HumanCuration
+loinc:LP15174-3	skos:exactMatch	CHEBI:17303	morphine	sempav:HumanCuration
+loinc:LP15175-0	skos:exactMatch	CHEBI:7789	orphenadrine	sempav:HumanCuration
+loinc:LP15176-8	skos:exactMatch	CHEBI:7865	Oxymorphone	sempav:HumanCuration
+loinc:LP15177-6	skos:exactMatch	CHEBI:63617	pergolide	sempav:HumanCuration
+loinc:LP15178-4	skos:exactMatch	CHEBI:8049	Phenacemide	sempav:HumanCuration
+loinc:LP15180-0	skos:exactMatch	CHEBI:135421	fenalamide	sempav:HumanCuration
+loinc:LP15181-8	skos:exactMatch	CHEBI:8249	piroxicam	sempav:HumanCuration
+loinc:LP15182-6	skos:exactMatch	CHEBI:61049	tacrolimus (anhydrous)	sempav:HumanCuration
+loinc:LP15205-5	skos:exactMatch	CHEBI:209807	cefoxitin	sempav:HumanCuration
+loinc:LP15210-5	skos:exactMatch	CHEBI:3504	cefpodoxime	sempav:HumanCuration
+loinc:LP15230-3	skos:exactMatch	CHEBI:3507	cefsulodin	sempav:HumanCuration
+loinc:LP15242-8	skos:exactMatch	CHEBI:3508	ceftazidime	sempav:HumanCuration
+loinc:LP15251-9	skos:exactMatch	CHEBI:16973	11-deoxycorticosterone	sempav:HumanCuration
+loinc:LP15252-7	skos:exactMatch	CHEBI:28324	11-deoxycortisol	sempav:HumanCuration
+loinc:LP15253-5	skos:exactMatch	CHEBI:553473	ceftizoxime	sempav:HumanCuration
+loinc:LP15254-3	skos:exactMatch	CHEBI:22651	ascorbate	sempav:HumanCuration
+loinc:LP15256-8	skos:exactMatch	CHEBI:63827	bromosulfophthalein sodium	sempav:HumanCuration
+loinc:LP15257-6	skos:exactMatch	CHEBI:22984	calcium atom	sempav:HumanCuration
+loinc:LP15260-0	skos:exactMatch	CHEBI:29007	ceftriaxone	sempav:HumanCuration
+loinc:LP15261-8	skos:exactMatch	CHEBI:3515	cefuroxime	sempav:HumanCuration
+loinc:LP15263-4	skos:exactMatch	CHEBI:28260	galactose	sempav:HumanCuration
+loinc:LP15264-2	skos:exactMatch	CHEBI:3534	cephalexin	sempav:HumanCuration
+loinc:LP15265-9	skos:exactMatch	CHEBI:2676	amoxicillin	sempav:HumanCuration
+loinc:LP15267-5	skos:exactMatch	CHEBI:3537	cefaloridine	sempav:HumanCuration
+loinc:LP15269-1	skos:exactMatch	CHEBI:17716	lactose	sempav:HumanCuration
+loinc:LP15270-9	skos:exactMatch	CHEBI:3541	Cephalothin	sempav:HumanCuration
+loinc:LP15271-7	skos:exactMatch	CHEBI:33569	noradrenaline	sempav:HumanCuration
+loinc:LP15274-1	skos:exactMatch	CHEBI:50211	retinol	sempav:HumanCuration
+loinc:LP15275-8	skos:exactMatch	CHEBI:17855	triglyceride	sempav:HumanCuration
+loinc:LP15277-4	skos:exactMatch	CHEBI:17823	calcitriol	sempav:HumanCuration
+loinc:LP15279-0	skos:exactMatch	CHEBI:70958	1-methylhistidine	sempav:HumanCuration
+loinc:LP15283-2	skos:exactMatch	CHEBI:16973	11-deoxycorticosterone	sempav:HumanCuration
+loinc:LP15285-7	skos:exactMatch	CHEBI:34350	3alpha,11beta-Dihydroxy-5alpha-androstane-17-one	sempav:HumanCuration
+loinc:LP15286-5	skos:exactMatch	CHEBI:34350	3alpha,11beta-Dihydroxy-5alpha-androstane-17-one	sempav:HumanCuration
+loinc:LP15287-3	skos:exactMatch	CHEBI:34134	11-Ketoandrosterone	sempav:HumanCuration
+loinc:LP15288-1	skos:exactMatch	CHEBI:34135	11-Ketoetiocholanolone	sempav:HumanCuration
+loinc:LP15293-1	skos:exactMatch	CHEBI:16485	18-hydroxycorticosterone	sempav:HumanCuration
+loinc:LP15294-9	skos:exactMatch	CHEBI:19324	2,3-bisphosphoglycerate	sempav:HumanCuration
+loinc:LP15296-4	skos:exactMatch	CHEBI:36728	20-hydroxypregn-4-en-3-one	sempav:HumanCuration
+loinc:LP15297-2	skos:exactMatch	CHEBI:28818	(24R)-24,25-dihydroxycalciol	sempav:HumanCuration
+loinc:LP15301-2	skos:exactMatch	CHEBI:82957	3-hydroxyisovalerate	sempav:HumanCuration
+loinc:LP15303-8	skos:exactMatch	CHEBI:70959	3-methylhistidine	sempav:HumanCuration
+loinc:LP15304-6	skos:exactMatch	CHEBI:30959	4-pyridoxate	sempav:HumanCuration
+loinc:LP15309-5	skos:exactMatch	CHEBI:143289	8-Hydroxyamoxapine	sempav:HumanCuration
+loinc:LP15311-1	skos:exactMatch	CHEBI:15343	acetaldehyde	sempav:HumanCuration
+loinc:LP15312-9	skos:exactMatch	CHEBI:13705	acetoacetate	sempav:HumanCuration
+loinc:LP15313-7	skos:exactMatch	CHEBI:38472	acetonitrile	sempav:HumanCuration
+loinc:LP15314-5	skos:exactMatch	CHEBI:15355	acetylcholine	sempav:HumanCuration
+loinc:LP15318-6	skos:exactMatch	CHEBI:15414	S-adenosyl-L-methionine	sempav:HumanCuration
+loinc:LP15320-2	skos:exactMatch	CHEBI:16708	adenine	sempav:HumanCuration
+loinc:LP15321-0	skos:exactMatch	CHEBI:17698	chloramphenicol	sempav:HumanCuration
+loinc:LP15325-1	skos:exactMatch	CHEBI:22252	adenosine diphosphate	sempav:HumanCuration
+loinc:LP15327-7	skos:exactMatch	CHEBI:17489	3',5'-cyclic AMP	sempav:HumanCuration
+loinc:LP15330-1	skos:exactMatch	CHEBI:22267	adipate	sempav:HumanCuration
+loinc:LP15331-9	skos:exactMatch	CHEBI:16449	alanine	sempav:HumanCuration
+loinc:LP15337-6	skos:exactMatch	CHEBI:27644	chlortetracycline	sempav:HumanCuration
+loinc:LP15353-3	skos:exactMatch	CHEBI:86508	alpha-aminobutyrate	sempav:HumanCuration
+loinc:LP15354-1	skos:exactMatch	CHEBI:84981	2-aminoadipate(2-)	sempav:HumanCuration
+loinc:LP15365-7	skos:exactMatch	CHEBI:16810	2-oxoglutarate(2-)	sempav:HumanCuration
+loinc:LP15368-1	skos:exactMatch	CHEBI:135915	thymalfasin	sempav:HumanCuration
+loinc:LP15369-9	skos:exactMatch	CHEBI:22470	alpha-tocopherol	sempav:HumanCuration
+loinc:LP15380-6	skos:exactMatch	CHEBI:100241	ciprofloxacin	sempav:HumanCuration
+loinc:LP15382-2	skos:exactMatch	CHEBI:28938	ammonium	sempav:HumanCuration
+loinc:LP15385-5	skos:exactMatch	CHEBI:16330	17beta-hydroxy-5alpha-androstan-3-one	sempav:HumanCuration
+loinc:LP15386-3	skos:exactMatch	CHEBI:16032	androsterone	sempav:HumanCuration
+loinc:LP15388-9	skos:exactMatch	CHEBI:2718	Angiotensin I	sempav:HumanCuration
+loinc:LP15389-7	skos:exactMatch	CHEBI:48432	angiotensin II	sempav:HumanCuration
+loinc:LP15390-5	skos:exactMatch	CHEBI:2720	Angiotensinogen	sempav:HumanCuration
+loinc:LP15391-3	skos:exactMatch	CHEBI:17296	aniline	sempav:HumanCuration
+loinc:LP15393-9	skos:exactMatch	CHEBI:18323	anserine	sempav:HumanCuration
+loinc:LP15406-9	skos:exactMatch	CHEBI:3732	clarithromycin	sempav:HumanCuration
+loinc:LP15413-5	skos:exactMatch	CHEBI:15852	aquacob(III)alamin	sempav:HumanCuration
+loinc:LP15414-3	skos:exactMatch	CHEBI:32395	arachidonate	sempav:HumanCuration
+loinc:LP15416-8	skos:exactMatch	CHEBI:29016	arginine	sempav:HumanCuration
+loinc:LP15417-6	skos:exactMatch	CHEBI:40891	ARGININOSUCCINATE	sempav:HumanCuration
+loinc:LP15421-8	skos:exactMatch	CHEBI:487869	clavulanate	sempav:HumanCuration
+loinc:LP15424-2	skos:exactMatch	CHEBI:22653	asparagine	sempav:HumanCuration
+loinc:LP15425-9	skos:exactMatch	CHEBI:132943	aspartate	sempav:HumanCuration
+loinc:LP15427-5	skos:exactMatch	CHEBI:3745	clindamycin	sempav:HumanCuration
+loinc:LP15430-9	skos:exactMatch	CHEBI:16150	benzoate	sempav:HumanCuration
+loinc:LP15431-7	skos:exactMatch	CHEBI:16958	beta-alanine	sempav:HumanCuration
+loinc:LP15432-5	skos:exactMatch	CHEBI:49096	3-aminoisobutyrate	sempav:HumanCuration
+loinc:LP15433-3	skos:exactMatch	CHEBI:10415	beta-endorphin	sempav:HumanCuration
+loinc:LP15436-6	skos:exactMatch	CHEBI:37054	3-hydroxybutyrate	sempav:HumanCuration
+loinc:LP15438-2	skos:exactMatch	CHEBI:80247	beta-Lipotropin	sempav:HumanCuration
+loinc:LP15439-0	skos:exactMatch	CHEBI:80348	beta-Melanotropin	sempav:HumanCuration
+loinc:LP15442-4	skos:exactMatch	CHEBI:49566	cloxacillin	sempav:HumanCuration
+loinc:LP15444-0	skos:exactMatch	CHEBI:3098	bile acid	sempav:HumanCuration
+loinc:LP15446-5	skos:exactMatch	CHEBI:22872	(glucosyluronic acid)bilirubin	sempav:HumanCuration
+loinc:LP15448-1	skos:exactMatch	CHEBI:16990	bilirubin IXalpha	sempav:HumanCuration
+loinc:LP15449-9	skos:exactMatch	CHEBI:57977	bilirubin(2-)	sempav:HumanCuration
+loinc:LP15450-7	skos:exactMatch	CHEBI:15373	biopterin	sempav:HumanCuration
+loinc:LP15451-5	skos:exactMatch	CHEBI:15956	biotin	sempav:HumanCuration
+loinc:LP15454-9	skos:exactMatch	CHEBI:80332	C-peptide	sempav:HumanCuration
+loinc:LP15455-6	skos:exactMatch	CHEBI:17933	calcidiol	sempav:HumanCuration
+loinc:LP15456-4	skos:exactMatch	CHEBI:28940	calciol	sempav:HumanCuration
+loinc:LP15458-0	skos:exactMatch	CHEBI:39124	calcium ion	sempav:HumanCuration
+loinc:LP15472-1	skos:exactMatch	CHEBI:41609	carbonate	sempav:HumanCuration
+loinc:LP15474-7	skos:exactMatch	CHEBI:37943	colistin	sempav:HumanCuration
+loinc:LP15476-2	skos:exactMatch	CHEBI:15727	carnosine	sempav:HumanCuration
+loinc:LP15477-0	skos:exactMatch	CHEBI:23042	carotene	sempav:HumanCuration
+loinc:LP15478-8	skos:exactMatch	CHEBI:3463	Catalase	sempav:HumanCuration
+loinc:LP15480-4	skos:exactMatch	CHEBI:36234	chenodeoxycholate	sempav:HumanCuration
+loinc:LP15481-2	skos:exactMatch	CHEBI:36274	glycochenodeoxycholic acid	sempav:HumanCuration
+loinc:LP15483-8	skos:exactMatch	CHEBI:17996	chloride	sempav:HumanCuration
+loinc:LP15484-6	skos:exactMatch	CHEBI:31444	cyclacillin	sempav:HumanCuration
+loinc:LP15485-3	skos:exactMatch	CHEBI:29747	cholate	sempav:HumanCuration
+loinc:LP15486-1	skos:exactMatch	CHEBI:80345	Cholecystokinin-33	sempav:HumanCuration
+loinc:LP15487-9	skos:exactMatch	CHEBI:23196	cholestanol	sempav:HumanCuration
+loinc:LP15488-7	skos:exactMatch	CHEBI:17002	cholesteryl ester	sempav:HumanCuration
+loinc:LP15489-5	skos:exactMatch	CHEBI:47775	high-density lipoprotein cholesterol	sempav:HumanCuration
+loinc:LP15490-3	skos:exactMatch	CHEBI:132933	intermediate-density lipoprotein	sempav:HumanCuration
+loinc:LP15491-1	skos:exactMatch	CHEBI:47774	low-density lipoprotein cholesterol	sempav:HumanCuration
+loinc:LP15492-9	skos:exactMatch	CHEBI:47773	very-low-density lipoprotein cholesterol	sempav:HumanCuration
+loinc:LP15493-7	skos:exactMatch	CHEBI:16113	cholesterol	sempav:HumanCuration
+loinc:LP15496-0	skos:exactMatch	CHEBI:17687	glycocholic acid	sempav:HumanCuration
+loinc:LP15498-6	skos:exactMatch	CHEBI:81588	Placental lactogen	sempav:HumanCuration
+loinc:LP15501-7	skos:exactMatch	CHEBI:23503	4-amino-1,2-oxazolidin-3-one	sempav:HumanCuration
+loinc:LP15503-3	skos:exactMatch	CHEBI:9607	Tiron	sempav:HumanCuration
+loinc:LP15504-1	skos:exactMatch	CHEBI:18211	citrulline	sempav:HumanCuration
+loinc:LP15505-8	skos:exactMatch	CHEBI:23334	cobalamins	sempav:HumanCuration
+loinc:LP15506-6	skos:exactMatch	CHEBI:3823	Collagenase	sempav:HumanCuration
+loinc:LP15508-2	skos:exactMatch	CHEBI:16827	corticosterone	sempav:HumanCuration
+loinc:LP15509-0	skos:exactMatch	CHEBI:16919	creatine	sempav:HumanCuration
+loinc:LP15519-9	skos:exactMatch	CHEBI:17755	cystathionine	sempav:HumanCuration
+loinc:LP15521-5	skos:exactMatch	CHEBI:15356	cysteine	sempav:HumanCuration
+loinc:LP15527-2	skos:exactMatch	CHEBI:16814	dehydroepiandrosterone sulfate	sempav:HumanCuration
+loinc:LP15528-0	skos:exactMatch	CHEBI:28689	dehydroepiandrosterone	sempav:HumanCuration
+loinc:LP15529-8	skos:exactMatch	CHEBI:28689	dehydroepiandrosterone	sempav:HumanCuration
+loinc:LP15530-6	skos:exactMatch	CHEBI:23614	deoxycholate	sempav:HumanCuration
+loinc:LP15531-4	skos:exactMatch	CHEBI:27471	glycodeoxycholic acid	sempav:HumanCuration
+loinc:LP15532-2	skos:exactMatch	CHEBI:18376	dermatan sulfate	sempav:HumanCuration
+loinc:LP15533-0	skos:exactMatch	CHEBI:23658	diacetate	sempav:HumanCuration
+loinc:LP15534-8	skos:exactMatch	CHEBI:35692	dicarboxylic acid	sempav:HumanCuration
+loinc:LP15535-5	skos:exactMatch	CHEBI:35702	diethyl ether	sempav:HumanCuration
+loinc:LP15536-3	skos:exactMatch	CHEBI:15633	dihydrofolic acid	sempav:HumanCuration
+loinc:LP15540-5	skos:exactMatch	CHEBI:94613	5,5-dimethyloxazolidine-2,4-dione	sempav:HumanCuration
+loinc:LP15541-3	skos:exactMatch	CHEBI:51396	dinitrobenzene	sempav:HumanCuration
+loinc:LP15542-1	skos:exactMatch	CHEBI:72999	1,2-dihexadecanoyl-sn-glycero-3-phosphocholine	sempav:HumanCuration
+loinc:LP15543-9	skos:exactMatch	CHEBI:18243	dopamine	sempav:HumanCuration
+loinc:LP15551-2	skos:exactMatch	CHEBI:541975	epiandrosterone	sempav:HumanCuration
+loinc:LP15552-0	skos:exactMatch	CHEBI:42534	epitestosterone	sempav:HumanCuration
+loinc:LP15553-8	skos:exactMatch	CHEBI:28934	vitamin D2	sempav:HumanCuration
+loinc:LP15554-6	skos:exactMatch	CHEBI:81579	Erythropoietin	sempav:HumanCuration
+loinc:LP15556-1	skos:exactMatch	CHEBI:23965	estradiol	sempav:HumanCuration
+loinc:LP15557-9	skos:exactMatch	CHEBI:27974	estriol	sempav:HumanCuration
+loinc:LP15558-7	skos:exactMatch	CHEBI:27974	estriol	sempav:HumanCuration
+loinc:LP15559-5	skos:exactMatch	CHEBI:27974	estriol	sempav:HumanCuration
+loinc:LP15560-3	skos:exactMatch	CHEBI:17263	estrone	sempav:HumanCuration
+loinc:LP15561-1	skos:exactMatch	CHEBI:17263	estrone	sempav:HumanCuration
+loinc:LP15562-9	skos:exactMatch	CHEBI:16000	ethanolamine	sempav:HumanCuration
+loinc:LP15563-7	skos:exactMatch	CHEBI:132938	ethylmalonate	sempav:HumanCuration
+loinc:LP15564-5	skos:exactMatch	CHEBI:89524	epietiocholanolone	sempav:HumanCuration
+loinc:LP15566-0	skos:exactMatch	CHEBI:35748	fatty acid ester	sempav:HumanCuration
+loinc:LP15568-6	skos:exactMatch	CHEBI:82594	Ferritin	sempav:HumanCuration
+loinc:LP15572-8	skos:exactMatch	CHEBI:157175	enoxacin	sempav:HumanCuration
+loinc:LP15573-6	skos:exactMatch	CHEBI:5058	Fibronectin	sempav:HumanCuration
+loinc:LP15574-4	skos:exactMatch	CHEBI:24040	flavin adenine dinucleotide	sempav:HumanCuration
+loinc:LP15575-1	skos:exactMatch	CHEBI:67011	folates	sempav:HumanCuration
+loinc:LP15576-9	skos:exactMatch	CHEBI:15740	formate	sempav:HumanCuration
+loinc:LP15578-5	skos:exactMatch	CHEBI:24103	fructosamine	sempav:HumanCuration
+loinc:LP15581-9	skos:exactMatch	CHEBI:2682	amphotericin B	sempav:HumanCuration
+loinc:LP15583-5	skos:exactMatch	CHEBI:24123	fumarate	sempav:HumanCuration
+loinc:LP15584-3	skos:exactMatch	CHEBI:18034	4-fumarylacetoacetate(2-)	sempav:HumanCuration
+loinc:LP15586-8	skos:exactMatch	CHEBI:37480	D-galactopyranose 1-phosphate	sempav:HumanCuration
+loinc:LP15588-4	skos:exactMatch	CHEBI:30566	gamma-aminobutyrate	sempav:HumanCuration
+loinc:LP15592-6	skos:exactMatch	CHEBI:80165	Glucose-dependent insulinotropic peptide	sempav:HumanCuration
+loinc:LP15593-4	skos:exactMatch	CHEBI:80328	Gastrin-releasing peptide	sempav:HumanCuration
+loinc:LP15594-2	skos:exactMatch	CHEBI:75437	gastrin-34	sempav:HumanCuration
+loinc:LP15595-9	skos:exactMatch	CHEBI:75441	gastrin-17	sempav:HumanCuration
+loinc:LP15596-7	skos:exactMatch	CHEBI:75451	gastrin-14	sempav:HumanCuration
+loinc:LP15603-1	skos:exactMatch	CHEBI:102484	sulfisoxazole	sempav:HumanCuration
+loinc:LP15605-6	skos:exactMatch	CHEBI:18237	glutamic acid	sempav:HumanCuration
+loinc:LP15609-8	skos:exactMatch	CHEBI:28300	glutamine	sempav:HumanCuration
+loinc:LP15617-1	skos:exactMatch	CHEBI:16856	glutathione	sempav:HumanCuration
+loinc:LP15618-9	skos:exactMatch	CHEBI:33871	glycerate	sempav:HumanCuration
+loinc:LP15619-7	skos:exactMatch	CHEBI:17754	glycerol	sempav:HumanCuration
+loinc:LP15620-5	skos:exactMatch	CHEBI:15428	glycine	sempav:HumanCuration
+loinc:LP15621-3	skos:exactMatch	CHEBI:5471	Glycogen synthase	sempav:HumanCuration
+loinc:LP15622-1	skos:exactMatch	CHEBI:29805	glycolate	sempav:HumanCuration
+loinc:LP15623-9	skos:exactMatch	CHEBI:17089	glycoprotein	sempav:HumanCuration
+loinc:LP15624-7	skos:exactMatch	CHEBI:18085	glycosaminoglycan	sempav:HumanCuration
+loinc:LP15625-4	skos:exactMatch	CHEBI:4877	ethambutol	sempav:HumanCuration
+loinc:LP15629-6	skos:exactMatch	CHEBI:28815	heparan sulfate	sempav:HumanCuration
+loinc:LP15630-4	skos:exactMatch	CHEBI:5693	hexachlorophene	sempav:HumanCuration
+loinc:LP15634-6	skos:exactMatch	CHEBI:140410	2-iodohippurate	sempav:HumanCuration
+loinc:LP15635-3	skos:exactMatch	CHEBI:132966	hippurate	sempav:HumanCuration
+loinc:LP15636-1	skos:exactMatch	CHEBI:18295	histamine	sempav:HumanCuration
+loinc:LP15637-9	skos:exactMatch	CHEBI:27570	histidine	sempav:HumanCuration
+loinc:LP15639-5	skos:exactMatch	CHEBI:28050	homocarnosine	sempav:HumanCuration
+loinc:LP15640-3	skos:exactMatch	CHEBI:17443	L-homocitrulline	sempav:HumanCuration
+loinc:LP15641-1	skos:exactMatch	CHEBI:17485	homocystine	sempav:HumanCuration
+loinc:LP15642-9	skos:exactMatch	CHEBI:16169	homogentisate	sempav:HumanCuration
+loinc:LP15644-5	skos:exactMatch	CHEBI:16136	hydrogen sulfide	sempav:HumanCuration
+loinc:LP15646-0	skos:exactMatch	CHEBI:5098	flucloxacillin	sempav:HumanCuration
+loinc:LP15647-8	skos:exactMatch	CHEBI:27786	hydroxocobalamin	sempav:HumanCuration
+loinc:LP15648-6	skos:exactMatch	CHEBI:86498	hydroxylysine	sempav:HumanCuration
+loinc:LP15650-2	skos:exactMatch	CHEBI:24741	hydroxyproline	sempav:HumanCuration
+loinc:LP15651-0	skos:exactMatch	CHEBI:17368	hypoxanthine	sempav:HumanCuration
+loinc:LP15662-7	skos:exactMatch	CHEBI:16700	indican	sempav:HumanCuration
+loinc:LP15663-5	skos:exactMatch	CHEBI:50395	indolamine	sempav:HumanCuration
+loinc:LP15664-3	skos:exactMatch	CHEBI:35581	indole	sempav:HumanCuration
+loinc:LP15666-8	skos:exactMatch	CHEBI:17596	inosine	sempav:HumanCuration
+loinc:LP15669-2	skos:exactMatch	CHEBI:80343	Insulin-like growth factor I	sempav:HumanCuration
+loinc:LP15670-0	skos:exactMatch	CHEBI:80344	Insulin-like growth factor II	sempav:HumanCuration
+loinc:LP15675-9	skos:exactMatch	CHEBI:15443	inulin	sempav:HumanCuration
+loinc:LP15677-5	skos:exactMatch	CHEBI:18248	iron atom	sempav:HumanCuration
+loinc:LP15680-9	skos:exactMatch	CHEBI:5975	iron chelate	sempav:HumanCuration
+loinc:LP15682-5	skos:exactMatch	CHEBI:24898	isoleucine	sempav:HumanCuration
+loinc:LP15683-3	skos:exactMatch	CHEBI:73693	ketone body	sempav:HumanCuration
+loinc:LP15684-1	skos:exactMatch	CHEBI:58454	kynurenate	sempav:HumanCuration
+loinc:LP15686-6	skos:exactMatch	CHEBI:24996	lactate	sempav:HumanCuration
+loinc:LP15693-2	skos:exactMatch	CHEBI:15361	pyruvate	sempav:HumanCuration
+loinc:LP15697-3	skos:exactMatch	CHEBI:61995	lecithin	sempav:HumanCuration
+loinc:LP15698-1	skos:exactMatch	CHEBI:64583	sphingomyelin	sempav:HumanCuration
+loinc:LP15699-9	skos:exactMatch	CHEBI:25017	leucine	sempav:HumanCuration
+loinc:LP15702-1	skos:exactMatch	CHEBI:30245	linoleate	sempav:HumanCuration
+loinc:LP15704-7	skos:exactMatch	CHEBI:16247	phospholipid	sempav:HumanCuration
+loinc:LP15705-4	skos:exactMatch	CHEBI:18059	lipid	sempav:HumanCuration
+loinc:LP15708-8	skos:exactMatch	CHEBI:39025	high-density lipoprotein	sempav:HumanCuration
+loinc:LP15709-6	skos:exactMatch	CHEBI:39026	low-density lipoprotein	sempav:HumanCuration
+loinc:LP15710-4	skos:exactMatch	CHEBI:39027	very-low-density lipoprotein	sempav:HumanCuration
+loinc:LP15711-2	skos:exactMatch	CHEBI:6495	lipoprotein	sempav:HumanCuration
+loinc:LP15712-0	skos:exactMatch	CHEBI:29744	lithocholate	sempav:HumanCuration
+loinc:LP157147-2	skos:exactMatch	CHEBI:7563	N-nicotinoylglycine	sempav:HumanCuration
+loinc:LP15716-1	skos:exactMatch	CHEBI:25094	lysine	sempav:HumanCuration
+loinc:LP15721-1	skos:exactMatch	CHEBI:25131	malonate	sempav:HumanCuration
+loinc:LP15722-9	skos:exactMatch	CHEBI:29864	mannitol	sempav:HumanCuration
+loinc:LP15724-5	skos:exactMatch	CHEBI:89634	Melanin	sempav:HumanCuration
+loinc:LP15726-0	skos:exactMatch	CHEBI:16183	methane	sempav:HumanCuration
+loinc:LP15729-4	skos:exactMatch	CHEBI:17423	methemoglobin	sempav:HumanCuration
+loinc:LP15730-2	skos:exactMatch	CHEBI:16811	methionine	sempav:HumanCuration
+loinc:LP157318-9	skos:exactMatch	CHEBI:72289	elvitegravir	sempav:HumanCuration
+loinc:LP15732-8	skos:exactMatch	CHEBI:132097	methoxyacetate	sempav:HumanCuration
+loinc:LP157335-3	skos:exactMatch	CHEBI:30566	gamma-aminobutyrate	sempav:HumanCuration
+loinc:LP15735-1	skos:exactMatch	CHEBI:25318	methylmalonate	sempav:HumanCuration
+loinc:LP15737-7	skos:exactMatch	CHEBI:27436	methyltestosterone	sempav:HumanCuration
+loinc:LP15738-5	skos:exactMatch	CHEBI:51137	mianserin	sempav:HumanCuration
+loinc:LP15741-9	skos:exactMatch	CHEBI:465284	ganciclovir	sempav:HumanCuration
+loinc:LP15745-0	skos:exactMatch	CHEBI:7542	neurotensin	sempav:HumanCuration
+loinc:LP15746-8	skos:exactMatch	CHEBI:25555	nitrogen atom	sempav:HumanCuration
+loinc:LP15747-6	skos:exactMatch	CHEBI:17833	gentamycin	sempav:HumanCuration
+loinc:LP15749-2	skos:exactMatch	CHEBI:89951	Normetanephrine	sempav:HumanCuration
+loinc:LP15750-0	skos:exactMatch	CHEBI:17134	octopamine	sempav:HumanCuration
+loinc:LP15751-8	skos:exactMatch	CHEBI:30823	oleate	sempav:HumanCuration
+loinc:LP15752-6	skos:exactMatch	CHEBI:36683	organochlorine compound	sempav:HumanCuration
+loinc:LP15753-4	skos:exactMatch	CHEBI:18257	ornithine	sempav:HumanCuration
+loinc:LP157542-4	skos:exactMatch	CHEBI:27035	trans,trans-muconate	sempav:HumanCuration
+loinc:LP157546-5	skos:exactMatch	CHEBI:72296	apixaban	sempav:HumanCuration
+loinc:LP15756-7	skos:exactMatch	CHEBI:30839	orotate	sempav:HumanCuration
+loinc:LP15761-7	skos:exactMatch	CHEBI:132952	oxalate	sempav:HumanCuration
+loinc:LP15762-5	skos:exactMatch	CHEBI:28971	ampicillin	sempav:HumanCuration
+loinc:LP15766-6	skos:exactMatch	CHEBI:7861	oxyhemoglobin	sempav:HumanCuration
+loinc:LP15767-4	skos:exactMatch	CHEBI:7872	oxytocin	sempav:HumanCuration
+loinc:LP15768-2	skos:exactMatch	CHEBI:7896	hexadecanoate	sempav:HumanCuration
+loinc:LP157686-9	skos:exactMatch	CHEBI:6956	Mitragynine	sempav:HumanCuration
+loinc:LP15769-0	skos:exactMatch	CHEBI:7901	Palmitoylphosphatidylcholine	sempav:HumanCuration
+loinc:LP15770-8	skos:exactMatch	CHEBI:80329	Pancreatic polypeptide	sempav:HumanCuration
+loinc:LP157711-5	skos:exactMatch	CHEBI:35475	non-steroidal anti-inflammatory drug	sempav:HumanCuration
+loinc:LP15771-6	skos:exactMatch	CHEBI:16454	pantothenate	sempav:HumanCuration
+loinc:LP15772-4	skos:exactMatch	CHEBI:64703	p-aminohippurate	sempav:HumanCuration
+loinc:LP157730-5	skos:exactMatch	CHEBI:63635	valganciclovir	sempav:HumanCuration
+loinc:LP15773-2	skos:exactMatch	CHEBI:68552	p-methylhippuric acid	sempav:HumanCuration
+loinc:LP15774-0	skos:exactMatch	CHEBI:16836	4-nitrophenol	sempav:HumanCuration
+loinc:LP15775-7	skos:exactMatch	CHEBI:27928	parathion	sempav:HumanCuration
+loinc:LP15776-5	skos:exactMatch	CHEBI:80274	Parathyroid hormone-related peptide (1-36)	sempav:HumanCuration
+loinc:LP15781-5	skos:exactMatch	CHEBI:25901	pentose	sempav:HumanCuration
+loinc:LP15788-0	skos:exactMatch	CHEBI:15882	phenol	sempav:HumanCuration
+loinc:LP15789-8	skos:exactMatch	CHEBI:33853	phenols	sempav:HumanCuration
+loinc:LP15790-6	skos:exactMatch	CHEBI:31991	phenol red	sempav:HumanCuration
+loinc:LP15792-2	skos:exactMatch	CHEBI:28044	phenylalanine	sempav:HumanCuration
+loinc:LP15793-0	skos:exactMatch	CHEBI:18186	tyrosine	sempav:HumanCuration
+loinc:LP15794-8	skos:exactMatch	CHEBI:26008	phenylpyruvate	sempav:HumanCuration
+loinc:LP15795-5	skos:exactMatch	CHEBI:471744	imipenem	sempav:HumanCuration
+loinc:LP15796-3	skos:exactMatch	CHEBI:64482	phosphatidylcholine	sempav:HumanCuration
+loinc:LP15798-9	skos:exactMatch	CHEBI:17517	phosphatidylglycerol	sempav:HumanCuration
+loinc:LP15799-7	skos:exactMatch	CHEBI:28874	phosphatidylinositol	sempav:HumanCuration
+loinc:LP15807-8	skos:exactMatch	CHEBI:37257	phytanate	sempav:HumanCuration
+loinc:LP158084-6	skos:exactMatch	CHEBI:29133	dextrorphan	sempav:HumanCuration
+loinc:LP15808-6	skos:exactMatch	CHEBI:36110	pipecolate	sempav:HumanCuration
+loinc:LP15812-8	skos:exactMatch	CHEBI:5880	Imipenem-cilastatin	sempav:HumanCuration
+loinc:LP15813-6	skos:exactMatch	CHEBI:3697	cilastatin	sempav:HumanCuration
+loinc:LP15815-1	skos:exactMatch	CHEBI:8387	Pregnanediol	sempav:HumanCuration
+loinc:LP15816-9	skos:exactMatch	CHEBI:34464	5beta-Pregnane-3alpha,17alpha,20alpha-triol	sempav:HumanCuration
+loinc:LP15817-7	skos:exactMatch	CHEBI:16581	pregnenolone	sempav:HumanCuration
+loinc:LP15818-5	skos:exactMatch	CHEBI:26271	proline	sempav:HumanCuration
+loinc:LP15820-1	skos:exactMatch	CHEBI:17272	propionate	sempav:HumanCuration
+loinc:LP15822-7	skos:exactMatch	CHEBI:8511	Prostaglandin E	sempav:HumanCuration
+loinc:LP15823-5	skos:exactMatch	CHEBI:15544	prostaglandin E1	sempav:HumanCuration
+loinc:LP15824-3	skos:exactMatch	CHEBI:15551	prostaglandin E2	sempav:HumanCuration
+loinc:LP15825-0	skos:exactMatch	CHEBI:8514	Prostaglandin F	sempav:HumanCuration
+loinc:LP15826-8	skos:exactMatch	CHEBI:15553	prostaglandin F2alpha	sempav:HumanCuration
+loinc:LP15827-6	skos:exactMatch	CHEBI:26333	prostaglandin	sempav:HumanCuration
+loinc:LP15831-8	skos:exactMatch	CHEBI:6030	isoniazide	sempav:HumanCuration
+loinc:LP15838-3	skos:exactMatch	CHEBI:36080	protein	sempav:HumanCuration
+loinc:LP15839-1	skos:exactMatch	CHEBI:15430	protoporphyrin	sempav:HumanCuration
+loinc:LP15840-9	skos:exactMatch	CHEBI:28783	zinc protoporphyrin	sempav:HumanCuration
+loinc:LP15842-5	skos:exactMatch	CHEBI:16709	pyridoxine	sempav:HumanCuration
+loinc:LP15848-2	skos:exactMatch	CHEBI:16033	[pyruvate dehydrogenase (lipoamide)]	sempav:HumanCuration
+loinc:LP15850-8	skos:exactMatch	CHEBI:26533	reticuline	sempav:HumanCuration
+loinc:LP15851-6	skos:exactMatch	CHEBI:15035	retinal	sempav:HumanCuration
+loinc:LP15852-4	skos:exactMatch	CHEBI:15036	retinoate	sempav:HumanCuration
+loinc:LP15853-2	skos:exactMatch	CHEBI:17015	riboflavin	sempav:HumanCuration
+loinc:LP15855-7	skos:exactMatch	CHEBI:33942	ribose	sempav:HumanCuration
+loinc:LP15856-5	skos:exactMatch	CHEBI:28721	ribulose	sempav:HumanCuration
+loinc:LP15859-9	skos:exactMatch	CHEBI:15611	sarcosine	sempav:HumanCuration
+loinc:LP15860-7	skos:exactMatch	CHEBI:34972	Secretin	sempav:HumanCuration
+loinc:LP15861-5	skos:exactMatch	CHEBI:17822	serine	sempav:HumanCuration
+loinc:LP15862-3	skos:exactMatch	CHEBI:47519	ketoconazole	sempav:HumanCuration
+loinc:LP15864-9	skos:exactMatch	CHEBI:35418	N-acetylneuraminate	sempav:HumanCuration
+loinc:LP15868-0	skos:exactMatch	CHEBI:26756	stercobilin	sempav:HumanCuration
+loinc:LP15870-6	skos:exactMatch	CHEBI:80308	Substance P	sempav:HumanCuration
+loinc:LP15871-4	skos:exactMatch	CHEBI:26806	succinate	sempav:HumanCuration
+loinc:LP15872-2	skos:exactMatch	CHEBI:87897	4,6-dioxoheptanoic acid	sempav:HumanCuration
+loinc:LP15873-0	skos:exactMatch	CHEBI:17992	sucrose	sempav:HumanCuration
+loinc:LP15874-8	skos:exactMatch	CHEBI:16189	sulfate	sempav:HumanCuration
+loinc:LP15876-3	skos:exactMatch	CHEBI:49118	sulfite oxidase	sempav:HumanCuration
+loinc:LP15878-9	skos:exactMatch	CHEBI:15891	taurine	sempav:HumanCuration
+loinc:LP15879-7	skos:exactMatch	CHEBI:6472	lincomycin	sempav:HumanCuration
+loinc:LP15883-9	skos:exactMatch	CHEBI:28320	tetrahydrocortisol	sempav:HumanCuration
+loinc:LP15885-4	skos:exactMatch	CHEBI:67016	tetrahydrofolate	sempav:HumanCuration
+loinc:LP15886-2	skos:exactMatch	CHEBI:26948	thiamine	sempav:HumanCuration
+loinc:LP15887-0	skos:exactMatch	CHEBI:9532	thiamine(1+) diphosphate	sempav:HumanCuration
+loinc:LP15888-8	skos:exactMatch	CHEBI:18022	thiocyanate	sempav:HumanCuration
+loinc:LP15889-6	skos:exactMatch	CHEBI:26977	thiosulfate	sempav:HumanCuration
+loinc:LP15890-4	skos:exactMatch	CHEBI:26986	threonine	sempav:HumanCuration
+loinc:LP15891-2	skos:exactMatch	CHEBI:15627	thromboxane A2	sempav:HumanCuration
+loinc:LP15900-1	skos:exactMatch	CHEBI:30660	thyroxine	sempav:HumanCuration
+loinc:LP15911-8	skos:exactMatch	CHEBI:27455	trichloroacetate	sempav:HumanCuration
+loinc:LP15922-5	skos:exactMatch	CHEBI:18258	3,3',5-triiodo-L-thyronine	sempav:HumanCuration
+loinc:LP15923-3	skos:exactMatch	CHEBI:18258	3,3',5-triiodo-L-thyronine	sempav:HumanCuration
+loinc:LP15924-1	skos:exactMatch	CHEBI:18258	3,3',5-triiodo-L-thyronine	sempav:HumanCuration
+loinc:LP15925-8	skos:exactMatch	CHEBI:18139	trimethylamine	sempav:HumanCuration
+loinc:LP15929-0	skos:exactMatch	CHEBI:9766	Trypsinogen	sempav:HumanCuration
+loinc:LP15931-6	skos:exactMatch	CHEBI:27897	tryptophan	sempav:HumanCuration
+loinc:LP15933-2	skos:exactMatch	CHEBI:15760	tyramine	sempav:HumanCuration
+loinc:LP15934-0	skos:exactMatch	CHEBI:10180	[Tyrosine aminotransferase]	sempav:HumanCuration
+loinc:LP15935-7	skos:exactMatch	CHEBI:46818	urate anion	sempav:HumanCuration
+loinc:LP15938-1	skos:exactMatch	CHEBI:9321	sulbactam	sempav:HumanCuration
+loinc:LP15941-5	skos:exactMatch	CHEBI:36378	urobilin	sempav:HumanCuration
+loinc:LP15942-3	skos:exactMatch	CHEBI:29026	urobilinogen	sempav:HumanCuration
+loinc:LP15943-1	skos:exactMatch	CHEBI:33549	uronate	sempav:HumanCuration
+loinc:LP15946-4	skos:exactMatch	CHEBI:27266	valine	sempav:HumanCuration
+loinc:LP15947-2	skos:exactMatch	CHEBI:27622	vanillylmandelate	sempav:HumanCuration
+loinc:LP15948-0	skos:exactMatch	CHEBI:80331	Vasoactive intestinal peptide	sempav:HumanCuration
+loinc:LP15949-8	skos:exactMatch	CHEBI:9937	vasopressin	sempav:HumanCuration
+loinc:LP15951-4	skos:exactMatch	CHEBI:28869	menadione	sempav:HumanCuration
+loinc:LP15953-0	skos:exactMatch	CHEBI:15318	xanthine	sempav:HumanCuration
+loinc:LP15954-8	skos:exactMatch	CHEBI:71201	xanthurenate	sempav:HumanCuration
+loinc:LP15955-5	skos:exactMatch	CHEBI:27353	xylulose	sempav:HumanCuration
+loinc:LP15975-3	skos:exactMatch	CHEBI:6827	methicillin	sempav:HumanCuration
+loinc:LP15998-5	skos:exactMatch	CHEBI:28304	heparin	sempav:HumanCuration
+loinc:LP16012-4	skos:exactMatch	CHEBI:17865	4-methyl-2-oxopentanoate	sempav:HumanCuration
+loinc:LP16013-2	skos:exactMatch	CHEBI:16540	pyridin-2-ol	sempav:HumanCuration
+loinc:LP16015-7	skos:exactMatch	CHEBI:2379	acebutolol	sempav:HumanCuration
+loinc:LP16016-5	skos:exactMatch	CHEBI:44932	acepromazine	sempav:HumanCuration
+loinc:LP16017-3	skos:exactMatch	CHEBI:6919	mezlocillin	sempav:HumanCuration
+loinc:LP16018-1	skos:exactMatch	CHEBI:27690	acetazolamide	sempav:HumanCuration
+loinc:LP16019-9	skos:exactMatch	CHEBI:53773	3'''-O-acetyldigitoxin	sempav:HumanCuration
+loinc:LP16020-7	skos:exactMatch	CHEBI:13719	acetylsalicylate	sempav:HumanCuration
+loinc:LP16021-5	skos:exactMatch	CHEBI:2569	alfentanil	sempav:HumanCuration
+loinc:LP16022-3	skos:exactMatch	CHEBI:135075	alphaprodine	sempav:HumanCuration
+loinc:LP16023-1	skos:exactMatch	CHEBI:51211	alprenolol	sempav:HumanCuration
+loinc:LP16024-9	skos:exactMatch	CHEBI:2639	amiloride	sempav:HumanCuration
+loinc:LP16025-6	skos:exactMatch	CHEBI:16586	6-aminohexanoic acid	sempav:HumanCuration
+loinc:LP16026-4	skos:exactMatch	CHEBI:2660	Aminopyrine	sempav:HumanCuration
+loinc:LP16027-2	skos:exactMatch	CHEBI:22528	aminosalicylate	sempav:HumanCuration
+loinc:LP16028-0	skos:exactMatch	CHEBI:2663	amiodarone	sempav:HumanCuration
+loinc:LP16031-4	skos:exactMatch	CHEBI:50694	minocycline	sempav:HumanCuration
+loinc:LP16032-2	skos:exactMatch	CHEBI:2675	amoxapine	sempav:HumanCuration
+loinc:LP16034-8	skos:exactMatch	CHEBI:35338	amphetamines	sempav:HumanCuration
+loinc:LP16035-5	skos:exactMatch	CHEBI:135022	amfetaminil	sempav:HumanCuration
+loinc:LP16036-3	skos:exactMatch	CHEBI:61203	anileridine	sempav:HumanCuration
+loinc:LP16037-1	skos:exactMatch	CHEBI:2904	atenolol	sempav:HumanCuration
+loinc:LP16038-9	skos:exactMatch	CHEBI:22580	anthraquinone	sempav:HumanCuration
+loinc:LP16039-7	skos:exactMatch	CHEBI:31225	antipyrine	sempav:HumanCuration
+loinc:LP16040-5	skos:exactMatch	CHEBI:2956	azlocillin	sempav:HumanCuration
+loinc:LP16041-3	skos:exactMatch	CHEBI:161680	aztreonam	sempav:HumanCuration
+loinc:LP16042-1	skos:exactMatch	CHEBI:31252	5,5-diethylbarbituric acid	sempav:HumanCuration
+loinc:LP16044-7	skos:exactMatch	CHEBI:3013	bendroflumethiazide	sempav:HumanCuration
+loinc:LP16046-2	skos:exactMatch	CHEBI:3044	benzphetamine	sempav:HumanCuration
+loinc:LP16047-0	skos:exactMatch	CHEBI:41001	ecgonine benzoate	sempav:HumanCuration
+loinc:LP16048-8	skos:exactMatch	CHEBI:27958	cocaine	sempav:HumanCuration
+loinc:LP16049-6	skos:exactMatch	CHEBI:3047	benzthiazide	sempav:HumanCuration
+loinc:LP16050-4	skos:exactMatch	CHEBI:34583	Bolasterone	sempav:HumanCuration
+loinc:LP16051-2	skos:exactMatch	CHEBI:31302	Bromazepam	sempav:HumanCuration
+loinc:LP16052-0	skos:exactMatch	CHEBI:3213	bumetanide	sempav:HumanCuration
+loinc:LP16053-8	skos:exactMatch	CHEBI:3215	bupivacaine	sempav:HumanCuration
+loinc:LP16054-6	skos:exactMatch	CHEBI:3216	buprenorphine	sempav:HumanCuration
+loinc:LP16055-3	skos:exactMatch	CHEBI:3228	butabarbital	sempav:HumanCuration
+loinc:LP16056-1	skos:exactMatch	CHEBI:599928	moxalactam	sempav:HumanCuration
+loinc:LP16057-9	skos:exactMatch	CHEBI:27732	caffeine	sempav:HumanCuration
+loinc:LP16058-7	skos:exactMatch	CHEBI:67194	cannabinoid	sempav:HumanCuration
+loinc:LP16059-5	skos:exactMatch	CHEBI:66964	Delta(9)-tetrahydrocannabinol	sempav:HumanCuration
+loinc:LP16060-3	skos:exactMatch	CHEBI:135445	canrenone	sempav:HumanCuration
+loinc:LP16061-1	skos:exactMatch	CHEBI:3387	carbamazepine	sempav:HumanCuration
+loinc:LP16062-9	skos:exactMatch	CHEBI:3393	carbenicillin	sempav:HumanCuration
+loinc:LP16063-7	skos:exactMatch	CHEBI:4109	D-Cathine	sempav:HumanCuration
+loinc:LP16064-5	skos:exactMatch	CHEBI:3480	cefamandole	sempav:HumanCuration
+loinc:LP16066-0	skos:exactMatch	CHEBI:474053	cefazolin	sempav:HumanCuration
+loinc:LP16067-8	skos:exactMatch	CHEBI:3491	cefonicid	sempav:HumanCuration
+loinc:LP16068-6	skos:exactMatch	CHEBI:3611	chlordiazepoxide	sempav:HumanCuration
+loinc:LP16069-4	skos:exactMatch	CHEBI:59445	chlormerodrin	sempav:HumanCuration
+loinc:LP16070-2	skos:exactMatch	CHEBI:3638	chloroquine	sempav:HumanCuration
+loinc:LP16071-0	skos:exactMatch	CHEBI:3640	chlorothiazide	sempav:HumanCuration
+loinc:LP16072-8	skos:exactMatch	CHEBI:52010	chlorphenamine	sempav:HumanCuration
+loinc:LP16073-6	skos:exactMatch	CHEBI:3646	Chlorphentermine	sempav:HumanCuration
+loinc:LP16074-4	skos:exactMatch	CHEBI:3647	chlorpromazine	sempav:HumanCuration
+loinc:LP16075-1	skos:exactMatch	CHEBI:3650	chlorpropamide	sempav:HumanCuration
+loinc:LP16076-9	skos:exactMatch	CHEBI:3651	chlorprothixene	sempav:HumanCuration
+loinc:LP16077-7	skos:exactMatch	CHEBI:3654	chlorthalidone	sempav:HumanCuration
+loinc:LP16078-5	skos:exactMatch	CHEBI:3699	cimetidine	sempav:HumanCuration
+loinc:LP16079-3	skos:exactMatch	CHEBI:27899	cisplatin	sempav:HumanCuration
+loinc:LP16080-1	skos:exactMatch	CHEBI:31413	clobazam	sempav:HumanCuration
+loinc:LP16081-9	skos:exactMatch	CHEBI:135069	clobenzorex	sempav:HumanCuration
+loinc:LP16082-7	skos:exactMatch	CHEBI:3750	clofibrate	sempav:HumanCuration
+loinc:LP16083-5	skos:exactMatch	CHEBI:47780	clomipramine	sempav:HumanCuration
+loinc:LP16086-8	skos:exactMatch	CHEBI:3756	clonazepam	sempav:HumanCuration
+loinc:LP16087-6	skos:exactMatch	CHEBI:59115	clopenthixol	sempav:HumanCuration
+loinc:LP16088-4	skos:exactMatch	CHEBI:59590	clorazepic acid anion	sempav:HumanCuration
+loinc:LP16089-2	skos:exactMatch	CHEBI:134887	clorprenaline	sempav:HumanCuration
+loinc:LP16090-0	skos:exactMatch	CHEBI:2955	azithromycin	sempav:HumanCuration
+loinc:LP16091-8	skos:exactMatch	CHEBI:100147	nalidixic acid	sempav:HumanCuration
+loinc:LP16092-6	skos:exactMatch	CHEBI:135372	clostebol	sempav:HumanCuration
+loinc:LP16093-4	skos:exactMatch	CHEBI:16714	codeine	sempav:HumanCuration
+loinc:LP16095-9	skos:exactMatch	CHEBI:134981	cropropamide	sempav:HumanCuration
+loinc:LP16096-7	skos:exactMatch	CHEBI:134931	crotetamide	sempav:HumanCuration
+loinc:LP16097-5	skos:exactMatch	CHEBI:3994	cyclizine	sempav:HumanCuration
+loinc:LP16098-3	skos:exactMatch	CHEBI:4031	cyclosporin A	sempav:HumanCuration
+loinc:LP16101-5	skos:exactMatch	CHEBI:3682	chrysazin	sempav:HumanCuration
+loinc:LP16103-1	skos:exactMatch	CHEBI:47781	desipramine	sempav:HumanCuration
+loinc:LP16104-9	skos:exactMatch	CHEBI:111762	nordazepam	sempav:HumanCuration
+loinc:LP16105-6	skos:exactMatch	CHEBI:4470	dextromethorphan	sempav:HumanCuration
+loinc:LP16106-4	skos:exactMatch	CHEBI:74274	dextromoramide	sempav:HumanCuration
+loinc:LP16107-2	skos:exactMatch	CHEBI:27808	heroin	sempav:HumanCuration
+loinc:LP16108-0	skos:exactMatch	CHEBI:49575	diazepam	sempav:HumanCuration
+loinc:LP16109-8	skos:exactMatch	CHEBI:93394	5-[2-(dimethylamino)ethyl]-11-methyl-6-benzo[b][1,4]benzodiazepinone	sempav:HumanCuration
+loinc:LP16110-6	skos:exactMatch	CHEBI:247956	cinchocaine	sempav:HumanCuration
+loinc:LP16111-4	skos:exactMatch	CHEBI:101085	diclofenamide	sempav:HumanCuration
+loinc:LP16112-2	skos:exactMatch	CHEBI:4513	dicoumarol	sempav:HumanCuration
+loinc:LP16113-0	skos:exactMatch	CHEBI:28544	digitoxin	sempav:HumanCuration
+loinc:LP16115-5	skos:exactMatch	CHEBI:28969	N,N-dimethyltryptamine	sempav:HumanCuration
+loinc:LP16116-3	skos:exactMatch	CHEBI:4636	diphenhydramine	sempav:HumanCuration
+loinc:LP16117-1	skos:exactMatch	CHEBI:135479	dipipanone	sempav:HumanCuration
+loinc:LP16118-9	skos:exactMatch	CHEBI:4657	disopyramide	sempav:HumanCuration
+loinc:LP16119-7	skos:exactMatch	CHEBI:4659	disulfiram	sempav:HumanCuration
+loinc:LP16120-5	skos:exactMatch	CHEBI:7528	netilmycin	sempav:HumanCuration
+loinc:LP16124-7	skos:exactMatch	CHEBI:51380	doxylamine	sempav:HumanCuration
+loinc:LP16125-4	skos:exactMatch	CHEBI:4728	dyphylline	sempav:HumanCuration
+loinc:LP16126-2	skos:exactMatch	CHEBI:4781	emetine	sempav:HumanCuration
+loinc:LP16127-0	skos:exactMatch	CHEBI:4788	encainide	sempav:HumanCuration
+loinc:LP16128-8	skos:exactMatch	CHEBI:15407	(-)-ephedrine	sempav:HumanCuration
+loinc:LP16130-4	skos:exactMatch	CHEBI:51209	pseudoephedrine	sempav:HumanCuration
+loinc:LP16131-2	skos:exactMatch	CHEBI:4858	estazolam	sempav:HumanCuration
+loinc:LP16132-0	skos:exactMatch	CHEBI:134847	etafedrine	sempav:HumanCuration
+loinc:LP16133-8	skos:exactMatch	CHEBI:92675	etamivan	sempav:HumanCuration
+loinc:LP16134-6	skos:exactMatch	CHEBI:4876	etacrynic acid	sempav:HumanCuration
+loinc:LP16135-3	skos:exactMatch	CHEBI:4882	ethchlorvynol	sempav:HumanCuration
+loinc:LP16136-1	skos:exactMatch	CHEBI:135074	ethoheptazine	sempav:HumanCuration
+loinc:LP16137-9	skos:exactMatch	CHEBI:4887	ethosuximide	sempav:HumanCuration
+loinc:LP16138-7	skos:exactMatch	CHEBI:4888	ethotoin	sempav:HumanCuration
+loinc:LP16139-5	skos:exactMatch	CHEBI:4902	Ethylmorphine	sempav:HumanCuration
+loinc:LP16140-3	skos:exactMatch	CHEBI:71415	nitrofurantoin	sempav:HumanCuration
+loinc:LP16143-7	skos:exactMatch	CHEBI:134895	fencamfamin	sempav:HumanCuration
+loinc:LP16144-5	skos:exactMatch	CHEBI:135451	fenetylline	sempav:HumanCuration
+loinc:LP16145-2	skos:exactMatch	CHEBI:5000	fenfluramine	sempav:HumanCuration
+loinc:LP16146-0	skos:exactMatch	CHEBI:5004	fenoprofen	sempav:HumanCuration
+loinc:LP16147-8	skos:exactMatch	CHEBI:134837	fenproporex	sempav:HumanCuration
+loinc:LP16148-6	skos:exactMatch	CHEBI:75984	flecainide	sempav:HumanCuration
+loinc:LP16149-4	skos:exactMatch	CHEBI:46345	5-fluorouracil	sempav:HumanCuration
+loinc:LP16150-2	skos:exactMatch	CHEBI:5120	fluoxymesterone	sempav:HumanCuration
+loinc:LP16151-0	skos:exactMatch	CHEBI:5121	flupenthixol	sempav:HumanCuration
+loinc:LP16152-8	skos:exactMatch	CHEBI:5123	fluphenazine	sempav:HumanCuration
+loinc:LP16153-6	skos:exactMatch	CHEBI:5128	Flurazepam	sempav:HumanCuration
+loinc:LP16154-4	skos:exactMatch	CHEBI:134942	furfenorex	sempav:HumanCuration
+loinc:LP16155-1	skos:exactMatch	CHEBI:47426	furosemide	sempav:HumanCuration
+loinc:LP16156-9	skos:exactMatch	CHEBI:100246	norfloxacin	sempav:HumanCuration
+loinc:LP16157-7	skos:exactMatch	CHEBI:5439	Glutethimide	sempav:HumanCuration
+loinc:LP16158-5	skos:exactMatch	CHEBI:5613	haloperidol	sempav:HumanCuration
+loinc:LP16159-3	skos:exactMatch	CHEBI:94362	6-amino-2-methyl-2-heptanol	sempav:HumanCuration
+loinc:LP16160-1	skos:exactMatch	CHEBI:5778	hydrochlorothiazide	sempav:HumanCuration
+loinc:LP16161-9	skos:exactMatch	CHEBI:5779	hydrocodone	sempav:HumanCuration
+loinc:LP16162-7	skos:exactMatch	CHEBI:5790	hydromorphone	sempav:HumanCuration
+loinc:LP16163-5	skos:exactMatch	CHEBI:5801	hydroxychloroquine	sempav:HumanCuration
+loinc:LP16165-0	skos:exactMatch	CHEBI:5855	ibuprofen	sempav:HumanCuration
+loinc:LP16166-8	skos:exactMatch	CHEBI:47499	imipramine	sempav:HumanCuration
+loinc:LP16167-6	skos:exactMatch	CHEBI:49662	indometacin	sempav:HumanCuration
+loinc:LP16168-4	skos:exactMatch	CHEBI:28368	novobiocin	sempav:HumanCuration
+loinc:LP16169-2	skos:exactMatch	CHEBI:6125	Ketobemidone	sempav:HumanCuration
+loinc:LP16170-0	skos:exactMatch	CHEBI:6343	labetalol	sempav:HumanCuration
+loinc:LP16172-6	skos:exactMatch	CHEBI:6838	methotrimeprazine	sempav:HumanCuration
+loinc:LP16173-4	skos:exactMatch	CHEBI:6444	Levorphanol	sempav:HumanCuration
+loinc:LP16174-2	skos:exactMatch	CHEBI:6456	lidocaine	sempav:HumanCuration
+loinc:LP16175-9	skos:exactMatch	CHEBI:30145	lithium atom	sempav:HumanCuration
+loinc:LP16176-7	skos:exactMatch	CHEBI:6539	Lorazepam	sempav:HumanCuration
+loinc:LP16177-5	skos:exactMatch	CHEBI:52993	lormetazepam	sempav:HumanCuration
+loinc:LP16178-3	skos:exactMatch	CHEBI:50841	loxapine	sempav:HumanCuration
+loinc:LP16179-1	skos:exactMatch	CHEBI:6605	lysergic acid diethylamide	sempav:HumanCuration
+loinc:LP16180-9	skos:exactMatch	CHEBI:6690	Maprotiline	sempav:HumanCuration
+loinc:LP16181-7	skos:exactMatch	CHEBI:31807	Medazepam	sempav:HumanCuration
+loinc:LP16182-5	skos:exactMatch	CHEBI:7731	ofloxacin	sempav:HumanCuration
+loinc:LP16183-3	skos:exactMatch	CHEBI:134883	mefenorex	sempav:HumanCuration
+loinc:LP16184-1	skos:exactMatch	CHEBI:6754	Meperidine	sempav:HumanCuration
+loinc:LP16185-8	skos:exactMatch	CHEBI:6757	mephenytoin	sempav:HumanCuration
+loinc:LP16186-6	skos:exactMatch	CHEBI:6758	mephobarbital	sempav:HumanCuration
+loinc:LP16187-4	skos:exactMatch	CHEBI:6761	Meprobamate	sempav:HumanCuration
+loinc:LP16188-2	skos:exactMatch	CHEBI:6771	Mersalyl acid	sempav:HumanCuration
+loinc:LP16189-0	skos:exactMatch	CHEBI:6780	mesoridazine	sempav:HumanCuration
+loinc:LP16190-8	skos:exactMatch	CHEBI:135293	mesterolone	sempav:HumanCuration
+loinc:LP16191-6	skos:exactMatch	CHEBI:6810	Methandrostenolone	sempav:HumanCuration
+loinc:LP16192-4	skos:exactMatch	CHEBI:6794	metaraminol	sempav:HumanCuration
+loinc:LP16193-2	skos:exactMatch	CHEBI:135283	methenolone	sempav:HumanCuration
+loinc:LP16194-0	skos:exactMatch	CHEBI:6809	methamphetamine	sempav:HumanCuration
+loinc:LP16196-5	skos:exactMatch	CHEBI:6820	methapyrilene	sempav:HumanCuration
+loinc:LP16197-3	skos:exactMatch	CHEBI:6832	methocarbamol	sempav:HumanCuration
+loinc:LP16198-1	skos:exactMatch	CHEBI:44185	methotrexate	sempav:HumanCuration
+loinc:LP16199-9	skos:exactMatch	CHEBI:134817	methoxyphenamine	sempav:HumanCuration
+loinc:LP16200-5	skos:exactMatch	CHEBI:61058	alpha-methyl-L-dopa	sempav:HumanCuration
+loinc:LP16201-3	skos:exactMatch	CHEBI:90046	Methylephedrine	sempav:HumanCuration
+loinc:LP16202-1	skos:exactMatch	CHEBI:6887	methylphenidate	sempav:HumanCuration
+loinc:LP16203-9	skos:exactMatch	CHEBI:31837	Methyprylon	sempav:HumanCuration
+loinc:LP16204-7	skos:exactMatch	CHEBI:6904	metoprolol	sempav:HumanCuration
+loinc:LP16205-4	skos:exactMatch	CHEBI:6916	mexiletine	sempav:HumanCuration
+loinc:LP16206-2	skos:exactMatch	CHEBI:7809	oxacillin	sempav:HumanCuration
+loinc:LP16207-0	skos:exactMatch	CHEBI:6931	midazolam	sempav:HumanCuration
+loinc:LP16208-8	skos:exactMatch	CHEBI:135584	morazone	sempav:HumanCuration
+loinc:LP16209-6	skos:exactMatch	CHEBI:60728	N-acetylprocainamide	sempav:HumanCuration
+loinc:LP16211-2	skos:exactMatch	CHEBI:7444	nadolol	sempav:HumanCuration
+loinc:LP16212-0	skos:exactMatch	CHEBI:7454	nalbuphine	sempav:HumanCuration
+loinc:LP16213-8	skos:exactMatch	CHEBI:7458	Nalorphine	sempav:HumanCuration
+loinc:LP16214-6	skos:exactMatch	CHEBI:7466	nandrolone	sempav:HumanCuration
+loinc:LP16215-3	skos:exactMatch	CHEBI:7476	naproxen	sempav:HumanCuration
+loinc:LP16216-1	skos:exactMatch	CHEBI:28670	neopterin	sempav:HumanCuration
+loinc:LP16217-9	skos:exactMatch	CHEBI:135797	nicomorphine	sempav:HumanCuration
+loinc:LP16218-7	skos:exactMatch	CHEBI:17154	nicotinamide	sempav:HumanCuration
+loinc:LP16219-5	skos:exactMatch	CHEBI:18723	nicotine	sempav:HumanCuration
+loinc:LP16220-3	skos:exactMatch	CHEBI:134814	nikethamide	sempav:HumanCuration
+loinc:LP16221-1	skos:exactMatch	CHEBI:7581	nitrazepam	sempav:HumanCuration
+loinc:LP16222-9	skos:exactMatch	CHEBI:27701	oxytetracycline	sempav:HumanCuration
+loinc:LP16223-7	skos:exactMatch	CHEBI:135282	norethandrolone	sempav:HumanCuration
+loinc:LP16224-5	skos:exactMatch	CHEBI:134779	norfenefrine	sempav:HumanCuration
+loinc:LP16225-2	skos:exactMatch	CHEBI:472805	ouabain	sempav:HumanCuration
+loinc:LP16226-0	skos:exactMatch	CHEBI:7820	oxandrolone	sempav:HumanCuration
+loinc:LP16227-8	skos:exactMatch	CHEBI:7823	oxazepam	sempav:HumanCuration
+loinc:LP16228-6	skos:exactMatch	CHEBI:29081	synephrine	sempav:HumanCuration
+loinc:LP16230-2	skos:exactMatch	CHEBI:34903	Oranabol	sempav:HumanCuration
+loinc:LP16231-0	skos:exactMatch	CHEBI:7864	oxymetholone	sempav:HumanCuration
+loinc:LP16232-8	skos:exactMatch	CHEBI:50199	pefloxacin	sempav:HumanCuration
+loinc:LP16233-6	skos:exactMatch	CHEBI:76258	oxyphenbutazone	sempav:HumanCuration
+loinc:LP16234-4	skos:exactMatch	CHEBI:103855	4-(2-aminopropyl)phenol	sempav:HumanCuration
+loinc:LP16235-1	skos:exactMatch	CHEBI:27909	paraldehyde	sempav:HumanCuration
+loinc:LP16236-9	skos:exactMatch	CHEBI:7953	pemoline	sempav:HumanCuration
+loinc:LP16237-7	skos:exactMatch	CHEBI:18208	benzylpenicillin	sempav:HumanCuration
+loinc:LP16238-5	skos:exactMatch	CHEBI:27446	phenoxymethylpenicillin	sempav:HumanCuration
+loinc:LP16239-3	skos:exactMatch	CHEBI:7982	pentazocine	sempav:HumanCuration
+loinc:LP16240-1	skos:exactMatch	CHEBI:34910	pentetrazol	sempav:HumanCuration
+loinc:LP16241-9	skos:exactMatch	CHEBI:7983	pentobarbital	sempav:HumanCuration
+loinc:LP16242-7	skos:exactMatch	CHEBI:8028	perphenazine	sempav:HumanCuration
+loinc:LP16243-5	skos:exactMatch	CHEBI:8050	phenacetin	sempav:HumanCuration
+loinc:LP16244-3	skos:exactMatch	CHEBI:8056	phenazocine	sempav:HumanCuration
+loinc:LP16245-0	skos:exactMatch	CHEBI:8059	Phendimetrazine	sempav:HumanCuration
+loinc:LP16247-6	skos:exactMatch	CHEBI:8067	phenmetrazine	sempav:HumanCuration
+loinc:LP16248-4	skos:exactMatch	CHEBI:38093	phenothiazines	sempav:HumanCuration
+loinc:LP16249-2	skos:exactMatch	CHEBI:8079	Phensuximide	sempav:HumanCuration
+loinc:LP16250-0	skos:exactMatch	CHEBI:8080	phentermine	sempav:HumanCuration
+loinc:LP16251-8	skos:exactMatch	CHEBI:48574	phenylbutazone	sempav:HumanCuration
+loinc:LP16252-6	skos:exactMatch	CHEBI:8093	phenylephrine	sempav:HumanCuration
+loinc:LP16253-4	skos:exactMatch	CHEBI:8104	phenylpropanolamine	sempav:HumanCuration
+loinc:LP16254-2	skos:exactMatch	CHEBI:134798	pholedrine	sempav:HumanCuration
+loinc:LP16255-9	skos:exactMatch	CHEBI:8214	pindolol	sempav:HumanCuration
+loinc:LP16256-7	skos:exactMatch	CHEBI:8232	piperacillin	sempav:HumanCuration
+loinc:LP16257-5	skos:exactMatch	CHEBI:135101	pipradrol	sempav:HumanCuration
+loinc:LP16258-3	skos:exactMatch	CHEBI:258351	practolol	sempav:HumanCuration
+loinc:LP16259-1	skos:exactMatch	CHEBI:8362	Prazepam	sempav:HumanCuration
+loinc:LP16260-9	skos:exactMatch	CHEBI:8426	probenecid	sempav:HumanCuration
+loinc:LP16261-7	skos:exactMatch	CHEBI:8428	procainamide	sempav:HumanCuration
+loinc:LP16263-3	skos:exactMatch	CHEBI:134898	prolintane	sempav:HumanCuration
+loinc:LP16264-1	skos:exactMatch	CHEBI:8459	promazine	sempav:HumanCuration
+loinc:LP16265-8	skos:exactMatch	CHEBI:52427	phenethicillin	sempav:HumanCuration
+loinc:LP16266-6	skos:exactMatch	CHEBI:8499	propranolol	sempav:HumanCuration
+loinc:LP16267-4	skos:exactMatch	CHEBI:134783	propylhexedrine	sempav:HumanCuration
+loinc:LP16268-2	skos:exactMatch	CHEBI:8597	protriptyline	sempav:HumanCuration
+loinc:LP16269-0	skos:exactMatch	CHEBI:6762	mepyramine	sempav:HumanCuration
+loinc:LP16270-8	skos:exactMatch	CHEBI:134998	pyrovalerone	sempav:HumanCuration
+loinc:LP16271-6	skos:exactMatch	CHEBI:28593	quinidine	sempav:HumanCuration
+loinc:LP16273-2	skos:exactMatch	CHEBI:15854	quinine	sempav:HumanCuration
+loinc:LP16274-0	skos:exactMatch	CHEBI:28077	rifampicin	sempav:HumanCuration
+loinc:LP16275-7	skos:exactMatch	CHEBI:32114	salicylamide	sempav:HumanCuration
+loinc:LP16276-5	skos:exactMatch	CHEBI:26596	salicylates	sempav:HumanCuration
+loinc:LP16277-3	skos:exactMatch	CHEBI:9073	secobarbital	sempav:HumanCuration
+loinc:LP16279-9	skos:exactMatch	CHEBI:63622	sotalol	sempav:HumanCuration
+loinc:LP16280-7	skos:exactMatch	CHEBI:9241	spironolactone	sempav:HumanCuration
+loinc:LP16281-5	skos:exactMatch	CHEBI:9249	stanozolol	sempav:HumanCuration
+loinc:LP16282-3	skos:exactMatch	CHEBI:17076	streptomycin	sempav:HumanCuration
+loinc:LP16283-1	skos:exactMatch	CHEBI:35358	sulfonamide	sempav:HumanCuration
+loinc:LP16284-9	skos:exactMatch	CHEBI:29687	teicoplanin	sempav:HumanCuration
+loinc:LP16285-6	skos:exactMatch	CHEBI:9468	tetracaine	sempav:HumanCuration
+loinc:LP16286-4	skos:exactMatch	CHEBI:27902	tetracycline	sempav:HumanCuration
+loinc:LP16287-2	skos:exactMatch	CHEBI:28320	tetrahydrocortisol	sempav:HumanCuration
+loinc:LP16288-0	skos:exactMatch	CHEBI:28177	theophylline	sempav:HumanCuration
+loinc:LP16289-8	skos:exactMatch	CHEBI:102166	thiopental	sempav:HumanCuration
+loinc:LP16290-6	skos:exactMatch	CHEBI:9566	thioridazine	sempav:HumanCuration
+loinc:LP16291-4	skos:exactMatch	CHEBI:9587	ticarcillin	sempav:HumanCuration
+loinc:LP16293-0	skos:exactMatch	CHEBI:39465	timolol	sempav:HumanCuration
+loinc:LP16294-8	skos:exactMatch	CHEBI:28864	tobramycin	sempav:HumanCuration
+loinc:LP16295-5	skos:exactMatch	CHEBI:9611	tocainide	sempav:HumanCuration
+loinc:LP16296-3	skos:exactMatch	CHEBI:27999	tolbutamide	sempav:HumanCuration
+loinc:LP16297-1	skos:exactMatch	CHEBI:9654	trazodone	sempav:HumanCuration
+loinc:LP16298-9	skos:exactMatch	CHEBI:9674	triazolam	sempav:HumanCuration
+loinc:LP16299-7	skos:exactMatch	CHEBI:45951	trifluoperazine	sempav:HumanCuration
+loinc:LP16301-1	skos:exactMatch	CHEBI:9727	Trimethadione	sempav:HumanCuration
+loinc:LP16303-7	skos:exactMatch	CHEBI:9738	trimipramine	sempav:HumanCuration
+loinc:LP16304-5	skos:exactMatch	CHEBI:9741	Tripelennamine	sempav:HumanCuration
+loinc:LP16305-2	skos:exactMatch	CHEBI:60654	valproate	sempav:HumanCuration
+loinc:LP16306-0	skos:exactMatch	CHEBI:28001	vancomycin	sempav:HumanCuration
+loinc:LP16307-8	skos:exactMatch	CHEBI:9948	verapamil	sempav:HumanCuration
+loinc:LP16309-4	skos:exactMatch	CHEBI:10033	warfarin	sempav:HumanCuration
+loinc:LP16310-2	skos:exactMatch	CHEBI:135357	zimeldine	sempav:HumanCuration
+loinc:LP16315-1	skos:exactMatch	CHEBI:134961	carbromal	sempav:HumanCuration
+loinc:LP16316-9	skos:exactMatch	CHEBI:28142	chloral hydrate	sempav:HumanCuration
+loinc:LP16319-3	skos:exactMatch	CHEBI:8310	Polymyxin B sulfate	sempav:HumanCuration
+loinc:LP16322-7	skos:exactMatch	CHEBI:5520	gonadorelin	sempav:HumanCuration
+loinc:LP16328-4	skos:exactMatch	CHEBI:15765	L-dopa	sempav:HumanCuration
+loinc:LP16332-6	skos:exactMatch	CHEBI:51352	benzylpenicillin benzathine	sempav:HumanCuration
+loinc:LP16333-4	skos:exactMatch	CHEBI:7963	benzylpenicillin potassium	sempav:HumanCuration
+loinc:LP16334-2	skos:exactMatch	CHEBI:52154	benzylpenicillin procaine	sempav:HumanCuration
+loinc:LP16335-9	skos:exactMatch	CHEBI:7967	phenoxymethylpenicillin potassium	sempav:HumanCuration
+loinc:LP16339-1	skos:exactMatch	CHEBI:9328	sulfadiazine	sempav:HumanCuration
+loinc:LP16470-4	skos:exactMatch	CHEBI:5940	Interleukin-2	sempav:HumanCuration
+loinc:LP16744-2	skos:exactMatch	CHEBI:10110	zidovudine	sempav:HumanCuration
+loinc:LP16787-1	skos:exactMatch	CHEBI:3371	capreomycin	sempav:HumanCuration
+loinc:LP16798-8	skos:exactMatch	CHEBI:15347	acetone	sempav:HumanCuration
+loinc:LP16799-6	skos:exactMatch	CHEBI:28217	acrylonitrile	sempav:HumanCuration
+loinc:LP16800-2	skos:exactMatch	CHEBI:28984	aluminium atom	sempav:HumanCuration
+loinc:LP16801-0	skos:exactMatch	CHEBI:30513	antimony atom	sempav:HumanCuration
+loinc:LP16802-8	skos:exactMatch	CHEBI:27563	arsenic atom	sempav:HumanCuration
+loinc:LP16803-6	skos:exactMatch	CHEBI:32594	barium atom	sempav:HumanCuration
+loinc:LP16804-4	skos:exactMatch	CHEBI:16716	benzene	sempav:HumanCuration
+loinc:LP16805-1	skos:exactMatch	CHEBI:30501	beryllium atom	sempav:HumanCuration
+loinc:LP16806-9	skos:exactMatch	CHEBI:33301	bismuth atom	sempav:HumanCuration
+loinc:LP16807-7	skos:exactMatch	CHEBI:34584	boldenone	sempav:HumanCuration
+loinc:LP16808-5	skos:exactMatch	CHEBI:27560	boron atom	sempav:HumanCuration
+loinc:LP16809-3	skos:exactMatch	CHEBI:3210	bufotenin	sempav:HumanCuration
+loinc:LP16810-1	skos:exactMatch	CHEBI:28628	cadmium	sempav:HumanCuration
+loinc:LP16811-9	skos:exactMatch	CHEBI:60270	caesium ion	sempav:HumanCuration
+loinc:LP16812-7	skos:exactMatch	CHEBI:28073	chromium atom	sempav:HumanCuration
+loinc:LP16814-3	skos:exactMatch	CHEBI:28694	copper atom	sempav:HumanCuration
+loinc:LP16815-0	skos:exactMatch	CHEBI:17514	cyanide	sempav:HumanCuration
+loinc:LP16816-8	skos:exactMatch	CHEBI:34682	diazinon	sempav:HumanCuration
+loinc:LP16818-4	skos:exactMatch	CHEBI:17051	fluoride	sempav:HumanCuration
+loinc:LP16819-2	skos:exactMatch	CHEBI:16842	formaldehyde	sempav:HumanCuration
+loinc:LP16820-0	skos:exactMatch	CHEBI:49631	gallium atom	sempav:HumanCuration
+loinc:LP16821-8	skos:exactMatch	CHEBI:30441	germanium atom	sempav:HumanCuration
+loinc:LP16822-6	skos:exactMatch	CHEBI:29287	gold atom	sempav:HumanCuration
+loinc:LP16824-2	skos:exactMatch	CHEBI:30430	indium atom	sempav:HumanCuration
+loinc:LP16826-7	skos:exactMatch	CHEBI:6651	malathion	sempav:HumanCuration
+loinc:LP16827-5	skos:exactMatch	CHEBI:18291	manganese atom	sempav:HumanCuration
+loinc:LP16828-3	skos:exactMatch	CHEBI:28685	molybdenum atom	sempav:HumanCuration
+loinc:LP16829-1	skos:exactMatch	CHEBI:28112	nickel atom	sempav:HumanCuration
+loinc:LP16830-9	skos:exactMatch	CHEBI:34905	paraquat	sempav:HumanCuration
+loinc:LP16831-7	skos:exactMatch	CHEBI:17642	pentachlorophenol	sempav:HumanCuration
+loinc:LP16832-5	skos:exactMatch	CHEBI:53156	polychlorobiphenyl	sempav:HumanCuration
+loinc:LP16833-3	skos:exactMatch	CHEBI:33322	rubidium atom	sempav:HumanCuration
+loinc:LP16834-1	skos:exactMatch	CHEBI:48123	silicate ion	sempav:HumanCuration
+loinc:LP16835-8	skos:exactMatch	CHEBI:33324	strontium atom	sempav:HumanCuration
+loinc:LP16836-6	skos:exactMatch	CHEBI:30452	tellurium atom	sempav:HumanCuration
+loinc:LP16837-4	skos:exactMatch	CHEBI:30440	thallium	sempav:HumanCuration
+loinc:LP16838-2	skos:exactMatch	CHEBI:27007	tin atom	sempav:HumanCuration
+loinc:LP16839-0	skos:exactMatch	CHEBI:33341	titanium atom	sempav:HumanCuration
+loinc:LP16840-8	skos:exactMatch	CHEBI:17578	toluene	sempav:HumanCuration
+loinc:LP16841-6	skos:exactMatch	CHEBI:27214	uranium atom	sempav:HumanCuration
+loinc:LP16842-4	skos:exactMatch	CHEBI:27698	vanadium atom	sempav:HumanCuration
+loinc:LP16843-2	skos:exactMatch	CHEBI:27338	xylene	sempav:HumanCuration
+loinc:LP16845-7	skos:exactMatch	CHEBI:3311	calcium carbonate	sempav:HumanCuration
+loinc:LP16846-5	skos:exactMatch	CHEBI:60579	calcium oxalate	sempav:HumanCuration
+loinc:LP16847-3	skos:exactMatch	CHEBI:77635	calcium phosphate	sempav:HumanCuration
+loinc:LP16875-4	skos:exactMatch	CHEBI:17883	hydrogen chloride	sempav:HumanCuration
+loinc:LP16970-3	skos:exactMatch	CHEBI:27561	oxirane	sempav:HumanCuration
+loinc:LP17101-4	skos:exactMatch	CHEBI:3479	cefadroxil	sempav:HumanCuration
+loinc:LP17165-9	skos:exactMatch	CHEBI:478164	cefepime	sempav:HumanCuration
+loinc:LP17167-5	skos:exactMatch	CHEBI:43968	meropenem	sempav:HumanCuration
+loinc:LP17169-1	skos:exactMatch	CHEBI:9571	Thiothixene	sempav:HumanCuration
+loinc:LP17171-7	skos:exactMatch	CHEBI:79870	5beta-Pregnane-3alpha,17alpha,20alpha-triol-11-one	sempav:HumanCuration
+loinc:LP17172-5	skos:exactMatch	CHEBI:3219	bupropion	sempav:HumanCuration
+loinc:LP17184-0	skos:exactMatch	CHEBI:28750	17alpha-hydroxypregnenolone	sempav:HumanCuration
+loinc:LP17185-7	skos:exactMatch	CHEBI:19168	17-oxo steroid	sempav:HumanCuration
+loinc:LP17189-9	skos:exactMatch	CHEBI:3996	cyclobenzaprine	sempav:HumanCuration
+loinc:LP17229-3	skos:exactMatch	CHEBI:89627	5a-Tetrahydrocortisol	sempav:HumanCuration
+loinc:LP17236-8	skos:exactMatch	CHEBI:3766	clozapine	sempav:HumanCuration
+loinc:LP17238-4	skos:exactMatch	CHEBI:101278	diltiazem	sempav:HumanCuration
+loinc:LP17239-2	skos:exactMatch	CHEBI:4995	felbamate	sempav:HumanCuration
+loinc:LP17240-0	skos:exactMatch	CHEBI:132050	norverapamil	sempav:HumanCuration
+loinc:LP17241-8	skos:exactMatch	CHEBI:63619	propafenone	sempav:HumanCuration
+loinc:LP17242-6	skos:exactMatch	CHEBI:9123	sertraline	sempav:HumanCuration
+loinc:LP17245-9	skos:exactMatch	CHEBI:8614	psilocybin	sempav:HumanCuration
+loinc:LP17249-1	skos:exactMatch	CHEBI:28052	acetohexamide	sempav:HumanCuration
+loinc:LP17250-9	skos:exactMatch	CHEBI:6067	isotretinoin	sempav:HumanCuration
+loinc:LP17251-7	skos:exactMatch	CHEBI:6367	lamotrigine	sempav:HumanCuration
+loinc:LP17252-5	skos:exactMatch	CHEBI:6792	metaproterenol	sempav:HumanCuration
+loinc:LP17253-3	skos:exactMatch	CHEBI:8776	ranitidine	sempav:HumanCuration
+loinc:LP17254-1	skos:exactMatch	CHEBI:9613	tolazamide	sempav:HumanCuration
+loinc:LP17255-8	skos:exactMatch	CHEBI:10125	zolpidem	sempav:HumanCuration
+loinc:LP172582-1	skos:exactMatch	CHEBI:63632	topotecan	sempav:HumanCuration
+loinc:LP172583-9	skos:exactMatch	CHEBI:50924	sorafenib	sempav:HumanCuration
+loinc:LP172589-6	skos:exactMatch	CHEBI:4315	danazol	sempav:HumanCuration
+loinc:LP17261-6	skos:exactMatch	CHEBI:34237	2,4-diaminotoluene	sempav:HumanCuration
+loinc:LP17262-4	skos:exactMatch	CHEBI:76288	2,6-diaminotoluene	sempav:HumanCuration
+loinc:LP17263-2	skos:exactMatch	CHEBI:33342	zirconium atom	sempav:HumanCuration
+loinc:LP17271-5	skos:exactMatch	CHEBI:4885	ethionamide	sempav:HumanCuration
+loinc:LP17276-4	skos:exactMatch	CHEBI:63598	levofloxacin	sempav:HumanCuration
+loinc:LP172797-5	skos:exactMatch	CHEBI:17573	glycyrrhetinate	sempav:HumanCuration
+loinc:LP172798-3	skos:exactMatch	CHEBI:89531	5-Androstenetriol	sempav:HumanCuration
+loinc:LP173537-4	skos:exactMatch	CHEBI:81520	2,3',4,4',5-Pentachlorobiphenyl	sempav:HumanCuration
+loinc:LP173538-2	skos:exactMatch	CHEBI:34221	2,3,4,5-tetrachlorobiphenyl	sempav:HumanCuration
+loinc:LP173539-0	skos:exactMatch	CHEBI:34206	2,2',5,5'-tetrachlorobiphenyl	sempav:HumanCuration
+loinc:LP173601-8	skos:exactMatch	CHEBI:68584	ezogabine	sempav:HumanCuration
+loinc:LP173603-4	skos:exactMatch	CHEBI:81855	Bromadiolone	sempav:HumanCuration
+loinc:LP173604-2	skos:exactMatch	CHEBI:81858	Coumafuryl	sempav:HumanCuration
+loinc:LP173605-9	skos:exactMatch	CHEBI:80742	Coumatetralyl	sempav:HumanCuration
+loinc:LP173607-5	skos:exactMatch	CHEBI:40070	4-hydroxycoumarin	sempav:HumanCuration
+loinc:LP173636-4	skos:exactMatch	CHEBI:31654	gliclazide	sempav:HumanCuration
+loinc:LP173640-6	skos:exactMatch	CHEBI:16480	nitric oxide	sempav:HumanCuration
+loinc:LP173648-9	skos:exactMatch	CHEBI:6359	lactulose	sempav:HumanCuration
+loinc:LP173658-8	skos:exactMatch	CHEBI:17027	allysine	sempav:HumanCuration
+loinc:LP173717-2	skos:exactMatch	CHEBI:17737	desmosterol	sempav:HumanCuration
+loinc:LP173718-0	skos:exactMatch	CHEBI:16521	lanosterol	sempav:HumanCuration
+loinc:LP173719-8	skos:exactMatch	CHEBI:28824	stigmasterol	sempav:HumanCuration
+loinc:LP173720-6	skos:exactMatch	CHEBI:27693	sitosterol	sempav:HumanCuration
+loinc:LP173721-4	skos:exactMatch	CHEBI:89400	stigmastanol	sempav:HumanCuration
+loinc:LP173725-5	skos:exactMatch	CHEBI:1547	3-hydroxykynurenine	sempav:HumanCuration
+loinc:LP174445-9	skos:exactMatch	CHEBI:34202	2,2',4,4',5,5'-hexachlorobiphenyl	sempav:HumanCuration
+loinc:LP174557-1	skos:exactMatch	CHEBI:17929	N(omega),N(omega)-dimethyl-L-arginine	sempav:HumanCuration
+loinc:LP17477-8	skos:exactMatch	CHEBI:82567	Polymethylene polyphenyl isocyanate	sempav:HumanCuration
+loinc:LP17562-7	skos:exactMatch	CHEBI:36605	phthalic anhydride	sempav:HumanCuration
+loinc:LP17701-1	skos:exactMatch	CHEBI:472657	cefixime	sempav:HumanCuration
+loinc:LP17764-9	skos:exactMatch	CHEBI:28097	chlorobenzene	sempav:HumanCuration
+loinc:LP17765-6	skos:exactMatch	CHEBI:16101	ethylbenzene	sempav:HumanCuration
+loinc:LP17766-4	skos:exactMatch	CHEBI:33375	gadolinium atom	sempav:HumanCuration
+loinc:LP17768-0	skos:exactMatch	CHEBI:27452	styrene	sempav:HumanCuration
+loinc:LP17843-1	skos:exactMatch	CHEBI:2549	albuterol	sempav:HumanCuration
+loinc:LP17844-9	skos:exactMatch	CHEBI:3242	butorphanol	sempav:HumanCuration
+loinc:LP17846-4	skos:exactMatch	CHEBI:3395	carbidopa	sempav:HumanCuration
+loinc:LP17848-0	skos:exactMatch	CHEBI:27385	tetrachloromethane	sempav:HumanCuration
+loinc:LP17849-8	skos:exactMatch	CHEBI:35255	chloroform	sempav:HumanCuration
+loinc:LP17856-3	skos:exactMatch	CHEBI:29256	thiol	sempav:HumanCuration
+loinc:LP17857-1	skos:exactMatch	CHEBI:2972	baclofen	sempav:HumanCuration
+loinc:LP17858-9	skos:exactMatch	CHEBI:3048	benzatropine	sempav:HumanCuration
+loinc:LP17859-7	skos:exactMatch	CHEBI:3223	buspirone	sempav:HumanCuration
+loinc:LP17860-5	skos:exactMatch	CHEBI:45980	tacrine	sempav:HumanCuration
+loinc:LP17862-1	skos:exactMatch	CHEBI:36773	camphor	sempav:HumanCuration
+loinc:LP17863-9	skos:exactMatch	CHEBI:34631	chlorpyrifos	sempav:HumanCuration
+loinc:LP17865-4	skos:exactMatch	CHEBI:82978	paliperidone	sempav:HumanCuration
+loinc:LP17866-2	skos:exactMatch	CHEBI:7565	nifedipine	sempav:HumanCuration
+loinc:LP17867-0	skos:exactMatch	CHEBI:8448	procyclidine	sempav:HumanCuration
+loinc:LP17868-8	skos:exactMatch	CHEBI:8502	6-propyl-2-thiouracil	sempav:HumanCuration
+loinc:LP17869-6	skos:exactMatch	CHEBI:8665	Pyridostigmine	sempav:HumanCuration
+loinc:LP17870-4	skos:exactMatch	CHEBI:8694	Quazepam	sempav:HumanCuration
+loinc:LP17871-2	skos:exactMatch	CHEBI:8717	quinethazone	sempav:HumanCuration
+loinc:LP17872-0	skos:exactMatch	CHEBI:8871	risperidone	sempav:HumanCuration
+loinc:LP17874-6	skos:exactMatch	CHEBI:9316	sufentanil	sempav:HumanCuration
+loinc:LP17876-1	skos:exactMatch	CHEBI:22494	aminobenzoate	sempav:HumanCuration
+loinc:LP17877-9	skos:exactMatch	CHEBI:50786	anabolic androgenic steroid	sempav:HumanCuration
+loinc:LP17879-5	skos:exactMatch	CHEBI:3388	carbamazepine-10,11-epoxide	sempav:HumanCuration
+loinc:LP17882-9	skos:exactMatch	CHEBI:15837	isoamylol	sempav:HumanCuration
+loinc:LP17883-7	skos:exactMatch	CHEBI:46645	isobutanol	sempav:HumanCuration
+loinc:LP17884-5	skos:exactMatch	CHEBI:50569	isobutyl acetate	sempav:HumanCuration
+loinc:LP17885-2	skos:exactMatch	CHEBI:6015	isoflurane	sempav:HumanCuration
+loinc:LP17886-0	skos:exactMatch	CHEBI:70869	methyl hippurate	sempav:HumanCuration
+loinc:LP17904-1	skos:exactMatch	CHEBI:82415	Chloramine	sempav:HumanCuration
+loinc:LP17905-8	skos:exactMatch	CHEBI:34785	heptachlor	sempav:HumanCuration
+loinc:LP17906-6	skos:exactMatch	CHEBI:34786	Heptachlor epoxide	sempav:HumanCuration
+loinc:LP17907-4	skos:exactMatch	CHEBI:5692	hexachlorobenzene	sempav:HumanCuration
+loinc:LP17908-2	skos:exactMatch	CHEBI:29021	hexane	sempav:HumanCuration
+loinc:LP17910-8	skos:exactMatch	CHEBI:37808	butane	sempav:HumanCuration
+loinc:LP17911-6	skos:exactMatch	CHEBI:82107	Carbophenothion	sempav:HumanCuration
+loinc:LP17912-4	skos:exactMatch	CHEBI:47554	chloroethane	sempav:HumanCuration
+loinc:LP17913-2	skos:exactMatch	CHEBI:36014	chloromethane	sempav:HumanCuration
+loinc:LP17915-7	skos:exactMatch	CHEBI:47381	diclofenac	sempav:HumanCuration
+loinc:LP17920-7	skos:exactMatch	CHEBI:30753	4-aminobenzoic acid	sempav:HumanCuration
+loinc:LP17921-5	skos:exactMatch	CHEBI:9481	Tetrahydrocorticosterone	sempav:HumanCuration
+loinc:LP17945-4	skos:exactMatch	CHEBI:18067	phylloquinone	sempav:HumanCuration
+loinc:LP17949-6	skos:relatedMatch	CHEBI:83527	O-desmethylvenlafaxine	sempav:HumanCuration
+loinc:LP17950-4	skos:exactMatch	CHEBI:9943	venlafaxine	sempav:HumanCuration
+loinc:LP17951-2	skos:exactMatch	CHEBI:26822	sulfide	sempav:HumanCuration
+loinc:LP17952-0	skos:exactMatch	CHEBI:5784	hydroflumethiazide	sempav:HumanCuration
+loinc:LP17953-8	skos:exactMatch	CHEBI:6847	Methyclothiazide	sempav:HumanCuration
+loinc:LP17954-6	skos:exactMatch	CHEBI:64354	metolazone	sempav:HumanCuration
+loinc:LP17955-3	skos:exactMatch	CHEBI:135197	desalkylflurazepam	sempav:HumanCuration
+loinc:LP17956-1	skos:exactMatch	CHEBI:9683	trichlormethiazide	sempav:HumanCuration
+loinc:LP17970-2	skos:exactMatch	CHEBI:10319	1-naphthol	sempav:HumanCuration
+loinc:LP17971-0	skos:exactMatch	CHEBI:35687	butan-2-ol	sempav:HumanCuration
+loinc:LP17972-8	skos:exactMatch	CHEBI:45895	tert-butanol	sempav:HumanCuration
+loinc:LP17973-6	skos:exactMatch	CHEBI:34556	bendiocarb	sempav:HumanCuration
+loinc:LP17975-1	skos:exactMatch	CHEBI:3390	carbaryl	sempav:HumanCuration
+loinc:LP17976-9	skos:exactMatch	CHEBI:34611	carbofuran	sempav:HumanCuration
+loinc:LP17977-7	skos:exactMatch	CHEBI:34938	propoxur	sempav:HumanCuration
+loinc:LP17979-3	skos:exactMatch	CHEBI:7936	paroxetine	sempav:HumanCuration
+loinc:LP17981-9	skos:exactMatch	CHEBI:8430	procaine	sempav:HumanCuration
+loinc:LP17982-7	skos:exactMatch	CHEBI:9449	terbutaline	sempav:HumanCuration
+loinc:LP17987-6	skos:exactMatch	CHEBI:28346	mescaline	sempav:HumanCuration
+loinc:LP17988-4	skos:exactMatch	CHEBI:40279	allopurinol	sempav:HumanCuration
+loinc:LP17989-2	skos:exactMatch	CHEBI:42797	gabapentin	sempav:HumanCuration
+loinc:LP17990-0	skos:exactMatch	CHEBI:4317	dantrolene	sempav:HumanCuration
+loinc:LP17991-8	skos:exactMatch	CHEBI:4325	dapsone	sempav:HumanCuration
+loinc:LP17994-2	skos:exactMatch	CHEBI:64318	ergotamine	sempav:HumanCuration
+loinc:LP17995-9	skos:exactMatch	CHEBI:107736	metoclopramide	sempav:HumanCuration
+loinc:LP17996-7	skos:exactMatch	CHEBI:6997	moricizine	sempav:HumanCuration
+loinc:LP17998-3	skos:exactMatch	CHEBI:8060	Phenelzine	sempav:HumanCuration
+loinc:LP18001-5	skos:exactMatch	CHEBI:38461	carbamate insecticide	sempav:HumanCuration
+loinc:LP18003-1	skos:exactMatch	CHEBI:39275	bromomethane	sempav:HumanCuration
+loinc:LP18004-9	skos:exactMatch	CHEBI:38656	organochlorine pesticide	sempav:HumanCuration
+loinc:LP18005-6	skos:exactMatch	CHEBI:39093	organophosphorus pesticide	sempav:HumanCuration
+loinc:LP18006-4	skos:exactMatch	CHEBI:16602	trichloroethene	sempav:HumanCuration
+loinc:LP18017-1	skos:exactMatch	CHEBI:19351	(2,4-dichlorophenoxy)acetate	sempav:HumanCuration
+loinc:LP18018-9	skos:exactMatch	CHEBI:34623	chlordane	sempav:HumanCuration
+loinc:LP18019-7	skos:exactMatch	CHEBI:4469	(S)-amphetamine	sempav:HumanCuration
+loinc:LP18020-5	skos:exactMatch	CHEBI:16113	cholesterol	sempav:HumanCuration
+loinc:LP18033-8	skos:exactMatch	CHEBI:33709	amino acid	sempav:HumanCuration
+loinc:LP18035-3	skos:exactMatch	CHEBI:27283	very long-chain fatty acid	sempav:HumanCuration
+loinc:LP18038-7	skos:exactMatch	CHEBI:50699	oligosaccharide	sempav:HumanCuration
+loinc:LP18039-5	skos:exactMatch	CHEBI:25722	orotidine	sempav:HumanCuration
+loinc:LP18046-0	skos:exactMatch	CHEBI:23888	drug	sempav:HumanCuration
+loinc:LP18047-8	skos:exactMatch	CHEBI:35498	diuretic	sempav:HumanCuration
+loinc:LP18048-6	skos:exactMatch	CHEBI:6755	mephentermine	sempav:HumanCuration
+loinc:LP18049-4	skos:exactMatch	CHEBI:35499	hallucinogen	sempav:HumanCuration
+loinc:LP18050-2	skos:exactMatch	CHEBI:49709	chlorate	sempav:HumanCuration
+loinc:LP18051-0	skos:exactMatch	CHEBI:4884	ethinamate	sempav:HumanCuration
+loinc:LP18052-8	skos:exactMatch	CHEBI:8327	Polythiazide	sempav:HumanCuration
+loinc:LP18053-6	skos:exactMatch	CHEBI:28946	theobromine	sempav:HumanCuration
+loinc:LP18054-4	skos:exactMatch	CHEBI:17987	benzyl alcohol	sempav:HumanCuration
+loinc:LP18055-1	skos:exactMatch	CHEBI:16548	chlordecone	sempav:HumanCuration
+loinc:LP18056-9	skos:exactMatch	CHEBI:29005	cyclohexane	sempav:HumanCuration
+loinc:LP18057-7	skos:exactMatch	CHEBI:27789	1,2-dichloroethane	sempav:HumanCuration
+loinc:LP18058-5	skos:exactMatch	CHEBI:30365	cyclopropane	sempav:HumanCuration
+loinc:LP18060-1	skos:exactMatch	CHEBI:9711	triflupromazine	sempav:HumanCuration
+loinc:LP18061-9	skos:exactMatch	CHEBI:9725	Trimeprazine	sempav:HumanCuration
+loinc:LP18062-7	skos:exactMatch	CHEBI:35522	beta-adrenergic agonist	sempav:HumanCuration
+loinc:LP18063-5	skos:exactMatch	CHEBI:35526	hypoglycemic agent	sempav:HumanCuration
+loinc:LP18064-3	skos:exactMatch	CHEBI:38605	phenethylamine alkaloid	sempav:HumanCuration
+loinc:LP18065-0	skos:exactMatch	CHEBI:37956	histamine antagonist	sempav:HumanCuration
+loinc:LP18066-8	skos:exactMatch	CHEBI:17602	4-aminophenol	sempav:HumanCuration
+loinc:LP18067-6	skos:exactMatch	CHEBI:5615	halothane	sempav:HumanCuration
+loinc:LP18068-4	skos:exactMatch	CHEBI:28262	dimethyl sulfoxide	sempav:HumanCuration
+loinc:LP18069-2	skos:exactMatch	CHEBI:64163	diquat	sempav:HumanCuration
+loinc:LP18070-0	skos:exactMatch	CHEBI:24003	ethylene	sempav:HumanCuration
+loinc:LP18071-8	skos:exactMatch	CHEBI:6702	Mazindol	sempav:HumanCuration
+loinc:LP18072-6	skos:exactMatch	CHEBI:50264	thiazide	sempav:HumanCuration
+loinc:LP18073-4	skos:exactMatch	CHEBI:35476	antipsychotic agent	sempav:HumanCuration
+loinc:LP18074-2	skos:exactMatch	CHEBI:31448	cyclothiazide	sempav:HumanCuration
+loinc:LP18075-9	skos:exactMatch	CHEBI:4604	dimenhydrinate	sempav:HumanCuration
+loinc:LP18076-7	skos:exactMatch	CHEBI:35524	sympathomimetic agent	sempav:HumanCuration
+loinc:LP18078-3	skos:exactMatch	CHEBI:84254	N,N-dimethylacetamide	sempav:HumanCuration
+loinc:LP18081-7	skos:exactMatch	CHEBI:64050	N-desmethylclozapine	sempav:HumanCuration
+loinc:LP18083-3	skos:exactMatch	CHEBI:5603	Halazepam	sempav:HumanCuration
+loinc:LP18086-6	skos:exactMatch	CHEBI:8097	Phenylethylmalonamide	sempav:HumanCuration
+loinc:LP18087-4	skos:exactMatch	CHEBI:7735	olanzapine	sempav:HumanCuration
+loinc:LP18088-2	skos:exactMatch	CHEBI:9334	sulfasalazine	sempav:HumanCuration
+loinc:LP18089-0	skos:exactMatch	CHEBI:23359	colchicine	sempav:HumanCuration
+loinc:LP18090-8	skos:exactMatch	CHEBI:4639	diphenoxylate	sempav:HumanCuration
+loinc:LP18091-6	skos:exactMatch	CHEBI:27779	griseofulvin	sempav:HumanCuration
+loinc:LP18092-4	skos:exactMatch	CHEBI:28787	nitroglycerin	sempav:HumanCuration
+loinc:LP18093-2	skos:exactMatch	CHEBI:7443	nabumetone	sempav:HumanCuration
+loinc:LP18095-7	skos:exactMatch	CHEBI:7856	oxybutynin	sempav:HumanCuration
+loinc:LP18096-5	skos:exactMatch	CHEBI:8212	pimozide	sempav:HumanCuration
+loinc:LP18097-3	skos:exactMatch	CHEBI:16227	pyridine	sempav:HumanCuration
+loinc:LP18098-1	skos:exactMatch	CHEBI:28487	reserpine	sempav:HumanCuration
+loinc:LP18099-9	skos:exactMatch	CHEBI:50217	selegiline	sempav:HumanCuration
+loinc:LP18100-5	skos:exactMatch	CHEBI:9352	sulindac	sempav:HumanCuration
+loinc:LP18101-3	skos:exactMatch	CHEBI:9453	Terfenadine	sempav:HumanCuration
+loinc:LP18102-1	skos:exactMatch	CHEBI:84116	triprolidine	sempav:HumanCuration
+loinc:LP18103-9	skos:exactMatch	CHEBI:3655	chlorzoxazone	sempav:HumanCuration
+loinc:LP18104-7	skos:exactMatch	CHEBI:81892	Brodifacoum	sempav:HumanCuration
+loinc:LP18105-4	skos:exactMatch	CHEBI:3619	chlormezanone	sempav:HumanCuration
+loinc:LP18106-2	skos:exactMatch	CHEBI:5130	flurbiprofen	sempav:HumanCuration
+loinc:LP18107-0	skos:exactMatch	CHEBI:34656	cumene	sempav:HumanCuration
+loinc:LP18109-6	skos:exactMatch	CHEBI:8382	prednisone	sempav:HumanCuration
+loinc:LP18110-4	skos:exactMatch	CHEBI:16482	naphthalene	sempav:HumanCuration
+loinc:LP18111-2	skos:exactMatch	CHEBI:35682	naphthol	sempav:HumanCuration
+loinc:LP18112-0	skos:exactMatch	CHEBI:9648	tramadol	sempav:HumanCuration
+loinc:LP18114-6	skos:exactMatch	CHEBI:71941	tolmetin	sempav:HumanCuration
+loinc:LP18116-1	skos:exactMatch	CHEBI:24472	halohydrocarbon	sempav:HumanCuration
+loinc:LP18121-1	skos:exactMatch	CHEBI:136013	levmetamfetamine	sempav:HumanCuration
+loinc:LP18123-7	skos:exactMatch	CHEBI:27998	tungsten	sempav:HumanCuration
+loinc:LP18124-5	skos:exactMatch	CHEBI:134923	talbutal	sempav:HumanCuration
+loinc:LP18125-2	skos:exactMatch	CHEBI:102216	methohexital	sempav:HumanCuration
+loinc:LP18126-0	skos:exactMatch	CHEBI:9536	thiamylal	sempav:HumanCuration
+loinc:LP18127-8	skos:exactMatch	CHEBI:5706	hexobarbital	sempav:HumanCuration
+loinc:LP18128-6	skos:exactMatch	CHEBI:31827	Metharbital	sempav:HumanCuration
+loinc:LP18129-4	skos:exactMatch	CHEBI:134875	allobarbital	sempav:HumanCuration
+loinc:LP18131-0	skos:exactMatch	CHEBI:6709	Meclizine	sempav:HumanCuration
+loinc:LP18132-8	skos:exactMatch	CHEBI:136957	raphanusamic acid	sempav:HumanCuration
+loinc:LP18133-6	skos:exactMatch	CHEBI:55344	n-pentyl nitrite	sempav:HumanCuration
+loinc:LP18135-1	skos:exactMatch	CHEBI:36656	phenylglyoxylate	sempav:HumanCuration
+loinc:LP18136-9	skos:exactMatch	CHEBI:15598	2-methylcitrate(3-)	sempav:HumanCuration
+loinc:LP18138-5	skos:exactMatch	CHEBI:87321	N-methylacetamide	sempav:HumanCuration
+loinc:LP18139-3	skos:exactMatch	CHEBI:7438	N-methylformamide	sempav:HumanCuration
+loinc:LP18140-1	skos:exactMatch	CHEBI:7494	nefazodone	sempav:HumanCuration
+loinc:LP18141-9	skos:exactMatch	CHEBI:35859	zomepirac	sempav:HumanCuration
+loinc:LP18142-7	skos:exactMatch	CHEBI:38764	phorate	sempav:HumanCuration
+loinc:LP18143-5	skos:exactMatch	CHEBI:135133	tybamate	sempav:HumanCuration
+loinc:LP18145-0	skos:exactMatch	CHEBI:28241	papaverine	sempav:HumanCuration
+loinc:LP18146-8	skos:exactMatch	CHEBI:93635	5-methyl-N'-(phenylmethyl)-3-isoxazolecarbohydrazide	sempav:HumanCuration
+loinc:LP18147-6	skos:exactMatch	CHEBI:16997	propane-1,2-diol	sempav:HumanCuration
+loinc:LP18148-4	skos:exactMatch	CHEBI:35337	central nervous system stimulant	sempav:HumanCuration
+loinc:LP18151-8	skos:exactMatch	CHEBI:77268	pristanate	sempav:HumanCuration
+loinc:LP18152-6	skos:exactMatch	CHEBI:143437	Hydroxyethylflurazepam	sempav:HumanCuration
+loinc:LP18153-4	skos:exactMatch	CHEBI:16091	dolichol	sempav:HumanCuration
+loinc:LP18154-2	skos:exactMatch	CHEBI:33385	thorium	sempav:HumanCuration
+loinc:LP18168-2	skos:exactMatch	CHEBI:89656	Enkephalin L	sempav:HumanCuration
+loinc:LP18169-0	skos:exactMatch	CHEBI:8378	prednisolone	sempav:HumanCuration
+loinc:LP18177-3	skos:exactMatch	CHEBI:132153	hyaluronate	sempav:HumanCuration
+loinc:LP18183-1	skos:exactMatch	CHEBI:135276	dihydrocodeine	sempav:HumanCuration
+loinc:LP18184-9	skos:exactMatch	CHEBI:80273	Parathyroid hormone	sempav:HumanCuration
+loinc:LP18185-6	skos:exactMatch	CHEBI:6823	methdilazine	sempav:HumanCuration
+loinc:LP18186-4	skos:exactMatch	CHEBI:8491	propiomazine	sempav:HumanCuration
+loinc:LP18190-6	skos:exactMatch	CHEBI:15555	prostaglandin D2	sempav:HumanCuration
+loinc:LP18191-4	skos:exactMatch	CHEBI:15553	prostaglandin F2alpha	sempav:HumanCuration
+loinc:LP18214-4	skos:exactMatch	CHEBI:27518	acetylene	sempav:HumanCuration
+loinc:LP18221-9	skos:exactMatch	CHEBI:134179	volatile organic compound	sempav:HumanCuration
+loinc:LP18222-7	skos:exactMatch	CHEBI:85014	2,5-hexanedione	sempav:HumanCuration
+loinc:LP18223-5	skos:exactMatch	CHEBI:28619	acrylamide	sempav:HumanCuration
+loinc:LP18224-3	skos:exactMatch	CHEBI:16605	allyl alcohol	sempav:HumanCuration
+loinc:LP18226-8	skos:exactMatch	CHEBI:63933	Aroclor 1254	sempav:HumanCuration
+loinc:LP18227-6	skos:exactMatch	CHEBI:30363	isobutane	sempav:HumanCuration
+loinc:LP18228-4	skos:exactMatch	CHEBI:81541	Oxychlordane	sempav:HumanCuration
+loinc:LP182296-6	skos:exactMatch	CHEBI:85429	phosphatidylethanol	sempav:HumanCuration
+loinc:LP18230-0	skos:exactMatch	CHEBI:47032	1,4-dioxane	sempav:HumanCuration
+loinc:LP182301-4	skos:exactMatch	CHEBI:51041	acamprosate	sempav:HumanCuration
+loinc:LP182315-4	skos:exactMatch	CHEBI:28094	2,2,2-trichloroethanol	sempav:HumanCuration
+loinc:LP18232-6	skos:exactMatch	CHEBI:37144	epichlorohydrin	sempav:HumanCuration
+loinc:LP18233-4	skos:exactMatch	CHEBI:25147	mandelate	sempav:HumanCuration
+loinc:LP18234-2	skos:exactMatch	CHEBI:89993	4-Methyl-3-penten-2-one, 9CI	sempav:HumanCuration
+loinc:LP18236-7	skos:exactMatch	CHEBI:19331	(2,4,5-trichlorophenoxy)acetate	sempav:HumanCuration
+loinc:LP18237-5	skos:exactMatch	CHEBI:28618	1,4-dichlorobenzene	sempav:HumanCuration
+loinc:LP18238-3	skos:exactMatch	CHEBI:42266	ethane	sempav:HumanCuration
+loinc:LP18239-1	skos:exactMatch	CHEBI:16472	pentan-2-one	sempav:HumanCuration
+loinc:LP18240-9	skos:exactMatch	CHEBI:28398	butan-2-one	sempav:HumanCuration
+loinc:LP182416-0	skos:exactMatch	CHEBI:73103	3-hydroxyeicosanoylcarnitine	sempav:HumanCuration
+loinc:LP18241-7	skos:exactMatch	CHEBI:5672	heptan-2-one	sempav:HumanCuration
+loinc:LP18242-5	skos:exactMatch	CHEBI:88432	5-methyl-2-hexanone	sempav:HumanCuration
+loinc:LP18243-3	skos:exactMatch	CHEBI:82344	Methyl isobutyl ketone	sempav:HumanCuration
+loinc:LP18244-1	skos:exactMatch	CHEBI:89206	2-Oxohexane	sempav:HumanCuration
+loinc:LP18246-6	skos:exactMatch	CHEBI:25562	nitrophenol	sempav:HumanCuration
+loinc:LP18248-2	skos:exactMatch	CHEBI:32879	propane	sempav:HumanCuration
+loinc:LP18249-0	skos:exactMatch	CHEBI:48236	trichlorofluoromethane	sempav:HumanCuration
+loinc:LP18252-4	skos:exactMatch	CHEBI:28054	o-cresol	sempav:HumanCuration
+loinc:LP18253-2	skos:exactMatch	CHEBI:27750	ethyl acetate	sempav:HumanCuration
+loinc:LP18260-7	skos:exactMatch	CHEBI:16038	phosphatidylethanolamine	sempav:HumanCuration
+loinc:LP18266-4	skos:exactMatch	CHEBI:60739	beta-D-GlcA3S-(1->3)-beta-D-Gal-(1->4)-beta-D-GlcNAc-(1->3)-beta-D-Gal-(1->4)-beta-D-Glc-(1<->1')-Cer	sempav:HumanCuration
+loinc:LP18278-9	skos:exactMatch	CHEBI:80269	Motilin	sempav:HumanCuration
+loinc:LP183524-0	skos:exactMatch	CHEBI:70707	vilazodone	sempav:HumanCuration
+loinc:LP183525-7	skos:exactMatch	CHEBI:135119	desomorphine	sempav:HumanCuration
+loinc:LP183621-4	skos:exactMatch	CHEBI:28757	fructose	sempav:HumanCuration
+loinc:LP183644-6	skos:exactMatch	CHEBI:93369	8-[4,4-bis(4-fluorophenyl)butyl]-1-phenyl-1,3,8-triazaspiro[4.5]decan-4-one	sempav:HumanCuration
+loinc:LP18367-0	skos:exactMatch	CHEBI:77635	calcium phosphate	sempav:HumanCuration
+loinc:LP18368-8	skos:exactMatch	CHEBI:30145	lithium atom	sempav:HumanCuration
+loinc:LP18371-2	skos:exactMatch	CHEBI:139473	monoacetyldapsone	sempav:HumanCuration
+loinc:LP18375-3	skos:exactMatch	CHEBI:42724	(R)-amphetamine	sempav:HumanCuration
+loinc:LP18379-5	skos:exactMatch	CHEBI:18329	5alpha-androstane-3beta,17beta-diol	sempav:HumanCuration
+loinc:LP18380-3	skos:exactMatch	CHEBI:139271	6beta-hydroxycortisol	sempav:HumanCuration
+loinc:LP18382-9	skos:exactMatch	CHEBI:28748	doxorubicin	sempav:HumanCuration
+loinc:LP18383-7	skos:exactMatch	CHEBI:18358	methoxsalen	sempav:HumanCuration
+loinc:LP18384-5	skos:exactMatch	CHEBI:6954	Mitotane	sempav:HumanCuration
+loinc:LP18388-6	skos:exactMatch	CHEBI:36015	1,1,1-trichloroethane	sempav:HumanCuration
+loinc:LP18390-2	skos:exactMatch	CHEBI:28488	m-xylene	sempav:HumanCuration
+loinc:LP18391-0	skos:exactMatch	CHEBI:15767	dichloromethane	sempav:HumanCuration
+loinc:LP18392-8	skos:exactMatch	CHEBI:28063	o-xylene	sempav:HumanCuration
+loinc:LP18393-6	skos:exactMatch	CHEBI:27417	p-xylene	sempav:HumanCuration
+loinc:LP18399-3	skos:exactMatch	CHEBI:82955	2-ethylhydracrylate	sempav:HumanCuration
+loinc:LP18400-9	skos:exactMatch	CHEBI:133082	(2R,3R)-2-hydroxy-3-methylpentanoate	sempav:HumanCuration
+loinc:LP18401-7	skos:exactMatch	CHEBI:17023	2-hydroxyadipic acid	sempav:HumanCuration
+loinc:LP18402-5	skos:exactMatch	CHEBI:133791	2-hydroxybutyrates	sempav:HumanCuration
+loinc:LP18403-3	skos:exactMatch	CHEBI:132941	2-hydroxyglutarate	sempav:HumanCuration
+loinc:LP18404-1	skos:exactMatch	CHEBI:59783	2-hydroxy-4-methylvaleric acid	sempav:HumanCuration
+loinc:LP18405-8	skos:exactMatch	CHEBI:64669	2-hydroxy-3-methylbutyrate	sempav:HumanCuration
+loinc:LP18406-6	skos:exactMatch	CHEBI:37051	3-hydroxy-2-methylbutanoic acid	sempav:HumanCuration
+loinc:LP18407-4	skos:exactMatch	CHEBI:28654	3-methyl-2-oxovalerate	sempav:HumanCuration
+loinc:LP18408-2	skos:exactMatch	CHEBI:19738	2-oxoadipate	sempav:HumanCuration
+loinc:LP18410-8	skos:exactMatch	CHEBI:11851	3-methyl-2-oxobutanoate	sempav:HumanCuration
+loinc:LP18412-4	skos:exactMatch	CHEBI:30920	3-hydroxy-3-methylglutarate(1-)	sempav:HumanCuration
+loinc:LP18413-2	skos:exactMatch	CHEBI:89205	3-Hydroxyadipic acid	sempav:HumanCuration
+loinc:LP18415-7	skos:exactMatch	CHEBI:39980	3-hydroxyglutaric acid	sempav:HumanCuration
+loinc:LP18416-5	skos:exactMatch	CHEBI:11805	3-hydroxyisobutyrate	sempav:HumanCuration
+loinc:LP18417-3	skos:exactMatch	CHEBI:16510	3-hydroxypropionate	sempav:HumanCuration
+loinc:LP18418-1	skos:exactMatch	CHEBI:139272	3-hydroxypentanoic acid	sempav:HumanCuration
+loinc:LP18420-7	skos:exactMatch	CHEBI:37245	(E)-3-methylglutaconic acid	sempav:HumanCuration
+loinc:LP18421-5	skos:exactMatch	CHEBI:68566	3-methylglutaric acid	sempav:HumanCuration
+loinc:LP18423-1	skos:exactMatch	CHEBI:48999	4-hydroxyphenylacetate	sempav:HumanCuration
+loinc:LP18425-6	skos:exactMatch	CHEBI:15999	(4-hydroxyphenyl)pyruvic acid	sempav:HumanCuration
+loinc:LP18426-4	skos:exactMatch	CHEBI:132985	5-hydroxyhexanoate	sempav:HumanCuration
+loinc:LP18427-2	skos:exactMatch	CHEBI:16010	5-oxoproline	sempav:HumanCuration
+loinc:LP18428-0	skos:exactMatch	CHEBI:22210	aconitate(3-)	sempav:HumanCuration
+loinc:LP18430-6	skos:exactMatch	CHEBI:132955	azelaate	sempav:HumanCuration
+loinc:LP18431-4	skos:exactMatch	CHEBI:17126	carnitine	sempav:HumanCuration
+loinc:LP18433-0	skos:exactMatch	CHEBI:89730	cis-4-Decenedioic acid	sempav:HumanCuration
+loinc:LP18434-8	skos:exactMatch	CHEBI:76273	dodecanedioate(2-)	sempav:HumanCuration
+loinc:LP18436-3	skos:exactMatch	CHEBI:24308	glutaconate	sempav:HumanCuration
+loinc:LP18437-1	skos:exactMatch	CHEBI:24329	glutarate	sempav:HumanCuration
+loinc:LP18438-9	skos:exactMatch	CHEBI:36655	glyoxylate	sempav:HumanCuration
+loinc:LP18440-5	skos:exactMatch	CHEBI:24885	isocitrate	sempav:HumanCuration
+loinc:LP18441-3	skos:exactMatch	CHEBI:25115	malate	sempav:HumanCuration
+loinc:LP18443-9	skos:exactMatch	CHEBI:132961	methylsuccinate	sempav:HumanCuration
+loinc:LP18444-7	skos:exactMatch	CHEBI:25350	mevalonate	sempav:HumanCuration
+loinc:LP18445-4	skos:exactMatch	CHEBI:21547	N-acetyl-L-aspartic acid	sempav:HumanCuration
+loinc:LP18446-2	skos:exactMatch	CHEBI:68561	N-acetyltyrosine	sempav:HumanCuration
+loinc:LP18447-0	skos:exactMatch	CHEBI:29009	N(tele)-methylhistamine	sempav:HumanCuration
+loinc:LP18448-8	skos:exactMatch	CHEBI:25646	octanoate	sempav:HumanCuration
+loinc:LP18449-6	skos:exactMatch	CHEBI:36175	octenedioate	sempav:HumanCuration
+loinc:LP18450-4	skos:exactMatch	CHEBI:18401	phenylacetate	sempav:HumanCuration
+loinc:LP18451-2	skos:exactMatch	CHEBI:25997	phenyllactate	sempav:HumanCuration
+loinc:LP18453-8	skos:exactMatch	CHEBI:132954	sebacate	sempav:HumanCuration
+loinc:LP18454-6	skos:exactMatch	CHEBI:132953	suberate	sempav:HumanCuration
+loinc:LP18455-3	skos:exactMatch	CHEBI:17568	uracil	sempav:HumanCuration
+loinc:LP18475-1	skos:exactMatch	CHEBI:89510	Deoxypyridinoline	sempav:HumanCuration
+loinc:LP18477-7	skos:exactMatch	CHEBI:23965	estradiol	sempav:HumanCuration
+loinc:LP18481-9	skos:exactMatch	CHEBI:6710	meclofenamic acid	sempav:HumanCuration
+loinc:LP18482-7	skos:exactMatch	CHEBI:7627	norethisterone	sempav:HumanCuration
+loinc:LP18483-5	skos:exactMatch	CHEBI:28315	alloxanthine	sempav:HumanCuration
+loinc:LP18484-3	skos:exactMatch	CHEBI:41774	tamoxifen	sempav:HumanCuration
+loinc:LP18491-8	skos:exactMatch	CHEBI:36015	1,1,1-trichloroethane	sempav:HumanCuration
+loinc:LP18504-8	skos:exactMatch	CHEBI:135227	butriptyline	sempav:HumanCuration
+loinc:LP18506-3	skos:exactMatch	CHEBI:51209	pseudoephedrine	sempav:HumanCuration
+loinc:LP18511-3	skos:exactMatch	CHEBI:47772	delta-tocopherol	sempav:HumanCuration
+loinc:LP18512-1	skos:exactMatch	CHEBI:26334	prostaglandins A	sempav:HumanCuration
+loinc:LP18544-4	skos:exactMatch	CHEBI:16962	cortisone	sempav:HumanCuration
+loinc:LP18545-1	skos:exactMatch	CHEBI:16004	(R)-lactate	sempav:HumanCuration
+loinc:LP18549-3	skos:exactMatch	CHEBI:41879	dexamethasone	sempav:HumanCuration
+loinc:LP18550-1	skos:exactMatch	CHEBI:4474	dezocine	sempav:HumanCuration
+loinc:LP18551-9	skos:exactMatch	CHEBI:41922	diethylstilbestrol	sempav:HumanCuration
+loinc:LP18552-7	skos:exactMatch	CHEBI:39669	diflunisal	sempav:HumanCuration
+loinc:LP18555-0	skos:exactMatch	CHEBI:132842	sulfapyridine	sempav:HumanCuration
+loinc:LP18570-9	skos:exactMatch	CHEBI:89455	18-Hydroxycortisol	sempav:HumanCuration
+loinc:LP18572-5	skos:exactMatch	CHEBI:41321	cholesterol sulfate	sempav:HumanCuration
+loinc:LP18573-3	skos:exactMatch	CHEBI:80349	gamma-Melanotropin	sempav:HumanCuration
+loinc:LP185757-4	skos:exactMatch	CHEBI:81573	Resistin	sempav:HumanCuration
+loinc:LP18575-8	skos:exactMatch	CHEBI:132918	1-methyl-4-imidazoleacetate	sempav:HumanCuration
+loinc:LP18579-0	skos:exactMatch	CHEBI:26455	pyrroles	sempav:HumanCuration
+loinc:LP18583-2	skos:exactMatch	CHEBI:50673	methimazole	sempav:HumanCuration
+loinc:LP18586-5	skos:exactMatch	CHEBI:7772	omeprazole	sempav:HumanCuration
+loinc:LP18587-3	skos:exactMatch	CHEBI:135047	phenyltoloxamine	sempav:HumanCuration
+loinc:LP18588-1	skos:exactMatch	CHEBI:8364	prazosin	sempav:HumanCuration
+loinc:LP185931-5	skos:exactMatch	CHEBI:17168	5alpha-cholest-7-en-3beta-ol	sempav:HumanCuration
+loinc:LP185933-1	skos:exactMatch	CHEBI:64561	lysophosphatidylcholine 18:0	sempav:HumanCuration
+loinc:LP185934-9	skos:exactMatch	CHEBI:64563	lysophosphatidylcholine 16:0	sempav:HumanCuration
+loinc:LP18608-7	skos:exactMatch	CHEBI:44884	pentan-1-ol	sempav:HumanCuration
+loinc:LP18609-5	skos:exactMatch	CHEBI:38682	bromoform	sempav:HumanCuration
+loinc:LP18610-3	skos:exactMatch	CHEBI:4792	enflurane	sempav:HumanCuration
+loinc:LP18611-1	skos:exactMatch	CHEBI:6843	methoxyflurane	sempav:HumanCuration
+loinc:LP18612-9	skos:exactMatch	CHEBI:1391	3,4-methylenedioxymethamphetamine	sempav:HumanCuration
+loinc:LP18613-7	skos:exactMatch	CHEBI:31328	butyl acetate	sempav:HumanCuration
+loinc:LP186173-3	skos:exactMatch	CHEBI:16608	5alpha-cholest-8-en-3beta-ol	sempav:HumanCuration
+loinc:LP18627-7	skos:exactMatch	CHEBI:8107	phenytoin	sempav:HumanCuration
+loinc:LP18633-5	skos:exactMatch	CHEBI:28421	coproporphyrin I	sempav:HumanCuration
+loinc:LP18645-9	skos:exactMatch	CHEBI:59359	hexacarboxylic acid	sempav:HumanCuration
+loinc:LP18646-7	skos:exactMatch	CHEBI:59559	mesoporphyrins	sempav:HumanCuration
+loinc:LP18650-9	skos:exactMatch	CHEBI:35743	pentacarboxylic acid	sempav:HumanCuration
+loinc:LP18653-3	skos:exactMatch	CHEBI:27484	uroporphyrin I	sempav:HumanCuration
+loinc:LP18654-1	skos:exactMatch	CHEBI:15436	uroporphyrin III	sempav:HumanCuration
+loinc:LP18655-8	skos:exactMatch	CHEBI:23965	estradiol	sempav:HumanCuration
+loinc:LP18666-5	skos:exactMatch	CHEBI:17263	estrone	sempav:HumanCuration
+loinc:LP18778-8	skos:exactMatch	CHEBI:17474	estrone 3-sulfate	sempav:HumanCuration
+loinc:LP18783-8	skos:exactMatch	CHEBI:28901	busulfan	sempav:HumanCuration
+loinc:LP18787-9	skos:exactMatch	CHEBI:76983	N-sulfonylurea	sempav:HumanCuration
+loinc:LP18790-3	skos:exactMatch	CHEBI:16933	ergosterol	sempav:HumanCuration
+loinc:LP18811-7	skos:exactMatch	CHEBI:17347	testosterone	sempav:HumanCuration
+loinc:LP188448-7	skos:exactMatch	CHEBI:79870	5beta-Pregnane-3alpha,17alpha,20alpha-triol-11-one	sempav:HumanCuration
+loinc:LP18863-8	skos:exactMatch	CHEBI:4717	droperidol	sempav:HumanCuration
+loinc:LP18864-6	skos:exactMatch	CHEBI:8613	psilocin	sempav:HumanCuration
+loinc:LP18865-3	skos:exactMatch	CHEBI:34852	mirex	sempav:HumanCuration
+loinc:LP18867-9	skos:exactMatch	CHEBI:134796	etilamfetamine	sempav:HumanCuration
+loinc:LP18868-7	skos:exactMatch	CHEBI:2679	amphetamine	sempav:HumanCuration
+loinc:LP188755-5	skos:exactMatch	CHEBI:33344	niobium atom	sempav:HumanCuration
+loinc:LP18881-0	skos:exactMatch	CHEBI:46790	2-methoxyethanol	sempav:HumanCuration
+loinc:LP18882-8	skos:exactMatch	CHEBI:30089	acetate	sempav:HumanCuration
+loinc:LP18883-6	skos:exactMatch	CHEBI:3112	biperiden	sempav:HumanCuration
+loinc:LP18884-4	skos:exactMatch	CHEBI:2564	aldrin	sempav:HumanCuration
+loinc:LP18887-7	skos:exactMatch	CHEBI:27971	2-aminoisobutyric acid	sempav:HumanCuration
+loinc:LP18892-7	skos:exactMatch	CHEBI:35623	anticonvulsant	sempav:HumanCuration
+loinc:LP18893-5	skos:exactMatch	CHEBI:35469	antidepressant	sempav:HumanCuration
+loinc:LP18896-8	skos:exactMatch	CHEBI:46661	asbestos	sempav:HumanCuration
+loinc:LP18897-6	skos:exactMatch	CHEBI:2946	azatadine	sempav:HumanCuration
+loinc:LP18898-4	skos:exactMatch	CHEBI:2948	azathioprine	sempav:HumanCuration
+loinc:LP18902-4	skos:exactMatch	CHEBI:17169	benzaldehyde	sempav:HumanCuration
+loinc:LP18904-0	skos:exactMatch	CHEBI:3032	benzonatate	sempav:HumanCuration
+loinc:LP18905-7	skos:exactMatch	CHEBI:41308	benzophenone	sempav:HumanCuration
+loinc:LP18906-5	skos:exactMatch	CHEBI:38454	benzohydrazide	sempav:HumanCuration
+loinc:LP18907-3	skos:exactMatch	CHEBI:3084	bethanechol	sempav:HumanCuration
+loinc:LP18911-5	skos:exactMatch	CHEBI:59177	bromazine	sempav:HumanCuration
+loinc:LP18913-1	skos:exactMatch	CHEBI:17968	butyrate	sempav:HumanCuration
+loinc:LP18914-9	skos:exactMatch	CHEBI:3380	captopril	sempav:HumanCuration
+loinc:LP18915-6	skos:exactMatch	CHEBI:3398	carbinoxamine	sempav:HumanCuration
+loinc:LP18916-4	skos:exactMatch	CHEBI:16646	carbohydrate	sempav:HumanCuration
+loinc:LP18919-8	skos:exactMatch	CHEBI:3547	cephradine	sempav:HumanCuration
+loinc:LP18921-4	skos:exactMatch	CHEBI:94402	1-[(4-chlorophenyl)-phenylmethyl]-4-methylpiperazine	sempav:HumanCuration
+loinc:LP18922-2	skos:exactMatch	CHEBI:23116	chlorine atom	sempav:HumanCuration
+loinc:LP18930-5	skos:exactMatch	CHEBI:25399	cresol	sempav:HumanCuration
+loinc:LP18931-3	skos:exactMatch	CHEBI:18099	cyclohexanol	sempav:HumanCuration
+loinc:LP18932-1	skos:exactMatch	CHEBI:4046	cyproheptadine	sempav:HumanCuration
+loinc:LP18941-2	skos:exactMatch	CHEBI:81856	dicamba	sempav:HumanCuration
+loinc:LP18943-8	skos:exactMatch	CHEBI:23697	dichlorobenzene	sempav:HumanCuration
+loinc:LP189445-2	skos:exactMatch	CHEBI:75431	ghrelin	sempav:HumanCuration
+loinc:LP18945-3	skos:exactMatch	CHEBI:34690	dichlorvos	sempav:HumanCuration
+loinc:LP18946-1	skos:exactMatch	CHEBI:4514	dicyclomine	sempav:HumanCuration
+loinc:LP18947-9	skos:exactMatch	CHEBI:4527	diethylcarbamazine	sempav:HumanCuration
+loinc:LP18948-7	skos:exactMatch	CHEBI:39352	dinitrophenol	sempav:HumanCuration
+loinc:LP18959-4	skos:exactMatch	CHEBI:4909	etodolac	sempav:HumanCuration
+loinc:LP18960-2	skos:exactMatch	CHEBI:82125	Fenchlorphos	sempav:HumanCuration
+loinc:LP18962-8	skos:exactMatch	CHEBI:38824	fluorocarbon	sempav:HumanCuration
+loinc:LP18968-5	skos:exactMatch	CHEBI:5551	Guaifenesin	sempav:HumanCuration
+loinc:LP18974-3	skos:exactMatch	CHEBI:39227	hexachloroethane	sempav:HumanCuration
+loinc:LP18979-2	skos:exactMatch	CHEBI:69919	Hydrastine	sempav:HumanCuration
+loinc:LP18980-0	skos:exactMatch	CHEBI:17594	hydroquinone	sempav:HumanCuration
+loinc:LP18985-9	skos:exactMatch	CHEBI:6128	ketoprofen	sempav:HumanCuration
+loinc:LP18986-7	skos:exactMatch	CHEBI:6129	ketorolac	sempav:HumanCuration
+loinc:LP18988-3	skos:exactMatch	CHEBI:50503	laxative	sempav:HumanCuration
+loinc:LP18990-9	skos:exactMatch	CHEBI:15904	long-chain fatty acid	sempav:HumanCuration
+loinc:LP18991-7	skos:exactMatch	CHEBI:6532	loperamide	sempav:HumanCuration
+loinc:LP18992-5	skos:exactMatch	CHEBI:135568	lorcainide	sempav:HumanCuration
+loinc:LP189964-2	skos:exactMatch	CHEBI:39150	4-oxopentanoate	sempav:HumanCuration
+loinc:LP190670-2	skos:exactMatch	CHEBI:3168	Brassicasterol	sempav:HumanCuration
+loinc:LP190767-6	skos:exactMatch	CHEBI:133708	3-methoxytyramine sulfate	sempav:HumanCuration
+loinc:LP19139-2	skos:exactMatch	CHEBI:6717	mefenamic acid	sempav:HumanCuration
+loinc:LP19140-0	skos:exactMatch	CHEBI:25187	p-menthan-3-ol	sempav:HumanCuration
+loinc:LP19143-4	skos:exactMatch	CHEBI:25218	methacrylate	sempav:HumanCuration
+loinc:LP19144-2	skos:exactMatch	CHEBI:32506	4,4'-diaminodiphenylmethane	sempav:HumanCuration
+loinc:LP19145-9	skos:exactMatch	CHEBI:6874	Methylergonovine	sempav:HumanCuration
+loinc:LP19146-7	skos:exactMatch	CHEBI:61092	3-methylfentanyl	sempav:HumanCuration
+loinc:LP19147-5	skos:exactMatch	CHEBI:88374	2-Methylpentane	sempav:HumanCuration
+loinc:LP19148-3	skos:exactMatch	CHEBI:6923	miconazole	sempav:HumanCuration
+loinc:LP19149-1	skos:exactMatch	CHEBI:6942	minoxidil	sempav:HumanCuration
+loinc:LP19150-9	skos:exactMatch	CHEBI:6950	mirtazapine	sempav:HumanCuration
+loinc:LP19164-0	skos:exactMatch	CHEBI:7514	neostigmine	sempav:HumanCuration
+loinc:LP19167-3	skos:exactMatch	CHEBI:43098	heptane	sempav:HumanCuration
+loinc:LP19169-9	skos:exactMatch	CHEBI:7596	nitroprusside	sempav:HumanCuration
+loinc:LP19170-7	skos:exactMatch	CHEBI:7601	nizatidine	sempav:HumanCuration
+loinc:LP19171-5	skos:exactMatch	CHEBI:116225	nomifensine	sempav:HumanCuration
+loinc:LP19173-1	skos:exactMatch	CHEBI:28831	propan-1-ol	sempav:HumanCuration
+loinc:LP19175-6	skos:exactMatch	CHEBI:25629	octadecanoate	sempav:HumanCuration
+loinc:LP19176-4	skos:exactMatch	CHEBI:30687	osmium atom	sempav:HumanCuration
+loinc:LP191898-8	skos:exactMatch	CHEBI:94316	6-methoxy-N-[(1-prop-2-enyl-2-pyrrolidinyl)methyl]-2H-benzotriazole-5-carboxamide	sempav:HumanCuration
+loinc:LP191905-1	skos:exactMatch	CHEBI:31190	alminoprofen	sempav:HumanCuration
+loinc:LP19196-2	skos:exactMatch	CHEBI:37830	pentane	sempav:HumanCuration
+loinc:LP19197-0	skos:exactMatch	CHEBI:71416	phenazopyridine	sempav:HumanCuration
+loinc:LP19198-8	skos:exactMatch	CHEBI:34922	Picloram	sempav:HumanCuration
+loinc:LP19200-2	skos:exactMatch	CHEBI:33388	plutonium atom	sempav:HumanCuration
+loinc:LP19201-0	skos:exactMatch	CHEBI:134049	polybromobiphenyl	sempav:HumanCuration
+loinc:LP19203-6	skos:exactMatch	CHEBI:26333	prostaglandin	sempav:HumanCuration
+loinc:LP19205-1	skos:exactMatch	CHEBI:8711	quinacrine	sempav:HumanCuration
+loinc:LP19211-9	skos:exactMatch	CHEBI:16179	retinyl ester	sempav:HumanCuration
+loinc:LP19216-8	skos:exactMatch	CHEBI:9014	salsalate	sempav:HumanCuration
+loinc:LP19230-9	skos:exactMatch	CHEBI:25704	organic sulfate	sempav:HumanCuration
+loinc:LP19232-5	skos:exactMatch	CHEBI:26876	terpineol	sempav:HumanCuration
+loinc:LP19233-3	skos:exactMatch	CHEBI:26886	testosterones	sempav:HumanCuration
+loinc:LP19234-1	skos:exactMatch	CHEBI:27841	DDD	sempav:HumanCuration
+loinc:LP19235-8	skos:exactMatch	CHEBI:36026	1,1,2,2-tetrachloroethane	sempav:HumanCuration
+loinc:LP19236-6	skos:exactMatch	CHEBI:30182	tetraethyllead	sempav:HumanCuration
+loinc:LP19237-4	skos:exactMatch	CHEBI:9519	thebaine	sempav:HumanCuration
+loinc:LP19239-0	skos:exactMatch	CHEBI:63631	topiramate	sempav:HumanCuration
+loinc:LP19240-8	skos:exactMatch	CHEBI:77850	toxaphene	sempav:HumanCuration
+loinc:LP19242-4	skos:exactMatch	CHEBI:19331	(2,4,5-trichlorophenoxy)acetate	sempav:HumanCuration
+loinc:LP19244-0	skos:exactMatch	CHEBI:9754	tris	sempav:HumanCuration
+loinc:LP19245-7	skos:exactMatch	CHEBI:16765	tryptamine	sempav:HumanCuration
+loinc:LP19246-5	skos:exactMatch	CHEBI:28509	chloroethene	sempav:HumanCuration
+loinc:LP19264-8	skos:exactMatch	CHEBI:46245	coenzyme Q10	sempav:HumanCuration
+loinc:LP19267-1	skos:exactMatch	CHEBI:15570	D-alanine	sempav:HumanCuration
+loinc:LP19289-5	skos:exactMatch	CHEBI:27642	methyl tert-butyl ether	sempav:HumanCuration
+loinc:LP19290-3	skos:exactMatch	CHEBI:143460	hydroxyitraconazole	sempav:HumanCuration
+loinc:LP19293-7	skos:exactMatch	CHEBI:34842	Methyl parathion	sempav:HumanCuration
+loinc:LP19294-5	skos:exactMatch	CHEBI:22629	arsenate ion	sempav:HumanCuration
+loinc:LP19295-2	skos:exactMatch	CHEBI:30621	diarsenic trioxide	sempav:HumanCuration
+loinc:LP19299-4	skos:exactMatch	CHEBI:36693	1,3-dichlorobenzene	sempav:HumanCuration
+loinc:LP19300-0	skos:exactMatch	CHEBI:35290	1,2-dichlorobenzene	sempav:HumanCuration
+loinc:LP19301-8	skos:exactMatch	CHEBI:73024	O-acetylcarnitine	sempav:HumanCuration
+loinc:LP19303-4	skos:exactMatch	CHEBI:28867	O-propanoylcarnitine	sempav:HumanCuration
+loinc:LP19304-2	skos:exactMatch	CHEBI:7676	O-butanoylcarnitine	sempav:HumanCuration
+loinc:LP19305-9	skos:exactMatch	CHEBI:84898	(R)-crotonylcarnitine	sempav:HumanCuration
+loinc:LP19306-7	skos:exactMatch	CHEBI:73025	O-isovalerylcarnitine	sempav:HumanCuration
+loinc:LP19307-5	skos:exactMatch	CHEBI:72995	3-hydroxybutyrylcarnitine	sempav:HumanCuration
+loinc:LP19308-3	skos:exactMatch	CHEBI:70749	O-hexanoylcarnitine	sempav:HumanCuration
+loinc:LP19309-1	skos:exactMatch	CHEBI:73027	3-hydroxyisovalerylcarnitine	sempav:HumanCuration
+loinc:LP19311-7	skos:exactMatch	CHEBI:73031	O-methylmalonylcarnitine	sempav:HumanCuration
+loinc:LP19312-5	skos:exactMatch	CHEBI:86052	O-octenoylcarnitine	sempav:HumanCuration
+loinc:LP19313-3	skos:exactMatch	CHEBI:73039	O-octanoylcarnitine	sempav:HumanCuration
+loinc:LP19314-1	skos:exactMatch	CHEBI:73040	O-glutarylcarnitine	sempav:HumanCuration
+loinc:LP19315-8	skos:exactMatch	CHEBI:68568	O-adipoylcarnitine	sempav:HumanCuration
+loinc:LP19317-4	skos:exactMatch	CHEBI:68830	O-decanoylcarnitine	sempav:HumanCuration
+loinc:LP19318-2	skos:exactMatch	CHEBI:133293	O-carboxyacyl-L-carnitine(1-)	sempav:HumanCuration
+loinc:LP19319-0	skos:exactMatch	CHEBI:86065	O-dodecenoylcarnitine	sempav:HumanCuration
+loinc:LP19320-8	skos:exactMatch	CHEBI:73054	O-dodecanoylcarnitine	sempav:HumanCuration
+loinc:LP19321-6	skos:exactMatch	CHEBI:86069	O-tetradecadienoylcarnitine	sempav:HumanCuration
+loinc:LP19322-4	skos:exactMatch	CHEBI:86066	O-tetradecenoylcarnitine	sempav:HumanCuration
+loinc:LP19324-0	skos:exactMatch	CHEBI:89748	3-Hydroxy-cis-5-tetradecenoylcarnitine	sempav:HumanCuration
+loinc:LP19325-7	skos:exactMatch	CHEBI:73067	O-palmitoylcarnitine	sempav:HumanCuration
+loinc:LP19326-5	skos:exactMatch	CHEBI:73070	3-hydroxyhexadecanoylcarnitine	sempav:HumanCuration
+loinc:LP19327-3	skos:exactMatch	CHEBI:73072	O-linoleoylcarnitine	sempav:HumanCuration
+loinc:LP19328-1	skos:exactMatch	CHEBI:72689	O-oleoylcarnitine	sempav:HumanCuration
+loinc:LP193284-9	skos:exactMatch	CHEBI:89406	Norcotinine	sempav:HumanCuration
+loinc:LP19329-9	skos:exactMatch	CHEBI:73075	3-hydroxylinoleoylcarnitine	sempav:HumanCuration
+loinc:LP19330-7	skos:exactMatch	CHEBI:73076	(9Z)-3-hydroxyoctadecenoylcarnitine	sempav:HumanCuration
+loinc:LP19336-4	skos:exactMatch	CHEBI:60654	valproate	sempav:HumanCuration
+loinc:LP19426-3	skos:exactMatch	CHEBI:6809	methamphetamine	sempav:HumanCuration
+loinc:LP19447-9	skos:exactMatch	CHEBI:5058	Fibronectin	sempav:HumanCuration
+loinc:LP19460-2	skos:exactMatch	CHEBI:35195	surfactant	sempav:HumanCuration
+loinc:LP19488-3	skos:exactMatch	CHEBI:81571	Leptin	sempav:HumanCuration
+loinc:LP19497-4	skos:exactMatch	CHEBI:28171	5-hydroxytryptophan	sempav:HumanCuration
+loinc:LP19499-0	skos:exactMatch	CHEBI:22254	adenosine monophosphate	sempav:HumanCuration
+loinc:LP19504-7	skos:exactMatch	CHEBI:27796	trimethobenzamide	sempav:HumanCuration
+loinc:LP19505-4	skos:exactMatch	CHEBI:4530	diethylpropion	sempav:HumanCuration
+loinc:LP19540-1	skos:exactMatch	CHEBI:9586	tiagabine	sempav:HumanCuration
+loinc:LP19542-7	skos:exactMatch	CHEBI:3533	cephaeline	sempav:HumanCuration
+loinc:LP19550-0	skos:exactMatch	CHEBI:60654	valproate	sempav:HumanCuration
+loinc:LP19553-4	skos:exactMatch	CHEBI:50503	laxative	sempav:HumanCuration
+loinc:LP19561-7	skos:exactMatch	CHEBI:3903	coumaphos	sempav:HumanCuration
+loinc:LP19562-5	skos:exactMatch	CHEBI:34714	dimethoate	sempav:HumanCuration
+loinc:LP19563-3	skos:exactMatch	CHEBI:34733	EPN	sempav:HumanCuration
+loinc:LP19564-1	skos:exactMatch	CHEBI:38663	ethion	sempav:HumanCuration
+loinc:LP19565-8	skos:exactMatch	CHEBI:82125	Fenchlorphos	sempav:HumanCuration
+loinc:LP19566-6	skos:exactMatch	CHEBI:34761	fenthion	sempav:HumanCuration
+loinc:LP19567-4	skos:exactMatch	CHEBI:38689	fonofos	sempav:HumanCuration
+loinc:LP19568-2	skos:exactMatch	CHEBI:38735	oxydemeton-methyl	sempav:HumanCuration
+loinc:LP19569-0	skos:exactMatch	CHEBI:38725	mevinphos	sempav:HumanCuration
+loinc:LP19570-8	skos:exactMatch	CHEBI:27827	paraoxon	sempav:HumanCuration
+loinc:LP19571-6	skos:exactMatch	CHEBI:38960	terbufos	sempav:HumanCuration
+loinc:LP19573-2	skos:exactMatch	CHEBI:4670	dobutamine	sempav:HumanCuration
+loinc:LP19575-7	skos:exactMatch	CHEBI:15368	acrolein	sempav:HumanCuration
+loinc:LP19581-5	skos:exactMatch	CHEBI:22315	alkaloid	sempav:HumanCuration
+loinc:LP19594-8	skos:exactMatch	CHEBI:13941	carbamate	sempav:HumanCuration
+loinc:LP19612-8	skos:exactMatch	CHEBI:23943	ergot alkaloid	sempav:HumanCuration
+loinc:LP19618-5	skos:exactMatch	CHEBI:24182	gallotannin	sempav:HumanCuration
+loinc:LP19619-3	skos:exactMatch	CHEBI:13643	glycol	sempav:HumanCuration
+loinc:LP19621-9	skos:exactMatch	CHEBI:24527	herbicide	sempav:HumanCuration
+loinc:LP19629-2	skos:exactMatch	CHEBI:27617	monensin A	sempav:HumanCuration
+loinc:LP19632-6	skos:exactMatch	CHEBI:59030	oleandrin	sempav:HumanCuration
+loinc:LP19635-9	skos:exactMatch	CHEBI:33468	phosphide(3-)	sempav:HumanCuration
+loinc:LP19645-8	skos:exactMatch	CHEBI:81884	Zinc phosphide	sempav:HumanCuration
+loinc:LP19866-0	skos:exactMatch	CHEBI:17759	cholesta-5,7-dien-3beta-ol	sempav:HumanCuration
+loinc:LP199457-5	skos:exactMatch	CHEBI:4110	cathinone	sempav:HumanCuration
+loinc:LP199506-9	skos:exactMatch	CHEBI:16229	3beta-hydroxy-5beta-pregnan-20-one	sempav:HumanCuration
+loinc:LP199515-0	skos:exactMatch	CHEBI:133661	hyocholate	sempav:HumanCuration
+loinc:LP199517-6	skos:exactMatch	CHEBI:15414	S-adenosyl-L-methionine	sempav:HumanCuration
+loinc:LP199553-1	skos:exactMatch	CHEBI:16802	sedoheptulose	sempav:HumanCuration
+loinc:LP199556-4	skos:exactMatch	CHEBI:70735	lurasidone	sempav:HumanCuration
+loinc:LP199560-6	skos:exactMatch	CHEBI:135289	spaglumic acid	sempav:HumanCuration
+loinc:LP199572-1	skos:exactMatch	CHEBI:92278	1-[4,4-bis(4-fluorophenyl)butyl]-4-[4-chloro-3-(trifluoromethyl)phenyl]-4-piperidinol	sempav:HumanCuration
+loinc:LP199583-8	skos:exactMatch	CHEBI:16235	guanine	sempav:HumanCuration
+loinc:LP199587-9	skos:exactMatch	CHEBI:30867	dihydroorotate	sempav:HumanCuration
+loinc:LP199588-7	skos:exactMatch	CHEBI:27468	5,6-dihydrothymine	sempav:HumanCuration
+loinc:LP199589-5	skos:exactMatch	CHEBI:17802	pseudouridine	sempav:HumanCuration
+loinc:LP199590-3	skos:exactMatch	CHEBI:16750	guanosine	sempav:HumanCuration
+loinc:LP199591-1	skos:exactMatch	CHEBI:16964	5-hydroxymethyluracil	sempav:HumanCuration
+loinc:LP199592-9	skos:exactMatch	CHEBI:15919	N(6)-(1,2-dicarboxyethyl)-AMP	sempav:HumanCuration
+loinc:LP200265-9	skos:exactMatch	CHEBI:15786	3-hydroxy-N(6),N(6),N(6)-trimethyl-L-lysine	sempav:HumanCuration
+loinc:LP200267-5	skos:exactMatch	CHEBI:17311	N(6),N(6),N(6)-trimethyl-L-lysine	sempav:HumanCuration
+loinc:LP200268-3	skos:exactMatch	CHEBI:64277	7,8-dihydrobiopterin	sempav:HumanCuration
+loinc:LP200272-5	skos:exactMatch	CHEBI:22599	arabinose	sempav:HumanCuration
+loinc:LP200317-8	skos:exactMatch	CHEBI:28965	dicarboxylic acid dianion	sempav:HumanCuration
+loinc:LP200422-6	skos:exactMatch	CHEBI:132941	2-hydroxyglutarate	sempav:HumanCuration
+loinc:LP200429-1	skos:exactMatch	CHEBI:16244	4-(trimethylammonio)butanoate	sempav:HumanCuration
+loinc:LP200430-9	skos:exactMatch	CHEBI:16713	2-aminopteridine-4,7-diol	sempav:HumanCuration
+loinc:LP200432-5	skos:exactMatch	CHEBI:74472	lysophosphatidylcholine 26:0	sempav:HumanCuration
+loinc:LP200440-8	skos:exactMatch	CHEBI:15440	squalene	sempav:HumanCuration
+loinc:LP200448-1	skos:exactMatch	CHEBI:74689	primapterin	sempav:HumanCuration
+loinc:LP200578-5	skos:exactMatch	CHEBI:73184	2-amino-4-hydroxypteridine	sempav:HumanCuration
+loinc:LP200579-3	skos:exactMatch	CHEBI:16680	S-adenosyl-L-homocysteine	sempav:HumanCuration
+loinc:LP200582-7	skos:exactMatch	CHEBI:64045	amisulpride	sempav:HumanCuration
+loinc:LP200644-5	skos:exactMatch	CHEBI:16189	sulfate	sempav:HumanCuration
+loinc:LP20161-3	skos:exactMatch	CHEBI:39128	magnesium ion	sempav:HumanCuration
+loinc:LP201653-5	skos:exactMatch	CHEBI:33094	(S)-3-aminoisobutyric acid	sempav:HumanCuration
+loinc:LP201654-3	skos:exactMatch	CHEBI:16320	(R)-3-aminoisobutyric acid	sempav:HumanCuration
+loinc:LP201657-6	skos:exactMatch	CHEBI:73393	Ala-Pro	sempav:HumanCuration
+loinc:LP201661-8	skos:exactMatch	CHEBI:16523	D-serine	sempav:HumanCuration
+loinc:LP201662-6	skos:exactMatch	CHEBI:17115	L-serine	sempav:HumanCuration
+loinc:LP201670-9	skos:exactMatch	CHEBI:17929	N(omega),N(omega)-dimethyl-L-arginine	sempav:HumanCuration
+loinc:LP201674-1	skos:exactMatch	CHEBI:5417	glucosamine	sempav:HumanCuration
+loinc:LP201675-8	skos:exactMatch	CHEBI:70744	Gly-Pro	sempav:HumanCuration
+loinc:LP201676-6	skos:exactMatch	CHEBI:82966	gamma-glutamylphenylalanine	sempav:HumanCuration
+loinc:LP201678-2	skos:exactMatch	CHEBI:81392	Cysteinyldopa	sempav:HumanCuration
+loinc:LP201679-0	skos:exactMatch	CHEBI:24156	galactosamine	sempav:HumanCuration
+loinc:LP201680-8	skos:exactMatch	CHEBI:138515	Gly-Hyp	sempav:HumanCuration
+loinc:LP201681-6	skos:exactMatch	CHEBI:27747	L-homoarginine	sempav:HumanCuration
+loinc:LP201682-4	skos:exactMatch	CHEBI:15699	L-homoserine	sempav:HumanCuration
+loinc:LP201683-2	skos:exactMatch	CHEBI:35704	N(2)-acetyl-L-lysine	sempav:HumanCuration
+loinc:LP201684-0	skos:exactMatch	CHEBI:17261	N(4)-(beta-N-acetyl-D-glucosaminyl)-L-asparagine	sempav:HumanCuration
+loinc:LP201686-5	skos:exactMatch	CHEBI:73580	Leu-Pro	sempav:HumanCuration
+loinc:LP201687-3	skos:exactMatch	CHEBI:28229	N(omega)-methyl-L-arginine	sempav:HumanCuration
+loinc:LP201688-1	skos:exactMatch	CHEBI:17752	N(6)-acetyl-L-lysine	sempav:HumanCuration
+loinc:LP201689-9	skos:exactMatch	CHEBI:74767	Pro-Hyp	sempav:HumanCuration
+loinc:LP201690-7	skos:exactMatch	CHEBI:16927	L-saccharopine	sempav:HumanCuration
+loinc:LP201691-5	skos:exactMatch	CHEBI:1670	3-ureidoisobutyric acid	sempav:HumanCuration
+loinc:LP201692-3	skos:exactMatch	CHEBI:16040	cytosine	sempav:HumanCuration
+loinc:LP201693-1	skos:exactMatch	CHEBI:17562	cytidine	sempav:HumanCuration
+loinc:LP201695-6	skos:exactMatch	CHEBI:23774	dihydrouridine	sempav:HumanCuration
+loinc:LP201702-0	skos:exactMatch	CHEBI:15901	5,6-dihydrouracil	sempav:HumanCuration
+loinc:LP201703-8	skos:exactMatch	CHEBI:2030	5-aminoimidazole-4-carboxamide	sempav:HumanCuration
+loinc:LP201745-9	skos:exactMatch	CHEBI:37564	5-(beta-D-galactosyloxy)-L-lysine	sempav:HumanCuration
+loinc:LP201768-1	skos:exactMatch	CHEBI:73731	(11Z,14Z)-icosadienoic acid	sempav:HumanCuration
+loinc:LP201769-9	skos:exactMatch	CHEBI:78050	octadecatetraenoate	sempav:HumanCuration
+loinc:LP201770-7	skos:exactMatch	CHEBI:78894	docosadienoate	sempav:HumanCuration
+loinc:LP201774-9	skos:exactMatch	CHEBI:73731	(11Z,14Z)-icosadienoic acid	sempav:HumanCuration
+loinc:LP201845-7	skos:exactMatch	CHEBI:86371	3,4-dihydroxybutyric acid	sempav:HumanCuration
+loinc:LP201846-5	skos:exactMatch	CHEBI:83389	furan-2,5-dicarboxylate	sempav:HumanCuration
+loinc:LP201849-9	skos:exactMatch	CHEBI:58744	3-(3,4-dihydroxyphenyl)propanoate	sempav:HumanCuration
+loinc:LP201850-7	skos:exactMatch	CHEBI:133476	hydantoin-5-propionate	sempav:HumanCuration
+loinc:LP201851-5	skos:exactMatch	CHEBI:57277	3-(3-hydroxyphenyl)propanoate	sempav:HumanCuration
+loinc:LP201852-3	skos:exactMatch	CHEBI:89556	Vanilloylglycine	sempav:HumanCuration
+loinc:LP201854-9	skos:exactMatch	CHEBI:39912	3,5-dihydroxybenzoic acid	sempav:HumanCuration
+loinc:LP201856-4	skos:exactMatch	CHEBI:82912	N-(2-furoyl)glycine	sempav:HumanCuration
+loinc:LP201857-2	skos:exactMatch	CHEBI:133773	pimelate	sempav:HumanCuration
+loinc:LP201858-0	skos:exactMatch	CHEBI:16193	3-hydroxybenzoate	sempav:HumanCuration
+loinc:LP201859-8	skos:exactMatch	CHEBI:133613	p-hydroxyhippurate	sempav:HumanCuration
+loinc:LP201860-6	skos:exactMatch	CHEBI:133607	m-hydroxyhippurate	sempav:HumanCuration
+loinc:LP201861-4	skos:exactMatch	CHEBI:32980	phloretic acid	sempav:HumanCuration
+loinc:LP201869-7	skos:exactMatch	CHEBI:86391	4-deoxythreonic acid	sempav:HumanCuration
+loinc:LP203974-3	skos:exactMatch	CHEBI:50420	bile alcohol	sempav:HumanCuration
+loinc:LP206561-5	skos:exactMatch	CHEBI:33369	cerium	sempav:HumanCuration
+loinc:LP206562-3	skos:exactMatch	CHEBI:29007	ceftriaxone	sempav:HumanCuration
+loinc:LP206563-1	skos:exactMatch	CHEBI:204928	cefotaxime	sempav:HumanCuration
+loinc:LP206564-9	skos:exactMatch	CHEBI:3508	ceftazidime	sempav:HumanCuration
+loinc:LP206565-6	skos:exactMatch	CHEBI:474053	cefazolin	sempav:HumanCuration
+loinc:LP206566-4	skos:exactMatch	CHEBI:26596	salicylates	sempav:HumanCuration
+loinc:LP206567-2	skos:exactMatch	CHEBI:46195	paracetamol	sempav:HumanCuration
+loinc:LP206568-0	skos:exactMatch	CHEBI:5098	flucloxacillin	sempav:HumanCuration
+loinc:LP206569-8	skos:exactMatch	CHEBI:63631	topiramate	sempav:HumanCuration
+loinc:LP206570-6	skos:exactMatch	CHEBI:28864	tobramycin	sempav:HumanCuration
+loinc:LP206596-1	skos:exactMatch	CHEBI:3515	cefuroxime	sempav:HumanCuration
+loinc:LP206669-6	skos:exactMatch	CHEBI:53794	(4-hydroxy-3-nitrophenyl)acetate	sempav:HumanCuration
+loinc:LP206679-5	skos:exactMatch	CHEBI:37415	alpha-amanitin	sempav:HumanCuration
+loinc:LP207328-8	skos:exactMatch	CHEBI:72292	bedaquiline	sempav:HumanCuration
+loinc:LP207331-2	skos:exactMatch	CHEBI:39166	tetramine	sempav:HumanCuration
+loinc:LP207332-0	skos:exactMatch	CHEBI:82051	Aldoxycarb	sempav:HumanCuration
+loinc:LP207766-9	skos:exactMatch	CHEBI:28177	theophylline	sempav:HumanCuration
+loinc:LP207767-7	skos:exactMatch	CHEBI:2637	amikacin	sempav:HumanCuration
+loinc:LP207768-5	skos:exactMatch	CHEBI:45924	trimethoprim	sempav:HumanCuration
+loinc:LP207770-1	skos:exactMatch	CHEBI:29687	teicoplanin	sempav:HumanCuration
+loinc:LP207771-9	skos:exactMatch	CHEBI:44185	methotrexate	sempav:HumanCuration
+loinc:LP207772-7	skos:exactMatch	CHEBI:30145	lithium atom	sempav:HumanCuration
+loinc:LP207773-5	skos:exactMatch	CHEBI:9332	sulfamethoxazole	sempav:HumanCuration
+loinc:LP207774-3	skos:exactMatch	CHEBI:17833	gentamycin	sempav:HumanCuration
+loinc:LP207800-6	skos:exactMatch	CHEBI:25107	magnesium atom	sempav:HumanCuration
+loinc:LP207811-3	skos:exactMatch	CHEBI:17976	ubiquinol	sempav:HumanCuration
+loinc:LP20803-0	skos:exactMatch	CHEBI:35553	perhexiline	sempav:HumanCuration
+loinc:LP20804-8	skos:exactMatch	CHEBI:49033	methionine S-oxide	sempav:HumanCuration
+loinc:LP20805-5	skos:exactMatch	CHEBI:7824	oxcarbazepine	sempav:HumanCuration
+loinc:LP20806-3	skos:exactMatch	CHEBI:3723	citalopram	sempav:HumanCuration
+loinc:LP20808-9	skos:exactMatch	CHEBI:63638	vigabatrin	sempav:HumanCuration
+loinc:LP20827-9	skos:exactMatch	CHEBI:79870	5beta-Pregnane-3alpha,17alpha,20alpha-triol-11-one	sempav:HumanCuration
+loinc:LP20850-1	skos:exactMatch	CHEBI:21260	cysteic acid	sempav:HumanCuration
+loinc:LP208508-4	skos:exactMatch	CHEBI:52255	hydroxylapatite	sempav:HumanCuration
+loinc:LP20883-2	skos:exactMatch	CHEBI:80603	Demethylcitalopram	sempav:HumanCuration
+loinc:LP20885-7	skos:exactMatch	CHEBI:80604	Didemethylcitalopram	sempav:HumanCuration
+loinc:LP20886-5	skos:exactMatch	CHEBI:31989	Pheneturide	sempav:HumanCuration
+loinc:LP20887-3	skos:exactMatch	CHEBI:17401	myo-inositol hexakisphosphate	sempav:HumanCuration
+loinc:LP20898-0	skos:exactMatch	CHEBI:2710	androst-5-ene-3beta,17beta-diol	sempav:HumanCuration
+loinc:LP21145-5	skos:exactMatch	CHEBI:6538	Loratadine	sempav:HumanCuration
+loinc:LP21146-3	skos:exactMatch	CHEBI:3720	cisapride	sempav:HumanCuration
+loinc:LP21161-2	skos:exactMatch	CHEBI:8707	quetiapine	sempav:HumanCuration
+loinc:LP21169-5	skos:exactMatch	CHEBI:28425	alpha-carotene	sempav:HumanCuration
+loinc:LP21170-3	skos:exactMatch	CHEBI:15948	lycopene	sempav:HumanCuration
+loinc:LP21172-9	skos:exactMatch	CHEBI:132237	rac-3,4-methylenedioxy-N-ethylamphetamine	sempav:HumanCuration
+loinc:LP21173-7	skos:exactMatch	CHEBI:119573	delavirdine	sempav:HumanCuration
+loinc:LP21195-0	skos:exactMatch	CHEBI:64303	3-aminoadipic acid	sempav:HumanCuration
+loinc:LP21196-8	skos:exactMatch	CHEBI:19641	2-hydroxyisobutyrate	sempav:HumanCuration
+loinc:LP212165-7	skos:exactMatch	CHEBI:78895	docosatrienoate	sempav:HumanCuration
+loinc:LP212166-5	skos:exactMatch	CHEBI:78072	icosatrienoate	sempav:HumanCuration
+loinc:LP212177-2	skos:exactMatch	CHEBI:11892	N-carbamoyl-beta-alaninate	sempav:HumanCuration
+loinc:LP21256-0	skos:exactMatch	CHEBI:63607	linezolid	sempav:HumanCuration
+loinc:LP21305-5	skos:exactMatch	CHEBI:63609	mefloquine	sempav:HumanCuration
+loinc:LP21306-3	skos:exactMatch	CHEBI:421707	abacavir	sempav:HumanCuration
+loinc:LP21307-1	skos:exactMatch	CHEBI:40050	amprenavir	sempav:HumanCuration
+loinc:LP21309-7	skos:exactMatch	CHEBI:490877	didanosine	sempav:HumanCuration
+loinc:LP21310-5	skos:exactMatch	CHEBI:119486	efavirenz	sempav:HumanCuration
+loinc:LP21311-3	skos:exactMatch	CHEBI:44032	indinavir	sempav:HumanCuration
+loinc:LP21312-1	skos:exactMatch	CHEBI:63577	lamivudine	sempav:HumanCuration
+loinc:LP21313-9	skos:exactMatch	CHEBI:7496	nelfinavir	sempav:HumanCuration
+loinc:LP21314-7	skos:exactMatch	CHEBI:45409	ritonavir	sempav:HumanCuration
+loinc:LP21315-4	skos:exactMatch	CHEBI:63581	stavudine	sempav:HumanCuration
+loinc:LP21316-2	skos:exactMatch	CHEBI:10101	zalcitabine	sempav:HumanCuration
+loinc:LP21317-0	skos:exactMatch	CHEBI:63613	nevirapine	sempav:HumanCuration
+loinc:LP21368-3	skos:exactMatch	CHEBI:9168	sirolimus	sempav:HumanCuration
+loinc:LP21411-1	skos:exactMatch	CHEBI:15430	protoporphyrin	sempav:HumanCuration
+loinc:LP220253-1	skos:exactMatch	CHEBI:64357	rituximab	sempav:HumanCuration
+loinc:LP220255-6	skos:exactMatch	CHEBI:85973	edoxaban	sempav:HumanCuration
+loinc:LP220257-2	skos:exactMatch	CHEBI:4875	etanercept	sempav:HumanCuration
+loinc:LP221174-8	skos:exactMatch	CHEBI:26234	pregnanolone	sempav:HumanCuration
+loinc:LP230022-8	skos:exactMatch	CHEBI:3360	Cannabinol	sempav:HumanCuration
+loinc:LP230023-6	skos:exactMatch	CHEBI:69478	cannabidiol	sempav:HumanCuration
+loinc:LP230222-4	skos:exactMatch	CHEBI:68500	m-methylhippuric acid	sempav:HumanCuration
+loinc:LP230224-0	skos:exactMatch	CHEBI:68455	o-methylhippuric acid	sempav:HumanCuration
+loinc:LP230250-5	skos:exactMatch	CHEBI:34352	3alpha,17alpha,21-Trihydroxy-5beta-pregnan-20-one	sempav:HumanCuration
+loinc:LP230256-2	skos:exactMatch	CHEBI:135188	brallobarbital	sempav:HumanCuration
+loinc:LP231897-2	skos:exactMatch	CHEBI:50378	nitisinone	sempav:HumanCuration
+loinc:LP231934-3	skos:exactMatch	CHEBI:17120	hexanoate	sempav:HumanCuration
+loinc:LP247699-4	skos:exactMatch	CHEBI:35584	purine	sempav:HumanCuration
+loinc:LP250855-6	skos:exactMatch	CHEBI:63601	ChEBI golimumab	sempav:HumanCuration
+loinc:LP250915-8	skos:exactMatch	CHEBI:26833	sulfur atom	sempav:HumanCuration
+loinc:LP250916-6	skos:exactMatch	CHEBI:28659	phosphorus atom	sempav:HumanCuration
+loinc:LP262670-5	skos:exactMatch	CHEBI:6009	isofenphos	sempav:HumanCuration
+loinc:LP262671-3	skos:exactMatch	CHEBI:82092	Mexacarbate	sempav:HumanCuration
+loinc:LP262673-9	skos:exactMatch	CHEBI:82111	Crufomate	sempav:HumanCuration
+loinc:LP262699-4	skos:exactMatch	CHEBI:34211	2,2-(2-Chlorophenyl-4'-chlorophenyl)-1,1-dichloroethene	sempav:HumanCuration
+loinc:LP262700-0	skos:exactMatch	CHEBI:27841	DDD	sempav:HumanCuration
+loinc:LP262701-8	skos:exactMatch	CHEBI:38665	ethoprophos	sempav:HumanCuration
+loinc:LP262709-1	skos:exactMatch	CHEBI:6835	methomyl	sempav:HumanCuration
+loinc:LP263143-2	skos:exactMatch	CHEBI:38894	3,4,5-trimethylphenyl methylcarbamate	sempav:HumanCuration
+loinc:LP263145-7	skos:exactMatch	CHEBI:38893	2,3,5-trimethylphenyl methylcarbamate	sempav:HumanCuration
+loinc:LP263146-5	skos:exactMatch	CHEBI:39096	alpha-hexachlorocyclohexane	sempav:HumanCuration
+loinc:LP263154-9	skos:exactMatch	CHEBI:38677	famphur	sempav:HumanCuration
+loinc:LP263196-0	skos:exactMatch	CHEBI:7822	oxaprozin	sempav:HumanCuration
+loinc:LP263229-9	skos:exactMatch	CHEBI:38661	disulfoton	sempav:HumanCuration
+loinc:LP263232-3	skos:exactMatch	CHEBI:10106	zearalenone	sempav:HumanCuration
+loinc:LP263233-1	skos:exactMatch	CHEBI:35072	beta-Zearalenol	sempav:HumanCuration
+loinc:LP263234-9	skos:exactMatch	CHEBI:10022	deoxynivalenol	sempav:HumanCuration
+loinc:LP263235-6	skos:exactMatch	CHEBI:9381	T-2 Toxin	sempav:HumanCuration
+loinc:LP263236-4	skos:exactMatch	CHEBI:7719	ochratoxin A	sempav:HumanCuration
+loinc:LP263237-2	skos:exactMatch	CHEBI:7599	Nivalenol	sempav:HumanCuration
+loinc:LP263240-6	skos:exactMatch	CHEBI:38225	fumonisin B2	sempav:HumanCuration
+loinc:LP263241-4	skos:exactMatch	CHEBI:38221	fumonisin B1	sempav:HumanCuration
+loinc:LP263243-0	skos:exactMatch	CHEBI:4823	ergosine	sempav:HumanCuration
+loinc:LP263244-8	skos:exactMatch	CHEBI:10276	alpha-ergocryptine	sempav:HumanCuration
+loinc:LP263245-5	skos:exactMatch	CHEBI:4821	ergocristine	sempav:HumanCuration
+loinc:LP263246-3	skos:exactMatch	CHEBI:4820	ergocornine	sempav:HumanCuration
+loinc:LP263247-1	skos:exactMatch	CHEBI:78576	aflatoxin M1	sempav:HumanCuration
+loinc:LP263248-9	skos:exactMatch	CHEBI:80705	Aflatoxin G2	sempav:HumanCuration
+loinc:LP263249-7	skos:exactMatch	CHEBI:80706	Aflatoxin G1	sempav:HumanCuration
+loinc:LP263250-5	skos:exactMatch	CHEBI:48209	aflatoxin B2	sempav:HumanCuration
+loinc:LP263251-3	skos:exactMatch	CHEBI:2504	aflatoxin B1	sempav:HumanCuration
+loinc:LP263253-9	skos:exactMatch	CHEBI:9337	sulfathiazole	sempav:HumanCuration
+loinc:LP263254-7	skos:exactMatch	CHEBI:102265	sulfamethazine	sempav:HumanCuration
+loinc:LP263258-8	skos:exactMatch	CHEBI:81896	Diphenadione	sempav:HumanCuration
+loinc:LP263259-6	skos:exactMatch	CHEBI:81893	Difethialone	sempav:HumanCuration
+loinc:LP263260-4	skos:exactMatch	CHEBI:81796	Chlorophacinone	sempav:HumanCuration
+loinc:LP263429-5	skos:exactMatch	CHEBI:34786	Heptachlor epoxide	sempav:HumanCuration
+loinc:LP263454-3	skos:exactMatch	CHEBI:82110	Crotoxyphos	sempav:HumanCuration
+loinc:LP263455-0	skos:exactMatch	CHEBI:82088	Bufencarb	sempav:HumanCuration
+loinc:LP266153-8	skos:exactMatch	CHEBI:53760	eszopiclone	sempav:HumanCuration
+loinc:LP266154-6	skos:exactMatch	CHEBI:143375	N-Oxidezopiclone	sempav:HumanCuration
+loinc:LP266347-6	skos:exactMatch	CHEBI:133013	brivaracetam	sempav:HumanCuration
+loinc:LP266488-8	skos:exactMatch	CHEBI:34027	1,1,1-Trichloro-2-(o-chlorophenyl)-2-(p-chlorophenyl)ethane	sempav:HumanCuration
+loinc:LP266553-9	skos:exactMatch	CHEBI:27841	DDD	sempav:HumanCuration
+loinc:LP266720-4	skos:exactMatch	CHEBI:63608	maraviroc	sempav:HumanCuration
+loinc:LP266721-2	skos:exactMatch	CHEBI:93626	1-(4-fluorophenyl)-4-(4-methyl-1-piperidinyl)-1-butanone	sempav:HumanCuration
+loinc:LP266722-0	skos:exactMatch	CHEBI:59118	perazine	sempav:HumanCuration
+loinc:LP266723-8	skos:exactMatch	CHEBI:9122	sertindole	sempav:HumanCuration
+loinc:LP266724-6	skos:exactMatch	CHEBI:32316	zotepine	sempav:HumanCuration
+loinc:LP266977-0	skos:exactMatch	CHEBI:80580	Codeine-6-glucuronide	sempav:HumanCuration
+loinc:LP268226-0	skos:exactMatch	CHEBI:76016	vortioxetine	sempav:HumanCuration
+loinc:LP268293-0	skos:exactMatch	CHEBI:15724	trimethylamine N-oxide	sempav:HumanCuration
+loinc:LP268871-3	skos:exactMatch	CHEBI:25016	lead atom	sempav:HumanCuration
+loinc:LP268875-4	skos:exactMatch	CHEBI:37051	3-hydroxy-2-methylbutanoic acid	sempav:HumanCuration
+loinc:LP268877-0	skos:exactMatch	CHEBI:73070	3-hydroxyhexadecanoylcarnitine	sempav:HumanCuration
+loinc:LP268878-8	skos:exactMatch	CHEBI:73063	3-hydroxytetradecanoylcarnitine	sempav:HumanCuration
+loinc:LP268883-8	skos:exactMatch	CHEBI:15414	S-adenosyl-L-methionine	sempav:HumanCuration
+loinc:LP268966-1	skos:exactMatch	CHEBI:30411	cobalamin	sempav:HumanCuration
+loinc:LP268982-8	skos:exactMatch	CHEBI:17439	cyanocob(III)alamin	sempav:HumanCuration
+loinc:LP268990-1	skos:exactMatch	CHEBI:141547	desmethyldoxepin	sempav:HumanCuration
+loinc:LP268994-3	skos:exactMatch	CHEBI:247956	cinchocaine	sempav:HumanCuration
+loinc:LP268995-0	skos:exactMatch	CHEBI:4636	diphenhydramine	sempav:HumanCuration
+loinc:LP269008-1	skos:exactMatch	CHEBI:5130	flurbiprofen	sempav:HumanCuration
+loinc:LP269012-3	skos:exactMatch	CHEBI:17234	glucose	sempav:HumanCuration
+loinc:LP269051-1	skos:exactMatch	CHEBI:6757	mephenytoin	sempav:HumanCuration
+loinc:LP269053-7	skos:exactMatch	CHEBI:6820	methapyrilene	sempav:HumanCuration
+loinc:LP269072-7	skos:exactMatch	CHEBI:28315	alloxanthine	sempav:HumanCuration
+loinc:LP269073-5	skos:exactMatch	CHEBI:73067	O-palmitoylcarnitine	sempav:HumanCuration
+loinc:LP269085-9	skos:exactMatch	CHEBI:7986	Pentoxifylline	sempav:HumanCuration
+loinc:LP269086-7	skos:exactMatch	CHEBI:17300	tetrachloroethene	sempav:HumanCuration
+loinc:LP269087-5	skos:exactMatch	CHEBI:37932	phenothiazine	sempav:HumanCuration
+loinc:LP269109-7	skos:exactMatch	CHEBI:9334	sulfasalazine	sempav:HumanCuration
+loinc:LP269117-0	skos:exactMatch	CHEBI:80343	Insulin-like growth factor I	sempav:HumanCuration
+loinc:LP269336-6	skos:exactMatch	CHEBI:142058	F2-isoprostane	sempav:HumanCuration
+loinc:LP269415-8	skos:exactMatch	CHEBI:31713	Iotalamic acid	sempav:HumanCuration
+loinc:LP269788-8	skos:relatedMatch	CHEBI:165221	O-Desmethyltramadol	sempav:HumanCuration
+loinc:LP269794-6	skos:exactMatch	CHEBI:67061	lysophosphatidylcholine 22:0	sempav:HumanCuration
+loinc:LP269795-3	skos:exactMatch	CHEBI:67058	lysophosphatidylcholine 20:0	sempav:HumanCuration
+loinc:LP269796-1	skos:exactMatch	CHEBI:74470	lysophosphatidylcholine 24:0	sempav:HumanCuration
+loinc:LP269827-4	skos:exactMatch	CHEBI:91749	7-[(3-chloro-6-methyl-5,5-dioxo-11H-benzo[c][2,1]benzothiazepin-11-yl)amino]heptanoic acid	sempav:HumanCuration
+loinc:LP269828-2	skos:exactMatch	CHEBI:7476	naproxen	sempav:HumanCuration
+loinc:LP269831-6	skos:exactMatch	CHEBI:92875	5-(2-chloroethyl)-4-methylthiazole	sempav:HumanCuration
+loinc:LP281376-6	skos:exactMatch	CHEBI:80319	Orexin A	sempav:HumanCuration
+loinc:LP28438-7	skos:exactMatch	CHEBI:10127	zonisamide	sempav:HumanCuration
+loinc:LP28456-9	skos:exactMatch	CHEBI:36798	dothiepin	sempav:HumanCuration
+loinc:LP28491-6	skos:exactMatch	CHEBI:16724	4-hydroxybutyrate	sempav:HumanCuration
+loinc:LP28503-8	skos:exactMatch	CHEBI:33330	scandium atom	sempav:HumanCuration
+loinc:LP28516-0	skos:exactMatch	CHEBI:2668	amlodipine	sempav:HumanCuration
+loinc:LP28519-4	skos:exactMatch	CHEBI:41423	celecoxib	sempav:HumanCuration
+loinc:LP28521-0	skos:exactMatch	CHEBI:5691	Hexachloro-1,3-butadiene	sempav:HumanCuration
+loinc:LP28524-4	skos:exactMatch	CHEBI:21547	N-acetyl-L-aspartic acid	sempav:HumanCuration
+loinc:LP28525-1	skos:exactMatch	CHEBI:7459	naloxone	sempav:HumanCuration
+loinc:LP28528-5	skos:exactMatch	CHEBI:58987	sildenafil citrate	sempav:HumanCuration
+loinc:LP28529-3	skos:exactMatch	CHEBI:10650	sumatriptan	sempav:HumanCuration
+loinc:LP28530-1	skos:exactMatch	CHEBI:31529	ecgonine methyl ester	sempav:HumanCuration
+loinc:LP28537-6	skos:exactMatch	CHEBI:17916	tau-protein	sempav:HumanCuration
+loinc:LP28538-4	skos:exactMatch	CHEBI:19656	2-hydroxyphenylacetate	sempav:HumanCuration
+loinc:LP28539-2	skos:exactMatch	CHEBI:89344	cis-4-Hydroxycyclohexylacetic acid	sempav:HumanCuration
+loinc:LP28541-8	skos:exactMatch	CHEBI:143344	7-Aminoclonazepam	sempav:HumanCuration
+loinc:LP28549-1	skos:exactMatch	CHEBI:2469	adefovir	sempav:HumanCuration
+loinc:LP28550-9	skos:exactMatch	CHEBI:27013	tocopherol	sempav:HumanCuration
+loinc:LP28558-2	skos:exactMatch	CHEBI:76616	3-hydroxylaurate	sempav:HumanCuration
+loinc:LP28566-5	skos:exactMatch	CHEBI:6437	levetiracetam	sempav:HumanCuration
+loinc:LP28587-1	skos:exactMatch	CHEBI:18405	pyridoxal 5'-phosphate	sempav:HumanCuration
+loinc:LP28588-9	skos:exactMatch	CHEBI:17310	pyridoxal	sempav:HumanCuration
+loinc:LP28609-3	skos:exactMatch	CHEBI:80234	Brain natriuretic peptide	sempav:HumanCuration
+loinc:LP28714-1	skos:exactMatch	CHEBI:31578	ethylestrenol	sempav:HumanCuration
+loinc:LP28716-6	skos:exactMatch	CHEBI:701	licarbazepine	sempav:HumanCuration
+loinc:LP28717-4	skos:exactMatch	CHEBI:34980	Stenbolone	sempav:HumanCuration
+loinc:LP28720-8	skos:exactMatch	CHEBI:63611	moxifloxacin	sempav:HumanCuration
+loinc:LP28756-2	skos:exactMatch	CHEBI:31781	lopinavir	sempav:HumanCuration
+loinc:LP28761-2	skos:exactMatch	CHEBI:63718	tenofovir disoproxil fumarate	sempav:HumanCuration
+loinc:LP28807-3	skos:exactMatch	CHEBI:24021	fat	sempav:HumanCuration
+loinc:LP28808-1	skos:exactMatch	CHEBI:35289	1,2,3-trichlorobenzene	sempav:HumanCuration
+loinc:LP28809-9	skos:exactMatch	CHEBI:28222	1,2,4-trichlorobenzene	sempav:HumanCuration
+loinc:LP28810-7	skos:exactMatch	CHEBI:49916	1,3,5-trichlorobenzene	sempav:HumanCuration
+loinc:LP28812-3	skos:exactMatch	CHEBI:2168	6-Acetylmorphine	sempav:HumanCuration
+loinc:LP28818-0	skos:exactMatch	CHEBI:27283	very long-chain fatty acid	sempav:HumanCuration
+loinc:LP28863-6	skos:exactMatch	CHEBI:17303	morphine	sempav:HumanCuration
+loinc:LP28984-0	skos:exactMatch	CHEBI:73056	3-hydroxydodecanoylcarnitine	sempav:HumanCuration
+loinc:LP28990-7	skos:exactMatch	CHEBI:73063	3-hydroxytetradecanoylcarnitine	sempav:HumanCuration
+loinc:LP28991-5	skos:exactMatch	CHEBI:27584	aldosterone	sempav:HumanCuration
+loinc:LP28994-9	skos:exactMatch	CHEBI:35274	ammonium ion	sempav:HumanCuration
+loinc:LP28996-4	skos:exactMatch	CHEBI:16330	17beta-hydroxy-5alpha-androstan-3-one	sempav:HumanCuration
+loinc:LP29003-8	skos:exactMatch	CHEBI:87997	3-aminobutyrate	sempav:HumanCuration
+loinc:LP29008-7	skos:exactMatch	CHEBI:3388	carbamazepine-10,11-epoxide	sempav:HumanCuration
+loinc:LP29009-5	skos:exactMatch	CHEBI:3388	carbamazepine-10,11-epoxide	sempav:HumanCuration
+loinc:LP29010-3	skos:exactMatch	CHEBI:3387	carbamazepine	sempav:HumanCuration
+loinc:LP29011-1	skos:exactMatch	CHEBI:3387	carbamazepine	sempav:HumanCuration
+loinc:LP29013-7	skos:exactMatch	CHEBI:33567	catecholamine	sempav:HumanCuration
+loinc:LP29014-5	skos:exactMatch	CHEBI:33567	catecholamine	sempav:HumanCuration
+loinc:LP29031-9	skos:exactMatch	CHEBI:16714	codeine	sempav:HumanCuration
+loinc:LP29041-8	skos:exactMatch	CHEBI:17650	cortisol	sempav:HumanCuration
+loinc:LP29044-2	skos:exactMatch	CHEBI:86063	O-decenoylcarnitine	sempav:HumanCuration
+loinc:LP29047-5	skos:exactMatch	CHEBI:4551	digoxin	sempav:HumanCuration
+loinc:LP29048-3	skos:exactMatch	CHEBI:135276	dihydrocodeine	sempav:HumanCuration
+loinc:LP29056-6	skos:exactMatch	CHEBI:28584	gossypol	sempav:HumanCuration
+loinc:LP29064-0	skos:exactMatch	CHEBI:5779	hydrocodone	sempav:HumanCuration
+loinc:LP29067-3	skos:exactMatch	CHEBI:5790	hydromorphone	sempav:HumanCuration
+loinc:LP29068-1	skos:exactMatch	CHEBI:24741	hydroxyproline	sempav:HumanCuration
+loinc:LP29074-9	skos:exactMatch	CHEBI:10642	scyllo-inositol	sempav:HumanCuration
+loinc:LP29075-6	skos:exactMatch	CHEBI:5931	insulin (human)	sempav:HumanCuration
+loinc:LP29076-4	skos:exactMatch	CHEBI:24859	iodine atom	sempav:HumanCuration
+loinc:LP29091-3	skos:exactMatch	CHEBI:7852	oxycodone	sempav:HumanCuration
+loinc:LP29094-7	skos:exactMatch	CHEBI:49637	hydrogen atom	sempav:HumanCuration
+loinc:LP29096-2	skos:exactMatch	CHEBI:8069	phenobarbital	sempav:HumanCuration
+loinc:LP29102-8	skos:exactMatch	CHEBI:17026	progesterone	sempav:HumanCuration
+loinc:LP29103-6	skos:exactMatch	CHEBI:28593	quinidine	sempav:HumanCuration
+loinc:LP29107-7	skos:exactMatch	CHEBI:50211	retinol	sempav:HumanCuration
+loinc:LP29115-0	skos:exactMatch	CHEBI:73074	O-stearoylcarnitine	sempav:HumanCuration
+loinc:LP29116-8	skos:exactMatch	CHEBI:17347	testosterone	sempav:HumanCuration
+loinc:LP29117-6	skos:exactMatch	CHEBI:73061	O-tetradecanoylcarnitine	sempav:HumanCuration
+loinc:LP29119-2	skos:exactMatch	CHEBI:30660	thyroxine	sempav:HumanCuration
+loinc:LP29126-7	skos:exactMatch	CHEBI:18258	3,3',5-triiodo-L-thyronine	sempav:HumanCuration
+loinc:LP29127-5	skos:exactMatch	CHEBI:29238	tritium atom	sempav:HumanCuration
+loinc:LP29128-3	skos:exactMatch	CHEBI:9766	Trypsinogen	sempav:HumanCuration
+loinc:LP29129-1	skos:exactMatch	CHEBI:27897	tryptophan	sempav:HumanCuration
+loinc:LP29130-9	skos:exactMatch	CHEBI:60654	valproate	sempav:HumanCuration
+loinc:LP29131-7	skos:exactMatch	CHEBI:28001	vancomycin	sempav:HumanCuration
+loinc:LP29327-1	skos:exactMatch	CHEBI:80558	Dechloroethylcyclophosphamide	sempav:HumanCuration
+loinc:LP29634-0	skos:exactMatch	CHEBI:83481	ritalinic acid	sempav:HumanCuration
+loinc:LP29636-5	skos:exactMatch	CHEBI:16180	N-acylglycine	sempav:HumanCuration
+loinc:LP29646-4	skos:exactMatch	CHEBI:17234	glucose	sempav:HumanCuration
+loinc:LP30480-5	skos:exactMatch	CHEBI:474180	caspofungin	sempav:HumanCuration
+loinc:LP30491-2	skos:exactMatch	CHEBI:10023	voriconazole	sempav:HumanCuration
+loinc:LP30650-3	skos:exactMatch	CHEBI:10102	zaleplon	sempav:HumanCuration
+loinc:LP30691-7	skos:exactMatch	CHEBI:1582	3-methoxytyramine	sempav:HumanCuration
+loinc:LP30750-1	skos:exactMatch	CHEBI:9555	tioguanine	sempav:HumanCuration
+loinc:LP30753-5	skos:exactMatch	CHEBI:28279	6-methylthiopurine	sempav:HumanCuration
+loinc:LP30812-9	skos:exactMatch	CHEBI:35473	tranquilizing drug	sempav:HumanCuration
+loinc:LP30820-2	skos:exactMatch	CHEBI:35404	chromate(2-)	sempav:HumanCuration
+loinc:LP30823-6	skos:exactMatch	CHEBI:64647	amyloid-beta polypeptide 42	sempav:HumanCuration
+loinc:LP30825-1	skos:exactMatch	CHEBI:131444	guanidinoacetate	sempav:HumanCuration
+loinc:LP30837-6	skos:exactMatch	CHEBI:15650	leukotriene E4	sempav:HumanCuration
+loinc:LP30838-4	skos:exactMatch	CHEBI:5739	histrelin	sempav:HumanCuration
+loinc:LP30845-9	skos:exactMatch	CHEBI:3098	bile acid	sempav:HumanCuration
+loinc:LP30851-7	skos:exactMatch	CHEBI:27283	very long-chain fatty acid	sempav:HumanCuration
+loinc:LP30896-2	skos:exactMatch	CHEBI:36162	hematoporphyrin	sempav:HumanCuration
+loinc:LP310332-4	skos:exactMatch	CHEBI:4177	D-glucosylsphingosine	sempav:HumanCuration
+loinc:LP310337-3	skos:exactMatch	CHEBI:28082	5alpha-cholestane-3beta,5,6beta-triol	sempav:HumanCuration
+loinc:LP310354-8	skos:exactMatch	CHEBI:64294	7-ketocholesterol	sempav:HumanCuration
+loinc:LP31483-8	skos:exactMatch	CHEBI:35480	analgesic	sempav:HumanCuration
+loinc:LP31517-3	skos:exactMatch	CHEBI:20612	5-methyltetrahydrofolate	sempav:HumanCuration
+loinc:LP31520-7	skos:exactMatch	CHEBI:89633	Metanephrine	sempav:HumanCuration
+loinc:LP31555-3	skos:exactMatch	CHEBI:27891	S-sulfo-L-cysteine	sempav:HumanCuration
+loinc:LP31556-1	skos:exactMatch	CHEBI:26903	tetrahydrobiopterin	sempav:HumanCuration
+loinc:LP31704-7	skos:exactMatch	CHEBI:28986	anabasine	sempav:HumanCuration
+loinc:LP31705-4	skos:exactMatch	CHEBI:71182	trans-3-hydroxycotinine	sempav:HumanCuration
+loinc:LP31706-2	skos:exactMatch	CHEBI:28313	nornicotine	sempav:HumanCuration
+loinc:LP31713-8	skos:exactMatch	CHEBI:10119	ziprasidone	sempav:HumanCuration
+loinc:LP31715-3	skos:exactMatch	CHEBI:17485	homocystine	sempav:HumanCuration
+loinc:LP31722-9	skos:exactMatch	CHEBI:32171	Sultiame	sempav:HumanCuration
+loinc:LP31777-3	skos:exactMatch	CHEBI:5931	insulin (human)	sempav:HumanCuration
+loinc:LP31787-2	skos:exactMatch	CHEBI:64045	amisulpride	sempav:HumanCuration
+loinc:LP31792-2	skos:exactMatch	CHEBI:9555	tioguanine	sempav:HumanCuration
+loinc:LP31801-1	skos:exactMatch	CHEBI:36791	escitalopram	sempav:HumanCuration
+loinc:LP31802-9	skos:exactMatch	CHEBI:83531	moclobemide	sempav:HumanCuration
+loinc:LP31803-7	skos:exactMatch	CHEBI:143428	Normirtazapine	sempav:HumanCuration
+loinc:LP31820-1	skos:exactMatch	CHEBI:136003	levomethadone	sempav:HumanCuration
+loinc:LP31828-4	skos:exactMatch	CHEBI:44915	propofol	sempav:HumanCuration
+loinc:LP31829-2	skos:exactMatch	CHEBI:10124	zolmitriptan	sempav:HumanCuration
+loinc:LP31833-4	skos:exactMatch	CHEBI:46807	diethylene glycol	sempav:HumanCuration
+loinc:LP32554-5	skos:exactMatch	CHEBI:27999	tolbutamide	sempav:HumanCuration
+loinc:LP32649-3	skos:exactMatch	CHEBI:17376	cystine	sempav:HumanCuration
+loinc:LP32679-0	skos:exactMatch	CHEBI:8673	pyrimethamine	sempav:HumanCuration
+loinc:LP32680-8	skos:exactMatch	CHEBI:18318	galactosylceramide sulfate	sempav:HumanCuration
+loinc:LP32686-5	skos:exactMatch	CHEBI:8404	prilocaine	sempav:HumanCuration
+loinc:LP32687-3	skos:exactMatch	CHEBI:89982	8-Dehydrocholesterol	sempav:HumanCuration
+loinc:LP32967-9	skos:exactMatch	CHEBI:22720	benzodiazepine	sempav:HumanCuration
+loinc:LP32968-7	skos:exactMatch	CHEBI:22720	benzodiazepine	sempav:HumanCuration
+loinc:LP32970-3	skos:exactMatch	CHEBI:5631	Heavy metal	sempav:HumanCuration
+loinc:LP32973-7	skos:exactMatch	CHEBI:50264	thiazide	sempav:HumanCuration
+loinc:LP32974-5	skos:exactMatch	CHEBI:36809	tricyclic antidepressant	sempav:HumanCuration
+loinc:LP33033-9	skos:exactMatch	CHEBI:53766	acenocoumarol	sempav:HumanCuration
+loinc:LP33034-7	skos:exactMatch	CHEBI:50438	phenprocoumon	sempav:HumanCuration
+loinc:LP33036-2	skos:exactMatch	CHEBI:31305	Bromperidol	sempav:HumanCuration
+loinc:LP33038-8	skos:exactMatch	CHEBI:78549	pipamperone	sempav:HumanCuration
+loinc:LP33039-6	skos:exactMatch	CHEBI:135644	sulforidazine	sempav:HumanCuration
+loinc:LP33040-4	skos:exactMatch	CHEBI:32168	sulpiride	sempav:HumanCuration
+loinc:LP33055-2	skos:exactMatch	CHEBI:27689	decanoate	sempav:HumanCuration
+loinc:LP33056-0	skos:exactMatch	CHEBI:36003	decenoic acid	sempav:HumanCuration
+loinc:LP33057-8	skos:exactMatch	CHEBI:71590	(3E,5Z)-tetradecadienoate	sempav:HumanCuration
+loinc:LP33058-6	skos:exactMatch	CHEBI:18262	dodecanoate	sempav:HumanCuration
+loinc:LP33062-8	skos:exactMatch	CHEBI:78096	hexadecadienoate	sempav:HumanCuration
+loinc:LP33063-6	skos:exactMatch	CHEBI:78095	hexadecenoate	sempav:HumanCuration
+loinc:LP33065-1	skos:exactMatch	CHEBI:30807	tetradecanoate	sempav:HumanCuration
+loinc:LP33066-9	skos:exactMatch	CHEBI:32370	myristoleate	sempav:HumanCuration
+loinc:LP33068-5	skos:exactMatch	CHEBI:78076	docosenoate	sempav:HumanCuration
+loinc:LP33069-3	skos:exactMatch	CHEBI:32372	palmitoleate	sempav:HumanCuration
+loinc:LP33070-1	skos:exactMatch	CHEBI:32391	gamma-linolenate	sempav:HumanCuration
+loinc:LP33071-9	skos:exactMatch	CHEBI:32387	alpha-linolenate	sempav:HumanCuration
+loinc:LP33072-7	skos:exactMatch	CHEBI:36023	vaccenic acid	sempav:HumanCuration
+loinc:LP33073-5	skos:exactMatch	CHEBI:32360	icosanoate	sempav:HumanCuration
+loinc:LP33074-3	skos:exactMatch	CHEBI:44247	(15Z)-tetracosenoic acid	sempav:HumanCuration
+loinc:LP33075-0	skos:exactMatch	CHEBI:71589	all-cis-icosa-8,11,14-trienoate	sempav:HumanCuration
+loinc:LP33076-8	skos:exactMatch	CHEBI:72865	(5Z,8Z,11Z)-icosatrienoic acid	sempav:HumanCuration
+loinc:LP33077-6	skos:exactMatch	CHEBI:61330	icosapentaenoate	sempav:HumanCuration
+loinc:LP33078-4	skos:exactMatch	CHEBI:78060	docosahexaenoate	sempav:HumanCuration
+loinc:LP33079-2	skos:exactMatch	CHEBI:26607	saturated fatty acid	sempav:HumanCuration
+loinc:LP33081-8	skos:exactMatch	CHEBI:25413	monounsaturated fatty acid	sempav:HumanCuration
+loinc:LP33083-4	skos:exactMatch	CHEBI:26208	polyunsaturated fatty acid	sempav:HumanCuration
+loinc:LP33084-2	skos:exactMatch	CHEBI:25681	omega-3 fatty acid	sempav:HumanCuration
+loinc:LP33085-9	skos:exactMatch	CHEBI:36009	omega-6 fatty acid	sempav:HumanCuration
+loinc:LP33086-7	skos:exactMatch	CHEBI:78069	docosatetraenoate	sempav:HumanCuration
+loinc:LP33234-3	skos:exactMatch	CHEBI:10588	1-(3-chlorophenyl)piperazine	sempav:HumanCuration
+loinc:LP33246-7	skos:exactMatch	CHEBI:8852	Ricin	sempav:HumanCuration
+loinc:LP33271-5	skos:exactMatch	CHEBI:18898	1,2-dinitroglycerol	sempav:HumanCuration
+loinc:LP33272-3	skos:exactMatch	CHEBI:26911	oxolane	sempav:HumanCuration
+loinc:LP33273-1	skos:exactMatch	CHEBI:44212	N-methyl-L-valine	sempav:HumanCuration
+loinc:LP33276-4	skos:exactMatch	CHEBI:34444	4-tert-butylphenol	sempav:HumanCuration
+loinc:LP33277-2	skos:exactMatch	CHEBI:27750	ethyl acetate	sempav:HumanCuration
+loinc:LP33279-8	skos:exactMatch	CHEBI:30845	2-furoic acid	sempav:HumanCuration
+loinc:LP33280-6	skos:exactMatch	CHEBI:15571	hydrazine	sempav:HumanCuration
+loinc:LP33294-7	skos:exactMatch	CHEBI:73077	3-hydroxyoctadecanoylcarnitine	sempav:HumanCuration
+loinc:LP33297-0	skos:exactMatch	CHEBI:127342	atomoxetine	sempav:HumanCuration
+loinc:LP33332-5	skos:exactMatch	CHEBI:6801	metformin	sempav:HumanCuration
+loinc:LP33333-3	skos:exactMatch	CHEBI:76916	hyperglycemic agent	sempav:HumanCuration
+loinc:LP33357-2	skos:exactMatch	CHEBI:28908	bambermycin	sempav:HumanCuration
+loinc:LP33363-0	skos:exactMatch	CHEBI:80025	Salinomycin	sempav:HumanCuration
+loinc:LP33365-5	skos:exactMatch	CHEBI:44137	tiamulin	sempav:HumanCuration
+loinc:LP33368-9	skos:exactMatch	CHEBI:17658	tylosin	sempav:HumanCuration
+loinc:LP33369-7	skos:exactMatch	CHEBI:87209	virginiamycin	sempav:HumanCuration
+loinc:LP33371-3	skos:exactMatch	CHEBI:132933	intermediate-density lipoprotein	sempav:HumanCuration
+loinc:LP33967-8	skos:exactMatch	CHEBI:49706	perchlorate	sempav:HumanCuration
+loinc:LP343335-8	skos:exactMatch	CHEBI:87016	eslicarbazepine acetate	sempav:HumanCuration
+loinc:LP34391-0	skos:exactMatch	CHEBI:4496	calcium hydrogenphosphate dihydrate	sempav:HumanCuration
+loinc:LP34401-7	skos:exactMatch	CHEBI:81859	Dalapon	sempav:HumanCuration
+loinc:LP34402-5	skos:exactMatch	CHEBI:34044	1,2-Dibromo-3-chloropropane	sempav:HumanCuration
+loinc:LP34403-3	skos:exactMatch	CHEBI:27789	1,2-dichloroethane	sempav:HumanCuration
+loinc:LP34404-1	skos:exactMatch	CHEBI:34031	1,1-dichloroethene	sempav:HumanCuration
+loinc:LP34405-8	skos:exactMatch	CHEBI:28805	cis-1,2-dichloroethene	sempav:HumanCuration
+loinc:LP34406-6	skos:exactMatch	CHEBI:29027	trans-1,2-dichloroethene	sempav:HumanCuration
+loinc:LP34408-2	skos:exactMatch	CHEBI:142468	1,2-dichloropropane	sempav:HumanCuration
+loinc:LP34409-0	skos:exactMatch	CHEBI:17747	bis(2-ethylhexyl) phthalate	sempav:HumanCuration
+loinc:LP34410-8	skos:exactMatch	CHEBI:47077	dibromomethane	sempav:HumanCuration
+loinc:LP34412-4	skos:exactMatch	CHEBI:29865	benzo[a]pyrene	sempav:HumanCuration
+loinc:LP34413-2	skos:exactMatch	CHEBI:38539	oxamyl	sempav:HumanCuration
+loinc:LP34414-0	skos:exactMatch	CHEBI:36018	1,1,2-trichloroethane	sempav:HumanCuration
+loinc:LP34415-7	skos:exactMatch	CHEBI:34719	dinoseb	sempav:HumanCuration
+loinc:LP34416-5	skos:exactMatch	CHEBI:81916	Endothal-disodium	sempav:HumanCuration
+loinc:LP34417-3	skos:exactMatch	CHEBI:27744	glyphosate	sempav:HumanCuration
+loinc:LP34418-1	skos:exactMatch	CHEBI:2533	alachlor	sempav:HumanCuration
+loinc:LP34419-9	skos:exactMatch	CHEBI:27496	simazine	sempav:HumanCuration
+loinc:LP344946-1	skos:exactMatch	CHEBI:17245	carbon monoxide	sempav:HumanCuration
+loinc:LP34565-9	skos:exactMatch	CHEBI:5613	haloperidol	sempav:HumanCuration
+loinc:LP34566-7	skos:exactMatch	CHEBI:74099	N-octanoylglycine	sempav:HumanCuration
+loinc:LP34567-5	skos:exactMatch	CHEBI:8805	Repaglinide	sempav:HumanCuration
+loinc:LP34568-3	skos:relatedMatch	CHEBI:172315	Norbuprenorphine	sempav:HumanCuration
+loinc:LP34632-7	skos:exactMatch	CHEBI:15040	retinyl palmitate	sempav:HumanCuration
+loinc:LP34687-1	skos:exactMatch	CHEBI:49747	methylmercury(1+)	sempav:HumanCuration
+loinc:LP34751-5	skos:exactMatch	CHEBI:27856	acetamide	sempav:HumanCuration
+loinc:LP34752-3	skos:exactMatch	CHEBI:17356	2-acetamidofluorene	sempav:HumanCuration
+loinc:LP34753-1	skos:exactMatch	CHEBI:37080	acrylate	sempav:HumanCuration
+loinc:LP34755-6	skos:exactMatch	CHEBI:82379	Allyl chloride	sempav:HumanCuration
+loinc:LP34758-0	skos:exactMatch	CHEBI:1784	biphenyl-4-amine	sempav:HumanCuration
+loinc:LP34759-8	skos:exactMatch	CHEBI:82274	(trichloromethyl)benzene	sempav:HumanCuration
+loinc:LP34760-6	skos:exactMatch	CHEBI:615597	benzyl chloride	sempav:HumanCuration
+loinc:LP34767-1	skos:exactMatch	CHEBI:17097	biphenyl	sempav:HumanCuration
+loinc:LP34768-9	skos:exactMatch	CHEBI:82270	bis(chloromethyl) ether	sempav:HumanCuration
+loinc:LP34769-7	skos:exactMatch	CHEBI:35777	boron oxide	sempav:HumanCuration
+loinc:LP34770-5	skos:exactMatch	CHEBI:33093	boron trifluoride	sempav:HumanCuration
+loinc:LP34771-3	skos:exactMatch	CHEBI:22927	bromine atom	sempav:HumanCuration
+loinc:LP34772-1	skos:exactMatch	CHEBI:47232	1-BROMOETHANE	sempav:HumanCuration
+loinc:LP34773-9	skos:exactMatch	CHEBI:39478	buta-1,3-diene	sempav:HumanCuration
+loinc:LP34774-7	skos:exactMatch	CHEBI:64301	calcium cyanamide	sempav:HumanCuration
+loinc:LP34775-4	skos:exactMatch	CHEBI:23000	caprolactams	sempav:HumanCuration
+loinc:LP34776-2	skos:exactMatch	CHEBI:34608	captan	sempav:HumanCuration
+loinc:LP34777-0	skos:exactMatch	CHEBI:18135	catechol	sempav:HumanCuration
+loinc:LP34779-6	skos:exactMatch	CHEBI:82271	Chloromethyl methyl ether	sempav:HumanCuration
+loinc:LP34780-4	skos:exactMatch	CHEBI:39481	chloroprene	sempav:HumanCuration
+loinc:LP34781-2	skos:exactMatch	CHEBI:16573	carbonyl sulfide	sempav:HumanCuration
+loinc:LP34782-0	skos:exactMatch	CHEBI:82183	Chloramben	sempav:HumanCuration
+loinc:LP34783-8	skos:exactMatch	CHEBI:23123	chloroacetate	sempav:HumanCuration
+loinc:LP34785-3	skos:exactMatch	CHEBI:34626	Chlorobenzilate	sempav:HumanCuration
+loinc:LP34786-1	skos:exactMatch	CHEBI:73716	diazomethane	sempav:HumanCuration
+loinc:LP34787-9	skos:exactMatch	CHEBI:27632	acetophenone	sempav:HumanCuration
+loinc:LP34788-7	skos:exactMatch	CHEBI:30187	aluminium oxide	sempav:HumanCuration
+loinc:LP34789-5	skos:exactMatch	CHEBI:34573	Bis(2-chloroethyl)ether	sempav:HumanCuration
+loinc:LP34790-3	skos:exactMatch	CHEBI:28123	diethanolamine	sempav:HumanCuration
+loinc:LP34791-1	skos:exactMatch	CHEBI:34699	diethyl sulfate	sempav:HumanCuration
+loinc:LP34792-9	skos:exactMatch	CHEBI:82321	3,3'-Dimethoxybenzidine	sempav:HumanCuration
+loinc:LP34793-7	skos:exactMatch	CHEBI:23806	dimethylaniline	sempav:HumanCuration
+loinc:LP34795-2	skos:exactMatch	CHEBI:17231	m-cresol	sempav:HumanCuration
+loinc:LP34796-0	skos:exactMatch	CHEBI:17847	p-cresol	sempav:HumanCuration
+loinc:LP34797-8	skos:exactMatch	CHEBI:4609	Dimethyl phthalate	sempav:HumanCuration
+loinc:LP34802-6	skos:exactMatch	CHEBI:18853	1,1-dimethylhydrazine	sempav:HumanCuration
+loinc:LP34803-4	skos:exactMatch	CHEBI:59050	dimethyl sulfate	sempav:HumanCuration
+loinc:LP34804-2	skos:exactMatch	CHEBI:39349	4,6-dinitro-o-cresol	sempav:HumanCuration
+loinc:LP34806-7	skos:exactMatch	CHEBI:82326	1,2-Epoxybutane	sempav:HumanCuration
+loinc:LP34807-5	skos:exactMatch	CHEBI:82327	Ethyl acrylate	sempav:HumanCuration
+loinc:LP34808-3	skos:exactMatch	CHEBI:34750	Ethylenethiourea	sempav:HumanCuration
+loinc:LP34809-1	skos:exactMatch	CHEBI:30969	aziridine	sempav:HumanCuration
+loinc:LP34810-9	skos:exactMatch	CHEBI:81599	1,1-Dichloroethane	sempav:HumanCuration
+loinc:LP34812-5	skos:exactMatch	CHEBI:53578	hexamethylene diisocyanate	sempav:HumanCuration
+loinc:LP34813-3	skos:exactMatch	CHEBI:24565	hexamethylphosphoric triamide	sempav:HumanCuration
+loinc:LP34815-8	skos:exactMatch	CHEBI:34800	isophorone	sempav:HumanCuration
+loinc:LP34816-6	skos:exactMatch	CHEBI:42994	METHYLHYDRAZINE	sempav:HumanCuration
+loinc:LP34817-4	skos:exactMatch	CHEBI:39282	iodomethane	sempav:HumanCuration
+loinc:LP34818-2	skos:exactMatch	CHEBI:59059	methyl isocyanate	sempav:HumanCuration
+loinc:LP34819-0	skos:exactMatch	CHEBI:27798	nitrobenzene	sempav:HumanCuration
+loinc:LP34820-8	skos:exactMatch	CHEBI:16037	2-nitropropane	sempav:HumanCuration
+loinc:LP34821-6	skos:exactMatch	CHEBI:35807	N-nitrosodimethylamine	sempav:HumanCuration
+loinc:LP34822-4	skos:exactMatch	CHEBI:76326	N-nitrosomorpholine	sempav:HumanCuration
+loinc:LP34823-2	skos:exactMatch	CHEBI:34908	pentachloronitrobenzene	sempav:HumanCuration
+loinc:LP34824-0	skos:exactMatch	CHEBI:29365	phosgene	sempav:HumanCuration
+loinc:LP34825-7	skos:exactMatch	CHEBI:35883	phosphine	sempav:HumanCuration
+loinc:LP34826-5	skos:exactMatch	CHEBI:82370	1,3-Propane sultone	sempav:HumanCuration
+loinc:LP34827-3	skos:exactMatch	CHEBI:49073	beta-propiolactone	sempav:HumanCuration
+loinc:LP34828-1	skos:exactMatch	CHEBI:17153	propanal	sempav:HumanCuration
+loinc:LP34829-9	skos:exactMatch	CHEBI:82340	2-Methylaziridine	sempav:HumanCuration
+loinc:LP34831-5	skos:exactMatch	CHEBI:16509	1,4-benzoquinone	sempav:HumanCuration
+loinc:LP34833-1	skos:exactMatch	CHEBI:17362	quinoline	sempav:HumanCuration
+loinc:LP34834-9	skos:exactMatch	CHEBI:17907	styrene oxide	sempav:HumanCuration
+loinc:LP34836-4	skos:exactMatch	CHEBI:34259	2-Aminotoluene	sempav:HumanCuration
+loinc:LP34837-2	skos:exactMatch	CHEBI:28520	2,4,5-trichlorophenol	sempav:HumanCuration
+loinc:LP34838-0	skos:exactMatch	CHEBI:28755	2,4,6-trichlorophenol	sempav:HumanCuration
+loinc:LP34839-8	skos:exactMatch	CHEBI:35026	triethylamine	sempav:HumanCuration
+loinc:LP34840-6	skos:exactMatch	CHEBI:35027	trifluralin	sempav:HumanCuration
+loinc:LP34841-4	skos:exactMatch	CHEBI:46916	vinyl acetate	sempav:HumanCuration
+loinc:LP34842-2	skos:exactMatch	CHEBI:51311	bromoethene	sempav:HumanCuration
+loinc:LP34844-8	skos:exactMatch	CHEBI:82288	o-anisidine	sempav:HumanCuration
+loinc:LP34845-5	skos:exactMatch	CHEBI:18918	1,3-dichloropropene	sempav:HumanCuration
+loinc:LP34846-3	skos:exactMatch	CHEBI:82280	Dimethylcarbamoyl chloride	sempav:HumanCuration
+loinc:LP34847-1	skos:exactMatch	CHEBI:42017	2,4-dinitrophenol	sempav:HumanCuration
+loinc:LP34848-9	skos:exactMatch	CHEBI:920	2,4-dinitrotoluene	sempav:HumanCuration
+loinc:LP34849-7	skos:exactMatch	CHEBI:17883	hydrogen chloride	sempav:HumanCuration
+loinc:LP34850-5	skos:exactMatch	CHEBI:29228	hydrogen fluoride	sempav:HumanCuration
+loinc:LP34853-9	skos:exactMatch	CHEBI:82504	4-Nitrobiphenyl	sempav:HumanCuration
+loinc:LP34855-4	skos:exactMatch	CHEBI:51403	1,4-phenylenediamine	sempav:HumanCuration
+loinc:LP34856-2	skos:exactMatch	CHEBI:53556	toluene 2,4-diisocyanate	sempav:HumanCuration
+loinc:LP34859-6	skos:exactMatch	CHEBI:28145	dibenzofuran	sempav:HumanCuration
+loinc:LP34861-2	skos:exactMatch	CHEBI:82295	Bitumens	sempav:HumanCuration
+loinc:LP34862-0	skos:exactMatch	CHEBI:62805	isooctane	sempav:HumanCuration
+loinc:LP34967-7	skos:exactMatch	CHEBI:31236	aripiprazole	sempav:HumanCuration
+loinc:LP34970-1	skos:exactMatch	CHEBI:6402	leflunomide	sempav:HumanCuration
+loinc:LP35095-6	skos:exactMatch	CHEBI:63602	ChEBI infliximab	sempav:HumanCuration
+loinc:LP35566-6	skos:exactMatch	CHEBI:30753	4-aminobenzoic acid	sempav:HumanCuration
+loinc:LP35577-3	skos:exactMatch	CHEBI:5383	glimepiride	sempav:HumanCuration
+loinc:LP35586-4	skos:exactMatch	CHEBI:8107	phenytoin	sempav:HumanCuration
+loinc:LP35625-0	skos:exactMatch	CHEBI:89951	Normetanephrine	sempav:HumanCuration
+loinc:LP35627-6	skos:exactMatch	CHEBI:77270	11-hydroxy-Delta(9)-tetrahydrocannabinol	sempav:HumanCuration
+loinc:LP35639-1	skos:exactMatch	CHEBI:34134	11-Ketoandrosterone	sempav:HumanCuration
+loinc:LP35640-9	skos:exactMatch	CHEBI:34135	11-Ketoetiocholanolone	sempav:HumanCuration
+loinc:LP35677-1	skos:exactMatch	CHEBI:16335	adenosine	sempav:HumanCuration
+loinc:LP35686-2	skos:exactMatch	CHEBI:10093	yohimbine	sempav:HumanCuration
+loinc:LP35723-3	skos:exactMatch	CHEBI:143125	monosodium urate	sempav:HumanCuration
+loinc:LP35724-1	skos:exactMatch	CHEBI:27214	uranium atom	sempav:HumanCuration
+loinc:LP35744-9	skos:exactMatch	CHEBI:135499	xipamide	sempav:HumanCuration
+loinc:LP35785-2	skos:exactMatch	CHEBI:37924	atazanavir	sempav:HumanCuration
+loinc:LP35809-0	skos:exactMatch	CHEBI:63580	ribavirin	sempav:HumanCuration
+loinc:LP35865-2	skos:exactMatch	CHEBI:3002	beclomethasone dipropionate	sempav:HumanCuration
+loinc:LP35866-0	skos:exactMatch	CHEBI:3077	betamethasone	sempav:HumanCuration
+loinc:LP35867-8	skos:exactMatch	CHEBI:3207	budesonide	sempav:HumanCuration
+loinc:LP35868-6	skos:exactMatch	CHEBI:50885	fludrocortisone	sempav:HumanCuration
+loinc:LP35869-4	skos:exactMatch	CHEBI:5106	flunisolide	sempav:HumanCuration
+loinc:LP35870-2	skos:exactMatch	CHEBI:31625	fluorometholone	sempav:HumanCuration
+loinc:LP35871-0	skos:exactMatch	CHEBI:31441	fluticasone propionate	sempav:HumanCuration
+loinc:LP35872-8	skos:exactMatch	CHEBI:6723	megestrol acetate	sempav:HumanCuration
+loinc:LP35873-6	skos:exactMatch	CHEBI:9667	triamcinolone	sempav:HumanCuration
+loinc:LP35874-4	skos:exactMatch	CHEBI:71418	triamcinolone acetonide	sempav:HumanCuration
+loinc:LP35885-0	skos:exactMatch	CHEBI:80645	2-Ethylidene-1,5-dimethyl-3,3-diphenylpyrrolidine	sempav:HumanCuration
+loinc:LP36012-0	skos:exactMatch	CHEBI:28584	gossypol	sempav:HumanCuration
+loinc:LP36120-1	skos:exactMatch	CHEBI:63628	tipranavir	sempav:HumanCuration
+loinc:LP36161-5	skos:exactMatch	CHEBI:132923	salicylurate	sempav:HumanCuration
+loinc:LP36186-2	skos:exactMatch	CHEBI:71169	succinyladenosine	sempav:HumanCuration
+loinc:LP36293-6	skos:exactMatch	CHEBI:82415	Chloramine	sempav:HumanCuration
+loinc:LP36294-4	skos:exactMatch	CHEBI:35273	quaternary ammonium salt	sempav:HumanCuration
+loinc:LP36405-6	skos:exactMatch	CHEBI:23116	chlorine atom	sempav:HumanCuration
+loinc:LP36406-4	skos:exactMatch	CHEBI:30563	silicon dioxide	sempav:HumanCuration
+loinc:LP36420-5	skos:exactMatch	CHEBI:73017	O-isobutyrylcarnitine	sempav:HumanCuration
+loinc:LP36491-6	skos:exactMatch	CHEBI:27214	uranium atom	sempav:HumanCuration
+loinc:LP36574-9	skos:exactMatch	CHEBI:88734	Aldosterone 18-glucuronide	sempav:HumanCuration
+loinc:LP36593-9	skos:exactMatch	CHEBI:79441	Nirvanol	sempav:HumanCuration
+loinc:LP36599-6	skos:exactMatch	CHEBI:27929	2,5-dichlorophenol	sempav:HumanCuration
+loinc:LP36600-2	skos:exactMatch	CHEBI:16738	2,4-dichlorophenol	sempav:HumanCuration
+loinc:LP36607-7	skos:exactMatch	CHEBI:17879	4-hydroxybenzoate	sempav:HumanCuration
+loinc:LP36672-1	skos:exactMatch	CHEBI:35481	non-narcotic analgesic	sempav:HumanCuration
+loinc:LP36718-2	skos:exactMatch	CHEBI:771	16alpha-hydroxypregnenolone	sempav:HumanCuration
+loinc:LP36719-0	skos:exactMatch	CHEBI:27771	16alpha-hydroxydehydroepiandrosterone	sempav:HumanCuration
+loinc:LP36720-8	skos:exactMatch	CHEBI:28750	17alpha-hydroxypregnenolone	sempav:HumanCuration
+loinc:LP36731-5	skos:exactMatch	CHEBI:58149	3-hydroxyphenylacetate	sempav:HumanCuration
+loinc:LP36732-3	skos:exactMatch	CHEBI:3899	Cortolone	sempav:HumanCuration
+loinc:LP36737-2	skos:exactMatch	CHEBI:5931	insulin (human)	sempav:HumanCuration
+loinc:LP36777-8	skos:exactMatch	CHEBI:16382	iodide	sempav:HumanCuration
+loinc:LP36784-4	skos:exactMatch	CHEBI:68540	teriflunomide	sempav:HumanCuration
+loinc:LP36785-1	skos:exactMatch	CHEBI:89118	5-hydroxymethyl-2-furoic acid	sempav:HumanCuration
+loinc:LP36792-7	skos:exactMatch	CHEBI:32804	4-hydroxymandelate	sempav:HumanCuration
+loinc:LP36909-7	skos:exactMatch	CHEBI:87248	ethyl glucuronide	sempav:HumanCuration
+loinc:LP40294-8	skos:exactMatch	CHEBI:36796	duloxetine	sempav:HumanCuration
+loinc:LP40295-5	skos:exactMatch	CHEBI:174690	clenbuterol	sempav:HumanCuration
+loinc:LP40296-3	skos:exactMatch	CHEBI:31640	Furazabol	sempav:HumanCuration
+loinc:LP40297-1	skos:exactMatch	CHEBI:135283	methenolone	sempav:HumanCuration
+loinc:LP40334-2	skos:exactMatch	CHEBI:132934	3-hydroxysebacate	sempav:HumanCuration
+loinc:LP40335-9	skos:exactMatch	CHEBI:7865	Oxymorphone	sempav:HumanCuration
+loinc:LP40352-4	skos:exactMatch	CHEBI:86319	25-hydroxyvitamin D2	sempav:HumanCuration
+loinc:LP411029-4	skos:exactMatch	CHEBI:132028	tauroursodeoxycholate	sempav:HumanCuration
+loinc:LP411030-2	skos:exactMatch	CHEBI:17179	taurolithocholate	sempav:HumanCuration
+loinc:LP411032-8	skos:exactMatch	CHEBI:36261	taurodeoxycholate	sempav:HumanCuration
+loinc:LP411033-6	skos:exactMatch	CHEBI:29746	glycocholate	sempav:HumanCuration
+loinc:LP411034-4	skos:exactMatch	CHEBI:82982	glycodeoxycholate	sempav:HumanCuration
+loinc:LP411035-1	skos:exactMatch	CHEBI:60008	Glycolithocholate	sempav:HumanCuration
+loinc:LP411037-7	skos:exactMatch	CHEBI:132030	glycoursodeoxycholate	sempav:HumanCuration
+loinc:LP411038-5	skos:exactMatch	CHEBI:36257	taurocholate	sempav:HumanCuration
+loinc:LP411039-3	skos:exactMatch	CHEBI:9407	taurochenodeoxycholate	sempav:HumanCuration
+loinc:LP411042-7	skos:exactMatch	CHEBI:36252	glycochenodeoxycholate	sempav:HumanCuration
+loinc:LP411050-0	skos:exactMatch	CHEBI:58875	hyodeoxycholate	sempav:HumanCuration
+loinc:LP411051-8	skos:exactMatch	CHEBI:81481	11β-hydroxytestosterone	sempav:HumanCuration
+loinc:LP411052-6	skos:exactMatch	CHEBI:34133	11-oxotestosterone	sempav:HumanCuration
+loinc:LP411414-8	skos:exactMatch	CHEBI:183384	Ocfentanil	sempav:HumanCuration
+loinc:LP411415-5	skos:exactMatch	CHEBI:61074	4-fluorofentanyl	sempav:HumanCuration
+loinc:LP411437-9	skos:exactMatch	CHEBI:61092	3-methylfentanyl	sempav:HumanCuration
+loinc:LP411706-7	skos:exactMatch	CHEBI:16874	psychosine	sempav:HumanCuration
+loinc:LP412214-1	skos:exactMatch	CHEBI:72959	N-hexadecanoylsphingosine	sempav:HumanCuration
+loinc:LP419475-1	skos:relatedMatch	CHEBI:55438	Ile(5)-angiotensin II (1-7)	sempav:HumanCuration
+loinc:LP419634-3	skos:relatedMatch	CHEBI:135754	Loprazolam	sempav:HumanCuration
+loinc:LP419904-0	skos:relatedMatch	CHEBI:55313	Alcuronium	sempav:HumanCuration
+loinc:LP419920-6	skos:relatedMatch	CHEBI:82414	Carmoisine	sempav:HumanCuration
+loinc:LP419921-4	skos:relatedMatch	CHEBI:59097	Tetrachlorophthalic anhydride	sempav:HumanCuration
+loinc:LP419924-8	skos:relatedMatch	CHEBI:31575	Ethylparaben	sempav:HumanCuration
+loinc:LP419925-5	skos:relatedMatch	CHEBI:88542	Butylparaben	sempav:HumanCuration
+loinc:LP420286-9	skos:relatedMatch	CHEBI:42944	Galanthamine	sempav:HumanCuration
+loinc:LP420892-4	skos:exactMatch	CHEBI:35420	Pregnenolone sulfate	sempav:HumanCuration
+loinc:LP420998-9	skos:relatedMatch	CHEBI:156543	Ammonium persulfate	sempav:HumanCuration
+loinc:LP421000-3	skos:relatedMatch	CHEBI:6872	Methylene blue	sempav:HumanCuration
+loinc:LP426478-6	skos:relatedMatch	CHEBI:71253	Asenapine	sempav:HumanCuration
+loinc:LP428265-5	skos:relatedMatch	CHEBI:138155	chemokine ligand 7	sempav:HumanCuration
+loinc:LP428266-3	skos:relatedMatch	CHEBI:138181	chemokine ligand 8	sempav:HumanCuration
+loinc:LP428272-1	skos:relatedMatch	CHEBI:138154	chemokine ligand 9	sempav:HumanCuration
+loinc:LP428274-7	skos:relatedMatch	CHEBI:138157	chemokine ligand 10	sempav:HumanCuration
+loinc:LP428288-7	skos:relatedMatch	CHEBI:138180	chemokine ligand 5	sempav:HumanCuration
+loinc:LP429630-9	skos:exactMatch	CHEBI:40410	N-acetylglycine	sempav:HumanCuration
+loinc:LP432647-8	skos:relatedMatch	CHEBI:87044	4,4-dimethyl-5α-cholest-8-en-3β-ol	sempav:HumanCuration
+loinc:LP432753-4	skos:exactMatch	68642	Abiraterone	sempav:HumanCuration
+loinc:LP56739-3	skos:exactMatch	CHEBI:28260	galactose	sempav:HumanCuration
+loinc:LP57516-4	skos:exactMatch	CHEBI:31263	bentiromide	sempav:HumanCuration
+loinc:LP57517-2	skos:exactMatch	CHEBI:135946	sincalide	sempav:HumanCuration
+loinc:LP57518-0	skos:exactMatch	CHEBI:44241	metyrapone	sempav:HumanCuration
+loinc:LP61620-8	skos:exactMatch	CHEBI:5165	Fosphenytoin	sempav:HumanCuration
+loinc:LP61621-6	skos:exactMatch	CHEBI:64356	pregabalin	sempav:HumanCuration
+loinc:LP61773-5	skos:exactMatch	CHEBI:86371	3,4-dihydroxybutyric acid	sempav:HumanCuration
+loinc:LP61775-0	skos:exactMatch	CHEBI:15963	ribitol	sempav:HumanCuration
+loinc:LP61793-3	skos:exactMatch	CHEBI:63629	tizanidine	sempav:HumanCuration
+loinc:LP61794-1	skos:exactMatch	CHEBI:82955	2-ethylhydracrylate	sempav:HumanCuration
+loinc:LP61795-8	skos:exactMatch	CHEBI:89312	2-Hydroxydecanedioic acid	sempav:HumanCuration
+loinc:LP61796-6	skos:exactMatch	CHEBI:55434	(2S,3R)-3-hydroxy-2-methylpentanoic acid	sempav:HumanCuration
+loinc:LP61797-4	skos:exactMatch	CHEBI:19680	2-methylacetoacetate	sempav:HumanCuration
+loinc:LP61799-0	skos:exactMatch	CHEBI:84980	2-methylglutarate(2-)	sempav:HumanCuration
+loinc:LP61800-6	skos:exactMatch	CHEBI:17612	(3,4-dihydroxyphenyl)acetate	sempav:HumanCuration
+loinc:LP61801-4	skos:exactMatch	CHEBI:53326	3,4-dihydroxymandelate	sempav:HumanCuration
+loinc:LP61802-2	skos:exactMatch	CHEBI:86348	2,4-dihydroxybutanoic acid	sempav:HumanCuration
+loinc:LP61803-0	skos:exactMatch	CHEBI:63797	3-hydroxy-4-methoxybenzoate	sempav:HumanCuration
+loinc:LP61805-5	skos:exactMatch	CHEBI:20070	3-hydroxyhexanoate	sempav:HumanCuration
+loinc:LP61806-3	skos:exactMatch	CHEBI:70766	3-hydroxysuberic acid	sempav:HumanCuration
+loinc:LP61807-1	skos:exactMatch	CHEBI:17282	3-(indol-3-yl)lactate	sempav:HumanCuration
+loinc:LP61808-9	skos:exactMatch	CHEBI:132959	3-methyladipate	sempav:HumanCuration
+loinc:LP61809-7	skos:exactMatch	CHEBI:133744	homovanillate	sempav:HumanCuration
+loinc:LP61810-5	skos:exactMatch	CHEBI:132985	5-hydroxyhexanoate	sempav:HumanCuration
+loinc:LP61811-3	skos:exactMatch	CHEBI:78949	(7R)-7-hydroxyoctanoic acid	sempav:HumanCuration
+loinc:LP61813-9	skos:exactMatch	CHEBI:81572	Adiponectin	sempav:HumanCuration
+loinc:LP61814-7	skos:exactMatch	CHEBI:22605	arabinitol	sempav:HumanCuration
+loinc:LP61820-4	skos:exactMatch	CHEBI:16813	galactitol	sempav:HumanCuration
+loinc:LP61821-2	skos:exactMatch	CHEBI:17189	2,5-dihydroxybenzoic acid	sempav:HumanCuration
+loinc:LP61822-0	skos:exactMatch	CHEBI:566274	malonaldehyde	sempav:HumanCuration
+loinc:LP61824-6	skos:exactMatch	CHEBI:16450	2'-deoxyuridine	sempav:HumanCuration
+loinc:LP62161-2	skos:exactMatch	CHEBI:89276	3-Hydroxytetradecanedioic acid	sempav:HumanCuration
+loinc:LP62162-0	skos:exactMatch	CHEBI:89276	3-Hydroxytetradecanedioic acid	sempav:HumanCuration
+loinc:LP62163-8	skos:exactMatch	CHEBI:20177	3-oxopentanoate	sempav:HumanCuration
+loinc:LP62166-1	skos:exactMatch	CHEBI:17113	erythritol	sempav:HumanCuration
+loinc:LP62167-9	skos:exactMatch	CHEBI:32365	heptadecanoic acid	sempav:HumanCuration
+loinc:LP62168-7	skos:exactMatch	CHEBI:76276	hexadecanedioate(2-)	sempav:HumanCuration
+loinc:LP62169-5	skos:exactMatch	CHEBI:17230	homocysteine	sempav:HumanCuration
+loinc:LP62170-3	skos:exactMatch	CHEBI:78795	pentadecanoate	sempav:HumanCuration
+loinc:LP62171-1	skos:exactMatch	CHEBI:132942	quinolinate	sempav:HumanCuration
+loinc:LP62192-7	skos:exactMatch	CHEBI:17151	xylitol	sempav:HumanCuration
+loinc:LP62193-5	skos:exactMatch	CHEBI:28498	acadesine	sempav:HumanCuration
+loinc:LP62194-3	skos:exactMatch	CHEBI:89760	Solerol	sempav:HumanCuration
+loinc:LP62195-0	skos:exactMatch	CHEBI:89760	Solerol	sempav:HumanCuration
+loinc:LP62197-6	skos:exactMatch	CHEBI:86347	2,3-dihydroxybutanoic acid	sempav:HumanCuration
+loinc:LP62198-4	skos:exactMatch	CHEBI:60151	oxidised LDL	sempav:HumanCuration
+loinc:LP62199-2	skos:exactMatch	CHEBI:67849	R-mevalonolactone, (-)-	sempav:HumanCuration
+loinc:LP62201-6	skos:exactMatch	CHEBI:16095	sepiapterin	sempav:HumanCuration
+loinc:LP62204-0	skos:exactMatch	CHEBI:30854	indole-3-acetate	sempav:HumanCuration
+loinc:LP62205-7	skos:exactMatch	CHEBI:37684	mannose	sempav:HumanCuration
+loinc:LP62206-5	skos:exactMatch	CHEBI:8029	perseitol	sempav:HumanCuration
+loinc:LP62208-1	skos:exactMatch	CHEBI:30911	glucitol	sempav:HumanCuration
+loinc:LP62209-9	skos:exactMatch	CHEBI:26981	threitol	sempav:HumanCuration
+loinc:LP62213-1	skos:exactMatch	CHEBI:17821	thymine	sempav:HumanCuration
+loinc:LP62256-0	skos:exactMatch	CHEBI:16632	vanillate	sempav:HumanCuration
+loinc:LP62257-8	skos:exactMatch	CHEBI:17748	thymidine	sempav:HumanCuration
+loinc:LP62277-6	skos:exactMatch	CHEBI:7907	pancuronium	sempav:HumanCuration
+loinc:LP62413-7	skos:exactMatch	CHEBI:32315	zopiclone	sempav:HumanCuration
+loinc:LP62415-2	skos:exactMatch	CHEBI:80581	Morphine-6-glucuronide	sempav:HumanCuration
+loinc:LP62416-0	skos:exactMatch	CHEBI:80631	Morphine-3-glucuronide	sempav:HumanCuration
+loinc:LP62422-8	skos:exactMatch	CHEBI:135342	reboxetine	sempav:HumanCuration
+loinc:LP62425-1	skos:exactMatch	CHEBI:30827	cis-vaccenate(1-)	sempav:HumanCuration
+loinc:LP62427-7	skos:exactMatch	CHEBI:30828	trans-vaccenate(1-)	sempav:HumanCuration
+loinc:LP62428-5	skos:exactMatch	CHEBI:71589	all-cis-icosa-8,11,14-trienoate	sempav:HumanCuration
+loinc:LP62429-3	skos:exactMatch	CHEBI:78053	docosapentaenoate	sempav:HumanCuration
+loinc:LP62478-0	skos:exactMatch	CHEBI:17539	9-cis,11-trans-octadecadienoate	sempav:HumanCuration
+loinc:LP62750-2	skos:exactMatch	CHEBI:76613	3-hydroxypalmitate	sempav:HumanCuration
+loinc:LP62751-0	skos:exactMatch	CHEBI:84197	3-hydroxytetradecanoate	sempav:HumanCuration
+loinc:LP62810-4	skos:exactMatch	CHEBI:60630	2-hydroxypentanoate	sempav:HumanCuration
+loinc:LP62882-3	skos:exactMatch	CHEBI:5520	gonadorelin	sempav:HumanCuration
+loinc:LP62916-9	skos:exactMatch	CHEBI:76613	3-hydroxypalmitate	sempav:HumanCuration
+loinc:LP62917-7	skos:exactMatch	CHEBI:84197	3-hydroxytetradecanoate	sempav:HumanCuration
+loinc:LP62918-5	skos:exactMatch	CHEBI:76616	3-hydroxylaurate	sempav:HumanCuration
+loinc:LP62919-3	skos:exactMatch	CHEBI:132979	3-hydroxydecanoate	sempav:HumanCuration
+loinc:LP62920-1	skos:exactMatch	CHEBI:133511	3-hydroxyoctanoate	sempav:HumanCuration
+loinc:LP62921-9	skos:exactMatch	CHEBI:133511	3-hydroxyoctanoate	sempav:HumanCuration
+loinc:LP62922-7	skos:exactMatch	CHEBI:20070	3-hydroxyhexanoate	sempav:HumanCuration
+loinc:LP62924-3	skos:exactMatch	CHEBI:132979	3-hydroxydecanoate	sempav:HumanCuration
+loinc:LP63040-7	skos:exactMatch	CHEBI:138152	serum amyloid A	sempav:HumanCuration
+loinc:LP63074-6	skos:exactMatch	CHEBI:17439	cyanocob(III)alamin	sempav:HumanCuration
+loinc:LP63075-3	skos:exactMatch	CHEBI:17234	glucose	sempav:HumanCuration
+loinc:LP63076-1	skos:exactMatch	CHEBI:17234	glucose	sempav:HumanCuration
+loinc:LP63077-9	skos:exactMatch	CHEBI:17716	lactose	sempav:HumanCuration
+loinc:LP63078-7	skos:exactMatch	CHEBI:15765	L-dopa	sempav:HumanCuration
+loinc:LP63079-5	skos:exactMatch	CHEBI:18222	xylose	sempav:HumanCuration
+loinc:LP63587-7	skos:exactMatch	CHEBI:88539	Pyridinoline	sempav:HumanCuration
+loinc:LP63614-9	skos:exactMatch	CHEBI:16962	cortisone	sempav:HumanCuration
+loinc:LP63637-0	skos:exactMatch	CHEBI:61033	fondaparinux	sempav:HumanCuration
+loinc:LP64185-9	skos:exactMatch	CHEBI:26948	thiamine	sempav:HumanCuration
+loinc:LP64192-5	skos:exactMatch	CHEBI:24589	monosaccharide sulfate	sempav:HumanCuration
+loinc:LP64200-6	skos:exactMatch	CHEBI:26708	sodium atom	sempav:HumanCuration
+loinc:LP64443-2	skos:exactMatch	CHEBI:31897	nateglinide	sempav:HumanCuration
+loinc:LP64705-4	skos:exactMatch	CHEBI:134486	dimethylphosphatidylethanolamine 32:0	sempav:HumanCuration
+loinc:LP64724-5	skos:exactMatch	CHEBI:367163	darunavir	sempav:HumanCuration
+loinc:LP64769-0	skos:exactMatch	CHEBI:28260	galactose	sempav:HumanCuration
+loinc:LP64854-0	skos:exactMatch	CHEBI:776	16alpha-hydroxyestrone	sempav:HumanCuration
+loinc:LP64855-7	skos:exactMatch	CHEBI:1156	2-hydroxyestrone	sempav:HumanCuration
+loinc:LP64857-3	skos:exactMatch	CHEBI:80579	norcodeine	sempav:HumanCuration
+loinc:LP64858-1	skos:exactMatch	CHEBI:7633	Normorphine	sempav:HumanCuration
+loinc:LP64866-4	skos:exactMatch	CHEBI:86498	hydroxylysine	sempav:HumanCuration
+loinc:LP64933-2	skos:exactMatch	CHEBI:80330	peptide YY	sempav:HumanCuration
+loinc:LP64934-0	skos:exactMatch	CHEBI:80201	Neuropeptide Y	sempav:HumanCuration
+loinc:LP65007-4	skos:exactMatch	CHEBI:132934	3-hydroxysebacate	sempav:HumanCuration
+loinc:LP65008-2	skos:exactMatch	CHEBI:70766	3-hydroxysuberic acid	sempav:HumanCuration
+loinc:LP65009-0	skos:exactMatch	CHEBI:22267	adipate	sempav:HumanCuration
+loinc:LP65023-1	skos:exactMatch	CHEBI:132953	suberate	sempav:HumanCuration
+loinc:LP65098-3	skos:exactMatch	CHEBI:13692	a sugar	sempav:HumanCuration
+loinc:LP65136-1	skos:exactMatch	CHEBI:76281	tetradecanedioate(2-)	sempav:HumanCuration
+loinc:LP65144-5	skos:exactMatch	CHEBI:28697	21-deoxycortisol	sempav:HumanCuration
+loinc:LP65317-7	skos:exactMatch	CHEBI:80562	2-Dechloroethylifosfamide	sempav:HumanCuration
+loinc:LP65319-3	skos:exactMatch	CHEBI:80560	4-Hydroxyifosfamide	sempav:HumanCuration
+loinc:LP65332-6	skos:exactMatch	CHEBI:15676	allantoin	sempav:HumanCuration
+loinc:LP65494-4	skos:exactMatch	CHEBI:31709	iohexol	sempav:HumanCuration
+loinc:LP65523-0	skos:exactMatch	CHEBI:68478	everolimus	sempav:HumanCuration
+loinc:LP65526-3	skos:exactMatch	CHEBI:566274	malonaldehyde	sempav:HumanCuration
+loinc:LP65610-5	skos:exactMatch	CHEBI:28667	11-dehydro-thromboxane B2	sempav:HumanCuration
+loinc:LP65754-1	skos:exactMatch	CHEBI:33363	palladium	sempav:HumanCuration
+loinc:LP66071-9	skos:exactMatch	CHEBI:60802	ropivacaine	sempav:HumanCuration
+loinc:LP66331-7	skos:exactMatch	CHEBI:31515	domperidone	sempav:HumanCuration
+loinc:LP66336-6	skos:exactMatch	CHEBI:71179	O-tiglylcarnitine	sempav:HumanCuration
+loinc:LP66954-6	skos:exactMatch	CHEBI:53289	donepezil	sempav:HumanCuration
+loinc:LP66956-1	skos:exactMatch	CHEBI:31859	modafinil	sempav:HumanCuration
+loinc:LP66957-9	skos:exactMatch	CHEBI:7550	Nicardipine	sempav:HumanCuration
+loinc:LP68274-7	skos:exactMatch	CHEBI:81580	Prolactin	sempav:HumanCuration
+loinc:LP68402-4	skos:exactMatch	CHEBI:28544	digitoxin	sempav:HumanCuration
+loinc:LP68431-3	skos:exactMatch	CHEBI:63589	etravirine	sempav:HumanCuration
+loinc:LP69204-3	skos:exactMatch	CHEBI:4551	digoxin	sempav:HumanCuration
+loinc:LP69206-8	skos:exactMatch	CHEBI:17234	glucose	sempav:HumanCuration
+loinc:LP69208-4	skos:exactMatch	CHEBI:30145	lithium atom	sempav:HumanCuration
+loinc:LP69209-2	skos:exactMatch	CHEBI:25107	magnesium atom	sempav:HumanCuration
+loinc:LP69348-8	skos:exactMatch	CHEBI:86486	O-methylglutarylcarnitine	sempav:HumanCuration
+loinc:LP70083-8	skos:exactMatch	CHEBI:7274	N-formimidoyl-L-glutamic acid	sempav:HumanCuration
+loinc:LP70085-3	skos:exactMatch	CHEBI:86064	O-decadienoylcarnitine	sempav:HumanCuration
+loinc:LP70087-9	skos:exactMatch	CHEBI:73051	3-hydroxydecanoylcarnitine	sempav:HumanCuration
+loinc:LP70088-7	skos:exactMatch	CHEBI:73056	3-hydroxydodecanoylcarnitine	sempav:HumanCuration
+loinc:LP70090-3	skos:exactMatch	CHEBI:86082	O-hexenoylcarnitine	sempav:HumanCuration
+loinc:LP70091-1	skos:exactMatch	CHEBI:74303	O-heptanoylcarnitine	sempav:HumanCuration
+loinc:LP70094-5	skos:exactMatch	CHEBI:70997	O-nonanoylcarnitine	sempav:HumanCuration
+loinc:LP70095-2	skos:exactMatch	CHEBI:137642	O-decatrienoylcarnitine	sempav:HumanCuration
+loinc:LP70098-6	skos:exactMatch	CHEBI:74121	O-dodecanedioylcarnitine	sempav:HumanCuration
+loinc:LP70254-5	skos:exactMatch	CHEBI:86073	O-propenoylcarnitine	sempav:HumanCuration
+loinc:LP70363-4	skos:exactMatch	CHEBI:73028	O-malonylcarnitine	sempav:HumanCuration
+loinc:LP70364-2	skos:exactMatch	CHEBI:73051	3-hydroxydecanoylcarnitine	sempav:HumanCuration
+loinc:LP70366-7	skos:exactMatch	CHEBI:4027	cyclophosphamide	sempav:HumanCuration
+loinc:LP70367-5	skos:exactMatch	CHEBI:28680	cytarabine	sempav:HumanCuration
+loinc:LP70368-3	skos:exactMatch	CHEBI:73100	O-icosanoylcarnitine	sempav:HumanCuration
+loinc:LP70376-6	skos:exactMatch	CHEBI:16567	anthranilate	sempav:HumanCuration
+loinc:LP70434-3	skos:exactMatch	CHEBI:135029	cycloguanil	sempav:HumanCuration
+loinc:LP70436-8	skos:exactMatch	CHEBI:143353	Spongouridin	sempav:HumanCuration
+loinc:LP70439-2	skos:exactMatch	CHEBI:16946	L-kynurenine	sempav:HumanCuration
+loinc:LP70451-7	skos:exactMatch	CHEBI:47776	very-low-density lipoprotein triglyceride	sempav:HumanCuration
+loinc:LP70528-2	skos:exactMatch	CHEBI:17612	(3,4-dihydroxyphenyl)acetate	sempav:HumanCuration
+loinc:LP70664-5	skos:exactMatch	CHEBI:89257	Beta-Cortol	sempav:HumanCuration
+loinc:LP70670-2	skos:exactMatch	CHEBI:2555	aldicarb	sempav:HumanCuration
+loinc:LP70671-0	skos:exactMatch	CHEBI:24041	flavin mononucleotide	sempav:HumanCuration
+loinc:LP71165-2	skos:exactMatch	CHEBI:64355	posaconazole	sempav:HumanCuration
+loinc:LP71170-2	skos:exactMatch	CHEBI:28683	kynurenine	sempav:HumanCuration
+loinc:LP71220-5	skos:exactMatch	CHEBI:22693	barbiturates	sempav:HumanCuration
+loinc:LP71221-3	skos:exactMatch	CHEBI:22720	benzodiazepine	sempav:HumanCuration
+loinc:LP71329-4	skos:exactMatch	CHEBI:600520	micafungin	sempav:HumanCuration
+loinc:LP71397-1	skos:exactMatch	CHEBI:16070	1,5-anhydro-D-glucitol	sempav:HumanCuration
+loinc:LP89384-9	skos:exactMatch	CHEBI:58539	L-dehydroascorbate	sempav:HumanCuration
+loinc:LP89654-5	skos:exactMatch	CHEBI:73049	O-pimeloylcarnitine	sempav:HumanCuration
+loinc:LP90866-2	skos:exactMatch	CHEBI:15334	N(alpha)-methyl-L-tryptophan	sempav:HumanCuration
+loinc:LP90867-0	skos:exactMatch	CHEBI:18043	ricinine	sempav:HumanCuration
+loinc:LP90869-6	skos:exactMatch	CHEBI:132187	N-ethyldiethanolamine	sempav:HumanCuration
+loinc:LP90871-2	skos:exactMatch	CHEBI:18172	fluoroacetate	sempav:HumanCuration
+loinc:LP90872-0	skos:exactMatch	CHEBI:23123	chloroacetate	sempav:HumanCuration
+loinc:LP93479-1	skos:exactMatch	CHEBI:78604	ursodeoxycholate	sempav:HumanCuration
+loinc:LP94260-4	skos:exactMatch	CHEBI:22586	antioxidant	sempav:HumanCuration
+loinc:LP94353-7	skos:exactMatch	CHEBI:18358	methoxsalen	sempav:HumanCuration
+loinc:LP94354-5	skos:exactMatch	CHEBI:28304	heparin	sempav:HumanCuration
+loinc:LP94355-2	skos:exactMatch	CHEBI:28304	heparin	sempav:HumanCuration
+loinc:LP94536-7	skos:exactMatch	CHEBI:55346	anidulafungin	sempav:HumanCuration
+loinc:LP94569-8	skos:exactMatch	CHEBI:48720	argatroban	sempav:HumanCuration
+loinc:LP94829-6	skos:exactMatch	CHEBI:575568	atovaquone	sempav:HumanCuration
+loinc:LP95076-3	skos:exactMatch	CHEBI:81572	Adiponectin	sempav:HumanCuration
+loinc:LP95077-1	skos:exactMatch	CHEBI:81470	5alpha-Pregnane-3alpha,20alpha-diol	sempav:HumanCuration
+loinc:LP95079-7	skos:exactMatch	CHEBI:89328	5a-Tetrahydrocorticosterone	sempav:HumanCuration
+loinc:LP95090-4	skos:exactMatch	CHEBI:36559	3-hydroxyanthranilate	sempav:HumanCuration
+loinc:LP96546-4	skos:exactMatch	CHEBI:6359	lactulose	sempav:HumanCuration
+loinc:LP97517-4	skos:exactMatch	CHEBI:28247	11beta-hydroxyprogesterone	sempav:HumanCuration
+loinc:LP97520-8	skos:exactMatch	CHEBI:89627	5a-Tetrahydrocortisol	sempav:HumanCuration
+loinc:LP97868-1	skos:exactMatch	CHEBI:17306	maltose	sempav:HumanCuration
+loinc:LP97869-9	skos:exactMatch	CHEBI:31981	periciazine	sempav:HumanCuration
+loinc:LP97870-7	skos:exactMatch	CHEBI:85259	diethylamine	sempav:HumanCuration
+loinc:LP97926-7	skos:exactMatch	CHEBI:34749	ethisterone	sempav:HumanCuration
+loinc:LP97928-3	skos:exactMatch	CHEBI:80743	Difenacoum	sempav:HumanCuration
+loinc:LP97930-9	skos:exactMatch	CHEBI:34838	metholone	sempav:HumanCuration
+loinc:LP97947-3	skos:exactMatch	CHEBI:34834	Methandriol	sempav:HumanCuration
+loinc:LP97949-9	skos:exactMatch	CHEBI:34896	Normethandrolone	sempav:HumanCuration
+loinc:LP97950-7	skos:exactMatch	CHEBI:34849	mibolerone	sempav:HumanCuration
+loinc:LP97954-9	skos:exactMatch	CHEBI:7726	octreotide	sempav:HumanCuration
+loinc:LP97955-6	skos:exactMatch	CHEBI:135210	oxabolone	sempav:HumanCuration
+loinc:LP97957-2	skos:exactMatch	CHEBI:9460	testolactone	sempav:HumanCuration
+loinc:LP97958-0	skos:exactMatch	CHEBI:89642	Gestrinone	sempav:HumanCuration
+loinc:LP99218-7	skos:exactMatch	CHEBI:135935	tapentadol	sempav:HumanCuration
+loinc:LP99342-5	skos:exactMatch	CHEBI:26823	sulfites	sempav:HumanCuration
+loinc:LP99350-8	skos:exactMatch	CHEBI:28623	campesterol	sempav:HumanCuration
+loinc:LP99633-7	skos:exactMatch	CHEBI:82978	paliperidone	sempav:HumanCuration
+loinc:LP99664-2	skos:exactMatch	CHEBI:16199	urea	sempav:HumanCuration
+loinc:LP99665-9	skos:exactMatch	CHEBI:26216	potassium atom	sempav:HumanCuration
+loinc:LP99666-7	skos:exactMatch	CHEBI:15377	water	sempav:HumanCuration
+loinc:LP99793-9	skos:exactMatch	CHEBI:83537	1-benzylpiperazine	sempav:HumanCuration
+loinc:LP99874-7	skos:exactMatch	CHEBI:222828	monoethylglycinexylidide	sempav:HumanCuration
+loinc:LP99922-4	skos:exactMatch	CHEBI:133738	2-hydroxyhexanoate	sempav:HumanCuration
+loinc:LP99923-2	skos:exactMatch	CHEBI:16763	2-oxobutanoate	sempav:HumanCuration
+loinc:LP99924-0	skos:exactMatch	CHEBI:9592	tiglic acid	sempav:HumanCuration
+loinc:LP99925-7	skos:exactMatch	CHEBI:17256	2'-deoxyadenosine	sempav:HumanCuration
+loinc:LP99926-5	skos:exactMatch	CHEBI:23626	deoxyguanosine	sempav:HumanCuration
+loinc:LP99927-3	skos:exactMatch	CHEBI:23631	deoxyinosine	sempav:HumanCuration
+loinc:LP99929-9	skos:exactMatch	CHEBI:18185	gamma-tocopherol	sempav:HumanCuration
+loinc:LP99932-3	skos:exactMatch	CHEBI:16704	uridine	sempav:HumanCuration
+loinc:LP99937-2	skos:exactMatch	CHEBI:18261	N-carbamoyl-beta-alanine	sempav:HumanCuration
+loinc:LP99998-4	skos:exactMatch	CHEBI:40304	8-hydroxy-2'-deoxyguanosine	sempav:HumanCuration
+loinc:LP429468-4	skos:relatedMatch	CHEBI:90933	cariprazine	sempav:HumanCuration
+loinc:LP429469-2	skos:relatedMatch	CHEBI:134716	brexpiprazole	sempav:HumanCuration

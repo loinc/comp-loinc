@@ -20,9 +20,11 @@ import typer
 try:
     from comp_loinc.ingest.part_ingest import PartOntology
     from comp_loinc.ingest.code_ingest import CodeIngest
+    from comp_loinc.ingest.fhir_ingest import Mappings
 except ModuleNotFoundError:
     from ingest.part_ingest import PartOntology
     from ingest.code_ingest import CodeIngest
+    from ingest.fhir_ingest import Mappings
 
 
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
@@ -47,6 +49,14 @@ DEFAULTS = {
     'owl_reasoner': 'elk',
 }
 
+@app.command(name='chebi_maps')
+def add_chebi_mappings(
+    username: str,
+    password: str,
+):
+    mapping = Mappings(user=username, pwd=password)
+    mapping.create_chebi_loinc_sssom()
+    mapping.sssom_chebi_to_owl()
 
 @app.command(name='parts')
 def build_part_ontology(
@@ -65,7 +75,7 @@ def build_part_ontology(
 
     # Example
     po = PartOntology("./model/schema/part_schema.yaml", "./data/part_files", "./data/part_data/part_data.tsv)
-    po.generate_ontology()
+   @app po.generate_ontology()
     po.write_to_output('./data/output/owl_component_files/part_ontology.owl')
     """
     po = PartOntology(str(schema_file), str(part_directory), str(part_data))
