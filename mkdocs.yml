@@ -1,0 +1,25 @@
+---
+site_name: "comp-loinc"
+theme:
+  name: material
+  # palette:
+  #  scheme: slate
+  #  primary: cyan
+  features:
+    - content.tabs.link
+plugins:
+  - search
+  - mermaid2
+nav:
+  # - Home: home.md
+  - Index: index.md
+  - About: about.md
+site_url: https://putmantime.github.io/comp-loinc
+repo_url: https://github.com/putmantime/comp-loinc
+
+# Uncomment this block to enable use of Google Analytics.
+# Replace the property value with your own ID.
+# extra:
+#   analytics:
+#     provider: google
+#     property: G-XXXXXXXXXX
