@@ -14,42 +14,55 @@ todo's (minor)
 import os
 import subprocess
 from pathlib import Path
-
+from os.path import dirname
 import typer
 
 try:
-    from comp_loinc.ingest.part_ingest import PartOntology
-    from comp_loinc.ingest.code_ingest import CodeIngest
-    from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
+    from ingest.part_ingest import PartOntology
+    from ingest.code_ingest import CodeIngest
+    from mapping.fhir_concept_map_ingest import ChebiFhirIngest
+    from ingest.load_loinc_release import LoadLoincRelease
 except ModuleNotFoundError:
-    from comp_loinc.ingest.part_ingest import PartOntology
-    from comp_loinc.ingest.code_ingest import CodeIngest
-    from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
+    from ingest.part_ingest import PartOntology
+    from ingest.code_ingest import CodeIngest
+    from mapping.fhir_concept_map_ingest import ChebiFhirIngest
+    from ingest.load_loinc_release import LoadLoincRelease
 
 
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
-PROJECT_DIR = Path(os.path.dirname(__file__)).parent
-ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'ROBOT',  'robot')
+PROJECT_DIR = Path(dirname(dirname(dirname(__file__))))
+
+SRC_DIR = os.path.join(PROJECT_DIR, 'src')
+DATA_DIR = os.path.join(PROJECT_DIR, 'data')
+ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'ROBOT',  'robot')
+
 DEFAULTS = {
-    'schema_file.parts': os.path.join(PROJECT_DIR, 'model', 'schema', 'part_schema.yaml'),
-    'schema_file.codes': os.path.join(PROJECT_DIR, 'model', 'schema', 'code_schema.yaml'),
-    'schema_file.composed': os.path.join(PROJECT_DIR, 'model', 'schema', 'grouping_classes_schema.yaml'),
-    'output.parts': os.path.join(PROJECT_DIR, 'data', 'output', 'owl_component_files', 'part_ontology.owl'),
-    'output.codes': os.path.join(PROJECT_DIR, 'data', 'output', 'owl_component_files', 'code_classes.owl'),
-    'output.composed': os.path.join(
-        PROJECT_DIR, 'data', 'output', 'owl_component_files', 'composed_component_classes.owl'),
-    'output.map': os.path.join(
-        PROJECT_DIR, 'data', 'output', 'sssom_mapping_files', 'loinc2chebi_sssom.tsv'),
-    'output.merge': os.path.join(PROJECT_DIR, 'data', 'output', 'merged_loinc.owl'),
-    'output.reason': os.path.join(PROJECT_DIR, 'data', 'output', 'merged_reasoned_loinc.owl'),
-    'part_directory': os.path.join(PROJECT_DIR, 'data', 'part_files'),
-    'code_directory': os.path.join(PROJECT_DIR, 'data', 'code_files'),
-    'code_file': os.path.join(PROJECT_DIR, 'model', 'schema', 'code_schema.yaml'),
-    'composed_classes_data_file': os.path.join(PROJECT_DIR, 'data', 'composed_classes_data.yaml'),
-    'owl_directory': os.path.join(PROJECT_DIR, 'data', 'output', 'owl_component_files'),
-    'merged_owl': os.path.join(PROJECT_DIR, 'data', 'output', 'merged_loinc.owl'),
+    'schema_file.parts': os.path.join(SRC_DIR, 'schema', 'part_schema.yaml'),
+    'schema_file.codes': os.path.join(SRC_DIR, 'schema', 'code_schema.yaml'),
+    'schema_file.composed': os.path.join(SRC_DIR, 'schema', 'grouping_classes_schema.yaml'),
+    'output.parts': os.path.join(DATA_DIR, 'output', 'owl_component_files', 'part_ontology.owl'),
+    'output.codes': os.path.join(DATA_DIR, 'output', 'owl_component_files', 'code_classes.owl'),
+    'output.composed': os.path.join(DATA_DIR, 'output', 'owl_component_files', 'composed_component_classes.owl'),
+    'output.map': os.path.join(DATA_DIR, 'output', 'sssom_mapping_files', 'loinc2chebi_sssom.tsv'),
+    'output.merge': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
+    'output.reason': os.path.join(DATA_DIR, 'output', 'merged_reasoned_loinc.owl'),
+    'part_directory': os.path.join(DATA_DIR, 'part_files'),
+    'code_directory': os.path.join(DATA_DIR, 'code_files'),
+    'release_directory': os.path.join(DATA_DIR, 'loinc_release'),
+    'code_file': os.path.join(SRC_DIR, 'schema', 'code_schema.yaml'),
+    'composed_classes_data_file': os.path.join(DATA_DIR, 'composed_classes_data.yaml'),
+    'owl_directory': os.path.join(DATA_DIR, 'output', 'owl_component_files'),
+    'merged_owl': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
     'owl_reasoner': 'elk',
 }
+
+@app.command(name='load_release')
+def load_release():
+    """Load LOINC release into local data directory.
+
+    :param release: str to LOINC release version to download and load.
+    """
+    l = LoadLoincRelease(DEFAULTS['release_directory'])
 
 
 @app.command(name='parts')
@@ -132,6 +145,8 @@ def build_mappings(
     :param output: str where output will be saved."""
 
     chebi_fhir = ChebiFhirIngest(pwd=password, user=username, output=output)
+    chebi_fhir.get_fhir_chebi_mappings()
+
 
 
 @app.command(name="merge")
