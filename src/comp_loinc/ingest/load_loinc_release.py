@@ -9,6 +9,7 @@ PROJECT_DIR = Path(dirname(dirname(dirname(dirname(__file__)))))
 SRC_DIR = os.path.join(PROJECT_DIR, 'src')
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
 
+
 class LoadLoincRelease(object):
     def __init__(self, filepath):
         self.filepath = filepath
@@ -27,12 +28,9 @@ class LoadLoincRelease(object):
         subprocess.call(['unzip', "-o", f"{self.filepath}/{filename}", '-d', f"{self.filepath}/extracted"])
 
     def move_files(self):
-        extracted_files = f"{self.filepath}/extracted"
+        filename = self.get_release_filename()
+        extracted_files = f"{self.filepath}/extracted/{filename.replace('.zip', '')}"
         lpl = f"{extracted_files}/AccessoryFiles/PartFile/LoincPartLink_Primary.csv"
         shutil.move(lpl, f"{DATA_DIR}/code_files/LoincPartLink_Primary.csv")
         loinc_csv = f"{extracted_files}/LoincTable/Loinc.csv"
         shutil.move(loinc_csv, f"{DATA_DIR}/code_files/Loinc.csv")
-
-
-# /Users/putmanti/REPOS/computable-loinc/comp-loinc/data/loinc_release/Loinc_2.74.zip
-# /Users/putmanti/REPOS/computable-loinc/comp-loinc/src/comp_loinc/data/loinc_release/Loinc_2.74.zip
