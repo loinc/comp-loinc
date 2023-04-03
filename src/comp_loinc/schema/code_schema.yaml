@@ -1,0 +1,97 @@
+id: https://loinc.org/code
+name: loinc-owl-code-schema
+prefixes:
+  linkml: https://w3id.org/linkml/
+  loinc: https://loinc.org/
+imports:
+  - linkml:types
+  - comp_loinc
+  - part_schema
+default_curi_maps:
+  - semweb_context
+#loinc[['LOINC_NUM', 'COMPONENT', 'PROPERTY', 'TIME_ASPCT', 'SYSTEM',
+#       'SCALE_TYP', 'METHOD_TYP', 'DefinitionDescription', 'STATUS', 'SHORTNAME', 'LONG_COMMON_NAME']]
+classes:
+  LoincCodeClass:
+    is_a: Thing
+    slots:
+      - subClassOf
+      - formal_name
+      - loinc_number
+      - status
+      - short_name
+      - long_common_name
+      - has_component
+      - has_property
+      - has_system
+      - has_method
+      - has_scale
+      - has_time
+
+    slot_usage:
+      subClassOf:
+        range: LoincCodeClass
+
+slots:
+  formal_name:
+    slot_uri: loinc:formal_name
+    annotations:
+      owl: AnnotationAssertion
+  loinc_number:
+    slot_uri: loinc:loinc_number
+    annotations:
+      owl: AnnotationAssertion
+  status:
+    slot_uri: loinc:status
+    annotations:
+      owl: AnnotationAssertion
+  long_common_name:
+    slot_uri: loinc:long_common_name
+    annotations:
+      owl: AnnotationAssertion
+  short_name:
+    slot_uri: loinc:short_name
+    annotations:
+      owl: AnnotationAssertion
+  has_component:
+    slot_uri: loinc:hasComponent
+    multivalued: false
+    range: ComponentClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_system:
+    slot_uri: loinc:hasSystem
+    multivalued: false
+    range: SystemClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_method:
+    slot_uri: loinc:hasMethod
+    multivalued: false
+    range: MethodClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_property:
+    slot_uri: loinc:hasProperty
+    multivalued: false
+    range: PropertyClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_time:
+    slot_uri: loinc:hasTime
+    multivalued: false
+    range: TimeClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+  has_scale:
+    slot_uri: loinc:hasScale
+    multivalued: false
+    range: ScaleClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
