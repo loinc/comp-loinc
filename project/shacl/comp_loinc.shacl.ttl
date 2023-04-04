@@ -1,0 +1,316 @@
+@prefix loinc: <https://loinc.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://loinc.org/grouping_classes/:CodeByComponent> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:id ],
+        [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path <rdfs:description> ],
+        [ sh:class <https://loinc.org/part/:ComponentClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path loinc:hasComponent ] ;
+    sh:targetClass <https://loinc.org/grouping_classes/:CodeByComponent> .
+
+<https://loinc.org/grouping_classes/:CodeBySystem> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path <rdfs:description> ],
+        [ sh:class <https://loinc.org/part/:SystemClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path loinc:hasSystem ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:id ] ;
+    sh:targetClass <https://loinc.org/grouping_classes/:CodeBySystem> .
+
+<https://loinc.org/part/:PartClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path <rdfs:description> ],
+        [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:part_type ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:part_number ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:id ],
+        [ sh:class <owl:Class> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ] ;
+    sh:targetClass <https://loinc.org/part/:PartClass> .
+
+<https://loinc.org/set/:LoincCodeOntology> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:class <https://loinc.org/code/:LoincCodeClass> ;
+            sh:description "" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 2 ;
+            sh:path <https://loinc.org/set/:code_class_set> ],
+        [ sh:class <https://loinc.org/part/:ComponentClass> ;
+            sh:description "" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <https://loinc.org/set/:component_class_set> ],
+        [ sh:class <https://loinc.org/part/:SystemClass> ;
+            sh:description "" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path <https://loinc.org/set/:system_class_set> ] ;
+    sh:targetClass <https://loinc.org/set/:LoincCodeOntology> .
+
+<owl:Class> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 0 ;
+            sh:path loinc:id ],
+        [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path <rdfs:description> ] ;
+    sh:targetClass <owl:Class> .
+
+<https://loinc.org/code/:LoincCodeClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:class <https://loinc.org/part/:TimeClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 11 ;
+            sh:path loinc:hasTime ],
+        [ sh:class <https://loinc.org/part/:PropertyClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 7 ;
+            sh:path loinc:hasProperty ],
+        [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path loinc:long_common_name ],
+        [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path loinc:short_name ],
+        [ sh:maxCount 1 ;
+            sh:order 14 ;
+            sh:path <rdfs:description> ],
+        [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:loinc_number ],
+        [ sh:class <https://loinc.org/code/:LoincCodeClass> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ],
+        [ sh:maxCount 1 ;
+            sh:order 12 ;
+            sh:path loinc:id ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:status ],
+        [ sh:class <https://loinc.org/part/:ScaleClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 10 ;
+            sh:path loinc:hasScale ],
+        [ sh:class <https://loinc.org/part/:SystemClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 8 ;
+            sh:path loinc:hasSystem ],
+        [ sh:class <https://loinc.org/part/:MethodClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 9 ;
+            sh:path loinc:hasMethod ],
+        [ sh:maxCount 1 ;
+            sh:order 13 ;
+            sh:path <rdfs:label> ],
+        [ sh:class <https://loinc.org/part/:ComponentClass> ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 6 ;
+            sh:path loinc:hasComponent ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:formal_name ] ;
+    sh:targetClass <https://loinc.org/code/:LoincCodeClass> .
+
+<https://loinc.org/part/:MethodClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:id ],
+        [ sh:class <https://loinc.org/part/:MethodClass> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:part_number ],
+        [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path <rdfs:description> ],
+        [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:part_type ] ;
+    sh:targetClass <https://loinc.org/part/:MethodClass> .
+
+<https://loinc.org/part/:PropertyClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path <rdfs:description> ],
+        [ sh:class <https://loinc.org/part/:PropertyClass> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:part_number ],
+        [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:part_type ],
+        [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:id ] ;
+    sh:targetClass <https://loinc.org/part/:PropertyClass> .
+
+<https://loinc.org/part/:ScaleClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:part_type ],
+        [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path <rdfs:description> ],
+        [ sh:class <https://loinc.org/part/:ScaleClass> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:part_number ],
+        [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:id ] ;
+    sh:targetClass <https://loinc.org/part/:ScaleClass> .
+
+<https://loinc.org/part/:TimeClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:part_type ],
+        [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path <rdfs:description> ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:part_number ],
+        [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <rdfs:label> ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:id ],
+        [ sh:class <https://loinc.org/part/:TimeClass> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ] ;
+    sh:targetClass <https://loinc.org/part/:TimeClass> .
+
+<https://loinc.org/part/:ComponentClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path <rdfs:description> ],
+        [ sh:class <https://loinc.org/part/:ComponentClass> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:part_number ],
+        [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:part_type ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:id ],
+        [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <rdfs:label> ] ;
+    sh:targetClass <https://loinc.org/part/:ComponentClass> .
+
+<https://loinc.org/part/:SystemClass> a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:maxCount 1 ;
+            sh:order 2 ;
+            sh:path loinc:part_type ],
+        [ sh:class <https://loinc.org/part/:SystemClass> ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 0 ;
+            sh:path <rdfs:subClassOf> ],
+        [ sh:maxCount 1 ;
+            sh:order 5 ;
+            sh:path <rdfs:description> ],
+        [ sh:maxCount 1 ;
+            sh:order 3 ;
+            sh:path loinc:id ],
+        [ sh:maxCount 1 ;
+            sh:order 1 ;
+            sh:path loinc:part_number ],
+        [ sh:maxCount 1 ;
+            sh:order 4 ;
+            sh:path <rdfs:label> ] ;
+    sh:targetClass <https://loinc.org/part/:SystemClass> .
+

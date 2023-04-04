@@ -1,0 +1,119 @@
+type CodeByComponent
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    hasComponent: ComponentClass
+  }
+
+type CodeBySystem
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    hasSystem: SystemClass
+  }
+
+type ComponentClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    partNumber: String
+    partType: String
+    subClassOf: [ComponentClass]!
+  }
+
+type LoincCodeClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    subClassOf: [LoincCodeClass]!
+    formalName: String
+    loincNumber: String
+    status: String
+    shortName: String
+    longCommonName: String
+    hasComponent: ComponentClass
+    hasProperty: PropertyClass
+    hasSystem: SystemClass
+    hasMethod: MethodClass
+    hasScale: ScaleClass
+    hasTime: TimeClass
+  }
+
+type LoincCodeOntology
+  {
+    componentClassSet: [ComponentClass]
+    systemClassSet: [SystemClass]
+    codeClassSet: [LoincCodeClass]
+  }
+
+type MethodClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    partNumber: String
+    partType: String
+    subClassOf: [MethodClass]!
+  }
+
+type PartClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    subClassOf: [Thing]!
+    partNumber: String
+    partType: String
+  }
+
+type PropertyClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    partNumber: String
+    partType: String
+    subClassOf: [PropertyClass]!
+  }
+
+type ScaleClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    partNumber: String
+    partType: String
+    subClassOf: [ScaleClass]!
+  }
+
+type SystemClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    partNumber: String
+    partType: String
+    subClassOf: [SystemClass]!
+  }
+
+type Thing
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+  }
+
+type TimeClass
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    partNumber: String
+    partType: String
+    subClassOf: [TimeClass]!
+  }
+

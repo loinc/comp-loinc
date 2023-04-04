@@ -1,0 +1,1158 @@
+{
+  "name": "loinc-owl-core-schema",
+  "id": "https://loinc.org/core",
+  "imports": [
+    "linkml:types",
+    "code_schema",
+    "part_schema",
+    "set_schema",
+    "grouping_classes_schema",
+    "comp_loinc"
+  ],
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "prefixes": [
+    {
+      "prefix_prefix": "linkml",
+      "prefix_reference": "https://w3id.org/linkml/"
+    },
+    {
+      "prefix_prefix": "loinc",
+      "prefix_reference": "https://loinc.org/"
+    }
+  ],
+  "default_prefix": "loinc",
+  "default_range": "string",
+  "types": [
+    {
+      "name": "string",
+      "definition_uri": "https://w3id.org/linkml/String",
+      "description": "A character string",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Text"
+      ],
+      "base": "str",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "integer",
+      "definition_uri": "https://w3id.org/linkml/Integer",
+      "description": "An integer",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Integer"
+      ],
+      "base": "int",
+      "uri": "http://www.w3.org/2001/XMLSchema#integer",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "boolean",
+      "definition_uri": "https://w3id.org/linkml/Boolean",
+      "description": "A binary (true or false) value",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Boolean"
+      ],
+      "base": "Bool",
+      "uri": "http://www.w3.org/2001/XMLSchema#boolean",
+      "repr": "bool",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "float",
+      "definition_uri": "https://w3id.org/linkml/Float",
+      "description": "A real number that conforms to the xsd:float specification",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#float",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "double",
+      "definition_uri": "https://w3id.org/linkml/Double",
+      "description": "A real number that conforms to the xsd:double specification",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:Float"
+      ],
+      "base": "float",
+      "uri": "http://www.w3.org/2001/XMLSchema#double",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "decimal",
+      "definition_uri": "https://w3id.org/linkml/Decimal",
+      "description": "A real number with arbitrary precision that conforms to the xsd:decimal specification",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "broad_mappings": [
+        "schema:Number"
+      ],
+      "base": "Decimal",
+      "uri": "http://www.w3.org/2001/XMLSchema#decimal",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "time",
+      "definition_uri": "https://w3id.org/linkml/Time",
+      "description": "A time object represents a (local) time of day, independent of any particular day",
+      "notes": [
+        "URI is dateTime because OWL reasoners do not work with straight date or time"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Time"
+      ],
+      "base": "XSDTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date",
+      "definition_uri": "https://w3id.org/linkml/Date",
+      "description": "a date (year, month and day) in an idealized calendar",
+      "notes": [
+        "URI is dateTime because OWL reasoners don't work with straight date or time"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:Date"
+      ],
+      "base": "XSDDate",
+      "uri": "http://www.w3.org/2001/XMLSchema#date",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "datetime",
+      "definition_uri": "https://w3id.org/linkml/Datetime",
+      "description": "The combination of a date and time",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "exact_mappings": [
+        "schema:DateTime"
+      ],
+      "base": "XSDDateTime",
+      "uri": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "date_or_datetime",
+      "definition_uri": "https://w3id.org/linkml/DateOrDatetime",
+      "description": "Either a date or a datetime",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "str",
+      "uri": "https://w3id.org/linkml/DateOrDatetime",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uriorcurie",
+      "definition_uri": "https://w3id.org/linkml/Uriorcurie",
+      "description": "a URI or a CURIE",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "URIorCURIE",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "curie",
+      "definition_uri": "https://w3id.org/linkml/Curie",
+      "conforms_to": "https://www.w3.org/TR/curie/",
+      "description": "a compact URI",
+      "comments": [
+        "in RDF serializations this MUST be expanded to a URI",
+        "in non-RDF serializations MAY be serialized as the compact representation"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "Curie",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "uri",
+      "definition_uri": "https://w3id.org/linkml/Uri",
+      "conforms_to": "https://www.ietf.org/rfc/rfc3987.txt",
+      "description": "a complete URI",
+      "comments": [
+        "in RDF serializations a slot with range of uri is treated as a literal or type xsd:anyURI unless it is an identifier or a reference to an identifier, in which case it is translated directly to a node"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "close_mappings": [
+        "schema:URL"
+      ],
+      "base": "URI",
+      "uri": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "ncname",
+      "definition_uri": "https://w3id.org/linkml/Ncname",
+      "description": "Prefix part of CURIE",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NCName",
+      "uri": "http://www.w3.org/2001/XMLSchema#string",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "objectidentifier",
+      "definition_uri": "https://w3id.org/linkml/Objectidentifier",
+      "description": "A URI or CURIE that represents an object in the model.",
+      "comments": [
+        "Used for inheritence and type checking"
+      ],
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "ElementIdentifier",
+      "uri": "http://www.w3.org/ns/shex#iri",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    },
+    {
+      "name": "nodeidentifier",
+      "definition_uri": "https://w3id.org/linkml/Nodeidentifier",
+      "description": "A URI, CURIE or BNODE that represents a node in a model.",
+      "from_schema": "https://w3id.org/linkml/types",
+      "imported_from": "linkml:types",
+      "base": "NodeIdentifier",
+      "uri": "http://www.w3.org/ns/shex#nonLiteral",
+      "repr": "str",
+      "@type": "TypeDefinition"
+    }
+  ],
+  "slots": [
+    {
+      "name": "id",
+      "definition_uri": "https://loinc.org/id",
+      "from_schema": "https://loinc.org/core",
+      "slot_uri": "https://loinc.org/id",
+      "identifier": true,
+      "owner": "Thing",
+      "domain_of": [
+        "Thing"
+      ],
+      "range": "uriorcurie",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "label",
+      "definition_uri": "https://loinc.org/label",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#label"
+      ],
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#label",
+      "owner": "Thing",
+      "domain_of": [
+        "Thing"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "description",
+      "definition_uri": "https://loinc.org/description",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#description"
+      ],
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#description",
+      "owner": "Thing",
+      "domain_of": [
+        "Thing"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "owner": "PartClass",
+      "domain_of": [
+        "LoincCodeClass",
+        "PartClass"
+      ],
+      "range": "Thing",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "formal_name",
+      "definition_uri": "https://loinc.org/code/formal_name",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/formal_name"
+      ],
+      "slot_uri": "https://loinc.org/formal_name",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "loinc_number",
+      "definition_uri": "https://loinc.org/code/loinc_number",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/loinc_number"
+      ],
+      "slot_uri": "https://loinc.org/loinc_number",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "status",
+      "definition_uri": "https://loinc.org/code/status",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/status"
+      ],
+      "slot_uri": "https://loinc.org/status",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "long_common_name",
+      "definition_uri": "https://loinc.org/code/long_common_name",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/long_common_name"
+      ],
+      "slot_uri": "https://loinc.org/long_common_name",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "short_name",
+      "definition_uri": "https://loinc.org/code/short_name",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/short_name"
+      ],
+      "slot_uri": "https://loinc.org/short_name",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "has_component",
+      "definition_uri": "https://loinc.org/code/has_component",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "ObjectSomeValuesFrom",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasComponent"
+      ],
+      "slot_uri": "https://loinc.org/hasComponent",
+      "owner": "CodeByComponent",
+      "domain_of": [
+        "LoincCodeClass",
+        "CodeByComponent"
+      ],
+      "range": "ComponentClass",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "has_system",
+      "definition_uri": "https://loinc.org/code/has_system",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "ObjectSomeValuesFrom",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasSystem"
+      ],
+      "slot_uri": "https://loinc.org/hasSystem",
+      "owner": "CodeBySystem",
+      "domain_of": [
+        "LoincCodeClass",
+        "CodeBySystem"
+      ],
+      "range": "SystemClass",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "has_method",
+      "definition_uri": "https://loinc.org/code/has_method",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "ObjectSomeValuesFrom",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasMethod"
+      ],
+      "slot_uri": "https://loinc.org/hasMethod",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "MethodClass",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "has_property",
+      "definition_uri": "https://loinc.org/code/has_property",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "ObjectSomeValuesFrom",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasProperty"
+      ],
+      "slot_uri": "https://loinc.org/hasProperty",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "PropertyClass",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "has_time",
+      "definition_uri": "https://loinc.org/code/has_time",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "ObjectSomeValuesFrom",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasTime"
+      ],
+      "slot_uri": "https://loinc.org/hasTime",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "TimeClass",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "has_scale",
+      "definition_uri": "https://loinc.org/code/has_scale",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "ObjectSomeValuesFrom",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasScale"
+      ],
+      "slot_uri": "https://loinc.org/hasScale",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "range": "ScaleClass",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "part_type",
+      "definition_uri": "https://loinc.org/part/part_type",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/part",
+      "mappings": [
+        "https://loinc.org/part_type"
+      ],
+      "slot_uri": "https://loinc.org/part_type",
+      "owner": "PartClass",
+      "domain_of": [
+        "PartClass"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "part_number",
+      "definition_uri": "https://loinc.org/part/part_number",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "AnnotationAssertion",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/part",
+      "mappings": [
+        "https://loinc.org/part_number"
+      ],
+      "slot_uri": "https://loinc.org/part_number",
+      "owner": "PartClass",
+      "domain_of": [
+        "PartClass"
+      ],
+      "range": "string",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "component_class_set",
+      "definition_uri": "https://loinc.org/set/component_class_set",
+      "description": "",
+      "from_schema": "https://loinc.org/set",
+      "domain": "LoincCodeOntology",
+      "slot_uri": "https://loinc.org/set/component_class_set",
+      "multivalued": true,
+      "owner": "LoincCodeOntology",
+      "domain_of": [
+        "LoincCodeOntology"
+      ],
+      "range": "ComponentClass",
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "system_class_set",
+      "definition_uri": "https://loinc.org/set/system_class_set",
+      "description": "",
+      "from_schema": "https://loinc.org/set",
+      "domain": "LoincCodeOntology",
+      "slot_uri": "https://loinc.org/set/system_class_set",
+      "multivalued": true,
+      "owner": "LoincCodeOntology",
+      "domain_of": [
+        "LoincCodeOntology"
+      ],
+      "range": "SystemClass",
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "code_class_set",
+      "definition_uri": "https://loinc.org/set/code_class_set",
+      "description": "",
+      "from_schema": "https://loinc.org/set",
+      "domain": "LoincCodeOntology",
+      "slot_uri": "https://loinc.org/set/code_class_set",
+      "multivalued": true,
+      "owner": "LoincCodeOntology",
+      "domain_of": [
+        "LoincCodeOntology"
+      ],
+      "range": "LoincCodeClass",
+      "inlined": true,
+      "inlined_as_list": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "LoincCodeClass_subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": {
+        "owl": {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "extensions": {},
+          "annotations": {}
+        }
+      },
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "is_a": "subClassOf",
+      "domain": "LoincCodeClass",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "alias": "subClassOf",
+      "owner": "LoincCodeClass",
+      "domain_of": [
+        "LoincCodeClass"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "subClassOf",
+      "range": "LoincCodeClass",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "ComponentClass_subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": {
+        "owl": {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "extensions": {},
+          "annotations": {}
+        }
+      },
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "is_a": "subClassOf",
+      "domain": "ComponentClass",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "alias": "subClassOf",
+      "owner": "ComponentClass",
+      "domain_of": [
+        "ComponentClass"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "subClassOf",
+      "range": "ComponentClass",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "SystemClass_subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": {
+        "owl": {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "extensions": {},
+          "annotations": {}
+        }
+      },
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "is_a": "subClassOf",
+      "domain": "SystemClass",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "alias": "subClassOf",
+      "owner": "SystemClass",
+      "domain_of": [
+        "SystemClass"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "subClassOf",
+      "range": "SystemClass",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "MethodClass_subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": {
+        "owl": {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "extensions": {},
+          "annotations": {}
+        }
+      },
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "is_a": "subClassOf",
+      "domain": "MethodClass",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "alias": "subClassOf",
+      "owner": "MethodClass",
+      "domain_of": [
+        "MethodClass"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "subClassOf",
+      "range": "MethodClass",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "TimeClass_subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": {
+        "owl": {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "extensions": {},
+          "annotations": {}
+        }
+      },
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "is_a": "subClassOf",
+      "domain": "TimeClass",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "alias": "subClassOf",
+      "owner": "TimeClass",
+      "domain_of": [
+        "TimeClass"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "subClassOf",
+      "range": "TimeClass",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "PropertyClass_subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": {
+        "owl": {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "extensions": {},
+          "annotations": {}
+        }
+      },
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "is_a": "subClassOf",
+      "domain": "PropertyClass",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "alias": "subClassOf",
+      "owner": "PropertyClass",
+      "domain_of": [
+        "PropertyClass"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "subClassOf",
+      "range": "PropertyClass",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "ScaleClass_subClassOf",
+      "definition_uri": "https://loinc.org/subClassOf",
+      "annotations": {
+        "owl": {
+          "tag": "owl",
+          "value": "SubClassOf",
+          "extensions": {},
+          "annotations": {}
+        }
+      },
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf"
+      ],
+      "is_a": "subClassOf",
+      "domain": "ScaleClass",
+      "slot_uri": "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+      "multivalued": true,
+      "alias": "subClassOf",
+      "owner": "ScaleClass",
+      "domain_of": [
+        "ScaleClass"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "subClassOf",
+      "range": "ScaleClass",
+      "required": true,
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "CodeBySystem_has_system",
+      "definition_uri": "https://loinc.org/code/has_system",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "EquivalentClasses",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasSystem"
+      ],
+      "is_a": "has_system",
+      "domain": "CodeBySystem",
+      "slot_uri": "https://loinc.org/hasSystem",
+      "alias": "has_system",
+      "owner": "CodeBySystem",
+      "domain_of": [
+        "CodeBySystem"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "has_system",
+      "range": "SystemClass",
+      "@type": "SlotDefinition"
+    },
+    {
+      "name": "CodeByComponent_has_component",
+      "definition_uri": "https://loinc.org/code/has_component",
+      "annotations": [
+        {
+          "tag": "owl",
+          "value": "EquivalentClasses",
+          "@type": "Annotation"
+        }
+      ],
+      "from_schema": "https://loinc.org/code",
+      "mappings": [
+        "https://loinc.org/hasComponent"
+      ],
+      "is_a": "has_component",
+      "domain": "CodeByComponent",
+      "slot_uri": "https://loinc.org/hasComponent",
+      "alias": "has_component",
+      "owner": "CodeByComponent",
+      "domain_of": [
+        "CodeByComponent"
+      ],
+      "is_usage_slot": true,
+      "usage_slot_name": "has_component",
+      "range": "ComponentClass",
+      "@type": "SlotDefinition"
+    }
+  ],
+  "classes": [
+    {
+      "name": "Thing",
+      "definition_uri": "https://loinc.org/Thing",
+      "from_schema": "https://loinc.org/core",
+      "mappings": [
+        "owl:Class"
+      ],
+      "slots": [
+        "id",
+        "label",
+        "description"
+      ],
+      "slot_usage": {},
+      "class_uri": "http://www.w3.org/2002/07/owl#Class",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "LoincCodeClass",
+      "definition_uri": "https://loinc.org/code/LoincCodeClass",
+      "from_schema": "https://loinc.org/code",
+      "is_a": "Thing",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "LoincCodeClass_subClassOf",
+        "formal_name",
+        "loinc_number",
+        "status",
+        "short_name",
+        "long_common_name",
+        "has_component",
+        "has_property",
+        "has_system",
+        "has_method",
+        "has_scale",
+        "has_time"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/code/LoincCodeClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "PartClass",
+      "definition_uri": "https://loinc.org/part/PartClass",
+      "from_schema": "https://loinc.org/part",
+      "is_a": "Thing",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "subClassOf",
+        "part_number",
+        "part_type"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/part/PartClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "ComponentClass",
+      "definition_uri": "https://loinc.org/part/ComponentClass",
+      "from_schema": "https://loinc.org/part",
+      "is_a": "PartClass",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "part_number",
+        "part_type",
+        "ComponentClass_subClassOf"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/part/ComponentClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "SystemClass",
+      "definition_uri": "https://loinc.org/part/SystemClass",
+      "from_schema": "https://loinc.org/part",
+      "is_a": "PartClass",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "part_number",
+        "part_type",
+        "SystemClass_subClassOf"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/part/SystemClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "MethodClass",
+      "definition_uri": "https://loinc.org/part/MethodClass",
+      "from_schema": "https://loinc.org/part",
+      "is_a": "PartClass",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "part_number",
+        "part_type",
+        "MethodClass_subClassOf"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/part/MethodClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "TimeClass",
+      "definition_uri": "https://loinc.org/part/TimeClass",
+      "from_schema": "https://loinc.org/part",
+      "is_a": "PartClass",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "part_number",
+        "part_type",
+        "TimeClass_subClassOf"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/part/TimeClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "PropertyClass",
+      "definition_uri": "https://loinc.org/part/PropertyClass",
+      "from_schema": "https://loinc.org/part",
+      "is_a": "PartClass",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "part_number",
+        "part_type",
+        "PropertyClass_subClassOf"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/part/PropertyClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "ScaleClass",
+      "definition_uri": "https://loinc.org/part/ScaleClass",
+      "from_schema": "https://loinc.org/part",
+      "is_a": "PartClass",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "part_number",
+        "part_type",
+        "ScaleClass_subClassOf"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/part/ScaleClass",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "LoincCodeOntology",
+      "definition_uri": "https://loinc.org/set/LoincCodeOntology",
+      "from_schema": "https://loinc.org/set",
+      "slots": [
+        "component_class_set",
+        "system_class_set",
+        "code_class_set"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/set/LoincCodeOntology",
+      "tree_root": true,
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "CodeBySystem",
+      "definition_uri": "https://loinc.org/grouping_classes/CodeBySystem",
+      "from_schema": "https://loinc.org/grouping_classes",
+      "is_a": "Thing",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "CodeBySystem_has_system"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/grouping_classes/CodeBySystem",
+      "@type": "ClassDefinition"
+    },
+    {
+      "name": "CodeByComponent",
+      "definition_uri": "https://loinc.org/grouping_classes/CodeByComponent",
+      "from_schema": "https://loinc.org/grouping_classes",
+      "is_a": "Thing",
+      "slots": [
+        "id",
+        "label",
+        "description",
+        "CodeByComponent_has_component"
+      ],
+      "slot_usage": {},
+      "class_uri": "https://loinc.org/grouping_classes/CodeByComponent",
+      "@type": "ClassDefinition"
+    }
+  ],
+  "metamodel_version": "1.7.0",
+  "source_file": "comp_loinc.yaml",
+  "source_file_date": "2023-03-24T06:50:13",
+  "source_file_size": 731,
+  "generation_date": "2023-04-04T14:45:12",
+  "@type": "SchemaDefinition",
+  "@context": [
+    "project/jsonld/comp_loinc.context.jsonld",
+    "https://w3id.org/linkml/types.context.jsonld",
+    "code_schema.context.jsonld",
+    "part_schema.context.jsonld",
+    "set_schema.context.jsonld",
+    "grouping_classes_schema.context.jsonld",
+    {
+      "@base": "https://loinc.org/"
+    }
+  ]
+}

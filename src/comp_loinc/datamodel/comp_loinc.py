@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.9.0
-# Generation date: 2023-04-04T11:44:12
+# Generation date: 2023-04-04T14:45:26
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
