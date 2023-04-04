@@ -14,7 +14,7 @@ import shutil
 import unittest
 from pathlib import Path
 
-from comp_loinc.cli.main import build_part_ontology, build_codes, build_composed_classes, merge_owl, reason_owl
+from comp_loinc.main import build_part_ontology, build_codes, build_composed_classes, merge_owl, reason_owl
 
 try:
     from tests.config import PROJECT_DIR, TEST_STATIC_DIR
