@@ -18,15 +18,15 @@ from os.path import dirname
 import typer
 
 try:
-    from ingest.part_ingest import PartOntology
-    from ingest.code_ingest import CodeIngest
-    from mapping.fhir_concept_map_ingest import ChebiFhirIngest
-    from ingest.load_loinc_release import LoadLoincRelease
+    from comp_loinc.ingest.part_ingest import PartOntology
+    from comp_loinc.ingest.code_ingest import CodeIngest
+    from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
+    from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
 except ModuleNotFoundError:
-    from ingest.part_ingest import PartOntology
-    from ingest.code_ingest import CodeIngest
-    from mapping.fhir_concept_map_ingest import ChebiFhirIngest
-    from ingest.load_loinc_release import LoadLoincRelease
+    from comp_loinc.ingest.part_ingest import PartOntology
+    from comp_loinc.ingest.code_ingest import CodeIngest
+    from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
+    from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
 
 
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
