@@ -65,25 +65,25 @@ Help text can be run via `python src/comp_loinc/cli/main.py --help`. You can see
 information about its parameters, by running `python src/comp_loinc/cli/main.py COMMAND_NAME --help`.
 
 ### 1.0. `loinc_release`: Download the latest LOINC release files and put them in the correct locations. Zip LoincRelease needs to be in the data/loinc_release directory.
-`python src/comp_loinc/cli/main.py loinc_release`
+`python src/comp_loinc/main.py  loinc_release`
 
 ### 1.1. `parts`: Build the part ontology from the intermediate Part Hierarchy files
 `python src/comp_loinc/main.py parts --schema-file src/comp_loinc/schema/part_schema.yaml --part-directory data/part_files --output data/output/owl_component_files/part_ontology.owl`
 
 ### 1.2. `codes`: Build the code classes from the intermediate Part Hierarchy files
-`python src/comp_loinc/cli/main.py codes --schema-file src/comp_loinc/schema/code_schema.yaml --code-directory data/code_files --output data/output/owl_component_files/code_classes.owl`
+`python src/comp_loinc/main.py  codes --schema-file src/comp_loinc/schema/code_schema.yaml --code-directory data/code_files --output data/output/owl_component_files/code_classes.owl`
 
 ### 1.3. `composed`: Build the composed class axioms for the reasoner to group classes (this is pretty bespoke, and hardcoded at the moment)
-`python src/comp_loinc/cli/main.py composed --schema-file src/comp_loinc/schema/grouping_classes_schema.yaml --composed-classes-data-file data/composed_classes_data.yaml --output data/output/owl_component_files/composed_component_classes.owl`
+`python src/comp_loinc/main.py  composed --schema-file src/comp_loinc/schema/grouping_classes_schema.yaml --composed-classes-data-file data/composed_classes_data.yaml --output data/output/owl_component_files/composed_component_classes.owl`
 
 ### 1.4. `map`: Get Mappings from the LOINC FHIR Server and use SSSOM to convert to OWL (Requires LOINC FHIR Server credentials)
-`python src/comp_loinc/cli/main.py map --username username --password password --output loinc2chebi.owl`
+`python src/comp_loinc/main.py  map --username username --password password --output loinc2chebi.owl`
 
 ### 1.5. `merge`: Merge all owl files into single merged ontology
-`python src/comp_loinc/cli/main.py merge --owl-directory data/output/owl_component_files/ --output data/output/merged_loinc.owl`
+`python src/comp_loinc/main.py  merge --owl-directory data/output/owl_component_files/ --output data/output/merged_loinc.owl`
 
 ### 1.6. `reason`: Run the reasoner using elk to create the composed code classes
-`python src/comp_loinc/cli/main.py reason --merged-owl data/output/merged_loinc.owl --owl-reasoner elk --output data/output/merged_reasoned_loinc.owl`
+`python src/comp_loinc/main.py reason --input data/output/merged_loinc.owl --output data/output/merged_reasoned_loinc.owl`
 
 ### 2. Open the merged and reasoned owl file in Protégé for viewing
 Open `data/output/merged_reasoned_loinc.owl`

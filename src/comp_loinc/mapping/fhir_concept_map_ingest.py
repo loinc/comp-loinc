@@ -1,10 +1,11 @@
 import json
 import requests
+import yaml
 from requests.auth import HTTPBasicAuth
 import pandas as pd
 from sssom.io import convert_file
 from comp_loinc.ingest.source_data_utils import loincify
-from .mapping_utils import build_context
+from comp_loinc.mapping.mapping_utils import build_context
 from pathlib import Path
 import os
 import sys
@@ -12,18 +13,30 @@ import sys
 path_root = Path(__file__).parents[3]
 sys.path.append(str(path_root))
 
+
 class Mappings(object):
-    def __init__(self, user, pwd, output):
+    def __init__(self, output, user=None, pwd=None):
         self.fhir_endpoint = 'https://fhir.loinc.org'
+
+        self.output = output
         self.user = user
         self.pwd = pwd
-        self.output = output
+        if self.user is None:
+            self.secrets_import()
+
+    def secrets_import(self):
+        with open(os.path.join(path_root, 'secrets.yaml'), 'r') as f:
+            secrets = yaml.load(f, Loader=yaml.FullLoader)
+        self.user = secrets['loinc']['user']
+        self.pwd = secrets['loinc']['pwd']
+
 
 class ChebiFhirIngest(Mappings):
-    def __init__(self, user, pwd, output):
-        super().__init__(user, pwd, output)
+    def __init__(self, output, user, pwd):
+        super().__init__(output, user, pwd)
         self.chebi_loinc_sssom = self.create_chebi_loinc_sssom()
         self.sssom_chebi_to_owl()
+
     def get_fhir_chebi_mappings(self):
         r = requests.get(f"{self.fhir_endpoint}/ConceptMap/?url=http://loinc.org/cm/loinc-parts-to-chebi",
                          auth=HTTPBasicAuth(self.user, self.pwd))

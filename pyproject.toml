@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "Computable OWL Formalization of LOINC"
 authors = ["Tim  Putman <putmantime@users.noreply.github.com>"]
 readme = "README.md"
-packages = [{include = "comp_loinc"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
