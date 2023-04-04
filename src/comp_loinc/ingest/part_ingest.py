@@ -7,8 +7,8 @@
 # # po.write_to_output('./local_data/part_ontology_files/part_ontology.owl')
 """
 
-from ingest.source_data_utils import loincify, counter
-from datamodel import ComponentClass, SystemClass, ScaleClass, TimeClass, MethodClass, PropertyClass
+from comp_loinc.ingest.source_data_utils import loincify, counter
+from comp_loinc.datamodel import ComponentClass, SystemClass, ScaleClass, TimeClass, MethodClass, PropertyClass
 
 import pandas as pd
 from linkml_owl.dumpers.owl_dumper import OWLDumper

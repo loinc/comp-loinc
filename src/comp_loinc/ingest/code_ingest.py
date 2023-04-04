@@ -6,8 +6,8 @@ from pathlib import Path
 import sys
 path_root = Path(__file__).parents[2]
 sys.path.append(str(path_root))
-from ingest.source_data_utils import loincify, counter
-from datamodel import LoincCodeClass
+from comp_loinc.ingest.source_data_utils import loincify, counter
+from comp_loinc.datamodel import LoincCodeClass
 
 
 class CodeIngest(object):
