@@ -174,13 +174,13 @@ class CompLoincPythonAPITests(StaticFileTests):
         """Test Python API: parts"""
         test_name = 'test_python_api_1_parts'
         outfile = 'part_ontology.owl'
-        filesize_threshold_kb = 500  # semi-arbitrary for now
+        filesize_threshold_kb = 4  # semi-arbitrary for now
 
         outpath = os.path.join(TEST_STATIC_DIR, test_name, 'output', outfile)
         Path(os.path.dirname(outpath)).mkdir(parents=True, exist_ok=True)
         build_part_ontology(
             schema_file=os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'schema', 'part_schema.yaml'),
-            part_directory=os.path.join(PROJECT_DIR, 'data', 'part_files'),
+            part_directory=os.path.join(PROJECT_DIR, 'tests', 'static', 'test_python_api_1_parts', 'input'),
             output=outpath)
         size_kb = os.path.getsize(outpath) / 1000
         self.assertGreaterEqual(size_kb, filesize_threshold_kb)
@@ -189,13 +189,12 @@ class CompLoincPythonAPITests(StaticFileTests):
         """Test Python API: codes"""
         test_name = 'test_python_api_2_codes'
         outfile = 'code_classes.owl'
-        filesize_threshold_kb = 500  # semi-arbitrary for now
-        print(outfile)
+        filesize_threshold_kb = 1  # semi-arbitrary for now
         outpath = os.path.join(TEST_STATIC_DIR, test_name, 'output', outfile)
         Path(os.path.dirname(outpath)).mkdir(parents=True, exist_ok=True)
         build_codes(
             schema_file=os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'schema', 'code_schema.yaml'),
-            code_directory=os.path.join(PROJECT_DIR, 'data', 'code_files'),
+            code_directory=os.path.join(PROJECT_DIR, 'tests', 'static', 'test_python_api_2_codes', 'input'),
             output=outpath)
         size_kb = os.path.getsize(outpath) / 1000
         self.assertGreaterEqual(size_kb, filesize_threshold_kb)
@@ -219,7 +218,7 @@ class CompLoincPythonAPITests(StaticFileTests):
         """Test Python API: merge"""
         test_name = 'test_python_api_4_merge'
         outfile = 'merged_loinc.owl'
-        filesize_threshold_kb = 500  # semi-arbitrary for now
+        filesize_threshold_kb = 20  # semi-arbitrary for now
 
         # Setup
         input_dir = os.path.join(TEST_STATIC_DIR, 'test_python_api_4_merge', 'input')
@@ -252,7 +251,7 @@ class CompLoincPythonAPITests(StaticFileTests):
         """Test Python API: reason"""
         test_name = 'test_python_api_5_reason'
         outfile = 'merged_reasoned_loinc.owl'
-        filesize_threshold_kb = 500  # semi-arbitrary for now
+        filesize_threshold_kb = 25  # semi-arbitrary for now
 
         outpath = os.path.join(TEST_STATIC_DIR, test_name, 'output', outfile)
         Path(os.path.dirname(outpath)).mkdir(parents=True, exist_ok=True)
