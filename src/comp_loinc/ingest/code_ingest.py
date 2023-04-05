@@ -88,22 +88,23 @@ class CodeIngest(object):
         included_codes = self.get_included_codes()
         for i, loinc_number in enumerate(included_codes):
             counter(i + 1, len(included_codes))
-            row = self.code_dataframe[self.code_dataframe['LOINC_NUM'] == loinc_number].iloc[0]
-            params = {
-                        "id": loincify(row.LOINC_NUM),
-                        "label": row.LoincFormalName,
-                        "formal_name": row.LoincFormalName,
-                        "loinc_number": row.LOINC_NUM,
-                        "long_common_name": row.LONG_COMMON_NAME,
-                        "status": row.STATUS,
-                        "short_name": row.SHORTNAME,
-                        "subClassOf": loincify("lc0000001")
-                    }
-            lpl = self.group_map[row.LOINC_NUM]
-            for part, part_type in lpl['parts']:
-                if part_type in part_pred_map.keys():
-                    params[part_pred_map[part_type]] = loincify(part)
-            self.code_classes.append(LoincCodeClass(**params))
+            if loinc_number in self.group_map.keys():
+                row = self.code_dataframe[self.code_dataframe['LOINC_NUM'] == loinc_number].iloc[0]
+                params = {
+                            "id": loincify(row.LOINC_NUM),
+                            "label": row.LoincFormalName,
+                            "formal_name": row.LoincFormalName,
+                            "loinc_number": row.LOINC_NUM,
+                            "long_common_name": row.LONG_COMMON_NAME,
+                            "status": row.STATUS,
+                            "short_name": row.SHORTNAME,
+                            "subClassOf": loincify("lc0000001")
+                        }
+                lpl = self.group_map[row.LOINC_NUM]
+                for part, part_type in lpl['parts']:
+                    if part_type in part_pred_map.keys():
+                        params[part_pred_map[part_type]] = loincify(part)
+                self.code_classes.append(LoincCodeClass(**params))
 
     def write_output_to_file(self, output_path):
         #"../../data/output/code_classes.owl"
