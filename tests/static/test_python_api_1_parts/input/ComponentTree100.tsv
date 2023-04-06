@@ -1,0 +1,100 @@
+ParentPartNumber	ParentPart	ParentPartTypeName	ChildPartNumber	ChildPart	ChildPartTypeName	LOINC_NUMBER	FormalName
+LP432695-7	{component}	COMPONENT	LP432695-7	{component}	COMPONENT		
+LP432695-7	{component}	COMPONENT	LP29693-6	Lab	CLASS		
+LP29693-6	Lab	CLASS	LP343406-7	Microbiology and Antimicrobial susceptibility	CLASS		
+LP343406-7	Microbiology and Antimicrobial susceptibility	CLASS	LP7819-8	MICRO	CLASS		
+LP7819-8	MICRO	CLASS	LP14559-6	Microorganism	COMPONENT	89248-9	Microorganism identified:Prid:Pt:Index case^Event:Nom:
+LP7819-8	MICRO	CLASS	LP14559-6	Microorganism	COMPONENT	43161-9	Microorganism:NCnc:Pt:XXX:Qn:Viability count
+LP14559-6	Microorganism	COMPONENT	LP98185-9	Bacteria.	COMPONENT		
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	11101-3	Bacteria:Naric:Pt:Synv fld:Qn:Microscopy.light.HPF
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	12178-0	Bacteria:PrThr:Pt:Genital:Ord:Wet preparation
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	14124-2	Bacteria:PrThr:Pt:Semen:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	18192-5	Bacteria:PrThr:Pt:Nose:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	20695-3	Bacteria:NCnc:Pt:Mmlk:Qn:
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	25145-4	Bacteria:PrThr:Pt:Urine sed:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	32763-5	Bacteria:PrThr:Pt:XXX:Ord:Wet preparation
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	33218-9	Bacteria:Naric:Pt:Urine sed:Qn:Automated count
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	95074-1	Bacteria:PrThr:Pt:BAL:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	99932-6	Bacteria:PrThr:Pt:Body fld:Ord:Automated
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	100906-7	Bacteria:NCnc:Pt:Urine:Qn:Culture
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	41602-4	Bacteria:PrThr:Pt:CSF:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	72340-3	Bacteria:PrThr:Pt:Prostatic fld:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	87829-8	Bacteria:PrThr:Pt:Urine:Ord:
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	41599-2	Bacteria:PrThr:Pt:Body fld:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	41600-8	Bacteria:PrThr:Pt:Synv fld:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	44039-6	Bacteria:PrThr:Pt:Eye:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	44243-4	Bacteria:Naric:Pt:Vag:Qn:Wet preparation
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	41601-6	Bacteria:PrThr:Pt:Periton fld:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	41598-4	Bacteria:PrThr:Pt:Pericard fld:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	44023-0	Bacteria:PrThr:Pt:Vag:Ord:Wet preparation
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	44022-2	Bacteria:PrThr:Pt:Cvx:Ord:Wet preparation
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	44038-8	Bacteria:PrThr:Pt:XXX:Ord:
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	5769-5	Bacteria:Naric:Pt:Urine sed:Qn:Microscopy.light.HPF
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	50221-1	Bacteria:PrThr:Pt:Urine:Ord:Automated
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	41603-2	Bacteria:PrThr:Pt:Plr fld:Ord:Microscopy.light
+LP98185-9	Bacteria.	COMPONENT	LP14082-9	Bacteria	COMPONENT	51480-2	Bacteria:NCnc:Pt:Urine:Qn:Automated count
+LP98185-9	Bacteria.	COMPONENT	LP433103-1	Bacteria producing polysaccharide from sucrose	COMPONENT	100872-1	Bacteria producing polysaccharide from sucrose:PrThr:Pt:Isolate:Ord:
+LP98185-9	Bacteria.	COMPONENT	LP172705-8	Bacteria biotype	COMPONENT	73733-8	Bacteria biotype:Type:Pt:Isolate:Nom:
+LP98185-9	Bacteria.	COMPONENT	LP310336-5	Bacterial strain	COMPONENT	612-2	Bacterial strain:Type:Pt:Isolate:Nom:Bacterial subtyping
+LP98185-9	Bacteria.	COMPONENT	LP310336-5	Bacterial strain	COMPONENT	91895-3	Bacterial strain:Type:Pt:Isolate:Nom:Sequencing
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	43214-6	Bacteria identified:Prid:Pt:Nph:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	13314-0	Bacteria identified:Prid:Pt:Semen:Nom:
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	13315-7	Bacteria identified:Prid:24H:Urine:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	19126-2	Bacteria identified:Prid:Pt:Bone mar:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	19127-0	Bacteria identified:Prid:Pt:Sputum:Nom:Acute respiratory distress culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	19128-8	Bacteria identified:Prid:Pt:Ctp:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	12281-2	Bacteria identified:Prid:Pt:Cvx:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17946-5	Bacteria identified^^^6:Prid:Pt:Line:Nom:Intravascular line culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17951-5	Bacteria identified^^^2:Prid:Pt:Body fld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17952-3	Bacteria identified^^^3:Prid:Pt:Body fld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17953-1	Bacteria identified^^^4:Prid:Pt:Body fld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17954-9	Bacteria identified^^^5:Prid:Pt:Body fld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17955-6	Bacteria identified^^^6:Prid:Pt:Body fld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17956-4	Bacteria identified:Prid:Pt:Body fld:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17957-2	Bacteria identified^^^2:Prid:Pt:Body fld:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17958-0	Bacteria identified^^^3:Prid:Pt:Body fld:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17972-1	Bacteria identified^^^4:Prid:Pt:Urine:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17973-9	Bacteria identified^^^5:Prid:Pt:Urine:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17974-7	Bacteria identified^^^6:Prid:Pt:Urine:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	11261-5	Bacteria identified:Prid:Pt:Vag:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17959-8	Bacteria identified^^^2:Prid:Pt:Periton fld:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17960-6	Bacteria identified^^^3:Prid:Pt:Periton fld:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17961-4	Bacteria identified^^^4:Prid:Pt:Periton fld:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17962-2	Bacteria identified^^^5:Prid:Pt:Periton fld:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17963-0	Bacteria identified^^^6:Prid:Pt:Periton fld:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17964-8	Bacteria identified^^^2:Prid:Pt:Stool:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17965-5	Bacteria identified^^^3:Prid:Pt:Stool:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17966-3	Bacteria identified^^^4:Prid:Pt:Stool:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17967-1	Bacteria identified^^^5:Prid:Pt:Stool:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17968-9	Bacteria identified^^^6:Prid:Pt:Stool:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17970-5	Bacteria identified^^^2:Prid:Pt:Urine:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17971-3	Bacteria identified^^^3:Prid:Pt:Urine:Nom:Culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17908-5	Bacteria identified^^^6:Prid:Pt:Tiss:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17909-3	Bacteria identified:Prid:Pt:Wound.deep:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17910-1	Bacteria identified^^^2:Prid:Pt:Wound.deep:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17911-9	Bacteria identified^^^3:Prid:Pt:Wound.deep:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17912-7	Bacteria identified^^^4:Prid:Pt:Wound.deep:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17913-5	Bacteria identified^^^5:Prid:Pt:Wound.deep:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17914-3	Bacteria identified^^^6:Prid:Pt:Wound.deep:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17915-0	Bacteria identified:Prid:Pt:Wound.shlw:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17916-8	Bacteria identified^^^2:Prid:Pt:Wound.shlw:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17917-6	Bacteria identified^^^3:Prid:Pt:Wound.shlw:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17918-4	Bacteria identified^^^4:Prid:Pt:Wound.shlw:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17919-2	Bacteria identified^^^5:Prid:Pt:Wound.shlw:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17920-0	Bacteria identified^^^6:Prid:Pt:Wound.shlw:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17921-8	Bacteria identified^^^2:Prid:Pt:Nose:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17922-6	Bacteria identified^^^3:Prid:Pt:Nose:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17923-4	Bacteria identified^^^2:Prid:Pt:Tiss:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17924-2	Bacteria identified^^^3:Prid:Pt:Tiss:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17925-9	Bacteria identified:Prid:Pt:Wound.deep:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17926-7	Bacteria identified^^^2:Prid:Pt:Wound.deep:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17927-5	Bacteria identified^^^3:Prid:Pt:Wound.deep:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17928-3	Bacteria identified:Prid:Pt:Bld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17929-1	Bacteria identified^^^2:Prid:Pt:Bld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17930-9	Bacteria identified^^^3:Prid:Pt:Bld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17931-7	Bacteria identified^^^4:Prid:Pt:Bld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17932-5	Bacteria identified^^^5:Prid:Pt:Bld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17933-3	Bacteria identified^^^6:Prid:Pt:Bld:Nom:Aerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17934-1	Bacteria identified:Prid:Pt:Bld:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17935-8	Bacteria identified^^^2:Prid:Pt:Bld:Nom:Anaerobic culture
+LP98185-9	Bacteria.	COMPONENT	LP37205-9	Bacteria identified	COMPONENT	17936-6	Bacteria identified^^^3:Prid:Pt:Bld:Nom:Anaerobic culture
