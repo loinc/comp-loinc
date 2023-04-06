@@ -83,7 +83,7 @@ information about its parameters, by running `python src/comp_loinc/cli/main.py 
 `python src/comp_loinc/main.py  merge --owl-directory data/output/owl_component_files/ --output data/output/merged_loinc.owl`
 
 ### 1.6. `reason`: Run the reasoner using elk to create the composed code classes
-`python src/comp_loinc/main.py reason --input data/output/merged_loinc.owl --output data/output/merged_reasoned_loinc.owl`
+`python src/comp_loinc/main.py reason --output latest/comp_loinc.owl`
 
 ### 2. Open the merged and reasoned owl file in Protégé for viewing
 Open `data/output/merged_reasoned_loinc.owl`
