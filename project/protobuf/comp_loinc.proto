@@ -1,0 +1,107 @@
+message CodeByComponent
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  componentClass hasComponent = 0
+ }
+message CodeBySystem
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  systemClass hasSystem = 0
+ }
+message ComponentClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  string partNumber = 0
+  string partType = 0
+ repeated  componentClass subClassOf = 0
+ }
+message LoincCodeClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+ repeated  loincCodeClass subClassOf = 0
+  string formalName = 0
+  string loincNumber = 0
+  string status = 0
+  string shortName = 0
+  string longCommonName = 0
+  componentClass hasComponent = 0
+  propertyClass hasProperty = 0
+  systemClass hasSystem = 0
+  methodClass hasMethod = 0
+  scaleClass hasScale = 0
+  timeClass hasTime = 0
+ }
+message LoincCodeOntology
+ {
+ repeated  componentClass componentClassSet = 0
+ repeated  systemClass systemClassSet = 0
+ repeated  loincCodeClass codeClassSet = 0
+ }
+message MethodClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  string partNumber = 0
+  string partType = 0
+ repeated  methodClass subClassOf = 0
+ }
+message PartClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+ repeated  thing subClassOf = 0
+  string partNumber = 0
+  string partType = 0
+ }
+message PropertyClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  string partNumber = 0
+  string partType = 0
+ repeated  propertyClass subClassOf = 0
+ }
+message ScaleClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  string partNumber = 0
+  string partType = 0
+ repeated  scaleClass subClassOf = 0
+ }
+message SystemClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  string partNumber = 0
+  string partType = 0
+ repeated  systemClass subClassOf = 0
+ }
+message Thing
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+ }
+message TimeClass
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+  string partNumber = 0
+  string partType = 0
+ repeated  timeClass subClassOf = 0
+ }
