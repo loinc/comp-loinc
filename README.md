@@ -54,7 +54,8 @@ For now, these files are [downloadable from GoogleDrive](https://drive.google.co
 
 ## Setup
 1. Clone this repository.
-2. From repo directory, run: `pip install -r requirements.txt`
+2. install poetry
+3. run poetry install
 
 ## Usage
 Commands 1.1 - 1.5 are meant to be run sequentially.
