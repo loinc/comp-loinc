@@ -1,7 +1,7 @@
 /docs/
 /project/docs/
 /tmp/
-/data/
+#/data/
 
 .idea/
 .DS_Store
