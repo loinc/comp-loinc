@@ -16,6 +16,7 @@ import subprocess
 from pathlib import Path
 from os.path import dirname
 import typer
+from typing import Annotated
 
 try:
     from comp_loinc.ingest.part_ingest import PartOntology
@@ -28,48 +29,51 @@ except ModuleNotFoundError:
     from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
     from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
 
-
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
 PROJECT_DIR = Path(dirname(dirname(dirname(__file__))))
 
-SRC_DIR = os.path.join(PROJECT_DIR, 'src')
+SRC_DIR = os.path.join(PROJECT_DIR, 'src', 'comp_loinc')
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
-ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'ROBOT',  'robot')
+ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'ROBOT', 'robot')
 
 DEFAULTS = {
     'schema_file.parts': os.path.join(SRC_DIR, 'schema', 'part_schema.yaml'),
     'schema_file.codes': os.path.join(SRC_DIR, 'schema', 'code_schema.yaml'),
     'schema_file.composed': os.path.join(SRC_DIR, 'schema', 'grouping_classes_schema.yaml'),
+    'part_directory': os.path.join(DATA_DIR, 'part_files'),
+    'code_directory': os.path.join(DATA_DIR, 'code_files'),
+    'release_directory': os.path.join(DATA_DIR, 'loinc_release'),
+    'code_file': os.path.join(SRC_DIR, 'schema', 'code_schema.yaml'),
+    'composed_classes_data_file': os.path.join(DATA_DIR, 'composed_classes_data.yaml'),
+    'owl_reasoner': 'elk',
+
+    # output
     'output.parts': os.path.join(DATA_DIR, 'output', 'owl_component_files', 'part_ontology.owl'),
     'output.codes': os.path.join(DATA_DIR, 'output', 'owl_component_files', 'code_classes.owl'),
     'output.composed': os.path.join(DATA_DIR, 'output', 'owl_component_files', 'composed_component_classes.owl'),
     'output.map': os.path.join(DATA_DIR, 'output', 'sssom_mapping_files', 'loinc2chebi_sssom.tsv'),
     'output.merge': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
     'output.reason': os.path.join(DATA_DIR, 'output', 'merged_reasoned_loinc.owl'),
-    'part_directory': os.path.join(DATA_DIR, 'part_files'),
-    'code_directory': os.path.join(DATA_DIR, 'code_files'),
-    'release_directory': os.path.join(DATA_DIR, 'loinc_release'),
-    'code_file': os.path.join(SRC_DIR, 'schema', 'code_schema.yaml'),
-    'composed_classes_data_file': os.path.join(DATA_DIR, 'composed_classes_data.yaml'),
     'owl_directory': os.path.join(DATA_DIR, 'output', 'owl_component_files'),
-    'merged_owl': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
-    'owl_reasoner': 'elk',
+    # 'merged_owl': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
 }
+
 
 @app.command(name='load_release')
 def load_release():
     """Load LOINC release into local data directory.
 
-    :param release: str to LOINC release version to download and load.
+    A specific LOINC verions's *.zip file should be manually downloaded and placed in the data/loinc_release before
+    invoking this command.
     """
     l = LoadLoincRelease(DEFAULTS['release_directory'])
 
 
 @app.command(name='parts')
 def build_part_ontology(
-    schema_file: str = typer.Option(default=DEFAULTS['schema_file.parts'], resolve_path=True, exists=False),
-    part_directory: str = typer.Option(default=DEFAULTS['part_directory'], resolve_path=True, exists=False),
-    output: str = typer.Option(default=DEFAULTS['output.parts'], resolve_path=True, writable=True)
+        schema_file: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['schema_file.parts'],
+        part_directory: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['part_directory'],
+        output: Annotated[str, typer.Option(resolve_path=True, writable=True)] = DEFAULTS['output.parts']
 ):
     """Build ontology for LOINC term parts. Part 1/5 of the pipeline.
 
@@ -91,15 +95,15 @@ def build_part_ontology(
 
 @app.command(name='codes')
 def build_codes(
-    schema_file: str = typer.Option(default=DEFAULTS['schema_file.codes'], resolve_path=True, exists=False),
-    code_directory: str = typer.Option(default=DEFAULTS['code_directory'], resolve_path=True, exists=False),
-    output: str = typer.Option(default=DEFAULTS['output.codes'], resolve_path=True, writable=True)
+        schema_file: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['schema_file.codes'],
+        code_directory: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['code_directory'],
+        output: Annotated[str, typer.Option(resolve_path=True, writable=True)] = DEFAULTS['output.codes']
 ):
     """Build ontology for LOINC codes.  Part 2/5 of the pipeline.
 
     :param schema_file: str to LinkML `.yaml` file that defines data model for LOINC terms, which are identified by
     LOINC codes.
-    :param part_directory: str to directory containing TSV files which define the entire LOINC hierarchy of terms and
+    :param code_directory: str to directory containing TSV files which define the entire LOINC hierarchy of terms and
     their subcomponent parts.
     :param output: str where output will be saved.
 
@@ -113,10 +117,10 @@ def build_codes(
 
 @app.command(name='composed')
 def build_composed_classes(
-    schema_file: str = typer.Option(default=DEFAULTS['schema_file.composed'], resolve_path=True, exists=False),
-    composed_classes_data_file: str = typer.Option(
-        default=DEFAULTS['composed_classes_data_file'], resolve_path=True, exists=False),
-    output: str = typer.Option(default=DEFAULTS['output.composed'], resolve_path=True, writable=True)
+        schema_file: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['schema_file.composed'],
+        composed_classes_data_file: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS[
+            'composed_classes_data_file'],
+        output: Annotated[str, typer.Option(resolve_path=True, writable=True)] = DEFAULTS['output.composed']
 ):
     """Build composed classes ontology.  Part 3/5 of the pipeline.
 
@@ -134,9 +138,9 @@ def build_composed_classes(
 
 @app.command(name='map')
 def build_mappings(
-    username: str = typer.Option(default=None),
-    password: str = typer.Option(default=None),
-    output: str = typer.Option(default=DEFAULTS['output.map'], resolve_path=True, writable=True)
+        username: Annotated[str, typer.Option()] = None,
+        password: Annotated[str, typer.Option()] = None,
+        output: Annotated[str, typer.Option(resolve_path=True, writable=True)] = DEFAULTS['output.map']
 ):
     """Build mappings ontology.  Part 3/5 of the pipeline.
 
@@ -148,11 +152,10 @@ def build_mappings(
     chebi_fhir.get_fhir_chebi_mappings()
 
 
-
 @app.command(name="merge")
 def merge_owl(
-    owl_directory: str = typer.Option(default=DEFAULTS['owl_directory'], resolve_path=True, exists=False),
-    output: str = typer.Option(default=DEFAULTS['output.merge'], resolve_path=True, writable=True)
+        owl_directory: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['owl_directory'],
+        output: Annotated[str, typer.Option(resolve_path=True, writable=True)] = DEFAULTS['output.merge']
 ):
     """Merge all OWL ontology files into a single ontology. Part 4/5 of the pipeline.
 
@@ -167,9 +170,9 @@ def merge_owl(
 
 @app.command(name="reason")
 def reason_owl(
-    merged_owl: str = typer.Option(default=DEFAULTS['merged_owl']),
-    owl_reasoner: str = typer.Option(default=DEFAULTS['owl_reasoner']),
-    output: str = typer.Option(default=DEFAULTS['output.reason'], resolve_path=True, writable=True)
+        merged_owl: Annotated[str, typer.Option()] = DEFAULTS['output.merge'],
+        owl_reasoner: Annotated[str, typer.Option()] = DEFAULTS['owl_reasoner'],
+        output: Annotated[str, typer.Option(resolve_path=True, writable=True)] = DEFAULTS['output.reason']
 ):
     """Add computational reasoning to the merged ontology. Creates a new, reasoned ontology. Part 5/5 of the pipeline.
 
@@ -185,25 +188,21 @@ def run_all():
     """Runs the whole pipeline.
 
     Uses default values for all steps. For something more custom, it is recommended to run the steps 1 at a time."""
-    build_part_ontology(
-        schema_file=DEFAULTS['schema_file.parts'],
-        part_directory=DEFAULTS['part_directory'],
-        output=DEFAULTS['output.parts'])
-    build_codes(
-        schema_file=DEFAULTS['schema_file.codes'],
-        part_directory=DEFAULTS['part_directory'],
-        output=DEFAULTS['output.codes'])
-    build_composed_classes(
-        schema_file=DEFAULTS['schema_file.composed'],
-        composed_classes_data_file=DEFAULTS['composed_classes_data_file'],
-        output=DEFAULTS['output.composed'])
-    merge_owl(
-        owl_directory=DEFAULTS['owl_directory'],
-        output=DEFAULTS['output.merge'])
-    reason_owl(
-        merged_owl=DEFAULTS['merged_owl'],
-        owl_reasoner=DEFAULTS['owl_reasoner'],
-        output=DEFAULTS['output.reason'])
+
+    load_release()
+    print("Loaded release")
+    build_part_ontology()
+    print("Built parts")
+    build_codes()
+    print("Built codes")
+    build_composed_classes()
+    print("Built composed")
+    build_mappings()
+    print("Built mappings")
+    merge_owl()
+    print("Built merged")
+    reason_owl()
+    print("Built reasoned")
 
 
 if __name__ == "__main__":
