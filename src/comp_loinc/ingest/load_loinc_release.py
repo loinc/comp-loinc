@@ -31,6 +31,6 @@ class LoadLoincRelease(object):
         filename = self.get_release_filename()
         extracted_files = f"{self.filepath}/extracted/"
         lpl = f"{extracted_files}/AccessoryFiles/PartFile/LoincPartLink_Primary.csv"
-        shutil.move(lpl, f"{DATA_DIR}/code_files/LoincPartLink_Primary.csv")
+        shutil.copy(lpl, f"{DATA_DIR}/code_files/LoincPartLink_Primary.csv")
         loinc_csv = f"{extracted_files}/LoincTable/Loinc.csv"
-        shutil.move(loinc_csv, f"{DATA_DIR}/code_files/Loinc.csv")
+        shutil.copy(loinc_csv, f"{DATA_DIR}/code_files/Loinc.csv")
