@@ -1,0 +1,1 @@
+from .comp_loinc_generator import CompLoincGenerator

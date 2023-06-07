@@ -12,11 +12,14 @@ todo's (minor)
   2. help text: Consider changing/adding docstring param descriptions to `typer.Option(help=<description>)`.
 """
 import os
+import pathlib
 import subprocess
-from pathlib import Path
+import typing
 from os.path import dirname
 import typer
 from typing import Annotated
+import comp_loinc
+import loinclib
 
 try:
     from comp_loinc.ingest.part_ingest import PartOntology
@@ -30,9 +33,11 @@ except ModuleNotFoundError:
     from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
 
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
-PROJECT_DIR = Path(dirname(dirname(dirname(__file__))))
+
+PROJECT_DIR = pathlib.Path(dirname(dirname(dirname(__file__))))
 
 SRC_DIR = os.path.join(PROJECT_DIR, 'src', 'comp_loinc')
+SCHEMA_DIR = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'schema')
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
 ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'ROBOT', 'robot')
 
@@ -57,6 +62,22 @@ DEFAULTS = {
     'owl_directory': os.path.join(DATA_DIR, 'output', 'owl_component_files'),
     # 'merged_owl': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
 }
+
+loinc_release: loinclib.LoincRelease | None = None
+loinc_generator: comp_loinc.CompLoincGenerator | None = None
+
+
+@app.callback()
+def comp_loinc_main(loinc_dir: typing.Annotated[pathlib.Path, typer.Option()],
+                    out_dir: typing.Annotated[pathlib.Path, typer.Option()]):
+    global loinc_release, loinc_generator
+    loinc_release = loinclib.LoincRelease(loinc_dir, '2.74')
+    loinc_generator = comp_loinc.CompLoincGenerator(loinc_release=loinc_release,
+                                                    schema_directory=pathlib.Path(SCHEMA_DIR),
+                                                    output_directory=out_dir
+                                                    )
+    loinc_release.parse_component_hierarchy_by_system()
+    loinc_release.parse_parts()
 
 
 @app.command(name='load_release')
@@ -91,6 +112,12 @@ def build_part_ontology(
     po = PartOntology(str(schema_file), str(part_directory))
     po.generate_ontology()
     po.write_to_output(output)
+
+
+@app.command(name='parts2')
+def build_part2_ontology():
+    print("building parts 2")
+    loinc_generator.generate_parts_ontology(add_childless=True)
 
 
 @app.command(name='codes')

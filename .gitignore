@@ -2,6 +2,7 @@
 /project/docs/
 /tmp/
 #/data/
+/out*
 
 .idea/
 .DS_Store
@@ -139,3 +140,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+/src/loinclib/tmp*
+
