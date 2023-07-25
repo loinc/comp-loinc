@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.9.0
-# Generation date: 2023-04-04T14:45:26
+# Generation date: 2023-07-25T11:35:00
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -7,7 +7,6 @@
 # license: https://creativecommons.org/publicdomain/zero/1.0/
 
 import dataclasses
-import sys
 import re
 from jsonasobj2 import JsonObj, as_dict
 from typing import Optional, List, Union, Dict, ClassVar, Any
@@ -124,7 +123,7 @@ class LoincCodeClass(Thing):
     class_model_uri: ClassVar[URIRef] = LOINC.LoincCodeClass
 
     id: Union[str, LoincCodeClassId] = None
-    subClassOf: Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]] = None
+    subClassOf: Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]] = empty_list()
     formal_name: Optional[str] = None
     loinc_number: Optional[str] = None
     status: Optional[str] = None
@@ -132,10 +131,10 @@ class LoincCodeClass(Thing):
     long_common_name: Optional[str] = None
     has_component: Optional[Union[str, ComponentClassId]] = None
     has_property: Optional[Union[str, PropertyClassId]] = None
-    has_system: Optional[Union[str, SystemClassId]] = None
-    has_method: Optional[Union[str, MethodClassId]] = None
-    has_scale: Optional[Union[str, ScaleClassId]] = None
     has_time: Optional[Union[str, TimeClassId]] = None
+    has_system: Optional[Union[str, SystemClassId]] = None
+    has_scale: Optional[Union[str, ScaleClassId]] = None
+    has_method: Optional[Union[str, MethodClassId]] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -143,8 +142,6 @@ class LoincCodeClass(Thing):
         if not isinstance(self.id, LoincCodeClassId):
             self.id = LoincCodeClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, LoincCodeClassId) else LoincCodeClassId(v) for v in self.subClassOf]
@@ -170,17 +167,17 @@ class LoincCodeClass(Thing):
         if self.has_property is not None and not isinstance(self.has_property, PropertyClassId):
             self.has_property = PropertyClassId(self.has_property)
 
+        if self.has_time is not None and not isinstance(self.has_time, TimeClassId):
+            self.has_time = TimeClassId(self.has_time)
+
         if self.has_system is not None and not isinstance(self.has_system, SystemClassId):
             self.has_system = SystemClassId(self.has_system)
-
-        if self.has_method is not None and not isinstance(self.has_method, MethodClassId):
-            self.has_method = MethodClassId(self.has_method)
 
         if self.has_scale is not None and not isinstance(self.has_scale, ScaleClassId):
             self.has_scale = ScaleClassId(self.has_scale)
 
-        if self.has_time is not None and not isinstance(self.has_time, TimeClassId):
-            self.has_time = TimeClassId(self.has_time)
+        if self.has_method is not None and not isinstance(self.has_method, MethodClassId):
+            self.has_method = MethodClassId(self.has_method)
 
         super().__post_init__(**kwargs)
 
@@ -195,9 +192,11 @@ class PartClass(Thing):
     class_model_uri: ClassVar[URIRef] = LOINC.PartClass
 
     id: Union[str, PartClassId] = None
-    subClassOf: Union[Union[str, ThingId], List[Union[str, ThingId]]] = None
+    subClassOf: Optional[Union[Union[str, ThingId], List[Union[str, ThingId]]]] = empty_list()
     part_number: Optional[str] = None
     part_type: Optional[str] = None
+    part_name: Optional[str] = None
+    part_display_name: Optional[str] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -205,8 +204,6 @@ class PartClass(Thing):
         if not isinstance(self.id, PartClassId):
             self.id = PartClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, ThingId) else ThingId(v) for v in self.subClassOf]
@@ -216,6 +213,12 @@ class PartClass(Thing):
 
         if self.part_type is not None and not isinstance(self.part_type, str):
             self.part_type = str(self.part_type)
+
+        if self.part_name is not None and not isinstance(self.part_name, str):
+            self.part_name = str(self.part_name)
+
+        if self.part_display_name is not None and not isinstance(self.part_display_name, str):
+            self.part_display_name = str(self.part_display_name)
 
         super().__post_init__(**kwargs)
 
@@ -230,7 +233,7 @@ class ComponentClass(PartClass):
     class_model_uri: ClassVar[URIRef] = LOINC.ComponentClass
 
     id: Union[str, ComponentClassId] = None
-    subClassOf: Union[Union[str, ComponentClassId], List[Union[str, ComponentClassId]]] = None
+    subClassOf: Optional[Union[Union[str, ComponentClassId], List[Union[str, ComponentClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -238,8 +241,6 @@ class ComponentClass(PartClass):
         if not isinstance(self.id, ComponentClassId):
             self.id = ComponentClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, ComponentClassId) else ComponentClassId(v) for v in self.subClassOf]
@@ -257,7 +258,7 @@ class SystemClass(PartClass):
     class_model_uri: ClassVar[URIRef] = LOINC.SystemClass
 
     id: Union[str, SystemClassId] = None
-    subClassOf: Union[Union[str, SystemClassId], List[Union[str, SystemClassId]]] = None
+    subClassOf: Optional[Union[Union[str, SystemClassId], List[Union[str, SystemClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -265,8 +266,6 @@ class SystemClass(PartClass):
         if not isinstance(self.id, SystemClassId):
             self.id = SystemClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, SystemClassId) else SystemClassId(v) for v in self.subClassOf]
@@ -284,7 +283,7 @@ class MethodClass(PartClass):
     class_model_uri: ClassVar[URIRef] = LOINC.MethodClass
 
     id: Union[str, MethodClassId] = None
-    subClassOf: Union[Union[str, MethodClassId], List[Union[str, MethodClassId]]] = None
+    subClassOf: Optional[Union[Union[str, MethodClassId], List[Union[str, MethodClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -292,8 +291,6 @@ class MethodClass(PartClass):
         if not isinstance(self.id, MethodClassId):
             self.id = MethodClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, MethodClassId) else MethodClassId(v) for v in self.subClassOf]
@@ -311,7 +308,7 @@ class TimeClass(PartClass):
     class_model_uri: ClassVar[URIRef] = LOINC.TimeClass
 
     id: Union[str, TimeClassId] = None
-    subClassOf: Union[Union[str, TimeClassId], List[Union[str, TimeClassId]]] = None
+    subClassOf: Optional[Union[Union[str, TimeClassId], List[Union[str, TimeClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -319,8 +316,6 @@ class TimeClass(PartClass):
         if not isinstance(self.id, TimeClassId):
             self.id = TimeClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, TimeClassId) else TimeClassId(v) for v in self.subClassOf]
@@ -338,7 +333,7 @@ class PropertyClass(PartClass):
     class_model_uri: ClassVar[URIRef] = LOINC.PropertyClass
 
     id: Union[str, PropertyClassId] = None
-    subClassOf: Union[Union[str, PropertyClassId], List[Union[str, PropertyClassId]]] = None
+    subClassOf: Optional[Union[Union[str, PropertyClassId], List[Union[str, PropertyClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -346,8 +341,6 @@ class PropertyClass(PartClass):
         if not isinstance(self.id, PropertyClassId):
             self.id = PropertyClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, PropertyClassId) else PropertyClassId(v) for v in self.subClassOf]
@@ -365,7 +358,7 @@ class ScaleClass(PartClass):
     class_model_uri: ClassVar[URIRef] = LOINC.ScaleClass
 
     id: Union[str, ScaleClassId] = None
-    subClassOf: Union[Union[str, ScaleClassId], List[Union[str, ScaleClassId]]] = None
+    subClassOf: Optional[Union[Union[str, ScaleClassId], List[Union[str, ScaleClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -373,8 +366,6 @@ class ScaleClass(PartClass):
         if not isinstance(self.id, ScaleClassId):
             self.id = ScaleClassId(self.id)
 
-        if self._is_empty(self.subClassOf):
-            self.MissingRequiredField("subClassOf")
         if not isinstance(self.subClassOf, list):
             self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
         self.subClassOf = [v if isinstance(v, ScaleClassId) else ScaleClassId(v) for v in self.subClassOf]
@@ -470,7 +461,7 @@ slots.description = Slot(uri=RDFS.description, name="description", curie=RDFS.cu
                    model_uri=LOINC.description, domain=None, range=Optional[str])
 
 slots.subClassOf = Slot(uri=RDFS.subClassOf, name="subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.subClassOf, domain=None, range=Union[Union[str, ThingId], List[Union[str, ThingId]]])
+                   model_uri=LOINC.subClassOf, domain=None, range=Optional[Union[Union[str, ThingId], List[Union[str, ThingId]]]])
 
 slots.formal_name = Slot(uri=LOINC.formal_name, name="formal_name", curie=LOINC.curie('formal_name'),
                    model_uri=LOINC.formal_name, domain=None, range=Optional[str])
@@ -490,26 +481,32 @@ slots.short_name = Slot(uri=LOINC.short_name, name="short_name", curie=LOINC.cur
 slots.has_component = Slot(uri=LOINC.hasComponent, name="has_component", curie=LOINC.curie('hasComponent'),
                    model_uri=LOINC.has_component, domain=None, range=Optional[Union[str, ComponentClassId]])
 
-slots.has_system = Slot(uri=LOINC.hasSystem, name="has_system", curie=LOINC.curie('hasSystem'),
-                   model_uri=LOINC.has_system, domain=None, range=Optional[Union[str, SystemClassId]])
-
-slots.has_method = Slot(uri=LOINC.hasMethod, name="has_method", curie=LOINC.curie('hasMethod'),
-                   model_uri=LOINC.has_method, domain=None, range=Optional[Union[str, MethodClassId]])
-
 slots.has_property = Slot(uri=LOINC.hasProperty, name="has_property", curie=LOINC.curie('hasProperty'),
                    model_uri=LOINC.has_property, domain=None, range=Optional[Union[str, PropertyClassId]])
 
 slots.has_time = Slot(uri=LOINC.hasTime, name="has_time", curie=LOINC.curie('hasTime'),
                    model_uri=LOINC.has_time, domain=None, range=Optional[Union[str, TimeClassId]])
 
+slots.has_system = Slot(uri=LOINC.hasSystem, name="has_system", curie=LOINC.curie('hasSystem'),
+                   model_uri=LOINC.has_system, domain=None, range=Optional[Union[str, SystemClassId]])
+
 slots.has_scale = Slot(uri=LOINC.hasScale, name="has_scale", curie=LOINC.curie('hasScale'),
                    model_uri=LOINC.has_scale, domain=None, range=Optional[Union[str, ScaleClassId]])
+
+slots.has_method = Slot(uri=LOINC.hasMethod, name="has_method", curie=LOINC.curie('hasMethod'),
+                   model_uri=LOINC.has_method, domain=None, range=Optional[Union[str, MethodClassId]])
 
 slots.part_type = Slot(uri=LOINC.part_type, name="part_type", curie=LOINC.curie('part_type'),
                    model_uri=LOINC.part_type, domain=None, range=Optional[str])
 
 slots.part_number = Slot(uri=LOINC.part_number, name="part_number", curie=LOINC.curie('part_number'),
                    model_uri=LOINC.part_number, domain=None, range=Optional[str])
+
+slots.part_name = Slot(uri=LOINC.part_name, name="part_name", curie=LOINC.curie('part_name'),
+                   model_uri=LOINC.part_name, domain=None, range=Optional[str])
+
+slots.part_display_name = Slot(uri=LOINC.part_display_name, name="part_display_name", curie=LOINC.curie('part_display_name'),
+                   model_uri=LOINC.part_display_name, domain=None, range=Optional[str])
 
 slots.component_class_set = Slot(uri=LOINC['set/component_class_set'], name="component_class_set", curie=LOINC.curie('set/component_class_set'),
                    model_uri=LOINC.component_class_set, domain=LoincCodeOntology, range=Optional[Union[Dict[Union[str, ComponentClassId], Union[dict, ComponentClass]], List[Union[dict, ComponentClass]]]])
@@ -520,26 +517,44 @@ slots.system_class_set = Slot(uri=LOINC['set/system_class_set'], name="system_cl
 slots.code_class_set = Slot(uri=LOINC['set/code_class_set'], name="code_class_set", curie=LOINC.curie('set/code_class_set'),
                    model_uri=LOINC.code_class_set, domain=LoincCodeOntology, range=Optional[Union[Dict[Union[str, LoincCodeClassId], Union[dict, LoincCodeClass]], List[Union[dict, LoincCodeClass]]]])
 
+slots.loincCodeClass__has_component = Slot(uri=LOINC.hasComponent, name="loincCodeClass__has_component", curie=LOINC.curie('hasComponent'),
+                   model_uri=LOINC.loincCodeClass__has_component, domain=None, range=Optional[Union[str, ComponentClassId]])
+
+slots.loincCodeClass__has_property = Slot(uri=LOINC.hasProperty, name="loincCodeClass__has_property", curie=LOINC.curie('hasProperty'),
+                   model_uri=LOINC.loincCodeClass__has_property, domain=None, range=Optional[Union[str, PropertyClassId]])
+
+slots.loincCodeClass__has_time = Slot(uri=LOINC.hasTime, name="loincCodeClass__has_time", curie=LOINC.curie('hasTime'),
+                   model_uri=LOINC.loincCodeClass__has_time, domain=None, range=Optional[Union[str, TimeClassId]])
+
+slots.loincCodeClass__has_system = Slot(uri=LOINC.hasSystem, name="loincCodeClass__has_system", curie=LOINC.curie('hasSystem'),
+                   model_uri=LOINC.loincCodeClass__has_system, domain=None, range=Optional[Union[str, SystemClassId]])
+
+slots.loincCodeClass__has_scale = Slot(uri=LOINC.hasScale, name="loincCodeClass__has_scale", curie=LOINC.curie('hasScale'),
+                   model_uri=LOINC.loincCodeClass__has_scale, domain=None, range=Optional[Union[str, ScaleClassId]])
+
+slots.loincCodeClass__has_method = Slot(uri=LOINC.hasMethod, name="loincCodeClass__has_method", curie=LOINC.curie('hasMethod'),
+                   model_uri=LOINC.loincCodeClass__has_method, domain=None, range=Optional[Union[str, MethodClassId]])
+
 slots.LoincCodeClass_subClassOf = Slot(uri=RDFS.subClassOf, name="LoincCodeClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.LoincCodeClass_subClassOf, domain=LoincCodeClass, range=Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]])
+                   model_uri=LOINC.LoincCodeClass_subClassOf, domain=LoincCodeClass, range=Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]])
 
 slots.ComponentClass_subClassOf = Slot(uri=RDFS.subClassOf, name="ComponentClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.ComponentClass_subClassOf, domain=ComponentClass, range=Union[Union[str, ComponentClassId], List[Union[str, ComponentClassId]]])
+                   model_uri=LOINC.ComponentClass_subClassOf, domain=ComponentClass, range=Optional[Union[Union[str, ComponentClassId], List[Union[str, ComponentClassId]]]])
 
 slots.SystemClass_subClassOf = Slot(uri=RDFS.subClassOf, name="SystemClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.SystemClass_subClassOf, domain=SystemClass, range=Union[Union[str, SystemClassId], List[Union[str, SystemClassId]]])
+                   model_uri=LOINC.SystemClass_subClassOf, domain=SystemClass, range=Optional[Union[Union[str, SystemClassId], List[Union[str, SystemClassId]]]])
 
 slots.MethodClass_subClassOf = Slot(uri=RDFS.subClassOf, name="MethodClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.MethodClass_subClassOf, domain=MethodClass, range=Union[Union[str, MethodClassId], List[Union[str, MethodClassId]]])
+                   model_uri=LOINC.MethodClass_subClassOf, domain=MethodClass, range=Optional[Union[Union[str, MethodClassId], List[Union[str, MethodClassId]]]])
 
 slots.TimeClass_subClassOf = Slot(uri=RDFS.subClassOf, name="TimeClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.TimeClass_subClassOf, domain=TimeClass, range=Union[Union[str, TimeClassId], List[Union[str, TimeClassId]]])
+                   model_uri=LOINC.TimeClass_subClassOf, domain=TimeClass, range=Optional[Union[Union[str, TimeClassId], List[Union[str, TimeClassId]]]])
 
 slots.PropertyClass_subClassOf = Slot(uri=RDFS.subClassOf, name="PropertyClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.PropertyClass_subClassOf, domain=PropertyClass, range=Union[Union[str, PropertyClassId], List[Union[str, PropertyClassId]]])
+                   model_uri=LOINC.PropertyClass_subClassOf, domain=PropertyClass, range=Optional[Union[Union[str, PropertyClassId], List[Union[str, PropertyClassId]]]])
 
 slots.ScaleClass_subClassOf = Slot(uri=RDFS.subClassOf, name="ScaleClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.ScaleClass_subClassOf, domain=ScaleClass, range=Union[Union[str, ScaleClassId], List[Union[str, ScaleClassId]]])
+                   model_uri=LOINC.ScaleClass_subClassOf, domain=ScaleClass, range=Optional[Union[Union[str, ScaleClassId], List[Union[str, ScaleClassId]]]])
 
 slots.CodeBySystem_has_system = Slot(uri=LOINC.hasSystem, name="CodeBySystem_has_system", curie=LOINC.curie('hasSystem'),
                    model_uri=LOINC.CodeBySystem_has_system, domain=CodeBySystem, range=Optional[Union[str, SystemClassId]])

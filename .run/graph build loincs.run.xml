@@ -1,20 +1,21 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="classes" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
-    <output_file path="$PROJECT_DIR$/key-overwrite.txt" is_save="true" />
+  <configuration default="false" name="graph build loincs" type="PythonConfigurationType" factoryName="Python" show_console_on_std_err="true" show_console_on_std_out="true">
+    <output_file path="$PROJECT_DIR$/.run/logs/loincs.log" is_save="true" />
     <module name="comp-loinc" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
-    <option name="SDK_HOME" value="" />
+    <option name="SDK_HOME" value="$PROJECT_DIR$/.venv/bin/python" />
+    <option name="SDK_NAME" value="Python 3.10 (comp-loinc) (2)" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    <option name="IS_MODULE_SDK" value="true" />
+    <option name="IS_MODULE_SDK" value="false" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/loinclib/classes.py" />
-    <option name="PARAMETERS" value="" />
+    <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/comp_loinc/main.py" />
+    <option name="PARAMETERS" value="loincs" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />

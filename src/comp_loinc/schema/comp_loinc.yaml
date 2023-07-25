@@ -38,4 +38,4 @@ slots:
     slot_uri: rdfs:subClassOf
     multivalued: true
     range: Thing
-    required: true
+#    required: true
