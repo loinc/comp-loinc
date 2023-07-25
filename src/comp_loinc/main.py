@@ -16,8 +16,10 @@ import pathlib
 import subprocess
 import typing
 from os.path import dirname
+
 import typer
-from typing import Annotated
+from typing_extensions import Annotated
+
 import comp_loinc
 import loinclib
 
@@ -35,6 +37,7 @@ except ModuleNotFoundError:
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
 
 PROJECT_DIR = pathlib.Path(dirname(dirname(dirname(__file__))))
+LOINC_DIR = PROJECT_DIR / 'data' / 'loinc_release' / 'extracted'
 
 SRC_DIR = os.path.join(PROJECT_DIR, 'src', 'comp_loinc')
 SCHEMA_DIR = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'schema')
@@ -63,21 +66,51 @@ DEFAULTS = {
     # 'merged_owl': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
 }
 
-loinc_release: loinclib.LoincRelease | None = None
-loinc_generator: comp_loinc.CompLoincGenerator | None = None
+release: typing.Optional[loinclib.LoincRelease] = None
+generator: typing.Optional[comp_loinc.CompLoincGenerator] = None
 
 
 @app.callback()
-def comp_loinc_main(loinc_dir: typing.Annotated[pathlib.Path, typer.Option()],
-                    out_dir: typing.Annotated[pathlib.Path, typer.Option()]):
-    global loinc_release, loinc_generator
-    loinc_release = loinclib.LoincRelease(loinc_dir, '2.74')
-    loinc_generator = comp_loinc.CompLoincGenerator(loinc_release=loinc_release,
-                                                    schema_directory=pathlib.Path(SCHEMA_DIR),
-                                                    output_directory=out_dir
-                                                    )
-    loinc_release.parse_component_hierarchy_by_system()
-    loinc_release.parse_parts()
+def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = LOINC_DIR,
+                    out_dir: Annotated[pathlib.Path, typer.Option()] = PROJECT_DIR / 'data' / 'loinc_owl'):
+    global release, generator
+    release = loinclib.LoincRelease(loinc_dir, '2.74', PROJECT_DIR / 'data' / 'loinc_trees' / '2023-06-14')
+    generator = comp_loinc.CompLoincGenerator(loinc_release=release,
+                                              schema_directory=pathlib.Path(SCHEMA_DIR),
+                                              output_directory=out_dir
+                                              )
+
+
+@app.command(name='parts')
+def build_parts():
+    print("Parsing files 3", flush=True)
+    # release.parse_LoincTable_Loinc_csv()
+    release.parse_AccessoryFiles_PartFile_Part_csv()
+
+    #
+    # release.parse_AccessoryFiles_ComponentHierarchyBySystem_ComponentHierarchyBySystem_csv()
+
+    print("Generating parts ontology", flush=True)
+    generator.generate_parts()
+    generator.save_outputs()
+
+
+@app.command(name='parts-trees')
+def build_parts_trees_hierarchy():
+
+    release.parse_AccessoryFiles_PartFile_Part_csv()
+    release.parse_tree_system()
+    release.parse_tree_document_ontology()
+    release.parse_tree_method()
+    release.parse_tree_class()
+    release.parse_tree_component()
+    release.parse_tree_component_by_system()
+
+    generator.generate_parts_trees()
+    generator.save_outputs()
+
+
+############################
 
 
 @app.command(name='load_release')
@@ -90,7 +123,7 @@ def load_release():
     l = LoadLoincRelease(DEFAULTS['release_directory'])
 
 
-@app.command(name='parts')
+@app.command(name='parts-older')
 def build_part_ontology(
         schema_file: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['schema_file.parts'],
         part_directory: Annotated[str, typer.Option(resolve_path=True, exists=False)] = DEFAULTS['part_directory'],
@@ -117,7 +150,23 @@ def build_part_ontology(
 @app.command(name='parts2')
 def build_part2_ontology():
     print("building parts 2")
-    loinc_generator.generate_parts_ontology(add_childless=True)
+    generator.generate_parts_ontology(add_childless=True)
+
+
+@app.command(name='loincs')
+def build_loincs():
+    print(f'Building loincs.owl')
+    release.parse_LoincTable_Loinc_csv()
+    generator.generate_loincs()
+    generator.save_outputs()
+
+
+@app.command(name='loinc-defs')
+def build_loinc_defs():
+    print(f'Building loinc-defs.owl')
+    release.parse_AccessoryFiles_PartFile_LoincPartLink_Primary_csv()
+    generator.generate_loinc_defs()
+    generator.save_outputs()
 
 
 @app.command(name='codes')

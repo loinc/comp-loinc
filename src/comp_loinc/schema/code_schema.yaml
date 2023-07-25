@@ -14,6 +14,63 @@ default_curi_maps:
 classes:
   LoincCodeClass:
     is_a: Thing
+    attributes:
+      # Parts and their position in FSN
+
+      # 1
+      has_component:
+        slot_uri: loinc:hasComponent
+        multivalued: false
+        range: ComponentClass
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+
+      # 2
+      has_property:
+        slot_uri: loinc:hasProperty
+        multivalued: false
+        range: PropertyClass
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+
+      # 3
+      has_time:
+        slot_uri: loinc:hasTime
+        multivalued: false
+        range: TimeClass
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+
+      # 4
+      has_system:
+        slot_uri: loinc:hasSystem
+        multivalued: false
+        range: SystemClass
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+
+      # 5
+      has_scale:
+        slot_uri: loinc:hasScale
+        multivalued: false
+        range: ScaleClass
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+
+      # 6 (optional)
+      has_method:
+        slot_uri: loinc:hasMethod
+        multivalued: false
+        range: MethodClass
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+
     slots:
       - subClassOf
       - formal_name
@@ -21,16 +78,12 @@ classes:
       - status
       - short_name
       - long_common_name
-      - has_component
-      - has_property
-      - has_system
-      - has_method
-      - has_scale
-      - has_time
 
     slot_usage:
       subClassOf:
         range: LoincCodeClass
+    annotations:
+      owl: Class
 
 slots:
   formal_name:
@@ -53,6 +106,7 @@ slots:
     slot_uri: loinc:short_name
     annotations:
       owl: AnnotationAssertion
+
   has_component:
     slot_uri: loinc:hasComponent
     multivalued: false
@@ -60,20 +114,8 @@ slots:
     required: false
     annotations:
       owl: ObjectSomeValuesFrom
-  has_system:
-    slot_uri: loinc:hasSystem
-    multivalued: false
-    range: SystemClass
-    required: false
-    annotations:
-      owl: ObjectSomeValuesFrom
-  has_method:
-    slot_uri: loinc:hasMethod
-    multivalued: false
-    range: MethodClass
-    required: false
-    annotations:
-      owl: ObjectSomeValuesFrom
+
+  # 2
   has_property:
     slot_uri: loinc:hasProperty
     multivalued: false
@@ -81,6 +123,8 @@ slots:
     required: false
     annotations:
       owl: ObjectSomeValuesFrom
+
+  # 3
   has_time:
     slot_uri: loinc:hasTime
     multivalued: false
@@ -88,6 +132,17 @@ slots:
     required: false
     annotations:
       owl: ObjectSomeValuesFrom
+
+  # 4
+  has_system:
+    slot_uri: loinc:hasSystem
+    multivalued: false
+    range: SystemClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+
+  # 5
   has_scale:
     slot_uri: loinc:hasScale
     multivalued: false
@@ -95,3 +150,13 @@ slots:
     required: false
     annotations:
       owl: ObjectSomeValuesFrom
+
+  # 6 (optional)
+  has_method:
+    slot_uri: loinc:hasMethod
+    multivalued: false
+    range: MethodClass
+    required: false
+    annotations:
+      owl: ObjectSomeValuesFrom
+
