@@ -198,33 +198,35 @@ class NodeAttributeKey(str, Enum):
     For parts: an alternate display name for the Part, which is often used to create the LOINC Long Common Name
     """
 
-    name = 'name'
-    """
-    A synonym of the entity in addition to the display. This will be populated regardless of the string is equal to 
-    the display. The display added to this list.
-    
-    For parts: the name of the Part. Examples: hemoglobin, clavicle
-    """
 
     status = 'status'
     """The status of the entity."""
 
-    component = 'component'
 
-    property = 'property'
-    time_aspect = 'time aspect'
-    system = 'system'
-    scale_type = 'scale type'
-    method_type = 'method type'
-    entity_class = 'class'
-    class_type = 'class type'
-    version_first_released = 'version first released'
-    version_last_changed = 'version last changed'
     definition = 'definition'
 
-    part_name = 'part_name'
-    part_display_name = 'part_display_name'
-    part_type = 'part_type'
+    # parts file based attributes
+    part_name = 'part name'
+    part_display_name = 'part display name'
+    part_type = 'part type'
+
+    # Tree file attributes
+    tree_code_text = 'tree code text'
+
+    # loinc attributes
+    loinc_long_common_name = 'loinc long common name'
+    loinc_short_name = 'loinc short name'
+    loinc_definition = 'loinc definition'
+    loinc_component = 'loinc component'
+    loinc_property = 'loinc property'
+    loinc_time_aspect = 'loinc time aspect'
+    loinc_system = 'loinc system'
+    loinc_scale_type = 'loinc scale type'
+    loinc_method_type = 'loinc method type'
+    loinc_class = 'loinc class'
+    loinc_class_type = 'loinc class type'
+    loinc_version_first_released = 'loinc version first released'
+    loinc_version_last_changed = 'loinc version last changed'
 
 
 if __name__ == '__main__':

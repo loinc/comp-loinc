@@ -1,6 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="graph build loincs" type="PythonConfigurationType" factoryName="Python" show_console_on_std_err="true" show_console_on_std_out="true">
-    <output_file path="$PROJECT_DIR$/.run/logs/loincs.log" is_save="true" />
+  <configuration default="false" name="parts-trees" type="PythonConfigurationType" factoryName="Python">
     <module name="comp-loinc" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
@@ -15,7 +14,7 @@
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/comp_loinc/main.py" />
-    <option name="PARAMETERS" value="loincs" />
+    <option name="PARAMETERS" value="parts-trees" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
