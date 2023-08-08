@@ -81,8 +81,8 @@ def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = LOINC_D
                                               )
 
 
-@app.command(name='parts')
-def build_parts():
+@app.command()
+def parts_list():
     print("Parsing files 3", flush=True)
     # release.parse_LoincTable_Loinc_csv()
     release.parse_AccessoryFiles_PartFile_Part_csv()
@@ -91,22 +91,43 @@ def build_parts():
     # release.parse_AccessoryFiles_ComponentHierarchyBySystem_ComponentHierarchyBySystem_csv()
 
     print("Generating parts ontology", flush=True)
-    generator.generate_parts()
+    generator.generate_parts_list()
     generator.save_outputs()
 
 
-@app.command(name='parts-trees')
-def build_parts_trees_hierarchy():
-
+@app.command()
+def parts_trees():
     release.parse_AccessoryFiles_PartFile_Part_csv()
-    release.parse_tree_system()
-    release.parse_tree_document_ontology()
-    release.parse_tree_method()
-    release.parse_tree_class()
-    release.parse_tree_component()
-    release.parse_tree_component_by_system()
+    release.parse_all_trees()
 
     generator.generate_parts_trees()
+    generator.save_outputs()
+
+@app.command()
+def parts_group_chem_eq():
+    release.parse_AccessoryFiles_PartFile_Part_csv()
+    release.parse_all_trees()
+    generator.parts_group_chem_equivalences()
+    generator.save_outputs()
+
+@app.command()
+def loincs_list():
+    release.parse_LoincTable_Loinc_csv()
+    generator.generate_loincs_list()
+    generator.save_outputs()
+
+
+@app.command()
+def loincs_defs():
+    print(f'Building loinc-defs.owl')
+    release.parse_AccessoryFiles_PartFile_LoincPartLink_Primary_csv()
+    generator.generate_loincs_defs()
+    generator.save_outputs()
+
+@app.command()
+def loincs_group_component_subpart_one_has_slash():
+    release.parse_LoincTable_Loinc_csv()
+    generator.generate_loincs_group_component_subpart_one_has_slash()
     generator.save_outputs()
 
 
@@ -151,22 +172,6 @@ def build_part_ontology(
 def build_part2_ontology():
     print("building parts 2")
     generator.generate_parts_ontology(add_childless=True)
-
-
-@app.command(name='loincs')
-def build_loincs():
-    print(f'Building loincs.owl')
-    release.parse_LoincTable_Loinc_csv()
-    generator.generate_loincs()
-    generator.save_outputs()
-
-
-@app.command(name='loinc-defs')
-def build_loinc_defs():
-    print(f'Building loinc-defs.owl')
-    release.parse_AccessoryFiles_PartFile_LoincPartLink_Primary_csv()
-    generator.generate_loinc_defs()
-    generator.save_outputs()
 
 
 @app.command(name='codes')

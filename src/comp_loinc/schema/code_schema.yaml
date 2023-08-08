@@ -72,12 +72,12 @@ classes:
           owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
 
     slots:
-      - subClassOf
-      - formal_name
       - loinc_number
-      - status
-      - short_name
       - long_common_name
+      - formal_name
+      - short_name
+      - status
+      - subClassOf
 
     slot_usage:
       subClassOf:

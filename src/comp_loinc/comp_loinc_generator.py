@@ -8,18 +8,22 @@ import linkml_runtime
 from funowl import literals
 from linkml_owl.dumpers import owl_dumper
 
-import loinclib
+import loinclib as ll
 from comp_loinc import datamodel
 
 
 class CompLoincGenerator:
-    LOINCS_ANNOTATIONS = 'loincs-annotations'
-    LOINCS_PARTS_EQUIVALENCE = 'loincs-parts-equivalence'
+    LOINCS_LIST = 'loincs-list'
+    LOINCS_PARTS_EQUIVALENCE = 'loincs-parts-eq'
+
+    LOINCS_GROUP_COMPONENT_SUBPART_ONE_HAS_SLASH = 'loincs-group-component_subpart_one_has_slash'
 
     PARTS_LIST = 'parts-list'
-    PARTS_TREES_HIERARCHY = 'parts-trees'
+    PARTS_TREES = 'parts-trees'
 
-    def __init__(self, loinc_release: loinclib.LoincRelease,
+    PARTS_GROUP_CHEM_EQ = 'parts-group-chem-eq'
+
+    def __init__(self, loinc_release: ll.LoincRelease,
                  schema_directory: Path,
                  output_directory: Path):
         self.release = loinc_release
@@ -34,256 +38,134 @@ class CompLoincGenerator:
         self._outputs: t.Dict[str: t.Dict[str, t.List[datamodel.Thing]]] = dict()
         self._outputs_schema: t.Dict[str, linkml_runtime.SchemaView] = dict()
 
-        # def _part(self, loinc_part: loinclib.LoincEntity):
+    def generate_loincs_list(self):
 
-    #     part = self.__parts.get(loinc_part.code, ...)
-    #     if part is not ...:
-    #         return part
-    #
-    #     params = {
-    #         "id": _loincify(loinc_part.code),
-    #         "label": f'{loinc_part.name} ({loinc_part.display})',
-    #
-    #         "part_number": loinc_part.code,
-    #         "part_type": loinc_part.part_type,
-    #         "subClassOf": ['owl:Thing']
-    #     }
-    #
-    #     part: t.Optional[datamodel.PartClass] = None
-    #
-    #     # match not available in 3.8
-    #     part_classes = {
-    #         'TIME': datamodel.TimeClass,
-    #         'METHOD': datamodel.MethodClass,
-    #         'COMPONENT': datamodel.ComponentClass,
-    #         'PROPERTY': datamodel.PropertyClass,
-    #         'SYSTEM': datamodel.SystemClass,
-    #         'SCALE': datamodel.ScaleClass
-    #     }
-    #
-    #     part = part_classes.get(loinc_part.part_type, datamodel.PartClass)(**params)
-    #     self.__parts[loinc_part.code] = part
-    #     return part
-
-    # def _part_parents(self, loinc_part: loinclib.LoincEntity,
-    #                   parents: t.Dict[str, t.Optional[datamodel.PartClass]] = None) \
-    #         -> t.Dict[str, t.Optional[datamodel.PartClass]]:
-    #
-    #     """
-    #     This finds the parents of a LoincEntity by considering if their type is modeled in CompLOINC.
-    #
-    #     If a parent type is not modeled, the parent's parents are considered recursively. If one of the resolved
-    #     parents does not have any parents, None is added to the set as an indicator that the child needs to be a
-    #     subclass of owl:Thing.  The lack of None in the set means that the child should not inherit from owl:Thing
-    #     """
-    #
-    #     if parents is None:
-    #         parents = {}
-    #
-    #     # if no parents, we inherit Thing and return
-    #     if not loinc_part.parents:
-    #         parents['owl:Thing'] = None
-    #         return parents
-    #
-    #     # we have actual parents. But, we're not sure if their type is modeled in CompLOINC
-    #     loinc_parent: loinclib.LoincEntity
-    #     for loinc_parent in loinc_part.parents:
-    #         parent = self._part(loinc_parent)
-    #         if parent:
-    #             parents[parent.id] = parent
-    #         else:
-    #             # This parent is not yet modeled in CompLOINC. We try to find a modeled ancestor, or owl:Thing
-    #             self._part_parents(loinc_parent, parents)
-    #
-    #     return parents
-
-    # def generate_parts_ontology(self, add_childless: bool = False):
-    #
-    #     for loinc_part in self.loinc_release.parts().values():
-    #         part = self._part(loinc_part)
-    #         if part:  # i.e. we do model this LOINC part in CompLOINC
-    #             parents = self._part_parents(loinc_part)
-    #             if 'owl:Thing' not in parents:
-    #                 part.subClassOf = []
-    #             else:
-    #                 pass
-    #             for parent in parents.values():
-    #                 if parent is None:
-    #                     continue
-    #                 part.subClassOf.append(parent.id)
-    #
-    #     output_file = self.output_directory / 'parts.owl'
-    #     output_file.parent.mkdir(parents=True, exist_ok=True)
-    #     print("\n" + f"Writing Part Ontology to output {output_file}")
-    #
-    #     with open(output_file, 'w') as ccl_owl:  # ./data/output/owl_component_files/part_ontology.owl
-    #         all_values = list(self.__parts.values())
-    #         actual_values = [x for x in all_values if x is not None]
-    #         ccl_owl.write(self._owl_dumper.dumps(actual_values,
-    #                                              schema=linkml_runtime.SchemaView(
-    #                                                  self.schema_dir / 'part_schema.yaml').schema, ))
-    #     print(
-    #         "\n" + f"Finished writing Part Ontology to output {output_file} at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-
-    # def generate_parts_ontology_3(self):
-    #     parts = self.loinc_release.parts().values()
-    #
-    #     code_part_map: t.Dict[loinclib.LoincEntity, datamodel.PartClass] = {}
-    #
-    #     part: loinclib.LoincEntity
-    #     for part in parts:
-    #         params = {
-    #             "id": _loincify(part.code),
-    #             "label": part.display,
-    #
-    #             "part_number": part.code,
-    #             "part_type": part.part_type,
-    #             "subClassOf": [_loincify(c.code) for c in part.parents] if part.parents else ['owl:Thing']
-    #             # "subClassOf": [_loincify(c.code) for c in part.parents] if part.parents else ['loinc:FlatPartRoot']
-    #         }
-    #
-    #         code_part_map[part] = datamodel.PartClass(**params)
-    #
-    #     entity: loinclib.LoincEntity = None
-    #     part: datamodel.PartClass = None
-    #
-    #     hierarchical_parts = [part for entity, part in code_part_map.items() if len(entity.parents) > 0 or len(
-    #         entity.children) > 0]
-    #     flat_parts = [part for entity, part in code_part_map.items() if len(entity.parents) == 0 and len(
-    #         entity.children) == 0]
-    #
-    #     flat_root = loinclib.LoincEntity('FlatPartRoot')
-    #     flat_root.display = '{Flat Part Root}'
-    #     flat_root_class = datamodel.PartClass(id=_loincify(flat_root.code), label=flat_root.display,
-    #                                           part_number=flat_root.code, subClassOf=['owl:Thing'])
-    #     code_part_map[flat_root] = flat_root_class
-    #
-    #     for flat_part in flat_parts:
-    #         flat_part.subClassOf = ['loinc:FlatPartRoot']
-
-    # output_file = self.output_directory / 'parts-all.owl'
-    # output_file.parent.mkdir(parents=True, exist_ok=True)
-    # print(f'Writing: {output_file}', flush=True)
-    # with open(output_file, 'w') as f:
-    #     f.write(self._owl_dumper.dumps(list(code_part_map.values()),
-    #                                    schema=linkml_runtime.SchemaView(
-    #                                        self.schema_dir / 'part_schema.yaml').schema, ))
-
-    def generate_loincs(self):
-
-        loinc_node_ids = self.release.node_ids_for_type(loinclib.NodeType.loinc_code)
+        loinc_node_ids = self.release.node_ids_for_type(ll.NodeType.loinc_code)
         loinc_code_map: dict[str, datamodel.LoincCodeClass] = {}
 
         loincs_root = datamodel.LoincCodeClass(id=_loincify('__loincs'))
         loinc_code_map['__loincs'] = loincs_root
 
         for loinc_node_id in loinc_node_ids:
-            code = loinclib.NodeType.loinc_code.identifier_of_node_id(loinc_node_id)
-            loinc_properties = self.release.node_properties(loinc_node_id)
-            attributes = {'id': _loincify(code), 'subClassOf': [loincs_root.id]}
-
-            displays = loinc_properties.get(loinclib.NodeAttributeKey.display, None)
-            if displays:
-                attributes['label'] = displays[0]
-                # attributes['formal_name'] = displays[0]
-
-            definitions = loinc_properties.get(loinclib.NodeAttributeKey.definition, None)
-            if definitions:
-                definition = definitions[0]
-                if literals.Literal._to_n3(definition):
-                    # This is needed to work around some unusual string values that throw an error during dumping of:
-                    # ./LoincTable/Loinc.csv line: 47536:
-                    # "51947-0","Package label.Bottom panel",....
-                    attributes['description'] = definition
-
-            loinc = datamodel.LoincCodeClass(**attributes)
-
+            code = ll.NodeType.loinc_code.identifier_of_node_id(loinc_node_id)
+            loinc = datamodel.LoincCodeClass(id=_loincify(code))
             loinc_code_map[code] = loinc
+            properties = self.release.node_properties(loinc_node_id)
 
-        self._outputs[CompLoincGenerator.LOINCS_ANNOTATIONS] = loinc_code_map
-        self._outputs_schema[CompLoincGenerator.LOINCS_ANNOTATIONS] = linkml_runtime.SchemaView(
+            loinc.subClassOf.append(loincs_root.id)
+            loinc.loinc_number = code
+
+            long_common_name = properties.get(ll.NodeAttributeKey.loinc_long_common_name, None)
+            if long_common_name:
+                loinc.long_common_name = long_common_name[0]
+                loinc.label = f'_L  {long_common_name[0]}'
+
+            formal_name = f'{properties.get(ll.NodeAttributeKey.loinc_component)[0]}'
+            formal_name += f':{properties.get(ll.NodeAttributeKey.loinc_property)[0]}'
+            formal_name += f':{properties.get(ll.NodeAttributeKey.loinc_time_aspect)[0]}'
+            formal_name += f':{properties.get(ll.NodeAttributeKey.loinc_system)[0]}'
+            formal_name += f':{properties.get(ll.NodeAttributeKey.loinc_scale_type)[0]}'
+            if ll.NodeAttributeKey.loinc_method_type in properties:
+                formal_name += f':{properties.get(ll.NodeAttributeKey.loinc_method_type)[0]}'
+
+            loinc.formal_name = formal_name
+
+            definitions = properties.get(ll.NodeAttributeKey.loinc_definition, None)
+            if definitions:
+                # This is needed to work around some unusual string values that throw an error during dumping of:
+                # ./LoincTable/Loinc.csv line: 47536:
+                # "51947-0","Package label.Bottom panel",....
+                definition = literals.Literal._to_n3(definitions[0])
+                if definition:
+                    loinc.description = definition
+
+            short_name = properties.get(ll.NodeAttributeKey.loinc_short_name, None)
+            if short_name:
+                loinc.short_name = short_name[0]
+
+        self._outputs[CompLoincGenerator.LOINCS_LIST] = loinc_code_map
+        self._outputs_schema[CompLoincGenerator.LOINCS_LIST] = linkml_runtime.SchemaView(
             self.schema_dir / 'code_schema.yaml')
 
     def save_outputs(self):
         for filename, output in self._outputs.items():
             self._write_outputs(output_name=filename)
 
-    def generate_loinc_defs(self):
+    def generate_loincs_defs(self):
 
-        loinc_node_ids = self.release.node_ids_for_type(loinclib.NodeType.loinc_code)
+        loinc_node_ids = self.release.node_ids_for_type(ll.NodeType.loinc_code)
         loinc_code_map: dict[str, datamodel.LoincCodeClass] = {}
 
         for loinc_node_id in loinc_node_ids:
-            code = loinclib.NodeType.loinc_code.identifier_of_node_id(loinc_node_id)
+            code = ll.NodeType.loinc_code.identifier_of_node_id(loinc_node_id)
             loinc = datamodel.LoincCodeClass(id=_loincify(code))
             loinc_code_map[code] = loinc
 
             # component
-            parts = self.release.out_node_ids(loinc_node_id, loinclib.LoincPrimaryEdgeType.Primary_COMPONENT)
+            parts = self.release.out_node_ids(loinc_node_id, ll.LoincPrimaryEdgeType.Primary_COMPONENT)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has multiple components: {parts}')
             for key, part_node_id in parts.items():
-                part_code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+                part_code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
                 loinc.has_component = datamodel.PartClassId(_loincify(part_code))
 
             # property
-            parts = self.release.out_node_ids(loinc_node_id, loinclib.LoincPrimaryEdgeType.Primary_PROPERTY)
+            parts = self.release.out_node_ids(loinc_node_id, ll.LoincPrimaryEdgeType.Primary_PROPERTY)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple properties: {parts}')
             for key, part_node_id in parts.items():
-                part_code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+                part_code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
                 loinc.has_property = datamodel.PartClassId(_loincify(part_code))
 
             # time
-            parts = self.release.out_node_ids(loinc_node_id, loinclib.LoincPrimaryEdgeType.Primary_TIME)
+            parts = self.release.out_node_ids(loinc_node_id, ll.LoincPrimaryEdgeType.Primary_TIME)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple times: {parts}')
             for key, part_node_id in parts.items():
-                part_code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+                part_code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
                 loinc.has_time = datamodel.PartClassId(_loincify(part_code))
 
             # system
-            parts = self.release.out_node_ids(loinc_node_id, loinclib.LoincPrimaryEdgeType.Primary_SYSTEM)
+            parts = self.release.out_node_ids(loinc_node_id, ll.LoincPrimaryEdgeType.Primary_SYSTEM)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple systems: {parts}')
             for key, part_node_id in parts.items():
-                part_code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+                part_code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
                 loinc.has_system = datamodel.PartClassId(_loincify(part_code))
 
             # scale
-            parts = self.release.out_node_ids(loinc_node_id, loinclib.LoincPrimaryEdgeType.Primary_SCALE)
+            parts = self.release.out_node_ids(loinc_node_id, ll.LoincPrimaryEdgeType.Primary_SCALE)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple scales: {parts}')
             for key, part_node_id in parts.items():
-                part_code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+                part_code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
                 loinc.has_scale = datamodel.PartClassId(_loincify(part_code))
 
             # method
-            parts = self.release.out_node_ids(loinc_node_id, loinclib.LoincPrimaryEdgeType.Primary_METHOD)
+            parts = self.release.out_node_ids(loinc_node_id, ll.LoincPrimaryEdgeType.Primary_METHOD)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple methods: {parts}')
             for key, part_node_id in parts.items():
-                part_code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+                part_code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
                 loinc.has_method = datamodel.PartClassId(_loincify(part_code))
 
-        self._write_outputs(entities=list(loinc_code_map.values()),
-                            schema_file_name='code_schema.yaml',
-                            output_name='loinc-defs',
-                            ontology_iri='https://loinc.org/code-defs')
+        self._outputs[CompLoincGenerator.LOINCS_PARTS_EQUIVALENCE] = loinc_code_map
+        self._outputs_schema[CompLoincGenerator.LOINCS_PARTS_EQUIVALENCE] = linkml_runtime.SchemaView(
+            self.schema_dir / 'code_schema.yaml')
 
-    def generate_parts(self):
-        part_node_ids = self.release.node_ids_for_type(loinclib.NodeType.loinc_part)
+    def generate_parts_list(self):
+        part_node_ids = self.release.node_ids_for_type(ll.NodeType.loinc_part)
         code_part_map: t.Dict[str, datamodel.PartClass] = {}
 
         # parts_root = datamodel.PartClass(id=_loincify('__parts'))
         # code_part_map['__parts'] = parts_root
 
         for part_node_id in part_node_ids:
-            code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+            code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
             properties: dict = self.release.node_properties(part_node_id)
-            part_name = properties.get(loinclib.NodeAttributeKey.part_name, [None])[0]
-            part_display_name = properties.get(loinclib.NodeAttributeKey.part_display_name, [None])[0]
-            part_type = properties.get(loinclib.NodeAttributeKey.part_type, [None])[0]
+            part_name = properties.get(ll.NodeAttributeKey.part_name, [None])[0]
+            part_display_name = properties.get(ll.NodeAttributeKey.part_display_name, [None])[0]
+            part_type = properties.get(ll.NodeAttributeKey.part_type, [None])[0]
 
             part = datamodel.PartClass(id=_loincify(code), part_number=code)
             # part.subClassOf.append(parts_root)
@@ -305,40 +187,123 @@ class CompLoincGenerator:
 
     def generate_parts_trees(self):
 
-        part_node_ids = self.release.node_ids_for_type(loinclib.NodeType.loinc_part)
+        part_node_ids = self.release.node_ids_for_type(ll.NodeType.loinc_part)
         code_part_map: t.Dict[str, datamodel.PartClass] = {}
 
-        parts_hierarchy_root = datamodel.PartClass(id=_loincify('__parts_trees_hierarchy_root'))
-        parts_no_hierarchy_root = datamodel.PartClass(id=_loincify('__parts_no_hierarchy_root'))
+        parts_hierarchy_root = datamodel.PartClass(id=_loincify('__parts_trees'))
+        parts_no_hierarchy_root = datamodel.PartClass(id=_loincify('__parts_no_hierarchy'))
 
         code_part_map['__parts_trees'] = parts_hierarchy_root
         code_part_map['__parts_no_hierarchy'] = parts_no_hierarchy_root
 
         for part_node_id in part_node_ids:
-            part_code = loinclib.NodeType.loinc_part.identifier_of_node_id(part_node_id)
-
+            part_code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
             part = datamodel.PartClass(id=_loincify(part_code))
-            parent_ids = self.release.out_node_ids(part_node_id, loinclib.EdgeType.LoincLib_HasParent)
+            code_part_map[part_code] = part
+
+            properties = self.release.node_properties(part_node_id)
+
+            # Do annotations.
+            # Is this a new part code?
+            if ll.NodeAttributeKey.part_name not in properties:
+                # this code is not in the parts file
+                part.part_number = part_code
+                code_text = properties.get(ll.NodeAttributeKey.tree_code_text, None)
+                if code_text:
+                    part.label = f'_tree_label_ {code_text[0]}'
+
+            # do subclass axioms
+            parent_ids = self.release.out_node_ids(part_node_id, ll.EdgeType.LoincLib_HasParent)
             if parent_ids:
-                part.subClassOf = [_loincify(loinclib.NodeType.loinc_part.identifier_of_node_id(parent_id)) for
-                                    parent_id in parent_ids.values()]
+                part.subClassOf = [_loincify(ll.NodeType.loinc_part.identifier_of_node_id(parent_id)) for
+                                   parent_id in parent_ids.values()]
             else:
                 part_parent = None
-                child_node_ids = self.release.in_node_ids(part_node_id, loinclib.EdgeType.LoincLib_HasParent)
+                child_node_ids = self.release.in_node_ids(part_node_id, ll.EdgeType.LoincLib_HasParent)
                 for _, child_of_child_node_id in child_node_ids.items():
-                    child_node_type = loinclib.NodeType.type_for_node_id(child_of_child_node_id)
-                    if child_node_type and child_node_type == loinclib.NodeType.loinc_part:
+                    child_node_type = ll.NodeType.type_for_node_id(child_of_child_node_id)
+                    if child_node_type and child_node_type == ll.NodeType.loinc_part:
                         part_parent = parts_hierarchy_root
                         break
 
                 if not part_parent:
                     part_parent = parts_no_hierarchy_root
                 part.subClassOf.append(part_parent)
-            code_part_map[part_code] = part
 
-        self._outputs[CompLoincGenerator.PARTS_TREES_HIERARCHY] = code_part_map
-        self._outputs_schema[CompLoincGenerator.PARTS_TREES_HIERARCHY] = linkml_runtime.SchemaView(
+        self._outputs[CompLoincGenerator.PARTS_TREES] = code_part_map
+        self._outputs_schema[CompLoincGenerator.PARTS_TREES] = linkml_runtime.SchemaView(
             self.schema_dir / 'part_schema.yaml')
+
+    def parts_group_chem_equivalences(self):
+
+        code_map: dict[str, datamodel.LoincCodeClass] = {}
+
+        group = datamodel.LoincCodeClass(id=_loincify('__parts-group-comp-eq'))
+        code_map[group.id] = group
+
+        chem_node_id = ll.NodeType.loinc_part.node_id_of_identifier('LP7786-9')
+        chem = self._parts_group_comp_equivalences_recurse(chem_node_id, code_map)
+        # chem.subClassOf.append(group.id)
+
+        self._outputs[CompLoincGenerator.PARTS_GROUP_CHEM_EQ] = code_map
+        code_view = linkml_runtime.SchemaView(self.schema_dir / 'code_schema.yaml')
+        part_view = linkml_runtime.SchemaView(self.schema_dir / 'part_schema.yaml')
+        code_view.merge_schema(part_view.schema)
+        self._outputs_schema[CompLoincGenerator.PARTS_GROUP_CHEM_EQ] = code_view
+
+    def _parts_group_comp_equivalences_recurse(self, part_node_id, code_map):
+        code = ll.NodeType.loinc_part.identifier_of_node_id(part_node_id)
+
+        properties = self.release.node_properties(part_node_id)
+        part_based_def = datamodel.LoincCodeClass(id=_loincify(f'{code}_comp_eq'))
+
+        label = None
+        part_names = properties.get(ll.NodeAttributeKey.part_name, None)
+        if part_names:
+            label = f'{part_names[0]} (COMP EQ)'
+        if not label:
+            code_texts = properties.get(ll.NodeAttributeKey.tree_code_text)
+            if code_texts:
+                label = f'{code_texts[0]} (COMP EQ)'
+        if not label:
+            label = f'{code} (COMP EQ)'
+
+        part_based_def.label = label
+        part_based_def.has_component = datamodel.PartClass(id=_loincify(code))
+        code_map[code] = part_based_def
+
+        children_parts = self.release.in_node_ids(part_node_id, ll.EdgeType.LoincLib_HasParent).values()
+        for child_part_id in children_parts:
+            if ll.NodeType.type_for_node_id(child_part_id) == ll.NodeType.loinc_part:
+                child_def = self._parts_group_comp_equivalences_recurse(child_part_id, code_map)
+                # child_def.subClassOf.append(part_based_def.id)
+
+        return part_based_def
+
+    def generate_loincs_group_component_subpart_one_has_slash(self):
+        loinc_node_ids = self.release.node_ids_for_type(ll.NodeType.loinc_code)
+        loinc_code_map: dict[str, datamodel.LoincCodeClass] = {}
+
+        loincs_group = datamodel.LoincCodeClass(id=_loincify('__loincs_group_component_subpart_one_has_slash'))
+        loinc_code_map[loincs_group.id] = loincs_group
+
+        for loinc_node_id in loinc_node_ids:
+            code = ll.NodeType.loinc_code.identifier_of_node_id(loinc_node_id)
+            loinc = datamodel.LoincCodeClass(id=_loincify(code))
+            properties = self.release.node_properties(loinc_node_id)
+            components = properties.get(ll.NodeAttributeKey.loinc_component, None)
+            if components:
+                component: str = components[0]
+                subpart_one = component.split('^')[0]
+                if '/' in subpart_one:
+                    loinc.subClassOf.append(loincs_group
+                                            .id)
+                    loinc_code_map[code] = loinc
+
+        self._outputs[CompLoincGenerator.LOINCS_GROUP_COMPONENT_SUBPART_ONE_HAS_SLASH] = loinc_code_map
+        self._outputs_schema[
+            CompLoincGenerator.LOINCS_GROUP_COMPONENT_SUBPART_ONE_HAS_SLASH] = linkml_runtime.SchemaView(
+            self.schema_dir / 'code_schema.yaml')
 
     def _write_outputs(self, /, *,
                        output_name: str,
@@ -361,7 +326,7 @@ class CompLoincGenerator:
             shutil.move(output_file_datetime, output_file)
 
 
-def _loincify(id):
+def _loincify(id) -> str:
     """
     adds the loinc: prefix to loinc part and code numbers
     :param id:
