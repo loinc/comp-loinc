@@ -1,13 +1,2 @@
-/antlr.jar
-/antlr/antlr.jar
-/antlr/bin/antlr.sh
-/antlr/bin/antlr-setup.sh
-/antlr/__init__.py
-/antlr/loinc.g4
-/antlr/loinc.interp
-/antlr/loinc.tokens
-/antlr/loincLexer.interp
-/antlr/loincLexer.py
-/antlr/loincLexer.tokens
-/antlr/loincListener.py
-/antlr/loincParser.py
+/antlr/*
+/tmp/tmp*

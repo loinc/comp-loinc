@@ -11,9 +11,11 @@ todo's (minor)
   exists=False for each `typer.Option` as a reminder. I would use `exists=True`, but `typer` has a relative path bug.
   2. help text: Consider changing/adding docstring param descriptions to `typer.Option(help=<description>)`.
 """
+import logging
 import os
 import pathlib
 import subprocess
+import time
 import typing
 from os.path import dirname
 
@@ -22,17 +24,18 @@ from typing_extensions import Annotated
 
 import comp_loinc
 import loinclib
+from comp_loinc.ingest.code_ingest import CodeIngest
+from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
+# try:
+from comp_loinc.ingest.part_ingest import PartOntology
+from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
 
-try:
-    from comp_loinc.ingest.part_ingest import PartOntology
-    from comp_loinc.ingest.code_ingest import CodeIngest
-    from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
-    from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
-except ModuleNotFoundError:
-    from comp_loinc.ingest.part_ingest import PartOntology
-    from comp_loinc.ingest.code_ingest import CodeIngest
-    from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
-    from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
+# except ModuleNotFoundError:
+#     from comp_loinc.ingest.part_ingest import PartOntology
+#     from comp_loinc.ingest.code_ingest import CodeIngest
+#     from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
+#     from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
+
 
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
 
@@ -72,7 +75,13 @@ generator: typing.Optional[comp_loinc.CompLoincGenerator] = None
 
 @app.callback()
 def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = LOINC_DIR,
-                    out_dir: Annotated[pathlib.Path, typer.Option()] = PROJECT_DIR / 'data' / 'loinc_owl'):
+                    out_dir: Annotated[pathlib.Path, typer.Option()] = PROJECT_DIR / 'data' / 'loinc_owl',
+                    log_level: Annotated[str, typer.Option()] = 'INFO'):
+    logging.basicConfig(filename=PROJECT_DIR / 'logs' / f'log_{time.strftime("%Y%m%d-%H%M%S")}.txt',
+                        encoding='utf-8',
+                        level=logging.getLevelName(log_level.upper())
+                        )
+
     global release, generator
     release = loinclib.LoincRelease(loinc_dir, '2.74', PROJECT_DIR / 'data' / 'loinc_trees' / '2023-06-14')
     generator = comp_loinc.CompLoincGenerator(loinc_release=release,
@@ -82,14 +91,47 @@ def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = LOINC_D
 
 
 @app.command()
+def generate_all():
+    print(f'Building all')
+    loincs_list()
+    loincs_primary_defs()
+    loincs_supplementary_defs()
+
+
+@app.command()
+def loincs_list():
+    release.load_LoincTable_Loinc_csv()
+    generator.generate_loincs_list()
+    generator.save_outputs()
+
+
+@app.command()
+def loincs_primary_defs():
+    print(f'Building loinc-primary-defs.owl')
+    release.load_AccessoryFiles_PartFile_LoincPartLink_Primary_csv()
+    generator.generate_loincs_primary_defs()
+    generator.save_outputs()
+
+
+@app.command()
+def loincs_supplementary_defs():
+    print(f'Building loinc-primary-defs.owl')
+    release.load_AccessoryFiles_PartFile_LoincPartLink_Supplementary_csv()
+    generator.generate_loincs_supplementary_defs()
+    generator.save_outputs()
+
+
+@app.command()
+def loincs_comp_has_slash():
+    print(f'Building loincs with slash in component')
+    release.load_LoincTable_Loinc_csv()
+    generator.generate_group_component_has_slash()
+    generator.save_outputs()
+
+
+@app.command()
 def parts_list():
-    print("Parsing files 3", flush=True)
-    # release.parse_LoincTable_Loinc_csv()
-    release.parse_AccessoryFiles_PartFile_Part_csv()
-
-    #
-    # release.parse_AccessoryFiles_ComponentHierarchyBySystem_ComponentHierarchyBySystem_csv()
-
+    release.load_AccessoryFiles_PartFile_Part_csv()
     print("Generating parts ontology", flush=True)
     generator.generate_parts_list()
     generator.save_outputs()
@@ -97,37 +139,17 @@ def parts_list():
 
 @app.command()
 def parts_trees():
-    release.parse_AccessoryFiles_PartFile_Part_csv()
-    release.parse_all_trees()
-
+    release.load_AccessoryFiles_PartFile_Part_csv()
+    release.load_all_trees()
     generator.generate_parts_trees()
     generator.save_outputs()
 
+
 @app.command()
 def parts_group_chem_eq():
-    release.parse_AccessoryFiles_PartFile_Part_csv()
-    release.parse_all_trees()
-    generator.parts_group_chem_equivalences()
-    generator.save_outputs()
-
-@app.command()
-def loincs_list():
-    release.parse_LoincTable_Loinc_csv()
-    generator.generate_loincs_list()
-    generator.save_outputs()
-
-
-@app.command()
-def loincs_defs():
-    print(f'Building loinc-defs.owl')
-    release.parse_AccessoryFiles_PartFile_LoincPartLink_Primary_csv()
-    generator.generate_loincs_defs()
-    generator.save_outputs()
-
-@app.command()
-def loincs_group_component_subpart_one_has_slash():
-    release.parse_LoincTable_Loinc_csv()
-    generator.generate_loincs_group_component_subpart_one_has_slash()
+    release.load_AccessoryFiles_PartFile_Part_csv()
+    release.load_all_trees()
+    generator.generate_parts_group_chem_equivalences()
     generator.save_outputs()
 
 
