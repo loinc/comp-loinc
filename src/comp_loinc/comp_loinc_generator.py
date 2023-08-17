@@ -1,6 +1,7 @@
 import shutil
 import time
 import typing as t
+import urllib.parse
 from pathlib import Path
 
 import funowl
@@ -50,17 +51,20 @@ class CompLoincGenerator:
 
         for loinc_node_id in loinc_node_ids:
             code = ll.NodeType.loinc_code.identifier_of_node_id(loinc_node_id)
-            loinc = datamodel.LoincCodeClass(id=_loincify(code))
-            loinc_code_map[code] = loinc
             properties = self.release.node_properties(loinc_node_id)
 
-            loinc.subClassOf.append(loincs_root.id)
+            parent = self._loinc_parent(properties, loinc_code_map)
+
+            loinc = datamodel.LoincCodeClass(id=_loincify(code), subClassOf=[parent.id])
+            loinc_code_map[code] = loinc
+
+            # loinc.subClassOf.append(loincs_root.id)
             loinc.loinc_number = code
 
             long_common_name = properties.get(Lat.loinc_long_common_name, None)
             if long_common_name:
                 loinc.long_common_name = long_common_name[0]
-                loinc.label = f'LC:  {long_common_name[0]}'
+                loinc.label = f'_LC  {long_common_name[0]}'
 
             formal_name = f'{properties.get(Lat.loinc_component)[0]}'
             formal_name += f':{properties.get(Lat.loinc_property)[0]}'
@@ -305,7 +309,7 @@ class CompLoincGenerator:
         loinc_code_map: dict[str, datamodel.LoincCodeClass] = {}
 
         has_slash = datamodel.LoincCodeClass(id=_loincify(CompLoincGenerator.GROUP_COMP_HAS_SLASH))
-        has_slash.subClassOf = datamodel.LoincCodeClassId(CompLoincGenerator.GROUPS)
+        has_slash.subClassOf = datamodel.LoincCodeClassId(_loincify(CompLoincGenerator.GROUPS))
         loinc_code_map[CompLoincGenerator.GROUP_COMP_HAS_SLASH] = has_slash
 
         for loinc_node_id in loinc_node_ids:
@@ -477,6 +481,41 @@ class CompLoincGenerator:
             shutil.copyfile(output_file_datetime, output_file)
         else:
             shutil.move(output_file_datetime, output_file)
+
+    def _loinc_parent(self, properties, code_map: dict[str, datamodel.LoincCodeClass]) -> datamodel.LoincCodeClass:
+
+        class_types = properties.get(Lat.loinc_class_type, None)
+        class_type = None
+        if class_types:
+            class_type_code = f'classtype_{class_types[0]}'
+            class_type = code_map.setdefault(class_type_code, datamodel.LoincCodeClass(id=_loincify(class_type_code),
+                                                                                       label=f'class type {class_types[0]}',
+                                                                                       subClassOf=[
+                                                                                           code_map['__loincs'].id
+                                                                                       ]
+                                                                                       ))
+
+        classes = properties.get(Lat.loinc_class, None)
+        class_part = None
+        if classes:
+            class_parts = classes[0].split('.')
+            url_suffix = None
+            for part in class_parts:
+                if not class_part:
+                    url_suffix = f'class_{part}'
+
+                    class_part = code_map.setdefault(url_suffix, datamodel.LoincCodeClass(
+                        id=_loincify(urllib.parse.quote(url_suffix))))
+                    class_part.subClassOf = [class_type.id]
+                    continue
+                else:
+                    url_suffix = f'{url_suffix}.{part}'
+                    class_part = code_map.setdefault(url_suffix,
+                                                     datamodel.LoincCodeClass(
+                                                         id=_loincify(urllib.parse.quote(url_suffix)),
+                                                         subClassOf=[class_part.id]))
+
+        return class_part
 
 
 def _loincify(identifier) -> str:

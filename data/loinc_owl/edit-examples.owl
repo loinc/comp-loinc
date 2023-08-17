@@ -1,0 +1,29 @@
+Prefix(:=<http://www.semanticweb.org/essaids/ontologies/2023/7/untitled-ontology-72/>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<https://loinc.org/edit-examples>
+
+Declaration(Class(<https://loinc.org/LP31978-7>))
+Declaration(Class(<https://loinc.org/__loincs>))
+Declaration(Class(<https://loinc.org/comp-loinc#abc>))
+Declaration(ObjectProperty(<https://loinc.org/hasComponent>))
+Declaration(AnnotationProperty(<https://loinc.org/comp-loinc#alsosee>))
+
+
+############################
+#   Classes
+############################
+
+# Class: <https://loinc.org/comp-loinc#abc> (<https://loinc.org/comp-loinc#abc>)
+
+EquivalentClasses(<https://loinc.org/comp-loinc#abc> ObjectSomeValuesFrom(<https://loinc.org/hasComponent> <https://loinc.org/LP31978-7>))
+SubClassOf(<https://loinc.org/comp-loinc#abc> <https://loinc.org/__loincs>)
+
+
+AnnotationAssertion(<https://loinc.org/comp-loinc#alsosee> <https://loinc.org/LP281591-0> <https://loinc.org/LP6955-1>)
+)
