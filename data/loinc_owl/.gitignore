@@ -1,0 +1,6 @@
+*
+!.gitignore
+!comp-loinc.owl
+!edit-examples.owl
+!catalog-v001.xml
+

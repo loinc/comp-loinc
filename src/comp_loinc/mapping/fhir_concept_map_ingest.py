@@ -67,5 +67,5 @@ class ChebiFhirIngest(Mappings):
             l2c_df.to_csv(lc, sep="\t", index=False)
 
     def sssom_chebi_to_owl(self):
-        with open(f"{path_root}/data/output/owl_component_files/{self.output}", 'w') as l2co:
+        with open(f"{self.output}", 'w') as l2co:
             convert_file(f"{path_root}/data/output/sssom_mapping_files/loinc2chebi.tsv", output=l2co, output_format='owl')

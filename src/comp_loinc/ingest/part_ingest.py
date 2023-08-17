@@ -67,22 +67,37 @@ class PartOntology(object):
             part = None
             # choose the proper data model class based on the part type
             # Currently, the only specific part types ingested are: TIME, METHOD, COMPONENT, PROPERTY, SYSTEM, SCALE
-            match params['part_type']:
-                case "TIME":
-                    part = TimeClass(**params)
-                case "METHOD":
-                    part = MethodClass(**params)
-                case "COMPONENT":
-                    part = ComponentClass(**params)
-                case "CLASS":
-                    # Some components are of part type CLASS (I thought this was only for abstract classes)
-                    part = ComponentClass(**params)
-                case "PROPERTY":
-                    part = PropertyClass(**params)
-                case "SYSTEM":
-                    part = SystemClass(**params)
-                case "SCALE":
-                    part = ScaleClass(**params)
+            # match params['part_type']:
+            #     case "TIME":
+            #         part = TimeClass(**params)
+            #     case "METHOD":
+            #         part = MethodClass(**params)
+            #     case "COMPONENT":
+            #         part = ComponentClass(**params)
+            #     case "CLASS":
+            #         # Some components are of part type CLASS (I thought this was only for abstract classes)
+            #         part = ComponentClass(**params)
+            #     case "PROPERTY":
+            #         part = PropertyClass(**params)
+            #     case "SYSTEM":
+            #         part = SystemClass(**params)
+            #     case "SCALE":
+            #         part = ScaleClass(**params)
+
+            # match not available in 3.8
+            part_classes = {
+                'TIME': datamodel.TimeClass,
+                'METHOD': datamodel.MethodClass,
+                'COMPONENT': datamodel.ComponentClass,
+                'CLASS': datamodel.ComponentClass,
+                'PROPERTY': datamodel.PropertyClass,
+                'SYSTEM': datamodel.SystemClass,
+                'SCALE': datamodel.ScaleClass
+            }
+
+            if params['part_type'] in part_classes:
+                part = part_classes[params['part_type']](**params)
+
             if part:
                 self.part_classes.append(part)
 

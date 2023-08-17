@@ -16,6 +16,10 @@ classes:
       - subClassOf
       - part_number
       - part_type
+      - part_name
+      - part_display_name
+    annotations:
+      owl: Class
   ComponentClass:
     is_a: PartClass
     slot_usage:
@@ -56,4 +60,14 @@ slots:
     slot_uri: loinc:part_number
     annotations:
       owl: AnnotationAssertion
+  part_name:
+    slot_uri: loinc:part_name
+    annotations:
+      owl: AnnotationAssertion
+  part_display_name:
+    slot_uri: loinc:part_display_name
+    annotations:
+      owl: AnnotationAssertion
+
+
 
