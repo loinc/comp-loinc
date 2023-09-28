@@ -14,7 +14,7 @@
         <owl:imports rdf:resource="https://loinc.org/loincs-list"/>
         <owl:imports rdf:resource="https://loinc.org/loincs-primary-defs"/>
         <owl:imports rdf:resource="https://loinc.org/loincs-supplementary-defs"/>
-        <owl:imports rdf:resource="https://loinc.org/parts-group-chem-eq"/>
+<!--        <owl:imports rdf:resource="https://loinc.org/parts-group-chem-eq"/>-->
         <owl:imports rdf:resource="https://loinc.org/parts-list"/>
         <owl:imports rdf:resource="https://loinc.org/parts-trees"/>
     </owl:Ontology>

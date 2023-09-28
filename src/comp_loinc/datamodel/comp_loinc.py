@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.9.0
-# Generation date: 2023-08-10T06:07:28
+# Generation date: 2023-09-27T12:25:01
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -81,14 +81,6 @@ class ScaleClassId(PartClassId):
     pass
 
 
-class CodeBySystemId(ThingId):
-    pass
-
-
-class CodeByComponentId(ThingId):
-    pass
-
-
 @dataclass
 class Thing(YAMLRoot):
     _inherited_slots: ClassVar[List[str]] = []
@@ -101,6 +93,8 @@ class Thing(YAMLRoot):
     id: Union[str, ThingId] = None
     label: Optional[str] = None
     description: Optional[str] = None
+    subClassOf: Optional[Union[Union[str, ThingId], List[Union[str, ThingId]]]] = empty_list()
+    equivalentClasses: Optional[Union[Union[str, ThingId], List[Union[str, ThingId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -113,6 +107,14 @@ class Thing(YAMLRoot):
 
         if self.description is not None and not isinstance(self.description, str):
             self.description = str(self.description)
+
+        if not isinstance(self.subClassOf, list):
+            self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
+        self.subClassOf = [v if isinstance(v, ThingId) else ThingId(v) for v in self.subClassOf]
+
+        if not isinstance(self.equivalentClasses, list):
+            self.equivalentClasses = [self.equivalentClasses] if self.equivalentClasses is not None else []
+        self.equivalentClasses = [v if isinstance(v, ThingId) else ThingId(v) for v in self.equivalentClasses]
 
         super().__post_init__(**kwargs)
 
@@ -152,7 +154,6 @@ class LoincCodeClass(Thing):
     syntax_analyte_divisor: Optional[Union[str, PartClassId]] = None
     syntax_analyte_divisor_suffix: Optional[Union[str, PartClassId]] = None
     syntax_analyte_numerator: Optional[Union[str, PartClassId]] = None
-    subClassOf: Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -235,10 +236,6 @@ class LoincCodeClass(Thing):
         if self.syntax_analyte_numerator is not None and not isinstance(self.syntax_analyte_numerator, PartClassId):
             self.syntax_analyte_numerator = PartClassId(self.syntax_analyte_numerator)
 
-        if not isinstance(self.subClassOf, list):
-            self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
-        self.subClassOf = [v if isinstance(v, LoincCodeClassId) else LoincCodeClassId(v) for v in self.subClassOf]
-
         super().__post_init__(**kwargs)
 
 
@@ -277,7 +274,6 @@ class LoincCodeClassNonIntersection(Thing):
     syntax_analyte_divisor: Optional[Union[str, PartClassId]] = None
     syntax_analyte_divisor_suffix: Optional[Union[str, PartClassId]] = None
     syntax_analyte_numerator: Optional[Union[str, PartClassId]] = None
-    subClassOf: Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -359,10 +355,6 @@ class LoincCodeClassNonIntersection(Thing):
 
         if self.syntax_analyte_numerator is not None and not isinstance(self.syntax_analyte_numerator, PartClassId):
             self.syntax_analyte_numerator = PartClassId(self.syntax_analyte_numerator)
-
-        if not isinstance(self.subClassOf, list):
-            self.subClassOf = [self.subClassOf] if self.subClassOf is not None else []
-        self.subClassOf = [v if isinstance(v, LoincCodeClassId) else LoincCodeClassId(v) for v in self.subClassOf]
 
         super().__post_init__(**kwargs)
 
@@ -558,77 +550,6 @@ class ScaleClass(PartClass):
         super().__post_init__(**kwargs)
 
 
-@dataclass
-class LoincCodeOntology(YAMLRoot):
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = LOINC["set/LoincCodeOntology"]
-    class_class_curie: ClassVar[str] = "loinc:set/LoincCodeOntology"
-    class_name: ClassVar[str] = "LoincCodeOntology"
-    class_model_uri: ClassVar[URIRef] = LOINC.LoincCodeOntology
-
-    component_class_set: Optional[Union[Dict[Union[str, ComponentClassId], Union[dict, ComponentClass]], List[Union[dict, ComponentClass]]]] = empty_dict()
-    system_class_set: Optional[Union[Dict[Union[str, SystemClassId], Union[dict, SystemClass]], List[Union[dict, SystemClass]]]] = empty_dict()
-    code_class_set: Optional[Union[Dict[Union[str, LoincCodeClassId], Union[dict, LoincCodeClass]], List[Union[dict, LoincCodeClass]]]] = empty_dict()
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        self._normalize_inlined_as_list(slot_name="component_class_set", slot_type=ComponentClass, key_name="id", keyed=True)
-
-        self._normalize_inlined_as_list(slot_name="system_class_set", slot_type=SystemClass, key_name="id", keyed=True)
-
-        self._normalize_inlined_as_list(slot_name="code_class_set", slot_type=LoincCodeClass, key_name="id", keyed=True)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class CodeBySystem(Thing):
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = LOINC["grouping_classes/CodeBySystem"]
-    class_class_curie: ClassVar[str] = "loinc:grouping_classes/CodeBySystem"
-    class_name: ClassVar[str] = "CodeBySystem"
-    class_model_uri: ClassVar[URIRef] = LOINC.CodeBySystem
-
-    id: Union[str, CodeBySystemId] = None
-    has_system: Optional[Union[str, SystemClassId]] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, CodeBySystemId):
-            self.id = CodeBySystemId(self.id)
-
-        if self.has_system is not None and not isinstance(self.has_system, SystemClassId):
-            self.has_system = SystemClassId(self.has_system)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class CodeByComponent(Thing):
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = LOINC["grouping_classes/CodeByComponent"]
-    class_class_curie: ClassVar[str] = "loinc:grouping_classes/CodeByComponent"
-    class_name: ClassVar[str] = "CodeByComponent"
-    class_model_uri: ClassVar[URIRef] = LOINC.CodeByComponent
-
-    id: Union[str, CodeByComponentId] = None
-    has_component: Optional[Union[str, ComponentClassId]] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, CodeByComponentId):
-            self.id = CodeByComponentId(self.id)
-
-        if self.has_component is not None and not isinstance(self.has_component, ComponentClassId):
-            self.has_component = ComponentClassId(self.has_component)
-
-        super().__post_init__(**kwargs)
-
-
 # Enumerations
 
 
@@ -647,6 +568,9 @@ slots.description = Slot(uri=RDFS.description, name="description", curie=RDFS.cu
 
 slots.subClassOf = Slot(uri=RDFS.subClassOf, name="subClassOf", curie=RDFS.curie('subClassOf'),
                    model_uri=LOINC.subClassOf, domain=None, range=Optional[Union[Union[str, ThingId], List[Union[str, ThingId]]]])
+
+slots.equivalentClasses = Slot(uri=OWL.equivalentClass, name="equivalentClasses", curie=OWL.curie('equivalentClass'),
+                   model_uri=LOINC.equivalentClasses, domain=None, range=Optional[Union[Union[str, ThingId], List[Union[str, ThingId]]]])
 
 slots.formal_name = Slot(uri=LOINC.formal_name, name="formal_name", curie=LOINC.curie('formal_name'),
                    model_uri=LOINC.formal_name, domain=None, range=Optional[str])
@@ -735,18 +659,6 @@ slots.part_name = Slot(uri=LOINC.part_name, name="part_name", curie=LOINC.curie(
 slots.part_display_name = Slot(uri=LOINC.part_display_name, name="part_display_name", curie=LOINC.curie('part_display_name'),
                    model_uri=LOINC.part_display_name, domain=None, range=Optional[str])
 
-slots.component_class_set = Slot(uri=LOINC['set/component_class_set'], name="component_class_set", curie=LOINC.curie('set/component_class_set'),
-                   model_uri=LOINC.component_class_set, domain=LoincCodeOntology, range=Optional[Union[Dict[Union[str, ComponentClassId], Union[dict, ComponentClass]], List[Union[dict, ComponentClass]]]])
-
-slots.system_class_set = Slot(uri=LOINC['set/system_class_set'], name="system_class_set", curie=LOINC.curie('set/system_class_set'),
-                   model_uri=LOINC.system_class_set, domain=LoincCodeOntology, range=Optional[Union[Dict[Union[str, SystemClassId], Union[dict, SystemClass]], List[Union[dict, SystemClass]]]])
-
-slots.code_class_set = Slot(uri=LOINC['set/code_class_set'], name="code_class_set", curie=LOINC.curie('set/code_class_set'),
-                   model_uri=LOINC.code_class_set, domain=LoincCodeOntology, range=Optional[Union[Dict[Union[str, LoincCodeClassId], Union[dict, LoincCodeClass]], List[Union[dict, LoincCodeClass]]]])
-
-slots.LoincCodeClass_subClassOf = Slot(uri=RDFS.subClassOf, name="LoincCodeClass_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.LoincCodeClass_subClassOf, domain=LoincCodeClass, range=Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]])
-
 slots.LoincCodeClass_has_component = Slot(uri=LOINC.hasComponent, name="LoincCodeClass_has_component", curie=LOINC.curie('hasComponent'),
                    model_uri=LOINC.LoincCodeClass_has_component, domain=LoincCodeClass, range=Optional[Union[str, ComponentClassId]])
 
@@ -806,9 +718,6 @@ slots.LoincCodeClass_syntax_analyte_divisor_suffix = Slot(uri=LOINC.syntaxAnalyt
 
 slots.LoincCodeClass_syntax_analyte_numerator = Slot(uri=LOINC.syntaxAnalyteNumerator, name="LoincCodeClass_syntax_analyte_numerator", curie=LOINC.curie('syntaxAnalyteNumerator'),
                    model_uri=LOINC.LoincCodeClass_syntax_analyte_numerator, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
-
-slots.LoincCodeClassNonIntersection_subClassOf = Slot(uri=RDFS.subClassOf, name="LoincCodeClassNonIntersection_subClassOf", curie=RDFS.curie('subClassOf'),
-                   model_uri=LOINC.LoincCodeClassNonIntersection_subClassOf, domain=LoincCodeClassNonIntersection, range=Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]])
 
 slots.LoincCodeClassNonIntersection_has_component = Slot(uri=LOINC.hasComponent, name="LoincCodeClassNonIntersection_has_component", curie=LOINC.curie('hasComponent'),
                    model_uri=LOINC.LoincCodeClassNonIntersection_has_component, domain=LoincCodeClassNonIntersection, range=Optional[Union[str, ComponentClassId]])
@@ -887,9 +796,3 @@ slots.PropertyClass_subClassOf = Slot(uri=RDFS.subClassOf, name="PropertyClass_s
 
 slots.ScaleClass_subClassOf = Slot(uri=RDFS.subClassOf, name="ScaleClass_subClassOf", curie=RDFS.curie('subClassOf'),
                    model_uri=LOINC.ScaleClass_subClassOf, domain=ScaleClass, range=Optional[Union[Union[str, ScaleClassId], List[Union[str, ScaleClassId]]]])
-
-slots.CodeBySystem_has_system = Slot(uri=LOINC.hasSystem, name="CodeBySystem_has_system", curie=LOINC.curie('hasSystem'),
-                   model_uri=LOINC.CodeBySystem_has_system, domain=CodeBySystem, range=Optional[Union[str, SystemClassId]])
-
-slots.CodeByComponent_has_component = Slot(uri=LOINC.hasComponent, name="CodeByComponent_has_component", curie=LOINC.curie('hasComponent'),
-                   model_uri=LOINC.CodeByComponent_has_component, domain=CodeByComponent, range=Optional[Union[str, ComponentClassId]])

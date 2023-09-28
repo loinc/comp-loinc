@@ -44,12 +44,7 @@ classes:
       - syntax_analyte_divisor_suffix  # Supplementary
       - syntax_analyte_numerator  # Supplementary
 
-      - subClassOf
-
     slot_usage:
-      subClassOf:
-        range: LoincCodeClass
-
       has_component:
         annotations:
           owl: EquivalentClasses, IntersectionOf
@@ -148,11 +143,7 @@ classes:
       - syntax_analyte_divisor_suffix  # Supplementary
       - syntax_analyte_numerator  # Supplementary
 
-      - subClassOf
-
     slot_usage:
-      subClassOf:
-        range: LoincCodeClass
 
       has_component:
         annotations:

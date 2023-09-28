@@ -2,45 +2,147 @@ from __future__ import annotations
 
 import re
 from enum import Enum
+from types import MethodType
+import logging
 
 
-class NodeType(str, Enum):
-    loinc_part = 'LPart'
-    loinc_code = 'LCode'
-    special = 'Special'
+def _split_colon_1(self, loinc_string: str):
+    parts = loinc_string.split(':')
+    if len(parts) == 1:
+        logging.warning(f'Identifier: {loinc_string} for system: {self.url} did not have an expected prefix')
+        return parts[0]
+    elif len(parts) == 2:
+        return parts[1]
+    else:
+        logging.warning(f'Identifier {loinc_string} for system: {self.url} had more than two parts')
+        raise ValueError(f'Identifier {loinc_string} for system: {self.url} had more than two parts')
 
-    def node_id_of_identifier(self, identifier: str) -> str:
-        return f'{self.value}{{{identifier}}}'
 
-    def identifier_of_node_id(self, node_id):
-        match = re.match(f'{self.value}{{(.+)}}', node_id)
+# Enum with attributes:
+# https://stackoverflow.com/questions/12680080/python-enums-with-attributes#19300424
+class NameSpace(Enum):
+    loinc = 'LOINC', 'http://loinc.org', 'https://loinc.org/'
+
+    loinclib_part = 'LPart', 'http://loinclib/part', ''
+    loinclib_code = 'LCode', 'http://loinclib/code', ''
+    loinclib_special = 'Special', 'http://loinclib/special', ''
+
+    fdasis = 'fdasis', 'http://fdasis.nlm.nih.gov', ''
+    pubchem = 'pubchem', 'http://pubchem.ncbi.nlm.nih.gov', ''
+    snomed = 'snomed', 'http://snomed.info/sct', ''
+    chebi = 'chebi', 'https://www.ebi.ac.uk/chebi', 'http://purl.obolibrary.org/obo/CHEBI_', _split_colon_1
+    ncbi_clinvar = 'ncbi_clinvar', 'https://www.ncbi.nlm.nih.gov/clinvar', ''
+    ncbi_gene = 'ncbi_gene', 'https://www.ncbi.nlm.nih.gov/gene', ''
+    ncbi_taxonomy = 'ncbi_taxonomy', 'https://www.ncbi.nlm.nih.gov/taxonomy', ''
+    genenames = 'genenames', 'http://www.genenames.org', ''
+    rxnorm = 'rxnorm', 'http://www.nlm.nih.gov/research/umls/rxnorm', ''
+    radlex = 'radlex', 'http://www.radlex.org', ''
+
+    def __new__(cls, *args, **kwds):
+        value = len(cls.__members__) + 1
+        obj = object.__new__(cls)
+        obj._value_ = value
+        return obj
+
+    def __init__(self, node_id_prefix, url, owl_prefix, cleaning_function=None):
+        self.node_id_prefix = node_id_prefix
+        self.url = url
+        self.owl_url_prefix = owl_prefix
+        if cleaning_function:
+            self.clean_loinc_string = MethodType(cleaning_function, self)
+
+    def clean_loinc_string(self, loinc_string: str):
+        return loinc_string
+
+    def owl_url(self, loinc_string):
+        return f'{self.owl_url_prefix}{self.clean_loinc_string(loinc_string)}'
+
+    @classmethod
+    def namespace_for_prefix(cls, node_id_prefix: str) -> NameSpace:
+        for ns in NameSpace:
+            if ns.node_id_prefix == node_id_prefix:
+                return ns
+        raise ValueError(f'No NameSpace for prefix {node_id_prefix}')
+
+    @classmethod
+    def namespace_for_url(cls, url: str) -> NameSpace:
+        for ns in NameSpace:
+            if ns.url == url:
+                return ns
+        raise ValueError(f'No NameSpace for url {url}')
+
+    @classmethod
+    def namespace_for_loinc_identifier(cls, identifier: str) -> NameSpace:
+        if re.match(r'^LP\d+-\d$', identifier):
+            return NameSpace.loinclib_part
+        elif re.search(r'^\d+-\d$', identifier):
+            return NameSpace.loinclib_code
+        else:
+            raise ValueError(f'Loinc identifier: {identifier} did not match NameSpace.')
+
+
+class NodeType(Enum):
+    loinc_part = NameSpace.loinclib_part
+    loinc_code = NameSpace.loinclib_code
+    special = NameSpace.loinclib_special
+
+    fdasis = NameSpace.fdasis
+    pubchem = NameSpace.pubchem
+    snomed = NameSpace.snomed
+    chebi = NameSpace.chebi
+    ncbi_clinvar = NameSpace.ncbi_clinvar
+    ncbi_gene = NameSpace.ncbi_gene
+    ncbi_taxonomy = NameSpace.ncbi_taxonomy
+    genenames = NameSpace.genenames
+    rxnorm = NameSpace.rxnorm
+    radlex = NameSpace.radlex
+
+    def __new__(cls, *args, **kwds):
+        value = len(cls.__members__) + 1
+        obj = object.__new__(cls)
+        obj._value_ = value
+        return obj
+
+    def __init__(self, namespace):
+        self.namespace: NameSpace = namespace
+
+    def nodeid_of_identifier(self, identifier: str) -> str:
+        return f'{self.namespace.node_id_prefix}{{{identifier}}}'
+
+    def identifier_of_nodeid(self, node_id) -> str:
+        match = re.match(f'{self.namespace.node_id_prefix}{{(.+)}}', node_id)
         if match:
             return match.group(1)
         else:
             raise ValueError(f'Failed to extract identifier from node id: {node_id}')
 
-    def is_type(self, node_id: str) -> bool:
-        if re.match(f'{self.value}{{.+}}', node_id):
+    def is_type_of_nodeid(self, node_id: str) -> bool:
+        if re.match(f'{self.namespace.node_id_prefix}{{.+}}', node_id):
             return True
         return False
 
     @classmethod
-    def type_for_identifier(cls, identifier: str) -> NodeType:
-        if re.match(r'^LP\d+-\d$', identifier):
-            return NodeType.loinc_part
-        elif re.search(r'^\d+-\d$', identifier):
-            return NodeType.loinc_code
-        else:
-            raise ValueError(f'Identifier: {identifier} did not match a NodeType enum value.')
+    def type_for_identifier(cls, identifier: str, namespace: NameSpace) -> NodeType:
+        for t in NodeType:
+            if t.namespace == namespace:
+                return t
+        raise ValueError(f'Unable to find node type for identifier {identifier} and namespace  {namespace}')
 
     @classmethod
-    def type_for_node_id(cls, node_id: str) -> NodeType:
-        if re.match(r'^LPart{LP\d+-\d}$', node_id):
-            return NodeType.loinc_part
-        elif re.search(r'^LCode{\d+-\d}$', node_id):
-            return NodeType.loinc_code
-        else:
-            raise ValueError(f'Node id: {node_id} did not match a NodeType enum value.')
+    def type_for_node_id(cls, nodeid: str) -> NodeType:
+        match = re.match(f'(.+){{(.+)}}', nodeid)
+        if match:
+            prefix = match.group(1)
+            namespace = NameSpace.namespace_for_prefix(prefix)
+            return NodeType.nodetype_for_namespace(namespace)
+        raise ValueError(f'Unable to find NodeType for node id: {nodeid}.')
+
+    @classmethod
+    def nodetype_for_namespace(cls, namespace: NameSpace):
+        for t in NodeType:
+            if t.namespace == namespace:
+                return t
+        raise ValueError(f'Unable to find NodeType for NameSpace: {namespace} ')
 
 
 class AttributeType(str, Enum):
@@ -95,7 +197,6 @@ class LoincAttributeType(str, Enum):
 
 
 class EdgeType(Enum):
-    LoincLib_HasParent = 'loinclib', 'has_parent', 'has_parent'
 
     def __new__(cls, *args, **kwds):
         value = len(cls.__members__) + 1
@@ -204,12 +305,21 @@ class LoincEdgeType(Enum):
     Search_METHOD_search = 'Search', 'METHOD', 'http://loinc.org/property/search'
     Search_SUPER_SYSTEM_search = 'Search', 'SUPER SYSTEM', 'http://loinc.org/property/search'
     Search_SYSTEM_search = 'Search', 'SYSTEM', 'http://loinc.org/property/search'
+
     SemanticEnhancement_GENE_analyte_gene = 'SemanticEnhancement', 'GENE', 'http://loinc.org/property/analyte-gene'
+
     SyntaxEnhancement_COMPONENT_analyte_core = 'SyntaxEnhancement', 'COMPONENT', 'http://loinc.org/property/analyte-core'
     SyntaxEnhancement_DIVISOR_analyte_divisor = 'SyntaxEnhancement', 'DIVISOR', 'http://loinc.org/property/analyte-divisor'
     SyntaxEnhancement_NUMERATOR_analyte_numerator = 'SyntaxEnhancement', 'NUMERATOR', 'http://loinc.org/property/analyte-numerator'
     SyntaxEnhancement_SUFFIX_analyte_divisor_suffix = 'SyntaxEnhancement', 'SUFFIX', 'http://loinc.org/property/analyte-divisor-suffix'
     SyntaxEnhancement_SUFFIX_analyte_suffix = 'SyntaxEnhancement', 'SUFFIX', 'http://loinc.org/property/analyte-suffix'
+
+    Equivalence_equivalent_equivalent = 'Equivalence', 'equivalent', 'equivalent'
+    Equivalence_relatedto_relatedto = 'Equivalence', 'relatedto', 'relatedto'
+    Equivalence_narrower_narrower = 'Equivalence', 'narrower', 'narrower'
+    Equivalence_wider_wider = 'Equivalence', 'wider', 'wider'
+
+    LoincTree_has_parent_has_parent = 'LoincTree', 'has_parent', 'has_parent'
 
     def __new__(cls, *args, **kwds):
         value = len(cls.__members__) + 1
@@ -234,121 +344,6 @@ class LoincEdgeType(Enum):
             if edgeType.edge_group == group and edgeType.edge_name == name and edgeType.edge_uri == uri:
                 return edgeType
         raise ValueError(f'Unable to find LoincEdgeType for group: {{{group}}}, name: {{{name}}}, uri: {{{uri}}}')
-
-
-# class SpecialNodeNames(str, Enum):
-#     ratio_or_fraction = '_ratio_or_fraction'
-#
-#     @classmethod
-#     def has_value(cls, value):
-#         return value in cls._value2member_map_
-
-# class LoincPrimaryEdgeType(Enum):
-#     # Generate from rel-primary.py script
-#     DocumentOntology_Document_Kind = 'DocumentOntology', 'Document.Kind', 'http://loinc.org/property/document-kind'
-#     DocumentOntology_Document_Role = 'DocumentOntology', 'Document.Role', 'http://loinc.org/property/document-role'
-#     DocumentOntology_Document_Setting = 'DocumentOntology', 'Document.Setting', 'http://loinc.org/property/document-setting'
-#     DocumentOntology_Document_SubjectMatterDomain = 'DocumentOntology', 'Document.SubjectMatterDomain', 'http://loinc.org/property/document-subject-matter-domain'
-#     DocumentOntology_Document_TypeOfService = 'DocumentOntology', 'Document.TypeOfService', 'http://loinc.org/property/document-type-of-service'
-#     Primary_COMPONENT = 'Primary', 'COMPONENT', 'http://loinc.org/property/COMPONENT'
-#     Primary_METHOD = 'Primary', 'METHOD', 'http://loinc.org/property/METHOD_TYP'
-#     Primary_PROPERTY = 'Primary', 'PROPERTY', 'http://loinc.org/property/PROPERTY'
-#     Primary_SCALE = 'Primary', 'SCALE', 'http://loinc.org/property/SCALE_TYP'
-#     Primary_SYSTEM = 'Primary', 'SYSTEM', 'http://loinc.org/property/SYSTEM'
-#     Primary_TIME = 'Primary', 'TIME', 'http://loinc.org/property/TIME_ASPCT'
-#     Radiology_Rad_Anatomic_Location_Imaging_Focus = 'Radiology', 'Rad.Anatomic Location.Imaging Focus', 'http://loinc.org/property/rad-anatomic-location-imaging-focus'
-#     Radiology_Rad_Anatomic_Location_Laterality = 'Radiology', 'Rad.Anatomic Location.Laterality', 'http://loinc.org/property/rad-anatomic-location-laterality'
-#     Radiology_Rad_Anatomic_Location_Laterality_Presence = 'Radiology', 'Rad.Anatomic Location.Laterality.Presence', 'http://loinc.org/property/rad-anatomic-location-laterality-presence'
-#     Radiology_Rad_Anatomic_Location_Region_Imaged = 'Radiology', 'Rad.Anatomic Location.Region Imaged', 'http://loinc.org/property/rad-anatomic-location-region-imaged'
-#     Radiology_Rad_Guidance_for_Action = 'Radiology', 'Rad.Guidance for.Action', 'http://loinc.org/property/rad-guidance-for-action'
-#     Radiology_Rad_Guidance_for_Approach = 'Radiology', 'Rad.Guidance for.Approach', 'http://loinc.org/property/rad-guidance-for-approach'
-#     Radiology_Rad_Guidance_for_Object = 'Radiology', 'Rad.Guidance for.Object', 'http://loinc.org/property/rad-guidance-for-object'
-#     Radiology_Rad_Guidance_for_Presence = 'Radiology', 'Rad.Guidance for.Presence', 'http://loinc.org/property/rad-guidance-for-presence'
-#     Radiology_Rad_Maneuver_Maneuver_Type = 'Radiology', 'Rad.Maneuver.Maneuver Type', 'http://loinc.org/property/rad-maneuver-maneuver-type'
-#     Radiology_Rad_Modality_Modality_Subtype = 'Radiology', 'Rad.Modality.Modality Subtype', 'http://loinc.org/property/rad-modality-subtype'
-#     Radiology_Rad_Modality_Modality_Type = 'Radiology', 'Rad.Modality.Modality Type', 'http://loinc.org/property/rad-modality-type'
-#     Radiology_Rad_Pharmaceutical_Route = 'Radiology', 'Rad.Pharmaceutical.Route', 'http://loinc.org/property/rad-pharmaceutical-route'
-#     Radiology_Rad_Pharmaceutical_Substance_Given = 'Radiology', 'Rad.Pharmaceutical.Substance Given', 'http://loinc.org/property/rad-pharmaceutical-substance-given'
-#     Radiology_Rad_Reason_for_Exam = 'Radiology', 'Rad.Reason for Exam', 'http://loinc.org/property/rad-reason-for-exam'
-#     Radiology_Rad_Subject = 'Radiology', 'Rad.Subject', 'http://loinc.org/property/rad-subject'
-#     Radiology_Rad_Timing = 'Radiology', 'Rad.Timing', 'http://loinc.org/property/rad-timing'
-#     Radiology_Rad_View_Aggregation = 'Radiology', 'Rad.View.Aggregation', 'http://loinc.org/property/rad-view-aggregation'
-#     Radiology_Rad_View_View_Type = 'Radiology', 'Rad.View.View Type', 'http://loinc.org/property/rad-view-view-type'
-#
-#
-#
-#     def __new__(cls, *args, **kwds):
-#         value = len(cls.__members__) + 1
-#         obj = object.__new__(cls)
-#         obj._value_ = value
-#         return obj
-#
-#     def __init__(self, group, name, uri):
-#         self.rel_group = group
-#         self.rel_name = name
-#         self.rel_uri = uri
-#
-#     def __repr__(self):
-#         return f'{self.name}{{group:{self.rel_group}, name:{self.rel_name}, uri:{self.rel_uri}}}'
-#
-#     def __str__(self):
-#         return self.__repr__()
-#
-#     @classmethod
-#     def type_of(cls, property_uri: str):
-#         for t in LoincPrimaryEdgeType:
-#             if t.rel_uri == property_uri:
-#                 return t
-#         raise ValueError(f'Unable to find LoincPrimaryEdgeType for url: {property_uri}')
-
-
-# class LoincSupplementaryEdgeType(Enum):
-#     DetailedModel_ADJUSTMENT_adjustment = 'DetailedModel', 'ADJUSTMENT', 'http://loinc.org/property/adjustment'
-#     DetailedModel_CHALLENGE_challenge = 'DetailedModel', 'CHALLENGE', 'http://loinc.org/property/challenge'
-#     DetailedModel_COMPONENT_analyte = 'DetailedModel', 'COMPONENT', 'http://loinc.org/property/analyte'
-#     DetailedModel_COUNT_count = 'DetailedModel', 'COUNT', 'http://loinc.org/property/count'
-#     DetailedModel_METHOD_METHOD_TYP = 'DetailedModel', 'METHOD', 'http://loinc.org/property/METHOD_TYP'
-#     DetailedModel_PROPERTY_PROPERTY = 'DetailedModel', 'PROPERTY', 'http://loinc.org/property/PROPERTY'
-#     DetailedModel_SCALE_SCALE_TYP = 'DetailedModel', 'SCALE', 'http://loinc.org/property/SCALE_TYP'
-#     DetailedModel_SUPER_SYSTEM_super_system = 'DetailedModel', 'SUPER SYSTEM', 'http://loinc.org/property/super-system'
-#     DetailedModel_SYSTEM_system_core = 'DetailedModel', 'SYSTEM', 'http://loinc.org/property/system-core'
-#     DetailedModel_TIME_MODIFIER_time_modifier = 'DetailedModel', 'TIME MODIFIER', 'http://loinc.org/property/time-modifier'
-#     DetailedModel_TIME_time_core = 'DetailedModel', 'TIME', 'http://loinc.org/property/time-core'
-#     Metadata_CLASS_CLASS = 'Metadata', 'CLASS', 'http://loinc.org/property/CLASS'
-#     Metadata_CLASS_category = 'Metadata', 'CLASS', 'http://loinc.org/property/category'
-#     Search_CHALLENGE_search = 'Search', 'CHALLENGE', 'http://loinc.org/property/search'
-#     Search_COMPONENT_search = 'Search', 'COMPONENT', 'http://loinc.org/property/search'
-#     Search_METHOD_search = 'Search', 'METHOD', 'http://loinc.org/property/search'
-#     Search_SUPER_SYSTEM_search = 'Search', 'SUPER SYSTEM', 'http://loinc.org/property/search'
-#     Search_SYSTEM_search = 'Search', 'SYSTEM', 'http://loinc.org/property/search'
-#     SemanticEnhancement_GENE_analyte_gene = 'SemanticEnhancement', 'GENE', 'http://loinc.org/property/analyte-gene'
-#     SyntaxEnhancement_COMPONENT_analyte_core = 'SyntaxEnhancement', 'COMPONENT', 'http://loinc.org/property/analyte-core'
-#     SyntaxEnhancement_DIVISOR_analyte_divisor = 'SyntaxEnhancement', 'DIVISOR', 'http://loinc.org/property/analyte-divisor'
-#     SyntaxEnhancement_NUMERATOR_analyte_numerator = 'SyntaxEnhancement', 'NUMERATOR', 'http://loinc.org/property/analyte-numerator'
-#     SyntaxEnhancement_SUFFIX_analyte_divisor_suffix = 'SyntaxEnhancement', 'SUFFIX', 'http://loinc.org/property/analyte-divisor-suffix'
-#     SyntaxEnhancement_SUFFIX_analyte_suffix = 'SyntaxEnhancement', 'SUFFIX', 'http://loinc.org/property/analyte-suffix'
-#
-#     def __new__(cls, *args, **kwds):
-#         value = len(cls.__members__) + 1
-#         obj = object.__new__(cls)
-#         obj._value_ = value
-#         return obj
-#
-#     def __init__(self, group, name, uri):
-#         self.rel_group = group
-#         self.rel_name = name
-#         self.rel_uri = uri
-#
-#     def __repr__(self):
-#         return f'{self.name}{{group:{self.rel_group}, name:{self.rel_name}, uri:{self.rel_uri}}}'
-#
-#     def __str__(self):
-#         return self.__repr__()
-
-
-# class NodePrefix(str, Enum):
-#     loinc_code = 'LC:'
-#     loinc_part = 'LP:'
 
 
 if __name__ == '__main__':

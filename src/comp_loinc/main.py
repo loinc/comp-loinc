@@ -70,32 +70,66 @@ DEFAULTS = {
 }
 
 release: typing.Optional[loinclib.LoincRelease] = None
-generator: typing.Optional[comp_loinc.CompLoincGenerator] = None
+generator: typing.Optional[comp_loinc.Generator] = None
+
+def get_latest_loinc_release():
+    loinc_release = None
+    loinc_releases_path = pathlib.Path(__file__).parent / '..' / '..' / 'data' / 'loinc_release'
+    loinc_releases_path = loinc_releases_path.resolve()
+    for d in reversed(sorted(list(loinc_releases_path.glob('*')))):
+        if pathlib.Path.is_dir(d):
+            loinc_release = d
+            break
+    return loinc_release
+
+
+def get_latest_trees():
+    loinc_trees = None
+    loinc_path = get_latest_loinc_release()
+    if loinc_path:
+        for d in reversed(sorted(list((loinc_path / 'trees' ).glob('*')))):
+            if pathlib.Path.is_dir(d):
+                loinc_trees = d
+                break
+    return loinc_trees
+
+def get_loinc_version():
+    release_path = get_latest_loinc_release()
+    if release_path:
+        return release_path.name
 
 
 @app.callback()
-def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = LOINC_DIR,
+def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = get_latest_loinc_release(),
+                    trees_date: Annotated[str, typer.Option()] = get_latest_trees(),
+                    loinc_version: Annotated[str, typer.Option()] = get_loinc_version(),
                     out_dir: Annotated[pathlib.Path, typer.Option()] = PROJECT_DIR / 'data' / 'loinc_owl',
-                    log_level: Annotated[str, typer.Option()] = 'INFO'):
+                    log_level: Annotated[str, typer.Option()] = 'WARN'):
     logging.basicConfig(filename=PROJECT_DIR / 'logs' / f'log_{time.strftime("%Y%m%d-%H%M%S")}.txt',
                         encoding='utf-8',
                         level=logging.getLevelName(log_level.upper())
                         )
 
     global release, generator
-    release = loinclib.LoincRelease(loinc_dir, '2.74', PROJECT_DIR / 'data' / 'loinc_trees' / '2023-06-14')
-    generator = comp_loinc.CompLoincGenerator(loinc_release=release,
-                                              schema_directory=pathlib.Path(SCHEMA_DIR),
-                                              output_directory=out_dir
-                                              )
+    release = loinclib.LoincRelease(loinc_dir, loinc_version, loinc_dir / 'trees' / trees_date)
+    generator = comp_loinc.Generator(loinc_release=release,
+                                     schema_directory=pathlib.Path(SCHEMA_DIR),
+                                     output_directory=out_dir
+                                     )
 
 
 @app.command()
 def generate_all():
     print(f'Building all')
-    loincs_list()
-    loincs_primary_defs()
-    loincs_supplementary_defs()
+    # loincs_list()
+    # loincs_primary_defs()
+    # loincs_supplementary_defs()
+    # chebi_part_equivalence()
+    # # TODO: SE: broken
+    # # parts_group_chem_eq()
+    # loincs_comp_has_slash()
+    # parts_list()
+    parts_trees()
 
 
 @app.command()
@@ -147,9 +181,17 @@ def parts_trees():
 
 @app.command()
 def parts_group_chem_eq():
+    raise NotImplemented('parts_group_chem_eq is broken for now. Do not use.')
     release.load_AccessoryFiles_PartFile_Part_csv()
     release.load_all_trees()
     generator.generate_parts_group_chem_equivalences()
+    generator.save_outputs()
+
+
+@app.command()
+def chebi_part_equivalence():
+    release.load_AccessoryFiles_PartFile_PartRelatedCodeMapping_csv()
+    generator.generate_chebi_mappings()
     generator.save_outputs()
 
 
@@ -306,6 +348,9 @@ def run_all():
     print("Built merged")
     reason_owl()
     print("Built reasoned")
+
+
+
 
 
 if __name__ == "__main__":

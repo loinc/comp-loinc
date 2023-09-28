@@ -3,13 +3,15 @@ name: loinc-owl-core-schema
 prefixes:
   linkml: https://w3id.org/linkml/
   loinc: https://loinc.org/
+  owl: http://www.w3.org/2002/07/owl#
 default_prefix: loinc
 imports:
   - linkml:types
   - code_schema
   - part_schema
-  - set_schema
-  - grouping_classes_schema
+#  - set_schema
+#  - grouping_classes_schema
+
 
 classes:
   Thing:
@@ -17,6 +19,8 @@ classes:
       - id
       - label
       - description
+      - subClassOf
+      - equivalentClasses
     class_uri: owl:Class
 
 slots:
@@ -38,4 +42,11 @@ slots:
     slot_uri: rdfs:subClassOf
     multivalued: true
     range: Thing
+  equivalentClasses:
+    annotations:
+      owl: EquivalentClasses
+    slot_uri: owl:equivalentClass
+    multivalued: true
+    range: Thing
+
 #    required: true
