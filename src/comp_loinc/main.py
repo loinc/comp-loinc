@@ -32,7 +32,7 @@ except ModuleNotFoundError:
 app = typer.Typer(help='CompLOINC. A tool for creating an OWL version of LOINC.')
 PROJECT_DIR = Path(dirname(dirname(dirname(__file__))))
 
-SRC_DIR = os.path.join(PROJECT_DIR, 'src')
+SRC_DIR = os.path.join(PROJECT_DIR, 'src/comp_loinc')
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
 ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'ROBOT',  'robot')
 
@@ -191,7 +191,7 @@ def run_all():
         output=DEFAULTS['output.parts'])
     build_codes(
         schema_file=DEFAULTS['schema_file.codes'],
-        part_directory=DEFAULTS['part_directory'],
+        code_directory=DEFAULTS['code_directory'],
         output=DEFAULTS['output.codes'])
     build_composed_classes(
         schema_file=DEFAULTS['schema_file.composed'],
@@ -207,4 +207,6 @@ def run_all():
 
 
 if __name__ == "__main__":
+    if not os.path.exists(os.path.join(DATA_DIR, 'output', 'owl_component_files')):
+        os.makedirs(os.path.join(DATA_DIR, 'output', 'owl_component_files'))
     app()

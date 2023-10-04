@@ -46,7 +46,7 @@ This project was made with
 ## Prerequisities
 1. Python 3.9.7+
 2. Required LOINC Files
-For now, these files are [downloadable from GoogleDrive](https://drive.google.com/drive/u/0/folders/1SjDFYs1ocbpovGlAZDKuRVcTDoNztHOc). They need to be put in these locations:
+They need to be put in these locations:
 - `data/part_files/ComponentTree.tsv`
 - `data/code_files/LOINC.csv`
 - `data/code_files/LoincPartlink_Primary.csv`
@@ -54,16 +54,17 @@ For now, these files are [downloadable from GoogleDrive](https://drive.google.co
 
 ## Setup
 1. Clone this repository.
-2. install poetry
-3. run poetry install
+2. install poetry [pip install poetry]
+3. run `poetry install`
+4. run `poetry shell`
 
 ## Usage
 Commands 1.1 - 1.5 are meant to be run sequentially.
 
-Alternatively, you can run all of them at once using default values by running `python src/comp_loinc/cli/main.py all`.
+Alternatively, you can run all of them at once using default values by running `python src/comp_loinc/main.py all`.
 
-Help text can be run via `python src/comp_loinc/cli/main.py --help`. You can see help text for a specific command, including 
-information about its parameters, by running `python src/comp_loinc/cli/main.py COMMAND_NAME --help`.
+Help text can be run via `python src/comp_loinc/main.py --help`. You can see help text for a specific command, including 
+information about its parameters, by running `python src/comp_loinc/main.py COMMAND_NAME --help`.
 
 ### 1.0. `loinc_release`: Download the latest LOINC release files and put them in the correct locations. Zip LoincRelease needs to be in the data/loinc_release directory.
 `python src/comp_loinc/main.py  loinc_release`
