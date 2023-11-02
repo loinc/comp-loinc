@@ -5,6 +5,7 @@ prefixes:
   loinc: https://loinc.org/
   owl: http://www.w3.org/2002/07/owl#
 default_prefix: loinc
+default_range: string
 imports:
   - linkml:types
   - code_schema
@@ -21,6 +22,12 @@ classes:
       - description
       - subClassOf
       - equivalentClasses
+    class_uri: owl:Class
+
+  Loinc:
+    slots:
+      - codes
+      - parts
     class_uri: owl:Class
 
 slots:
@@ -48,5 +55,12 @@ slots:
     slot_uri: owl:equivalentClass
     multivalued: true
     range: Thing
+  codes:
+    multivalued: true
+    range: LoincCodeClass
+  parts:
+    multivalued: true
+    range: PartClass
+
 
 #    required: true

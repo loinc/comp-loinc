@@ -3,6 +3,7 @@ name: loinc-owl-set-schema
 prefixes:
   linkml: https://w3id.org/linkml/
   loinc: https://loinc.org/
+default_range: string
 imports:
   - linkml:types
   - comp_loinc

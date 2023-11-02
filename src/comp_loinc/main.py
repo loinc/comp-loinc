@@ -104,7 +104,10 @@ def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = get_lat
                     trees_date: Annotated[str, typer.Option()] = get_latest_trees(),
                     loinc_version: Annotated[str, typer.Option()] = get_loinc_version(),
                     out_dir: Annotated[pathlib.Path, typer.Option()] = PROJECT_DIR / 'data' / 'loinc_owl',
-                    log_level: Annotated[str, typer.Option()] = 'WARN'):
+                    log_level: Annotated[str, typer.Option()] = 'WARN',
+                    owl_output: Annotated[bool, typer.Option()] = True,
+                    rdf_output: Annotated[bool, typer.Option()] = True
+                    ):
     logging.basicConfig(filename=PROJECT_DIR / 'logs' / f'log_{time.strftime("%Y%m%d-%H%M%S")}.txt',
                         encoding='utf-8',
                         level=logging.getLevelName(log_level.upper())
@@ -114,21 +117,23 @@ def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = get_lat
     release = loinclib.LoincRelease(loinc_dir, loinc_version, loinc_dir / 'trees' / trees_date)
     generator = comp_loinc.Generator(loinc_release=release,
                                      schema_directory=pathlib.Path(SCHEMA_DIR),
-                                     output_directory=out_dir
+                                     output_directory=out_dir,
+                                     owl_output=owl_output,
+                                     rdf_output=rdf_output
                                      )
 
 
 @app.command()
 def generate_all():
     print(f'Building all')
-    # loincs_list()
-    # loincs_primary_defs()
-    # loincs_supplementary_defs()
-    # chebi_part_equivalence()
-    # # TODO: SE: broken
-    # # parts_group_chem_eq()
-    # loincs_comp_has_slash()
-    # parts_list()
+    loincs_list()
+    loincs_primary_defs()
+    loincs_supplementary_defs()
+    chebi_part_equivalence()
+    # TODO: SE: broken
+    # parts_group_chem_eq()
+    loincs_comp_has_slash()
+    parts_list()
     parts_trees()
 
 

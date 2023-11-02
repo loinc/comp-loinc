@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.9.0
-# Generation date: 2023-09-27T12:25:01
+# Generation date: 2023-11-02T10:31:50
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -115,6 +115,30 @@ class Thing(YAMLRoot):
         if not isinstance(self.equivalentClasses, list):
             self.equivalentClasses = [self.equivalentClasses] if self.equivalentClasses is not None else []
         self.equivalentClasses = [v if isinstance(v, ThingId) else ThingId(v) for v in self.equivalentClasses]
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class Loinc(YAMLRoot):
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = OWL.Class
+    class_class_curie: ClassVar[str] = "owl:Class"
+    class_name: ClassVar[str] = "Loinc"
+    class_model_uri: ClassVar[URIRef] = LOINC.Loinc
+
+    codes: Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]] = empty_list()
+    parts: Optional[Union[Union[str, PartClassId], List[Union[str, PartClassId]]]] = empty_list()
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if not isinstance(self.codes, list):
+            self.codes = [self.codes] if self.codes is not None else []
+        self.codes = [v if isinstance(v, LoincCodeClassId) else LoincCodeClassId(v) for v in self.codes]
+
+        if not isinstance(self.parts, list):
+            self.parts = [self.parts] if self.parts is not None else []
+        self.parts = [v if isinstance(v, PartClassId) else PartClassId(v) for v in self.parts]
 
         super().__post_init__(**kwargs)
 
@@ -571,6 +595,12 @@ slots.subClassOf = Slot(uri=RDFS.subClassOf, name="subClassOf", curie=RDFS.curie
 
 slots.equivalentClasses = Slot(uri=OWL.equivalentClass, name="equivalentClasses", curie=OWL.curie('equivalentClass'),
                    model_uri=LOINC.equivalentClasses, domain=None, range=Optional[Union[Union[str, ThingId], List[Union[str, ThingId]]]])
+
+slots.codes = Slot(uri=LOINC.codes, name="codes", curie=LOINC.curie('codes'),
+                   model_uri=LOINC.codes, domain=None, range=Optional[Union[Union[str, LoincCodeClassId], List[Union[str, LoincCodeClassId]]]])
+
+slots.parts = Slot(uri=LOINC.parts, name="parts", curie=LOINC.curie('parts'),
+                   model_uri=LOINC.parts, domain=None, range=Optional[Union[Union[str, PartClassId], List[Union[str, PartClassId]]]])
 
 slots.formal_name = Slot(uri=LOINC.formal_name, name="formal_name", curie=LOINC.curie('formal_name'),
                    model_uri=LOINC.formal_name, domain=None, range=Optional[str])

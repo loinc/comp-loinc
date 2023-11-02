@@ -21,7 +21,7 @@ class LoadLoincRelease(object):
         if len(release_files) == 1 and release_files[0].endswith('.zip'):
             return release_files.pop()
         else:
-            raise Exception('More than one file in release directory.')
+            raise Exception(f'{len(release_files)} files in release directory: {self.filepath}')
 
     def unzip_loinc_release(self):
         filename = self.get_release_filename()
