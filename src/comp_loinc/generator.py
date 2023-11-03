@@ -12,6 +12,7 @@ from linkml_owl.dumpers import owl_dumper
 from linkml_runtime.dumpers import RDFLibDumper
 
 import loinclib as ll
+from comp_loinc.datamodel import LoincCodeClassNonIntersectionId
 from datamodel import Loinc, LoincCodeClass, PartClass, Thing, PartClassId, LoincCodeClassId, \
     LoincCodeClassNonIntersection
 from loinclib import LoincEdgeType as LET, LoincAttributeType as LAT, NodeType as NT, NameSpace as NS
@@ -62,7 +63,7 @@ class Generator:
 
             parent = self._loinc_parent(properties, loinc_code_map)
 
-            loinc = LoincCodeClass(id=_loincify(code), subClassOf=[parent.id])
+            loinc = LoincCodeClass(id=_loincify(code), subClassOf=[LoincCodeClassId(parent.id)])
             loinc_code_map[code] = loinc
 
             # loinc.subClassOf.append(loincs_root.id)
@@ -310,7 +311,7 @@ class Generator:
         loinc_code_map: dict[str, LoincCodeClass] = {}
 
         has_slash = LoincCodeClass(id=_loincify(Generator.GROUP_COMP_HAS_SLASH))
-        has_slash.subClassOf = LoincCodeClassId(_loincify(Generator.GROUPS))
+        has_slash.subClassOf = [LoincCodeClassId(_loincify(Generator.GROUPS))]
         loinc_code_map[Generator.GROUP_COMP_HAS_SLASH] = has_slash
 
         for loinc_node_id in loinc_node_ids:
@@ -328,7 +329,7 @@ class Generator:
 
             code = NT.loinc_code.identifier_of_nodeid(loinc_node_id)
             loinc = LoincCodeClass(id=_loincify(code))
-            loinc.subClassOf = has_slash.id
+            loinc.subClassOf = [LoincCodeClassId(has_slash.id)]
             loinc_code_map[code] = loinc
 
         self._outputs[Generator.GROUP_COMP_HAS_SLASH] = loinc_code_map
@@ -389,7 +390,7 @@ class Generator:
             # do subclass axioms
             parent_ids = self.loinc_release.out_node_ids(part_node_id, LET.LoincTree_has_parent_has_parent)
             if parent_ids:
-                part.subClassOf = [_loincify(NT.loinc_part.identifier_of_nodeid(parent_id)) for
+                part.subClassOf = [PartClassId(_loincify(NT.loinc_part.identifier_of_nodeid(parent_id))) for
                                    parent_id in parent_ids.values()]
             else:
                 part_parent = None
@@ -402,7 +403,7 @@ class Generator:
 
                 if not part_parent:
                     part_parent = parts_no_hierarchy_root
-                part.subClassOf.append(part_parent)
+                part.subClassOf.append(PartClassId(part_parent.id))
 
         self._outputs[Generator.PARTS_TREES] = code_part_map
 
@@ -411,15 +412,14 @@ class Generator:
         code_map: dict[str, LoincCodeClass] = {}
 
         group = LoincCodeClass(id=_loincify('__parts-group-comp-eq'))
-        group.subClassOf = LoincCodeClassId(Generator.GROUPS)
+        group.subClassOf = [LoincCodeClassId(Generator.GROUPS)]
         code_map[group.id] = group
 
         chem_node_id = NT.loinc_part.nodeid_of_identifier('LP7786-9')
         chem = self._parts_group_comp_equivalences_recurse(chem_node_id, code_map)
-        chem.subClassOf = group.id
+        chem.subClassOf = [LoincCodeClassId(group.id)]
 
         self._outputs[Generator.PARTS_GROUP_CHEM_EQ] = code_map
-
 
     def _parts_group_comp_equivalences_recurse(self, part_node_id, code_map):
         code = NT.loinc_part.identifier_of_nodeid(part_node_id)
@@ -446,7 +446,7 @@ class Generator:
         for child_part_id in children_parts:
             if NT.type_for_node_id(child_part_id) == NT.loinc_part:
                 child_def = self._parts_group_comp_equivalences_recurse(child_part_id, code_map)
-                child_def.subClassOf.append(part_based_def.id)
+                child_def.subClassOf.append(LoincCodeClassNonIntersectionId(part_based_def.id))
 
         return part_based_def
 
@@ -475,7 +475,6 @@ class Generator:
                 if displays:
                     target.label = displays[0]
                 loinc_part.equivalentClasses.append(target)
-
 
         self._outputs[f'mapping-{namespace.node_id_prefix}-equivalence'] = part_map
 
@@ -532,6 +531,10 @@ class Generator:
                         to_file=str(output_file_datetime),
                         schemaview=self.schema_view,
                         prefix_map={'@base': 'http://example'})
+            if timestamped:
+                shutil.copyfile(output_file_datetime, output_file)
+        else:
+            shutil.move(output_file_datetime, output_file)
 
     def _loinc_parent(self, properties, code_map: dict[str, LoincCodeClass]) -> LoincCodeClass:
 
@@ -542,7 +545,7 @@ class Generator:
             class_type = code_map.setdefault(class_type_code, LoincCodeClass(id=_loincify(class_type_code),
                                                                              label=f'class type {class_types[0]}',
                                                                              subClassOf=[
-                                                                                 code_map['__loincs'].id
+                                                                                 LoincCodeClassId(code_map['__loincs'].id)
                                                                              ]
                                                                              ))
 
@@ -557,14 +560,14 @@ class Generator:
 
                     class_part = code_map.setdefault(url_suffix, LoincCodeClass(
                         id=_loincify(urllib.parse.quote(url_suffix))))
-                    class_part.subClassOf = [class_type.id]
+                    class_part.subClassOf = [LoincCodeClassId(class_type.id)]
                     continue
                 else:
                     url_suffix = f'{url_suffix}.{part}'
                     class_part = code_map.setdefault(url_suffix,
                                                      LoincCodeClass(
                                                          id=_loincify(urllib.parse.quote(url_suffix)),
-                                                         subClassOf=[class_part.id]))
+                                                         subClassOf=[LoincCodeClassId(class_part.id)]))
 
         return class_part
 
