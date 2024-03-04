@@ -13,8 +13,8 @@ from linkml_runtime.dumpers import RDFLibDumper
 
 import loinclib as ll
 from comp_loinc.datamodel import LoincCodeClassNonIntersectionId
-from datamodel import Loinc, LoincCodeClass, PartClass, Thing, PartClassId, LoincCodeClassId, \
-    LoincCodeClassNonIntersection
+from comp_loinc.datamodel import Loinc, LoincCodeClass, PartClass, Thing, PartClassId, LoincCodeClassId, \
+    LoincCodeClassIntersection, LoincCodeClassNonIntersection
 from loinclib import LoincEdgeType as LET, LoincAttributeType as LAT, NodeType as NT, NameSpace as NS
 
 
@@ -38,33 +38,133 @@ class Generator:
         self.loinc_release = loinc_release
         self.schema_dir = schema_directory
         self.output_directory = output_directory
+        self.owl_output: bool = owl_output
+        self.rdf_output: bool = rdf_output
+
+        self.loincs: dict[str, t.Union[LoincCodeClass, None]] = {}
+        self.parts: dict[str, t.Union[PartClass]] = {}
 
         self._owl_dumper = owl_dumper.OWLDumper()
         self.__parts: t.Dict[str, PartClass] = {}
 
         self.__datetime_string = time.strftime('%Y-%m-%d_%H-%M-%S')
 
-        self._outputs: t.Dict[str: t.Dict[str, t.List[Thing]]] = dict()
-        self.owl_output: bool = owl_output
-        self.rdf_output: bool = rdf_output
+        self._outputs: t.Dict[str, t.Dict[str, Thing]] = dict()
         self.schema_view = linkml_runtime.SchemaView(self.schema_dir / 'comp_loinc.yaml', merge_imports=True)
+
+    def add_part_info(self, part_codes: list[str] = None):
+        if part_codes:
+            self.add_part_codes(part_codes)
+        else:
+            part_codes = list(self.parts.keys())
+
+        for part_code in part_codes:
+            node_id = NT.loinc_part.nodeid_of_identifier(part_code)
+            part = self.get_part(part_code=part_code, part_class=PartClass)
+
+            part_name = self.loinc_release.get_first_node_property(LAT.part_name, node_id)
+            part.label = part_name
+            part.part_name = part_name
+            part.part_display_name = self.loinc_release.get_first_node_property(LAT.part_display_name, node_id)
+            part.part_type = self.loinc_release.get_first_node_property(LAT.part_type, node_id)
+
+    def add_loincs_codes(self, loinc_codes: list[str]):
+        """Set the LOINC codes that will be processed.
+
+        The provided codes will be added to any existing codes."""
+        for loinc_code in loinc_codes:
+            if loinc_code not in self.loincs:
+                self.loincs[loinc_code] = None
+
+    def add_part_codes(self, part_codes: list[str]):
+        """Set the LOINC Part codes that will be processed.
+
+        The provided codes will be added to any existing codes."""
+        for part_code in part_codes:
+            if part_code not in self.parts:
+                self.parts[part_code] = None
+
+    def get_part(self, part_code: str, part_class: t.Type[PartClass]) -> PartClass:
+        part = self.parts.get(part_code, ...)
+        if part is None:
+            part = part_class(_loincify(part_code))
+            part.part_number = part_code
+            self.parts[part_code] = part
+        elif part is ...:
+            part = None
+        return part
+
+    def get_loinc(self, loinc_code: str, loinc_class: t.Type[LoincCodeClass]) -> PartClass:
+        loinc = self.loincs.get(loinc_code, ...)
+        if loinc is None:
+            loinc = loinc_class(_loincify(loinc_code))
+            loinc.loinc_number = loinc_code
+            self.loincs[loinc_code] = loinc
+        elif loinc is ...:
+            loinc = None
+        return loinc
+
+    def save_owl(self, group_name: str):
+        pass
+
+    ############################
+
+    def generate_parts_list(self):
+        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_part)
+        code_part_map: t.Dict[str, PartClass] = {}
+
+        for part_node_id in part_node_ids:
+            code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+            part = self.parts.setdefault(code, PartClass(id=_loincify(code), part_number=code))
+
+            part_name = self.loinc_release.get_first_node_property(LAT.part_name, part_node_id)
+            part.label = part_name
+            part.part_name = part_name
+
+            part.part_display_name = self.loinc_release.get_first_node_property(LAT.part_display_name, part_node_id)
+            part.part_type = self.loinc_release.get_first_node_property(LAT.part_type, part_node_id)
+
+            code_part_map[code] = part
+
+        self._outputs[Generator.PARTS_LIST] = code_part_map
+
+    #############################
 
     def generate_loincs_list(self):
 
         loinc_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_code)
-        loinc_code_map: dict[str, LoincCodeClass] = {}
+        # loinc_code_map: dict[str, LoincCodeClass] = {}
 
-        loincs_root = LoincCodeClass(id=_loincify('__loincs'))
-        loinc_code_map['__loincs'] = loincs_root
+        loincs_root = LoincCodeClassIntersection(id=_loincify('__loincs'))
+        self.loincs['__loincs'] = loincs_root
 
         for loinc_node_id in loinc_node_ids:
             code = NT.loinc_code.identifier_of_nodeid(loinc_node_id)
             properties = self.loinc_release.get_node_properties(loinc_node_id)
 
-            parent = self._loinc_parent(properties, loinc_code_map)
+            parent = self._loinc_parent(properties, self.loincs)
+            parent_id: LoincCodeClassId = LoincCodeClassId(parent.id)
 
-            loinc = LoincCodeClass(id=_loincify(code), subClassOf=[LoincCodeClassId(parent.id)])
-            loinc_code_map[code] = loinc
+            # TODO: SE: there must be a better way (in Python) to check and add to list if needed, by attribute value(e)
+            # How do LinkML objects implement __eq__?  Specifically the *Id classes?
+            loinc = self.loincs.setdefault(code, LoincCodeClassIntersection(id=_loincify(code)))
+            parents = loinc.subClassOf
+            if parents:
+                has_parent = False
+                p: LoincCodeClassId
+                for p in parents:
+                    if p == parent_id:
+                        has_parent = True
+
+                if not has_parent:
+                    loinc.subClassOf.append(parent_id)
+
+            else:
+                loinc.subClassOf.append(parent_id)
+
+            # loinc = LoincCodeClassIntersection(id=_loincify(code), subClassOf=[LoincCodeClassId(parent.id)])
+            # self.loincs[code] = loinc
+            # loinc_code_map[code] = loinc
 
             # loinc.subClassOf.append(loincs_root.id)
             loinc.loinc_number = code
@@ -97,16 +197,30 @@ class Generator:
             if short_name:
                 loinc.short_name = short_name[0]
 
-        self._outputs[Generator.LOINCS_LIST] = loinc_code_map
+            loinc_class = properties.get(LAT.loinc_class, None)
+            if loinc_class:
+                loinc.loinc_class = loinc_class[0]
+
+            loinc_class_type = properties.get(LAT.loinc_class_type, None)
+            if loinc_class_type:
+                loinc.loinc_class_type = loinc_class_type[0]
+
+        self._outputs[Generator.LOINCS_LIST] = self.loincs
 
     def generate_loincs_primary_defs(self):
 
-        loinc_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_code)
         loinc_code_map: dict[str, LoincCodeClass] = {}
 
+        loinc_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_code)
         for loinc_node_id in loinc_node_ids:
             code = NT.loinc_code.identifier_of_nodeid(loinc_node_id)
-            loinc = LoincCodeClass(id=_loincify(code))
+            loinc = self.loincs.setdefault(code, LoincCodeClassIntersection(id=_loincify(code)))
+
+            loinc.loinc_number = code
+            loinc_properties = self.loinc_release.get_node_properties(loinc_node_id)
+            common_name = loinc_properties.get(LAT.loinc_long_common_name, None)
+            if common_name:
+                loinc.long_common_name = common_name[0];
             loinc_code_map[code] = loinc
 
             # component
@@ -165,7 +279,7 @@ class Generator:
 
         for loinc_node_id in loinc_node_ids:
             code = NT.loinc_code.identifier_of_nodeid(loinc_node_id)
-            loinc = LoincCodeClass(id=_loincify(code))
+            loinc = LoincCodeClassIntersection(id=_loincify(code))
             loinc_code_map[code] = loinc
 
             # 1.1 component analyte
@@ -310,7 +424,7 @@ class Generator:
         loinc_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_code)
         loinc_code_map: dict[str, LoincCodeClass] = {}
 
-        has_slash = LoincCodeClass(id=_loincify(Generator.GROUP_COMP_HAS_SLASH))
+        has_slash = LoincCodeClassIntersection(id=_loincify(Generator.GROUP_COMP_HAS_SLASH))
         has_slash.subClassOf = [LoincCodeClassId(_loincify(Generator.GROUPS))]
         loinc_code_map[Generator.GROUP_COMP_HAS_SLASH] = has_slash
 
@@ -328,37 +442,11 @@ class Generator:
                 continue
 
             code = NT.loinc_code.identifier_of_nodeid(loinc_node_id)
-            loinc = LoincCodeClass(id=_loincify(code))
+            loinc = LoincCodeClassIntersection(id=_loincify(code))
             loinc.subClassOf = [LoincCodeClassId(has_slash.id)]
             loinc_code_map[code] = loinc
 
         self._outputs[Generator.GROUP_COMP_HAS_SLASH] = loinc_code_map
-
-    def generate_parts_list(self):
-        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_part)
-        code_part_map: t.Dict[str, PartClass] = {}
-
-        for part_node_id in part_node_ids:
-            code = NT.loinc_part.identifier_of_nodeid(part_node_id)
-            properties: dict = self.loinc_release.get_node_properties(part_node_id)
-            part_name = properties.get(LAT.part_name, [None])[0]
-            part_display_name = properties.get(LAT.part_display_name, [None])[0]
-            part_type = properties.get(LAT.part_type, [None])[0]
-
-            part = PartClass(id=_loincify(code), part_number=code)
-
-            if part_name:
-                part.label = part_name
-                part.part_name = part_name
-            if part_display_name:
-                part.part_display_name = part_display_name
-
-            if part_type:
-                part.part_type = part_type
-
-            code_part_map[code] = part
-
-        self._outputs[Generator.PARTS_LIST] = code_part_map
 
     def generate_parts_trees(self):
 
@@ -411,7 +499,7 @@ class Generator:
 
         code_map: dict[str, LoincCodeClass] = {}
 
-        group = LoincCodeClass(id=_loincify('__parts-group-comp-eq'))
+        group = LoincCodeClassIntersection(id=_loincify('__parts-group-comp-eq'))
         group.subClassOf = [LoincCodeClassId(Generator.GROUPS)]
         code_map[group.id] = group
 
@@ -542,12 +630,13 @@ class Generator:
         class_type = None
         if class_types:
             class_type_code = f'classtype_{class_types[0]}'
-            class_type = code_map.setdefault(class_type_code, LoincCodeClass(id=_loincify(class_type_code),
-                                                                             label=f'class type {class_types[0]}',
-                                                                             subClassOf=[
-                                                                                 LoincCodeClassId(code_map['__loincs'].id)
-                                                                             ]
-                                                                             ))
+            class_type = code_map.setdefault(class_type_code, LoincCodeClassIntersection(id=_loincify(class_type_code),
+                                                                                         label=f'class type {class_types[0]}',
+                                                                                         subClassOf=[
+                                                                                             LoincCodeClassId(code_map[
+                                                                                                                  '__loincs'].id)
+                                                                                         ]
+                                                                                         ))
 
         classes = properties.get(LAT.loinc_class, None)
         class_part = None
@@ -558,14 +647,14 @@ class Generator:
                 if not class_part:
                     url_suffix = f'class_{part}'
 
-                    class_part = code_map.setdefault(url_suffix, LoincCodeClass(
+                    class_part = code_map.setdefault(url_suffix, LoincCodeClassIntersection(
                         id=_loincify(urllib.parse.quote(url_suffix))))
                     class_part.subClassOf = [LoincCodeClassId(class_type.id)]
                     continue
                 else:
                     url_suffix = f'{url_suffix}.{part}'
                     class_part = code_map.setdefault(url_suffix,
-                                                     LoincCodeClass(
+                                                     LoincCodeClassIntersection(
                                                          id=_loincify(urllib.parse.quote(url_suffix)),
                                                          subClassOf=[LoincCodeClassId(class_part.id)]))
 

@@ -13,6 +13,7 @@ default_curi_maps:
 #loinc[['LOINC_NUM', 'COMPONENT', 'PROPERTY', 'TIME_ASPCT', 'SYSTEM',
 #       'SCALE_TYP', 'METHOD_TYP', 'DefinitionDescription', 'STATUS', 'SHORTNAME', 'LONG_COMMON_NAME']]
 classes:
+
   LoincCodeClass:
     is_a: Thing
     slots:
@@ -21,6 +22,8 @@ classes:
       - formal_name
       - short_name
       - status
+      - loinc_class
+      - loinc_class_type
 
       - has_component
       - has_property
@@ -44,6 +47,9 @@ classes:
       - syntax_analyte_divisor  # Supplementary
       - syntax_analyte_divisor_suffix  # Supplementary
       - syntax_analyte_numerator  # Supplementary
+
+  LoincCodeClassIntersection:
+    is_a: LoincCodeClass
 
     slot_usage:
       has_component:
@@ -113,36 +119,7 @@ classes:
       owl: Class
 
   LoincCodeClassNonIntersection:
-    is_a: Thing
-    slots:
-      - loinc_number
-      - long_common_name
-      - formal_name
-      - short_name
-      - status
-
-      - has_component
-      - has_property
-      - has_time
-      - has_system
-      - has_scale
-      - has_method
-
-      - has_component_analyte  # Supplementary
-      - has_component_challenge  # Supplementary
-      - has_component_count  # Supplementary
-      - has_component_adjustment  # Supplementary
-      - has_time_core   # Supplementary
-      - has_time_modifier   # Supplementary
-      - has_system_core   # Supplementary
-      - has_system_super_system   # Supplementary
-
-      - semantic_analyte_gene  # Supplementary
-      - syntax_analyte_core  # Supplementary
-      - syntax_analyte_suffix  # Supplementary
-      - syntax_analyte_divisor  # Supplementary
-      - syntax_analyte_divisor_suffix  # Supplementary
-      - syntax_analyte_numerator  # Supplementary
+    is_a: LoincCodeClass
 
     slot_usage:
 
@@ -231,6 +208,14 @@ slots:
       owl: AnnotationAssertion
   short_name:
     slot_uri: loinc:short_name
+    annotations:
+      owl: AnnotationAssertion
+  loinc_class:
+    slot_uri: loinc:loinc_class
+    annotations:
+      owl: AnnotationAssertion
+  loinc_class_type:
+    slot_uri: loinc:loinc_class_type
     annotations:
       owl: AnnotationAssertion
 

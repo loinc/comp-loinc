@@ -11,6 +11,7 @@ todo's (minor)
   exists=False for each `typer.Option` as a reminder. I would use `exists=True`, but `typer` has a relative path bug.
   2. help text: Consider changing/adding docstring param descriptions to `typer.Option(help=<description>)`.
 """
+import csv
 import logging
 import os
 import pathlib
@@ -18,6 +19,7 @@ import subprocess
 import time
 import typing
 from os.path import dirname
+from pathlib import Path
 
 import typer
 from typing_extensions import Annotated
@@ -47,6 +49,9 @@ SCHEMA_DIR = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'schema')
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
 ROBOT_BIN_PATH = os.path.join(PROJECT_DIR, 'src', 'comp_loinc', 'ROBOT', 'robot')
 
+CSV_DIR: Path = Path(DATA_DIR) / 'loinc_csv'
+CSV_DIR.mkdir(parents=True, exist_ok=True)
+
 DEFAULTS = {
     'schema_file.parts': os.path.join(SRC_DIR, 'schema', 'part_schema.yaml'),
     'schema_file.codes': os.path.join(SRC_DIR, 'schema', 'code_schema.yaml'),
@@ -72,6 +77,7 @@ DEFAULTS = {
 release: typing.Optional[loinclib.LoincRelease] = None
 generator: typing.Optional[comp_loinc.Generator] = None
 
+
 def get_latest_loinc_release():
     loinc_release = None
     loinc_releases_path = pathlib.Path(__file__).parent / '..' / '..' / 'data' / 'loinc_release'
@@ -87,16 +93,19 @@ def get_latest_trees():
     loinc_trees = None
     loinc_path = get_latest_loinc_release()
     if loinc_path:
-        for d in reversed(sorted(list((loinc_path / 'trees' ).glob('*')))):
+        for d in reversed(sorted(list((loinc_path / 'trees').glob('*')))):
             if pathlib.Path.is_dir(d):
                 loinc_trees = d
                 break
     return loinc_trees
 
+
 def get_loinc_version():
     release_path = get_latest_loinc_release()
     if release_path:
         return release_path.name
+
+
 
 
 @app.callback()
@@ -355,7 +364,91 @@ def run_all():
     print("Built reasoned")
 
 
+@app.command(hidden=True)
+def loincs_primary_defs_csv():
+    print(f'Building loinc-primary-defs.csv')
+    release.load_AccessoryFiles_PartFile_LoincPartLink_Primary_csv()
+    release.load_AccessoryFiles_PartFile_LoincPartLink_Supplementary_csv()
+    release.load_LoincTable_Loinc_csv()
+    release.load_AccessoryFiles_PartFile_Part_csv()
 
+    loinc_node_ids = release.get_all_node_ids_for_node_type(loinclib.NodeType.loinc_code)
+
+    # generator.generate_loincs_primary_defs()
+    # generator.generate_loincs_list()
+    # loincs = list(generator._outputs[generator.LOINCS_PRIMARY_DEFS].values())
+
+    with open(CSV_DIR / 'primary.csv', 'w', newline='') as csvfile:
+        # cols = ['loinc_number', 'formal_name', 'long_common_name', 'loinc_class',
+        #         'loinc_class_type', 'has_component', 'has_component_analyte']
+
+        cols = ['loinc',
+                'loinc_long_common_name',
+                'loinc_class',
+                'loinc_class_type',
+                'has_component',
+                'has_component_type',
+                'has_component_name',
+                'has_component_display',
+                'has_component_analyte',
+                'has_component_analyte_type',
+                'has_component_analyte_name',
+                'has_component_analyte_display']
+        writer = csv.DictWriter(csvfile, fieldnames=cols,
+                                extrasaction='ignore',
+                                dialect='excel')
+        writer.writeheader()
+        # for loinc in list(generator.loincs.values()):
+        for loinc_node_id in loinc_node_ids:
+
+            loinc_properties = release.get_node_properties(loinc_node_id)
+            component = list(release.out_node_ids(loinc_node_id, loinclib.LoincEdgeType.Primary_COMPONENT).values())
+            component_properties = {}
+            if component:
+                component_node_id = component[0]
+                component_properties = release.get_node_properties(component_node_id)
+
+
+            component_analyte = list(release.out_node_ids(loinc_node_id,
+                                                          loinclib.LoincEdgeType.DetailedModel_COMPONENT_analyte).values())
+            component_analyte_properties = {}
+            if component_analyte:
+                component_analyte_node_id = component_analyte[0]
+                component_analyte_properties = release.get_node_properties(component_analyte_node_id)
+
+            properties = {
+                'loinc': next(iter(loinc_properties.get(loinclib.LoincAttributeType.code, [])), None),
+                'loinc_long_common_name': next(iter(loinc_properties.get(
+                    loinclib.LoincAttributeType.loinc_long_common_name, [])), None),
+                'loinc_class': next(iter(loinc_properties.get(
+                    loinclib.LoincAttributeType.loinc_class, [])), None),
+                'loinc_class_type': next(iter(loinc_properties.get(
+                    loinclib.LoincAttributeType.loinc_class_type, [])), None),
+
+                'has_component': next(iter(component_properties.get(loinclib.LoincAttributeType.code, [])), None),
+                'has_component_type': next(iter(component_properties.get(loinclib.LoincAttributeType.part_type, [])),
+                                           None),
+                'has_component_name': next(iter(component_properties.get(loinclib.LoincAttributeType.part_name, [])),
+                                           None),
+                'has_component_display': next(
+                    iter(component_properties.get(loinclib.LoincAttributeType.part_display_name, [])), None),
+
+                'has_component_analyte': next(
+                    iter(component_analyte_properties.get(loinclib.LoincAttributeType.code, [])), None),
+                'has_component_analyte_type': next(
+                    iter(component_analyte_properties.get(loinclib.LoincAttributeType.part_type,
+                                                          [])), None),
+                'has_component_analyte_name': next(
+                    iter(component_analyte_properties.get(loinclib.LoincAttributeType.part_name,
+                                                          [])), None),
+                'has_component_analyte_display': next(iter(component_analyte_properties.get(
+                    loinclib.LoincAttributeType.part_display_name, [])), None),
+            }
+
+            # properties = dict(loinc.__dict__)
+            # properties['has_component'] = str(properties['has_component'])[6:]
+            # properties['has_component_analyte'] = str(properties['has_component_analyte'])[6:]
+            writer.writerow(properties)
 
 
 if __name__ == "__main__":

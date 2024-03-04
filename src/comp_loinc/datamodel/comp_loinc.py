@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.9.0
-# Generation date: 2023-11-02T10:31:50
+# Generation date: 2023-11-09T11:51:11
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -49,7 +49,11 @@ class LoincCodeClassId(ThingId):
     pass
 
 
-class LoincCodeClassNonIntersectionId(ThingId):
+class LoincCodeClassIntersectionId(LoincCodeClassId):
+    pass
+
+
+class LoincCodeClassNonIntersectionId(LoincCodeClassId):
     pass
 
 
@@ -158,6 +162,8 @@ class LoincCodeClass(Thing):
     formal_name: Optional[str] = None
     short_name: Optional[str] = None
     status: Optional[str] = None
+    loinc_class: Optional[str] = None
+    loinc_class_type: Optional[str] = None
     has_component: Optional[Union[str, ComponentClassId]] = None
     has_property: Optional[Union[str, PropertyClassId]] = None
     has_time: Optional[Union[str, TimeClassId]] = None
@@ -199,6 +205,12 @@ class LoincCodeClass(Thing):
 
         if self.status is not None and not isinstance(self.status, str):
             self.status = str(self.status)
+
+        if self.loinc_class is not None and not isinstance(self.loinc_class, str):
+            self.loinc_class = str(self.loinc_class)
+
+        if self.loinc_class_type is not None and not isinstance(self.loinc_class_type, str):
+            self.loinc_class_type = str(self.loinc_class_type)
 
         if self.has_component is not None and not isinstance(self.has_component, ComponentClassId):
             self.has_component = ComponentClassId(self.has_component)
@@ -264,7 +276,107 @@ class LoincCodeClass(Thing):
 
 
 @dataclass
-class LoincCodeClassNonIntersection(Thing):
+class LoincCodeClassIntersection(LoincCodeClass):
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = LOINC["code/LoincCodeClassIntersection"]
+    class_class_curie: ClassVar[str] = "loinc:code/LoincCodeClassIntersection"
+    class_name: ClassVar[str] = "LoincCodeClassIntersection"
+    class_model_uri: ClassVar[URIRef] = LOINC.LoincCodeClassIntersection
+
+    id: Union[str, LoincCodeClassIntersectionId] = None
+    has_component: Optional[Union[str, ComponentClassId]] = None
+    has_property: Optional[Union[str, PropertyClassId]] = None
+    has_time: Optional[Union[str, TimeClassId]] = None
+    has_system: Optional[Union[str, SystemClassId]] = None
+    has_scale: Optional[Union[str, ScaleClassId]] = None
+    has_method: Optional[Union[str, MethodClassId]] = None
+    has_component_analyte: Optional[Union[str, PartClassId]] = None
+    has_component_challenge: Optional[Union[str, PartClassId]] = None
+    has_component_count: Optional[Union[str, PartClassId]] = None
+    has_component_adjustment: Optional[Union[str, PartClassId]] = None
+    has_time_core: Optional[Union[str, PartClassId]] = None
+    has_time_modifier: Optional[Union[str, PartClassId]] = None
+    has_system_core: Optional[Union[str, PartClassId]] = None
+    has_system_super_system: Optional[Union[str, PartClassId]] = None
+    semantic_analyte_gene: Optional[Union[str, PartClassId]] = None
+    syntax_analyte_core: Optional[Union[str, PartClassId]] = None
+    syntax_analyte_suffix: Optional[Union[str, PartClassId]] = None
+    syntax_analyte_divisor: Optional[Union[str, PartClassId]] = None
+    syntax_analyte_divisor_suffix: Optional[Union[str, PartClassId]] = None
+    syntax_analyte_numerator: Optional[Union[str, PartClassId]] = None
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, LoincCodeClassIntersectionId):
+            self.id = LoincCodeClassIntersectionId(self.id)
+
+        if self.has_component is not None and not isinstance(self.has_component, ComponentClassId):
+            self.has_component = ComponentClassId(self.has_component)
+
+        if self.has_property is not None and not isinstance(self.has_property, PropertyClassId):
+            self.has_property = PropertyClassId(self.has_property)
+
+        if self.has_time is not None and not isinstance(self.has_time, TimeClassId):
+            self.has_time = TimeClassId(self.has_time)
+
+        if self.has_system is not None and not isinstance(self.has_system, SystemClassId):
+            self.has_system = SystemClassId(self.has_system)
+
+        if self.has_scale is not None and not isinstance(self.has_scale, ScaleClassId):
+            self.has_scale = ScaleClassId(self.has_scale)
+
+        if self.has_method is not None and not isinstance(self.has_method, MethodClassId):
+            self.has_method = MethodClassId(self.has_method)
+
+        if self.has_component_analyte is not None and not isinstance(self.has_component_analyte, PartClassId):
+            self.has_component_analyte = PartClassId(self.has_component_analyte)
+
+        if self.has_component_challenge is not None and not isinstance(self.has_component_challenge, PartClassId):
+            self.has_component_challenge = PartClassId(self.has_component_challenge)
+
+        if self.has_component_count is not None and not isinstance(self.has_component_count, PartClassId):
+            self.has_component_count = PartClassId(self.has_component_count)
+
+        if self.has_component_adjustment is not None and not isinstance(self.has_component_adjustment, PartClassId):
+            self.has_component_adjustment = PartClassId(self.has_component_adjustment)
+
+        if self.has_time_core is not None and not isinstance(self.has_time_core, PartClassId):
+            self.has_time_core = PartClassId(self.has_time_core)
+
+        if self.has_time_modifier is not None and not isinstance(self.has_time_modifier, PartClassId):
+            self.has_time_modifier = PartClassId(self.has_time_modifier)
+
+        if self.has_system_core is not None and not isinstance(self.has_system_core, PartClassId):
+            self.has_system_core = PartClassId(self.has_system_core)
+
+        if self.has_system_super_system is not None and not isinstance(self.has_system_super_system, PartClassId):
+            self.has_system_super_system = PartClassId(self.has_system_super_system)
+
+        if self.semantic_analyte_gene is not None and not isinstance(self.semantic_analyte_gene, PartClassId):
+            self.semantic_analyte_gene = PartClassId(self.semantic_analyte_gene)
+
+        if self.syntax_analyte_core is not None and not isinstance(self.syntax_analyte_core, PartClassId):
+            self.syntax_analyte_core = PartClassId(self.syntax_analyte_core)
+
+        if self.syntax_analyte_suffix is not None and not isinstance(self.syntax_analyte_suffix, PartClassId):
+            self.syntax_analyte_suffix = PartClassId(self.syntax_analyte_suffix)
+
+        if self.syntax_analyte_divisor is not None and not isinstance(self.syntax_analyte_divisor, PartClassId):
+            self.syntax_analyte_divisor = PartClassId(self.syntax_analyte_divisor)
+
+        if self.syntax_analyte_divisor_suffix is not None and not isinstance(self.syntax_analyte_divisor_suffix, PartClassId):
+            self.syntax_analyte_divisor_suffix = PartClassId(self.syntax_analyte_divisor_suffix)
+
+        if self.syntax_analyte_numerator is not None and not isinstance(self.syntax_analyte_numerator, PartClassId):
+            self.syntax_analyte_numerator = PartClassId(self.syntax_analyte_numerator)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class LoincCodeClassNonIntersection(LoincCodeClass):
     _inherited_slots: ClassVar[List[str]] = []
 
     class_class_uri: ClassVar[URIRef] = LOINC["code/LoincCodeClassNonIntersection"]
@@ -273,11 +385,6 @@ class LoincCodeClassNonIntersection(Thing):
     class_model_uri: ClassVar[URIRef] = LOINC.LoincCodeClassNonIntersection
 
     id: Union[str, LoincCodeClassNonIntersectionId] = None
-    loinc_number: Optional[str] = None
-    long_common_name: Optional[str] = None
-    formal_name: Optional[str] = None
-    short_name: Optional[str] = None
-    status: Optional[str] = None
     has_component: Optional[Union[str, ComponentClassId]] = None
     has_property: Optional[Union[str, PropertyClassId]] = None
     has_time: Optional[Union[str, TimeClassId]] = None
@@ -304,21 +411,6 @@ class LoincCodeClassNonIntersection(Thing):
             self.MissingRequiredField("id")
         if not isinstance(self.id, LoincCodeClassNonIntersectionId):
             self.id = LoincCodeClassNonIntersectionId(self.id)
-
-        if self.loinc_number is not None and not isinstance(self.loinc_number, str):
-            self.loinc_number = str(self.loinc_number)
-
-        if self.long_common_name is not None and not isinstance(self.long_common_name, str):
-            self.long_common_name = str(self.long_common_name)
-
-        if self.formal_name is not None and not isinstance(self.formal_name, str):
-            self.formal_name = str(self.formal_name)
-
-        if self.short_name is not None and not isinstance(self.short_name, str):
-            self.short_name = str(self.short_name)
-
-        if self.status is not None and not isinstance(self.status, str):
-            self.status = str(self.status)
 
         if self.has_component is not None and not isinstance(self.has_component, ComponentClassId):
             self.has_component = ComponentClassId(self.has_component)
@@ -617,6 +709,12 @@ slots.long_common_name = Slot(uri=LOINC.long_common_name, name="long_common_name
 slots.short_name = Slot(uri=LOINC.short_name, name="short_name", curie=LOINC.curie('short_name'),
                    model_uri=LOINC.short_name, domain=None, range=Optional[str])
 
+slots.loinc_class = Slot(uri=LOINC.loinc_class, name="loinc_class", curie=LOINC.curie('loinc_class'),
+                   model_uri=LOINC.loinc_class, domain=None, range=Optional[str])
+
+slots.loinc_class_type = Slot(uri=LOINC.loinc_class_type, name="loinc_class_type", curie=LOINC.curie('loinc_class_type'),
+                   model_uri=LOINC.loinc_class_type, domain=None, range=Optional[str])
+
 slots.has_component = Slot(uri=LOINC.hasComponent, name="has_component", curie=LOINC.curie('hasComponent'),
                    model_uri=LOINC.has_component, domain=None, range=Optional[Union[str, ComponentClassId]])
 
@@ -689,65 +787,65 @@ slots.part_name = Slot(uri=LOINC.part_name, name="part_name", curie=LOINC.curie(
 slots.part_display_name = Slot(uri=LOINC.part_display_name, name="part_display_name", curie=LOINC.curie('part_display_name'),
                    model_uri=LOINC.part_display_name, domain=None, range=Optional[str])
 
-slots.LoincCodeClass_has_component = Slot(uri=LOINC.hasComponent, name="LoincCodeClass_has_component", curie=LOINC.curie('hasComponent'),
-                   model_uri=LOINC.LoincCodeClass_has_component, domain=LoincCodeClass, range=Optional[Union[str, ComponentClassId]])
+slots.LoincCodeClassIntersection_has_component = Slot(uri=LOINC.hasComponent, name="LoincCodeClassIntersection_has_component", curie=LOINC.curie('hasComponent'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_component, domain=LoincCodeClassIntersection, range=Optional[Union[str, ComponentClassId]])
 
-slots.LoincCodeClass_has_property = Slot(uri=LOINC.hasProperty, name="LoincCodeClass_has_property", curie=LOINC.curie('hasProperty'),
-                   model_uri=LOINC.LoincCodeClass_has_property, domain=LoincCodeClass, range=Optional[Union[str, PropertyClassId]])
+slots.LoincCodeClassIntersection_has_property = Slot(uri=LOINC.hasProperty, name="LoincCodeClassIntersection_has_property", curie=LOINC.curie('hasProperty'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_property, domain=LoincCodeClassIntersection, range=Optional[Union[str, PropertyClassId]])
 
-slots.LoincCodeClass_has_time = Slot(uri=LOINC.hasTime, name="LoincCodeClass_has_time", curie=LOINC.curie('hasTime'),
-                   model_uri=LOINC.LoincCodeClass_has_time, domain=LoincCodeClass, range=Optional[Union[str, TimeClassId]])
+slots.LoincCodeClassIntersection_has_time = Slot(uri=LOINC.hasTime, name="LoincCodeClassIntersection_has_time", curie=LOINC.curie('hasTime'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_time, domain=LoincCodeClassIntersection, range=Optional[Union[str, TimeClassId]])
 
-slots.LoincCodeClass_has_system = Slot(uri=LOINC.hasSystem, name="LoincCodeClass_has_system", curie=LOINC.curie('hasSystem'),
-                   model_uri=LOINC.LoincCodeClass_has_system, domain=LoincCodeClass, range=Optional[Union[str, SystemClassId]])
+slots.LoincCodeClassIntersection_has_system = Slot(uri=LOINC.hasSystem, name="LoincCodeClassIntersection_has_system", curie=LOINC.curie('hasSystem'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_system, domain=LoincCodeClassIntersection, range=Optional[Union[str, SystemClassId]])
 
-slots.LoincCodeClass_has_scale = Slot(uri=LOINC.hasScale, name="LoincCodeClass_has_scale", curie=LOINC.curie('hasScale'),
-                   model_uri=LOINC.LoincCodeClass_has_scale, domain=LoincCodeClass, range=Optional[Union[str, ScaleClassId]])
+slots.LoincCodeClassIntersection_has_scale = Slot(uri=LOINC.hasScale, name="LoincCodeClassIntersection_has_scale", curie=LOINC.curie('hasScale'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_scale, domain=LoincCodeClassIntersection, range=Optional[Union[str, ScaleClassId]])
 
-slots.LoincCodeClass_has_method = Slot(uri=LOINC.hasMethod, name="LoincCodeClass_has_method", curie=LOINC.curie('hasMethod'),
-                   model_uri=LOINC.LoincCodeClass_has_method, domain=LoincCodeClass, range=Optional[Union[str, MethodClassId]])
+slots.LoincCodeClassIntersection_has_method = Slot(uri=LOINC.hasMethod, name="LoincCodeClassIntersection_has_method", curie=LOINC.curie('hasMethod'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_method, domain=LoincCodeClassIntersection, range=Optional[Union[str, MethodClassId]])
 
-slots.LoincCodeClass_has_component_analyte = Slot(uri=LOINC.hasComponentAnalyte, name="LoincCodeClass_has_component_analyte", curie=LOINC.curie('hasComponentAnalyte'),
-                   model_uri=LOINC.LoincCodeClass_has_component_analyte, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_component_analyte = Slot(uri=LOINC.hasComponentAnalyte, name="LoincCodeClassIntersection_has_component_analyte", curie=LOINC.curie('hasComponentAnalyte'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_component_analyte, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_has_component_challenge = Slot(uri=LOINC.hasComponentChallenge, name="LoincCodeClass_has_component_challenge", curie=LOINC.curie('hasComponentChallenge'),
-                   model_uri=LOINC.LoincCodeClass_has_component_challenge, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_component_challenge = Slot(uri=LOINC.hasComponentChallenge, name="LoincCodeClassIntersection_has_component_challenge", curie=LOINC.curie('hasComponentChallenge'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_component_challenge, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_has_component_count = Slot(uri=LOINC.hasComponentCount, name="LoincCodeClass_has_component_count", curie=LOINC.curie('hasComponentCount'),
-                   model_uri=LOINC.LoincCodeClass_has_component_count, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_component_count = Slot(uri=LOINC.hasComponentCount, name="LoincCodeClassIntersection_has_component_count", curie=LOINC.curie('hasComponentCount'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_component_count, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_has_component_adjustment = Slot(uri=LOINC.hasComponentAdjustment, name="LoincCodeClass_has_component_adjustment", curie=LOINC.curie('hasComponentAdjustment'),
-                   model_uri=LOINC.LoincCodeClass_has_component_adjustment, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_component_adjustment = Slot(uri=LOINC.hasComponentAdjustment, name="LoincCodeClassIntersection_has_component_adjustment", curie=LOINC.curie('hasComponentAdjustment'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_component_adjustment, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_has_time_core = Slot(uri=LOINC.hasTimeCore, name="LoincCodeClass_has_time_core", curie=LOINC.curie('hasTimeCore'),
-                   model_uri=LOINC.LoincCodeClass_has_time_core, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_time_core = Slot(uri=LOINC.hasTimeCore, name="LoincCodeClassIntersection_has_time_core", curie=LOINC.curie('hasTimeCore'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_time_core, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_has_time_modifier = Slot(uri=LOINC.hasTimeModifier, name="LoincCodeClass_has_time_modifier", curie=LOINC.curie('hasTimeModifier'),
-                   model_uri=LOINC.LoincCodeClass_has_time_modifier, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_time_modifier = Slot(uri=LOINC.hasTimeModifier, name="LoincCodeClassIntersection_has_time_modifier", curie=LOINC.curie('hasTimeModifier'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_time_modifier, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_has_system_core = Slot(uri=LOINC.hasSystemCore, name="LoincCodeClass_has_system_core", curie=LOINC.curie('hasSystemCore'),
-                   model_uri=LOINC.LoincCodeClass_has_system_core, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_system_core = Slot(uri=LOINC.hasSystemCore, name="LoincCodeClassIntersection_has_system_core", curie=LOINC.curie('hasSystemCore'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_system_core, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_has_system_super_system = Slot(uri=LOINC.hasSystemSuperSystem, name="LoincCodeClass_has_system_super_system", curie=LOINC.curie('hasSystemSuperSystem'),
-                   model_uri=LOINC.LoincCodeClass_has_system_super_system, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_has_system_super_system = Slot(uri=LOINC.hasSystemSuperSystem, name="LoincCodeClassIntersection_has_system_super_system", curie=LOINC.curie('hasSystemSuperSystem'),
+                   model_uri=LOINC.LoincCodeClassIntersection_has_system_super_system, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_semantic_analyte_gene = Slot(uri=LOINC.semanticAnalyteGene, name="LoincCodeClass_semantic_analyte_gene", curie=LOINC.curie('semanticAnalyteGene'),
-                   model_uri=LOINC.LoincCodeClass_semantic_analyte_gene, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_semantic_analyte_gene = Slot(uri=LOINC.semanticAnalyteGene, name="LoincCodeClassIntersection_semantic_analyte_gene", curie=LOINC.curie('semanticAnalyteGene'),
+                   model_uri=LOINC.LoincCodeClassIntersection_semantic_analyte_gene, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_syntax_analyte_core = Slot(uri=LOINC.syntaxAnalyteCore, name="LoincCodeClass_syntax_analyte_core", curie=LOINC.curie('syntaxAnalyteCore'),
-                   model_uri=LOINC.LoincCodeClass_syntax_analyte_core, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_syntax_analyte_core = Slot(uri=LOINC.syntaxAnalyteCore, name="LoincCodeClassIntersection_syntax_analyte_core", curie=LOINC.curie('syntaxAnalyteCore'),
+                   model_uri=LOINC.LoincCodeClassIntersection_syntax_analyte_core, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_syntax_analyte_suffix = Slot(uri=LOINC.syntaxAnalyteSuffix, name="LoincCodeClass_syntax_analyte_suffix", curie=LOINC.curie('syntaxAnalyteSuffix'),
-                   model_uri=LOINC.LoincCodeClass_syntax_analyte_suffix, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_syntax_analyte_suffix = Slot(uri=LOINC.syntaxAnalyteSuffix, name="LoincCodeClassIntersection_syntax_analyte_suffix", curie=LOINC.curie('syntaxAnalyteSuffix'),
+                   model_uri=LOINC.LoincCodeClassIntersection_syntax_analyte_suffix, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_syntax_analyte_divisor = Slot(uri=LOINC.syntaxAnalyteDivisor, name="LoincCodeClass_syntax_analyte_divisor", curie=LOINC.curie('syntaxAnalyteDivisor'),
-                   model_uri=LOINC.LoincCodeClass_syntax_analyte_divisor, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_syntax_analyte_divisor = Slot(uri=LOINC.syntaxAnalyteDivisor, name="LoincCodeClassIntersection_syntax_analyte_divisor", curie=LOINC.curie('syntaxAnalyteDivisor'),
+                   model_uri=LOINC.LoincCodeClassIntersection_syntax_analyte_divisor, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_syntax_analyte_divisor_suffix = Slot(uri=LOINC.syntaxAnalyteDivisorSuffix, name="LoincCodeClass_syntax_analyte_divisor_suffix", curie=LOINC.curie('syntaxAnalyteDivisorSuffix'),
-                   model_uri=LOINC.LoincCodeClass_syntax_analyte_divisor_suffix, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_syntax_analyte_divisor_suffix = Slot(uri=LOINC.syntaxAnalyteDivisorSuffix, name="LoincCodeClassIntersection_syntax_analyte_divisor_suffix", curie=LOINC.curie('syntaxAnalyteDivisorSuffix'),
+                   model_uri=LOINC.LoincCodeClassIntersection_syntax_analyte_divisor_suffix, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
-slots.LoincCodeClass_syntax_analyte_numerator = Slot(uri=LOINC.syntaxAnalyteNumerator, name="LoincCodeClass_syntax_analyte_numerator", curie=LOINC.curie('syntaxAnalyteNumerator'),
-                   model_uri=LOINC.LoincCodeClass_syntax_analyte_numerator, domain=LoincCodeClass, range=Optional[Union[str, PartClassId]])
+slots.LoincCodeClassIntersection_syntax_analyte_numerator = Slot(uri=LOINC.syntaxAnalyteNumerator, name="LoincCodeClassIntersection_syntax_analyte_numerator", curie=LOINC.curie('syntaxAnalyteNumerator'),
+                   model_uri=LOINC.LoincCodeClassIntersection_syntax_analyte_numerator, domain=LoincCodeClassIntersection, range=Optional[Union[str, PartClassId]])
 
 slots.LoincCodeClassNonIntersection_has_component = Slot(uri=LOINC.hasComponent, name="LoincCodeClassNonIntersection_has_component", curie=LOINC.curie('hasComponent'),
                    model_uri=LOINC.LoincCodeClassNonIntersection_has_component, domain=LoincCodeClassNonIntersection, range=Optional[Union[str, ComponentClassId]])

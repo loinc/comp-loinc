@@ -20,6 +20,8 @@
       <excludeFolder url="file://$MODULE_DIR$/project" />
       <excludeFolder url="file://$MODULE_DIR$/tests/static" />
       <excludeFolder url="file://$MODULE_DIR$/logs" />
+      <excludeFolder url="file://$MODULE_DIR$/comp_loinc" />
+      <excludeFolder url="file://$MODULE_DIR$/loinc_release" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (comp-loinc)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

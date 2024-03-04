@@ -1,15 +1,14 @@
 from __future__ import annotations
 
-import re
 import typing as t
 from pathlib import Path
 
 import networkx as nx
 import pandas as pd
 
-from .enums import LoincEdgeType as Let, LoincAttributeType as Lat
-from loinclib import LoincEdgeType as LET, LoincAttributeType as LAT, NodeType as NT, NameSpace as NS
 import loinclib as ll
+from loinclib import LoincEdgeType as LET, LoincAttributeType as LAT, NodeType as NT, NameSpace as NS
+from .enums import LoincEdgeType as Let, LoincAttributeType as Lat
 
 
 class LoincRelease:
@@ -42,6 +41,11 @@ class LoincRelease:
 
     def get_node_properties(self, node_id: str) -> dict:
         return self.graph.nodes[node_id]
+
+    def get_first_node_property(self, property_key: t.Any, node_id: str) -> t.Any:
+        property_list = self.graph.nodes[node_id].get(property_key, None)
+        if property_list:
+            return property_list[0]
 
     def out_node_ids(self, from_node_id: str, edge_type: t.Any):
         edges = self.graph.out_edges(nbunch=from_node_id, keys=True,
@@ -254,12 +258,12 @@ class LoincRelease:
             return
 
         for tpl in self.read_AccessoryFiles_PartFile_Part_csv().itertuples():
-            (row_number, code, part_type, part_name, part_display, status) = tpl
+            (row_number, part_number, part_type, part_name, part_display, status) = tpl
 
-            node_id = NT.loinc_part.nodeid_of_identifier(code)
+            node_id = NT.loinc_part.nodeid_of_identifier(part_number)
 
             self.add_node_attribute(node_id=node_id, attribute_name=Lat.code,
-                                    attribute_value=code)
+                                    attribute_value=part_number)
             self.add_node_attribute(node_id=node_id, attribute_name=Lat.part_type,
                                     attribute_value=part_type)
             self.add_node_attribute(node_id=node_id, attribute_name=Lat.part_name,
@@ -284,6 +288,9 @@ class LoincRelease:
              property_uri) = tpl
 
             from_loinc_id = NT.loinc_code.nodeid_of_identifier(loinc_number)
+            self.add_node_attribute(node_id=from_loinc_id, attribute_name=LAT.loinc_long_common_name,
+                                    attribute_value=long_common_name)
+
             to_loinc_id = NT.loinc_part.nodeid_of_identifier(part_number)
             rel_type = Let.type_of(group=link_type_name, name=part_type_name, uri=property_uri)
             self.add_edge_type(from_loinc_id, to_loinc_id, rel_type)

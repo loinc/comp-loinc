@@ -1,51 +1,5 @@
 {
     "$defs": {
-        "CodeByComponent": {
-            "additionalProperties": false,
-            "description": "",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "has_component": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "label": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "id"
-            ],
-            "title": "CodeByComponent",
-            "type": "object"
-        },
-        "CodeBySystem": {
-            "additionalProperties": false,
-            "description": "",
-            "properties": {
-                "description": {
-                    "type": "string"
-                },
-                "has_system": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "label": {
-                    "type": "string"
-                }
-            },
-            "required": [
-                "id"
-            ],
-            "title": "CodeBySystem",
-            "type": "object"
-        },
         "ComponentClass": {
             "additionalProperties": false,
             "description": "",
@@ -53,10 +7,22 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
+                    "type": "string"
+                },
+                "part_display_name": {
+                    "type": "string"
+                },
+                "part_name": {
                     "type": "string"
                 },
                 "part_number": {
@@ -73,10 +39,29 @@
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "ComponentClass",
+            "type": "object"
+        },
+        "Loinc": {
+            "additionalProperties": false,
+            "description": "",
+            "properties": {
+                "codes": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "parts": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "Loinc",
             "type": "object"
         },
         "LoincCodeClass": {
@@ -86,10 +71,28 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "formal_name": {
                     "type": "string"
                 },
                 "has_component": {
+                    "type": "string"
+                },
+                "has_component_adjustment": {
+                    "type": "string"
+                },
+                "has_component_analyte": {
+                    "type": "string"
+                },
+                "has_component_challenge": {
+                    "type": "string"
+                },
+                "has_component_count": {
                     "type": "string"
                 },
                 "has_method": {
@@ -104,7 +107,19 @@
                 "has_system": {
                     "type": "string"
                 },
+                "has_system_core": {
+                    "type": "string"
+                },
+                "has_system_super_system": {
+                    "type": "string"
+                },
                 "has_time": {
+                    "type": "string"
+                },
+                "has_time_core": {
+                    "type": "string"
+                },
+                "has_time_modifier": {
                     "type": "string"
                 },
                 "id": {
@@ -113,10 +128,19 @@
                 "label": {
                     "type": "string"
                 },
+                "loinc_class": {
+                    "type": "string"
+                },
+                "loinc_class_type": {
+                    "type": "string"
+                },
                 "loinc_number": {
                     "type": "string"
                 },
                 "long_common_name": {
+                    "type": "string"
+                },
+                "semantic_analyte_gene": {
                     "type": "string"
                 },
                 "short_name": {
@@ -130,42 +154,253 @@
                         "type": "string"
                     },
                     "type": "array"
+                },
+                "syntax_analyte_core": {
+                    "type": "string"
+                },
+                "syntax_analyte_divisor": {
+                    "type": "string"
+                },
+                "syntax_analyte_divisor_suffix": {
+                    "type": "string"
+                },
+                "syntax_analyte_numerator": {
+                    "type": "string"
+                },
+                "syntax_analyte_suffix": {
+                    "type": "string"
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "LoincCodeClass",
             "type": "object"
         },
-        "LoincCodeOntology": {
+        "LoincCodeClassIntersection": {
             "additionalProperties": false,
             "description": "",
             "properties": {
-                "code_class_set": {
-                    "description": "",
+                "description": {
+                    "type": "string"
+                },
+                "equivalentClasses": {
                     "items": {
-                        "$ref": "#/$defs/LoincCodeClass"
+                        "type": "string"
                     },
                     "type": "array"
                 },
-                "component_class_set": {
-                    "description": "",
+                "formal_name": {
+                    "type": "string"
+                },
+                "has_component": {
+                    "type": "string"
+                },
+                "has_component_adjustment": {
+                    "type": "string"
+                },
+                "has_component_analyte": {
+                    "type": "string"
+                },
+                "has_component_challenge": {
+                    "type": "string"
+                },
+                "has_component_count": {
+                    "type": "string"
+                },
+                "has_method": {
+                    "type": "string"
+                },
+                "has_property": {
+                    "type": "string"
+                },
+                "has_scale": {
+                    "type": "string"
+                },
+                "has_system": {
+                    "type": "string"
+                },
+                "has_system_core": {
+                    "type": "string"
+                },
+                "has_system_super_system": {
+                    "type": "string"
+                },
+                "has_time": {
+                    "type": "string"
+                },
+                "has_time_core": {
+                    "type": "string"
+                },
+                "has_time_modifier": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "loinc_class": {
+                    "type": "string"
+                },
+                "loinc_class_type": {
+                    "type": "string"
+                },
+                "loinc_number": {
+                    "type": "string"
+                },
+                "long_common_name": {
+                    "type": "string"
+                },
+                "semantic_analyte_gene": {
+                    "type": "string"
+                },
+                "short_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subClassOf": {
                     "items": {
-                        "$ref": "#/$defs/ComponentClass"
+                        "type": "string"
                     },
                     "type": "array"
                 },
-                "system_class_set": {
-                    "description": "",
-                    "items": {
-                        "$ref": "#/$defs/SystemClass"
-                    },
-                    "type": "array"
+                "syntax_analyte_core": {
+                    "type": "string"
+                },
+                "syntax_analyte_divisor": {
+                    "type": "string"
+                },
+                "syntax_analyte_divisor_suffix": {
+                    "type": "string"
+                },
+                "syntax_analyte_numerator": {
+                    "type": "string"
+                },
+                "syntax_analyte_suffix": {
+                    "type": "string"
                 }
             },
-            "title": "LoincCodeOntology",
+            "required": [
+                "id"
+            ],
+            "title": "LoincCodeClassIntersection",
+            "type": "object"
+        },
+        "LoincCodeClassNonIntersection": {
+            "additionalProperties": false,
+            "description": "",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "formal_name": {
+                    "type": "string"
+                },
+                "has_component": {
+                    "type": "string"
+                },
+                "has_component_adjustment": {
+                    "type": "string"
+                },
+                "has_component_analyte": {
+                    "type": "string"
+                },
+                "has_component_challenge": {
+                    "type": "string"
+                },
+                "has_component_count": {
+                    "type": "string"
+                },
+                "has_method": {
+                    "type": "string"
+                },
+                "has_property": {
+                    "type": "string"
+                },
+                "has_scale": {
+                    "type": "string"
+                },
+                "has_system": {
+                    "type": "string"
+                },
+                "has_system_core": {
+                    "type": "string"
+                },
+                "has_system_super_system": {
+                    "type": "string"
+                },
+                "has_time": {
+                    "type": "string"
+                },
+                "has_time_core": {
+                    "type": "string"
+                },
+                "has_time_modifier": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "loinc_class": {
+                    "type": "string"
+                },
+                "loinc_class_type": {
+                    "type": "string"
+                },
+                "loinc_number": {
+                    "type": "string"
+                },
+                "long_common_name": {
+                    "type": "string"
+                },
+                "semantic_analyte_gene": {
+                    "type": "string"
+                },
+                "short_name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "subClassOf": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "syntax_analyte_core": {
+                    "type": "string"
+                },
+                "syntax_analyte_divisor": {
+                    "type": "string"
+                },
+                "syntax_analyte_divisor_suffix": {
+                    "type": "string"
+                },
+                "syntax_analyte_numerator": {
+                    "type": "string"
+                },
+                "syntax_analyte_suffix": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id"
+            ],
+            "title": "LoincCodeClassNonIntersection",
             "type": "object"
         },
         "MethodClass": {
@@ -175,10 +410,22 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
+                    "type": "string"
+                },
+                "part_display_name": {
+                    "type": "string"
+                },
+                "part_name": {
                     "type": "string"
                 },
                 "part_number": {
@@ -195,7 +442,6 @@
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "MethodClass",
@@ -208,10 +454,22 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
+                    "type": "string"
+                },
+                "part_display_name": {
+                    "type": "string"
+                },
+                "part_name": {
                     "type": "string"
                 },
                 "part_number": {
@@ -228,7 +486,6 @@
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "PartClass",
@@ -241,10 +498,22 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
+                    "type": "string"
+                },
+                "part_display_name": {
+                    "type": "string"
+                },
+                "part_name": {
                     "type": "string"
                 },
                 "part_number": {
@@ -261,7 +530,6 @@
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "PropertyClass",
@@ -274,10 +542,22 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
+                    "type": "string"
+                },
+                "part_display_name": {
+                    "type": "string"
+                },
+                "part_name": {
                     "type": "string"
                 },
                 "part_number": {
@@ -294,7 +574,6 @@
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "ScaleClass",
@@ -307,10 +586,22 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
+                    "type": "string"
+                },
+                "part_display_name": {
+                    "type": "string"
+                },
+                "part_name": {
                     "type": "string"
                 },
                 "part_number": {
@@ -327,7 +618,6 @@
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "SystemClass",
@@ -340,11 +630,23 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
                     "type": "string"
+                },
+                "subClassOf": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
                 }
             },
             "required": [
@@ -360,10 +662,22 @@
                 "description": {
                     "type": "string"
                 },
+                "equivalentClasses": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
                 "id": {
                     "type": "string"
                 },
                 "label": {
+                    "type": "string"
+                },
+                "part_display_name": {
+                    "type": "string"
+                },
+                "part_name": {
                     "type": "string"
                 },
                 "part_number": {
@@ -380,7 +694,6 @@
                 }
             },
             "required": [
-                "subClassOf",
                 "id"
             ],
             "title": "TimeClass",
@@ -391,29 +704,6 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "additionalProperties": true,
     "metamodel_version": "1.7.0",
-    "properties": {
-        "code_class_set": {
-            "description": "",
-            "items": {
-                "$ref": "#/$defs/LoincCodeClass"
-            },
-            "type": "array"
-        },
-        "component_class_set": {
-            "description": "",
-            "items": {
-                "$ref": "#/$defs/ComponentClass"
-            },
-            "type": "array"
-        },
-        "system_class_set": {
-            "description": "",
-            "items": {
-                "$ref": "#/$defs/SystemClass"
-            },
-            "type": "array"
-        }
-    },
     "title": "loinc-owl-core-schema",
     "type": "object",
     "version": null

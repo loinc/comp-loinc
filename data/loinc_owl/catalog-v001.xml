@@ -9,6 +9,7 @@
     <uri id="User Entered Import Resolution" name="https://loinc.org/loincs-list" uri="loincs-list.owl"/>
     <uri id="Imports Wizard Entry" name="https://loinc.org/group-component-has-slash" uri="group-component-has-slash.owl"/>
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1691696989038" name="https://loinc.org/loinc/" uri="comp-loinc.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1700001986154" name="http://purl.obolibrary.org/obo/chebi.owl" uri="external/chebi.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1700001986154" name="https://loinc.org/loinc/" uri="comp-loinc.owl"/>
     </group>
 </catalog>

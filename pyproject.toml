@@ -5,6 +5,14 @@ description = "Computable OWL Formalization of LOINC"
 authors = ["Tim  Putman <putmantime@users.noreply.github.com>"]
 readme = "README.md"
 
+packages = [
+    {include = "comp_loinc",  from = "src"},
+    {include = "loinclib",  from = "src"}
+]
+
+[tool.poetry.scripts]
+comp-loinc = 'comp_loinc:cli.cli'
+
 [tool.poetry.dependencies]
 python = "^3.10"
 linkml = "^1.5.0"
