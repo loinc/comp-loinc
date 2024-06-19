@@ -32,6 +32,8 @@ from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
 from comp_loinc.ingest.part_ingest import PartOntology
 from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
 
+from loinclib import PropertyType as AT
+
 # except ModuleNotFoundError:
 #     from comp_loinc.ingest.part_ingest import PartOntology
 #     from comp_loinc.ingest.code_ingest import CodeIngest
@@ -74,7 +76,7 @@ DEFAULTS = {
     # 'merged_owl': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
 }
 
-release: typing.Optional[loinclib.LoincRelease] = None
+release: typing.Optional[loinclib.Graph] = None
 generator: typing.Optional[comp_loinc.Generator] = None
 
 
@@ -123,7 +125,7 @@ def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = get_lat
                         )
 
     global release, generator
-    release = loinclib.LoincRelease(loinc_dir, loinc_version, loinc_dir / 'trees' / trees_date)
+    release = loinclib.Graph(loinc_dir, loinc_version, loinc_dir / 'trees' / trees_date)
     generator = comp_loinc.Generator(loinc_release=release,
                                      schema_directory=pathlib.Path(SCHEMA_DIR),
                                      output_directory=out_dir,
@@ -402,7 +404,7 @@ def loincs_primary_defs_csv():
         for loinc_node_id in loinc_node_ids:
 
             loinc_properties = release.get_node_properties(loinc_node_id)
-            component = list(release.out_node_ids(loinc_node_id, loinclib.LoincEdgeType.Primary_COMPONENT).values())
+            component = list(release.out_node_ids(loinc_node_id, loinclib.LoincEdgeType.loinc_Primary_COMPONENT).values())
             component_properties = {}
             if component:
                 component_node_id = component[0]
@@ -410,39 +412,39 @@ def loincs_primary_defs_csv():
 
 
             component_analyte = list(release.out_node_ids(loinc_node_id,
-                                                          loinclib.LoincEdgeType.DetailedModel_COMPONENT_analyte).values())
+                                                          loinclib.LoincEdgeType.loinc_DetailedModel_COMPONENT_analyte).values())
             component_analyte_properties = {}
             if component_analyte:
                 component_analyte_node_id = component_analyte[0]
                 component_analyte_properties = release.get_node_properties(component_analyte_node_id)
 
             properties = {
-                'loinc': next(iter(loinc_properties.get(loinclib.LoincAttributeType.code, [])), None),
+                'loinc': next(iter(loinc_properties.get(AT.loinc_code, [])), None),
                 'loinc_long_common_name': next(iter(loinc_properties.get(
-                    loinclib.LoincAttributeType.loinc_long_common_name, [])), None),
+                    AT.loinc_long_common_name, [])), None),
                 'loinc_class': next(iter(loinc_properties.get(
-                    loinclib.LoincAttributeType.loinc_class, [])), None),
+                    AT.loinc_class, [])), None),
                 'loinc_class_type': next(iter(loinc_properties.get(
-                    loinclib.LoincAttributeType.loinc_class_type, [])), None),
+                    AT.loinc_class_type, [])), None),
 
-                'has_component': next(iter(component_properties.get(loinclib.LoincAttributeType.code, [])), None),
-                'has_component_type': next(iter(component_properties.get(loinclib.LoincAttributeType.part_type, [])),
+                'has_component': next(iter(component_properties.get(AT.loinc_code, [])), None),
+                'has_component_type': next(iter(component_properties.get(AT.loinc_part_type, [])),
                                            None),
-                'has_component_name': next(iter(component_properties.get(loinclib.LoincAttributeType.part_name, [])),
+                'has_component_name': next(iter(component_properties.get(AT.loinc_part_name, [])),
                                            None),
                 'has_component_display': next(
-                    iter(component_properties.get(loinclib.LoincAttributeType.part_display_name, [])), None),
+                    iter(component_properties.get(AT.loinc_part_display_name, [])), None),
 
                 'has_component_analyte': next(
-                    iter(component_analyte_properties.get(loinclib.LoincAttributeType.code, [])), None),
+                    iter(component_analyte_properties.get(AT.loinc_code, [])), None),
                 'has_component_analyte_type': next(
-                    iter(component_analyte_properties.get(loinclib.LoincAttributeType.part_type,
+                    iter(component_analyte_properties.get(AT.loinc_part_type,
                                                           [])), None),
                 'has_component_analyte_name': next(
-                    iter(component_analyte_properties.get(loinclib.LoincAttributeType.part_name,
+                    iter(component_analyte_properties.get(AT.loinc_part_name,
                                                           [])), None),
                 'has_component_analyte_display': next(iter(component_analyte_properties.get(
-                    loinclib.LoincAttributeType.part_display_name, [])), None),
+                    AT.loinc_part_display_name, [])), None),
             }
 
             # properties = dict(loinc.__dict__)

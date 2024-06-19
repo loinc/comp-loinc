@@ -143,4 +143,6 @@ dmypy.json
 
 
 /loinc_release/
+/loinc_trees/
 /comp_loinc/
+/comploinc_out/

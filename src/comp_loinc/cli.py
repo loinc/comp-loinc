@@ -1,4 +1,5 @@
 import logging
+import os.path
 import re
 import time
 import typing as t
@@ -7,56 +8,49 @@ from pathlib import Path
 import typer
 
 LOINC_RELEASE_DIR_NAME = 'loinc_release'
-LOINC_TREES_DIR_NAME = 'trees'
+LOINC_TREES_DIR_NAME = 'loinc_trees'
+
+COMPLOINC_OUT_DIR_NAME = 'comploinc_out'
 
 
 class CompLoincCli:
 
     def __init__(self):
+        self.work_dir: t.Optional[Path] = None
         self.loinc_release_path: t.Optional[Path] = None
-        self.loinc_release_trees_path: t.Optional[Path] = None
+        self.loinc_trees_path: t.Optional[Path] = None
         self.loinc_version = None
         self.output_dir = None
 
-        self.typer = typer.Typer()
-        self.typer.callback()(self.callback)
-        self.typer.command()(self.parts_list)
+        self.cli = typer.Typer(chain=True)
+        self.cli.callback(invoke_without_command=True)(self.callback)
+        self.cli.command()(self.parts_list)
 
     def callback(self, /, *,
-                 loinc_dir: t.Annotated[t.Optional[Path], typer.Option(
-                     help='Path to a directory containing an unpacked LOINC release. '
-                          './loinc_release by default.')] = None,
-                 tree_directory_name: t.Annotated[t.Optional[str], typer.Option(
-                     help='A directory name to load tree files from. For example, '
-                          '"2023-01-01" would look for tree files in loinc_release/trees/2023-01-01')] = None,
+                 work_dir: t.Annotated[t.Optional[Path], typer.Option(help='CompLOINC work directory.')] = Path.cwd(),
+                 loinc_release: t.Annotated[t.Optional[Path], typer.Option(
+                     help=f'Path to a directory containing an unpacked LOINC release. Defaults to: ./{LOINC_RELEASE_DIR_NAME}')] = None,
+                 loinc_trees: t.Annotated[t.Optional[Path], typer.Option(
+                     help=f'A directory name to load tree files from. Defaults to {LOINC_TREES_DIR_NAME}')] = None,
+
                  loinc_version: t.Annotated[t.Optional[str], typer.Option(
-                     help='The LOINC release version. It uses the directory name of the LOINC directory by '
-                          'default if it appears to be a release number.')] = None,
+                     help='The LOINC release version. It uses the directory name of the the loinc_release option by if it appears to be a release number.')] = None,
+
                  out_dir: t.Annotated[t.Optional[Path], typer.Option(help='The CompLOINC output directory.')] = None,
                  log_level: t.Annotated[str, typer.Option(help='Logging level. Defaults to WARN.')] = 'WARN',
                  owl_output: t.Annotated[bool, typer.Option()] = True,
                  rdf_output: t.Annotated[bool, typer.Option()] = True
                  ):
 
-        if loinc_dir:
-            if (loinc_dir / 'LoincTable').exists():
-                self.loinc_release_path = loinc_dir
-            else:
-                raise ValueError(f'LOINC release path {loinc_dir}/LoincTable is not found.')
-        else:
-            self._find_loinc_release_path()
+        if not work_dir.exists():
+            raise ValueError(f'Work directory: {work_dir} does not exist.')
+        self.work_dir = work_dir.absolute()
+        self.loinc_release_path = CompLoincCli._find_loinc_release_path(loinc_release, self.work_dir)
+        self.loinc_trees_path = CompLoincCli._find_trees_path(loinc_trees, self.work_dir)
 
-        if tree_directory_name:
-            tree_dir = self.loinc_release_path / 'trees' / tree_directory_name
-            if tree_dir.exists():
-                if (tree_dir / 'class.csv').exists():
-                    self.loinc_release_trees_path = tree_dir
-                else:
-                    raise ValueError(f"LOINC tree file {tree_dir / 'class.csv'} does not exist")
-            else:
-                raise ValueError(f'LOINC tree directory {tree_dir} does not exist.')
-        else:
-            self._find_loinc_release_trees_path()
+        # todo: implement debug
+        from pprint import pprint
+        pprint(vars(self))
 
         if loinc_version is None:
             loinc_version = self.loinc_release_path.name
@@ -79,41 +73,42 @@ class CompLoincCli:
                             )
 
         print(self.loinc_release_path)
-        print(self.loinc_release_trees_path)
+        print(self.loinc_trees_path)
         print(self.loinc_version)
         print(self.output_dir)
 
     def parts_list(self):
         print('parts list')
 
-    def _find_loinc_release_path(self):
-        loinc_base_path = Path.cwd() / LOINC_RELEASE_DIR_NAME
-
-        if (loinc_base_path / 'LoincTable').exists():
-            self.loinc_release_path = loinc_base_path
+    @classmethod
+    def _find_loinc_release_path(cls, loinc_dir: Path, work_dir: Path) -> Path:
+        loinc_release_path = None
+        if loinc_dir:
+            if not os.path.isabs(loinc_dir):
+                loinc_release_path = work_dir / loinc_dir
+            else:
+                loinc_release_path = loinc_dir
         else:
-            for d in reversed(sorted(list(loinc_base_path.glob('*')))):
-                if Path.is_dir(d):
-                    if (loinc_base_path / d / 'LoincTable').exists():
-                        self.loinc_release_path = loinc_base_path / d
-                        break
+            loinc_release_path = work_dir / LOINC_RELEASE_DIR_NAME
+        loinc_release_path = loinc_release_path.resolve()
+        if not (loinc_release_path / 'LoincTable').exists():
+            raise ValueError(f'LOINC release path {loinc_release_path}/LoincTable is not found.')
+        return loinc_release_path
 
-        if self.loinc_release_path is None:
-            raise ValueError("Couldn't find LOINC release directory.")
-
-    def _find_loinc_release_trees_path(self):
-        loinc_trees_path = self.loinc_release_path / LOINC_TREES_DIR_NAME
-        if (loinc_trees_path / 'class.csv').exists():
-            self.loinc_release_trees_path = loinc_trees_path
+    @classmethod
+    def _find_trees_path(cls, loinc_trees: Path, work_dir: Path) -> Path:
+        loinc_trees_path = None
+        if loinc_trees:
+            if not os.path.isabs(loinc_trees):
+                loinc_trees_path = work_dir / loinc_trees
+            else:
+                loinc_trees_path = loinc_trees
         else:
-            for d in reversed(sorted(list(loinc_trees_path.glob('*')))):
-                if Path.is_dir(d):
-                    if (loinc_trees_path / d / 'class.csv').exists():
-                        self.loinc_release_trees_path = loinc_trees_path / d
-                        break
-
-        if self.loinc_release_trees_path is None:
-            raise ValueError("Couldn't find LOINC trees directory.")
+            loinc_trees_path = work_dir / LOINC_TREES_DIR_NAME
+        loinc_trees_path = loinc_trees_path.resolve()
+        if not (loinc_trees_path / 'class.csv').exists():
+            raise ValueError(f"LOINC tree file {loinc_trees_path / 'class.csv'} does not exist")
+        return loinc_trees_path
 
 
-cli = CompLoincCli().typer
+cli = CompLoincCli()

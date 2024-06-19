@@ -7,11 +7,10 @@ import networkx as nx
 import pandas as pd
 
 import loinclib as ll
-from loinclib import LoincEdgeType as LET, LoincAttributeType as LAT, NodeType as NT, NameSpace as NS
-from .enums import LoincEdgeType as Let, LoincAttributeType as Lat
+from loinclib import EdgeType as ET, NodeType as NT, NameSpace as NS, PropertyType as PT
 
 
-class LoincRelease:
+class Graph:
 
     def __init__(self, release_path: Path, loinc_version: str, trees_path: Path):
         self.release_path: Path = release_path
@@ -49,14 +48,14 @@ class LoincRelease:
 
     def out_node_ids(self, from_node_id: str, edge_type: t.Any):
         edges = self.graph.out_edges(nbunch=from_node_id, keys=True,
-                                     data=ll.AttributeType.graph_entity_type)
+                                     data=ll.PropertyType.edge_type)
 
         result = {edge_key: to_id for (from_id, to_id, edge_key, value) in edges if value == edge_type}
         return result
 
     def in_node_ids(self, to_node_id: str, edge_type: t.Any):
         edges = self.graph.in_edges(nbunch=to_node_id, keys=True,
-                                    data=ll.AttributeType.graph_entity_type)
+                                    data=ll.PropertyType.edge_type)
 
         result_map = dict()
         for from_id, to_id, edge_key, value in edges:
@@ -64,6 +63,7 @@ class LoincRelease:
                 result_map[f'{from_id}-{edge_key}'] = from_id
 
             pass
+        # TODO: clean up
         result = {edge_key: from_id for (from_id, to_id, edge_key, value) in edges if value == edge_type}
         return result_map
 
@@ -115,7 +115,7 @@ class LoincRelease:
         else:
             self.graph.nodes[node_id][attribute_name] = [attribute_value]
 
-    def add_edge_type(self, from_node_id: str, to_node_id: str, edge_type: LET, multiple: bool = False):
+    def add_edge_type(self, from_node_id: str, to_node_id: str, edge_type: ET, multiple: bool = False):
 
         if not from_node_id or not to_node_id:
             raise ValueError(f'From node: {from_node_id} or to node: {to_node_id} is falsy.')
@@ -125,7 +125,7 @@ class LoincRelease:
             return
 
         key = self.graph.add_edge(from_node_id, to_node_id)
-        self.graph.edges[from_node_id, to_node_id, key][ll.AttributeType.graph_entity_type] = edge_type
+        self.graph.edges[from_node_id, to_node_id, key][ll.PropertyType.edge_type] = edge_type
 
     #######################
     # Loinc related loading
@@ -184,65 +184,65 @@ class LoincRelease:
             node_id = NT.loinc_code.nodeid_of_identifier(loinc_number)
 
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.code,
+                                    attribute_name=PT.loinc_code,
                                     attribute_value=loinc_number,
                                     single_value=True
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_component,
+                                    attribute_name=PT.loinc_component,
                                     attribute_value=component,
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_property,
+                                    attribute_name=PT.loinc_property,
                                     attribute_value=_property
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_time_aspect,
+                                    attribute_name=PT.loinc_time_aspect,
                                     attribute_value=time_aspect
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_system,
+                                    attribute_name=PT.loinc_system,
                                     attribute_value=system,
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_scale_type,
+                                    attribute_name=PT.loinc_scale_type,
                                     attribute_value=scale_type,
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_method_type,
+                                    attribute_name=PT.loinc_method_type,
                                     attribute_value=method_type,
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_class,
+                                    attribute_name=PT.loinc_class,
                                     attribute_value=_class
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_version_last_changed,
+                                    attribute_name=PT.loinc_version_last_changed,
                                     attribute_value=version_last_changed
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.status,
+                                    attribute_name=PT.loinc_status,
                                     attribute_value=status
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_class_type,
+                                    attribute_name=PT.loinc_class_type,
                                     attribute_value=class_type,
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_definition,
+                                    attribute_name=PT.loinc_definition,
                                     attribute_value=definition_description
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_short_name,
+                                    attribute_name=PT.loinc_short_name,
                                     attribute_value=short_name
                                     )
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_long_common_name,
+                                    attribute_name=PT.loinc_long_common_name,
                                     attribute_value=long_common_name
                                     )
 
             self.add_node_attribute(node_id=node_id,
-                                    attribute_name=Lat.loinc_version_first_released,
+                                    attribute_name=PT.loinc_version_first_released,
                                     attribute_value=version_first_released,
                                     )
 
@@ -260,17 +260,17 @@ class LoincRelease:
         for tpl in self.read_AccessoryFiles_PartFile_Part_csv().itertuples():
             (row_number, part_number, part_type, part_name, part_display, status) = tpl
 
-            node_id = NT.loinc_part.nodeid_of_identifier(part_number)
+            node_id = NT.loinclib_part.nodeid_of_identifier(part_number)
 
-            self.add_node_attribute(node_id=node_id, attribute_name=Lat.code,
+            self.add_node_attribute(node_id=node_id, attribute_name=PT.loinc_code,
                                     attribute_value=part_number)
-            self.add_node_attribute(node_id=node_id, attribute_name=Lat.part_type,
+            self.add_node_attribute(node_id=node_id, attribute_name=PT.loinc_part_type,
                                     attribute_value=part_type)
-            self.add_node_attribute(node_id=node_id, attribute_name=Lat.part_name,
+            self.add_node_attribute(node_id=node_id, attribute_name=PT.loinc_part_name,
                                     attribute_value=part_name)
-            self.add_node_attribute(node_id=node_id, attribute_name=Lat.part_display_name,
+            self.add_node_attribute(node_id=node_id, attribute_name=PT.loinc_part_display_name,
                                     attribute_value=part_display)
-            self.add_node_attribute(node_id=node_id, attribute_name=Lat.status,
+            self.add_node_attribute(node_id=node_id, attribute_name=PT.loinc_status,
                                     attribute_value=status)
 
         self.__parsed_parts = True
@@ -288,11 +288,11 @@ class LoincRelease:
              property_uri) = tpl
 
             from_loinc_id = NT.loinc_code.nodeid_of_identifier(loinc_number)
-            self.add_node_attribute(node_id=from_loinc_id, attribute_name=LAT.loinc_long_common_name,
+            self.add_node_attribute(node_id=from_loinc_id, attribute_name=PT.loinc_long_common_name,
                                     attribute_value=long_common_name)
 
-            to_loinc_id = NT.loinc_part.nodeid_of_identifier(part_number)
-            rel_type = Let.type_of(group=link_type_name, name=part_type_name, uri=property_uri)
+            to_loinc_id = NT.loinclib_part.nodeid_of_identifier(part_number)
+            rel_type = ET.type_of(group=link_type_name, name=part_type_name, uri=property_uri)
             self.add_edge_type(from_loinc_id, to_loinc_id, rel_type)
 
     def load_AccessoryFiles_PartFile_LoincPartLink_Supplementary_csv(self) -> None:
@@ -308,8 +308,8 @@ class LoincRelease:
              property_uri) = tpl
 
             from_loinc_id = NT.loinc_code.nodeid_of_identifier(loinc_number)
-            to_loinc_id = NT.loinc_part.nodeid_of_identifier(part_number)
-            rel_type = Let.type_of(group=link_type_name, name=part_type_name, uri=property_uri)
+            to_loinc_id = NT.loinclib_part.nodeid_of_identifier(part_number)
+            rel_type = ET.type_of(group=link_type_name, name=part_type_name, uri=property_uri)
             self.add_edge_type(from_loinc_id, to_loinc_id, rel_type)
 
     def load_AccessoryFiles_PartFile_PartRelatedCodeMapping_csv(self):
@@ -330,12 +330,12 @@ class LoincRelease:
 
             ext_system_namespace: NS = NS.namespace_for_url(ext_code_system)
             ext_node_type = NT.nodetype_for_namespace(ext_system_namespace)
-            mapping_edge_type = LET.type_of(group='Equivalence', name=equivalence, uri=equivalence)
+            mapping_edge_type = ET.type_of(group='Equivalence', name=equivalence, uri=equivalence)
 
-            from_loinc_part_node_id = NT.loinc_part.nodeid_of_identifier(part_number)
+            from_loinc_part_node_id = NT.loinclib_part.nodeid_of_identifier(part_number)
             to_ext_node_id = ext_node_type.nodeid_of_identifier(ext_code_id)
 
-            self.add_node_attribute(node_id=to_ext_node_id, attribute_name=Lat.display,
+            self.add_node_attribute(node_id=to_ext_node_id, attribute_name=PT.loinc_display,
                                     attribute_value=ext_code_display)
             self.add_edge_type(from_loinc_part_node_id, to_ext_node_id, mapping_edge_type)
 
@@ -443,7 +443,7 @@ class LoincRelease:
             # save the code_text since more than a few codes are new (not in the parts file) and having this text is
             # useful in those cases
 
-            self.add_node_attribute(node_id=from_node_id, attribute_name=Lat.tree_code_text,
+            self.add_node_attribute(node_id=from_node_id, attribute_name=PT.loinc_tree_code_text,
                                     attribute_value=code_text)
 
             # save the parent relationship
@@ -452,7 +452,7 @@ class LoincRelease:
             if parent_code:
                 to_node_id = NT.type_for_identifier(parent_code, NS.namespace_for_loinc_identifier(
                     parent_code)).nodeid_of_identifier(parent_code)
-                self.add_edge_type(from_node_id, to_node_id, LET.LoincTree_has_parent_has_parent)
+                self.add_edge_type(from_node_id, to_node_id, ET.loinc_LoincTree_has_parent)
 
     #######################
     # Read files as frames

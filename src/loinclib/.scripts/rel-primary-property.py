@@ -2,11 +2,11 @@ import re
 import typing
 from pathlib import Path
 
-from loinclib import LoincRelease
+from loinclib import LoincGraph
 
 project_path = Path(__file__).parent.parent.parent.parent
 
-release = LoincRelease(project_path / 'data' / 'loinc_release' / 'extracted',
+release = LoincGraph(project_path / 'data' / 'loinc_release' / 'extracted',
                        '2.7.4', project_path / 'data' / 'loinc_trees' / '2023-06-14')
 
 rels: typing.Set[typing.Tuple] = set()

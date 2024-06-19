@@ -4,10 +4,10 @@ from pathlib import Path
 import pandas as pd
 from pandas import DataFrame, Series
 
-from loinclib.loinc_release import LoincRelease
+from loinclib.loinc_release import LoincGraph
 
-release: LoincRelease = LoincRelease(release_path=Path('data/loinc_release/2.67'),
-                                     trees_path=Path('data/loinc_release/2.67/trees/2023-09-26'), loinc_version='2.6.7')
+release: LoincGraph = LoincGraph(release_path=Path('data/loinc_release/2.67'),
+                                 trees_path=Path('data/loinc_release/2.67/trees/2023-09-26'), loinc_version='2.6.7')
 
 index = ['PartNumber', 'PartName', 'PartTypeName', 'ExtCodeId', 'ExtCodeDisplayName', 'ExtCodeSystem', 'Equivalence',
          'ContentOrigin', 'ExtCodeSystemVersion', 'ExtCodeSystemCopyrightNotice']

@@ -12,10 +12,10 @@ from linkml_owl.dumpers import owl_dumper
 from linkml_runtime.dumpers import RDFLibDumper
 
 import loinclib as ll
-from comp_loinc.datamodel import LoincCodeClassNonIntersectionId
 from comp_loinc.datamodel import Loinc, LoincCodeClass, PartClass, Thing, PartClassId, LoincCodeClassId, \
     LoincCodeClassIntersection, LoincCodeClassNonIntersection
-from loinclib import LoincEdgeType as LET, LoincAttributeType as LAT, NodeType as NT, NameSpace as NS
+from comp_loinc.datamodel import LoincCodeClassNonIntersectionId
+from loinclib import NodeType as NT, NameSpace as NS, PropertyType as PT, EdgeType as ET
 
 
 class Generator:
@@ -30,7 +30,7 @@ class Generator:
     GROUPS = '__groups'
     GROUP_COMP_HAS_SLASH = 'group-component-has-slash'
 
-    def __init__(self, loinc_release: ll.LoincRelease,
+    def __init__(self, loinc_release: ll.Graph,
                  schema_directory: Path,
                  output_directory: Path,
                  owl_output: bool,
@@ -59,14 +59,14 @@ class Generator:
             part_codes = list(self.parts.keys())
 
         for part_code in part_codes:
-            node_id = NT.loinc_part.nodeid_of_identifier(part_code)
+            node_id = NT.loinclib_part.nodeid_of_identifier(part_code)
             part = self.get_part(part_code=part_code, part_class=PartClass)
 
-            part_name = self.loinc_release.get_first_node_property(LAT.part_name, node_id)
+            part_name = self.loinc_release.get_first_node_property(PT.loinc_part_name, node_id)
             part.label = part_name
             part.part_name = part_name
-            part.part_display_name = self.loinc_release.get_first_node_property(LAT.part_display_name, node_id)
-            part.part_type = self.loinc_release.get_first_node_property(LAT.part_type, node_id)
+            part.part_display_name = self.loinc_release.get_first_node_property(PT.loinc_part_display_name, node_id)
+            part.part_type = self.loinc_release.get_first_node_property(PT.loinc_part_type, node_id)
 
     def add_loincs_codes(self, loinc_codes: list[str]):
         """Set the LOINC codes that will be processed.
@@ -110,19 +110,20 @@ class Generator:
     ############################
 
     def generate_parts_list(self):
-        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_part)
+        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinclib_part)
         code_part_map: t.Dict[str, PartClass] = {}
 
         for part_node_id in part_node_ids:
-            code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+            code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
             part = self.parts.setdefault(code, PartClass(id=_loincify(code), part_number=code))
 
-            part_name = self.loinc_release.get_first_node_property(LAT.part_name, part_node_id)
+            part_name = self.loinc_release.get_first_node_property(PT.loinc_part_name, part_node_id)
             part.label = part_name
             part.part_name = part_name
 
-            part.part_display_name = self.loinc_release.get_first_node_property(LAT.part_display_name, part_node_id)
-            part.part_type = self.loinc_release.get_first_node_property(LAT.part_type, part_node_id)
+            part.part_display_name = self.loinc_release.get_first_node_property(PT.loinc_part_display_name,
+                                                                                part_node_id)
+            part.part_type = self.loinc_release.get_first_node_property(PT.loinc_part_type, part_node_id)
 
             code_part_map[code] = part
 
@@ -169,22 +170,22 @@ class Generator:
             # loinc.subClassOf.append(loincs_root.id)
             loinc.loinc_number = code
 
-            long_common_name = properties.get(LAT.loinc_long_common_name, None)
+            long_common_name = properties.get(PT.loinc_long_common_name, None)
             if long_common_name:
                 loinc.long_common_name = long_common_name[0]
                 loinc.label = f'_LC  {long_common_name[0]}'
 
-            formal_name = f'{properties.get(LAT.loinc_component)[0]}'
-            formal_name += f':{properties.get(LAT.loinc_property)[0]}'
-            formal_name += f':{properties.get(LAT.loinc_time_aspect)[0]}'
-            formal_name += f':{properties.get(LAT.loinc_system)[0]}'
-            formal_name += f':{properties.get(LAT.loinc_scale_type)[0]}'
-            if LAT.loinc_method_type in properties:
-                formal_name += f':{properties.get(LAT.loinc_method_type)[0]}'
+            formal_name = f'{properties.get(PT.loinc_component)[0]}'
+            formal_name += f':{properties.get(PT.loinc_property)[0]}'
+            formal_name += f':{properties.get(PT.loinc_time_aspect)[0]}'
+            formal_name += f':{properties.get(PT.loinc_system)[0]}'
+            formal_name += f':{properties.get(PT.loinc_scale_type)[0]}'
+            if PT.loinc_method_type in properties:
+                formal_name += f':{properties.get(PT.loinc_method_type)[0]}'
 
             loinc.formal_name = formal_name
 
-            definitions = properties.get(LAT.loinc_definition, None)
+            definitions = properties.get(PT.loinc_definition, None)
             if definitions:
                 # This is needed to work around some unusual string values that throw an error during dumping of:
                 # ./LoincTable/Loinc.csv line: 47536:
@@ -193,15 +194,15 @@ class Generator:
                 if definition:
                     loinc.description = definition
 
-            short_name = properties.get(LAT.loinc_short_name, None)
+            short_name = properties.get(PT.loinc_short_name, None)
             if short_name:
                 loinc.short_name = short_name[0]
 
-            loinc_class = properties.get(LAT.loinc_class, None)
+            loinc_class = properties.get(PT.loinc_class, None)
             if loinc_class:
                 loinc.loinc_class = loinc_class[0]
 
-            loinc_class_type = properties.get(LAT.loinc_class_type, None)
+            loinc_class_type = properties.get(PT.loinc_class_type, None)
             if loinc_class_type:
                 loinc.loinc_class_type = loinc_class_type[0]
 
@@ -218,57 +219,57 @@ class Generator:
 
             loinc.loinc_number = code
             loinc_properties = self.loinc_release.get_node_properties(loinc_node_id)
-            common_name = loinc_properties.get(LAT.loinc_long_common_name, None)
+            common_name = loinc_properties.get(PT.loinc_long_common_name, None)
             if common_name:
                 loinc.long_common_name = common_name[0];
             loinc_code_map[code] = loinc
 
             # component
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_COMPONENT)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_COMPONENT)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has multiple components: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_component = PartClassId(_loincify(part_code))
 
             # property
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_PROPERTY)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_PROPERTY)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple properties: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_property = PartClassId(_loincify(part_code))
 
             # time
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_TIME)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_TIME)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple times: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_time = PartClassId(_loincify(part_code))
 
             # system
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_SYSTEM)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_SYSTEM)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple systems: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_system = PartClassId(_loincify(part_code))
 
             # scale
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_SCALE)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_SCALE)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple scales: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_scale = PartClassId(_loincify(part_code))
 
             # method
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_METHOD)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_METHOD)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple methods: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_method = PartClassId(_loincify(part_code))
 
         self._outputs[Generator.LOINCS_PRIMARY_DEFS] = loinc_code_map
@@ -283,139 +284,141 @@ class Generator:
             loinc_code_map[code] = loinc
 
             # 1.1 component analyte
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_COMPONENT_analyte)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_COMPONENT_analyte)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has multiple component analytes: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_component_analyte = PartClassId(_loincify(part_code))
 
             # 1.2 component challenge
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_CHALLENGE_challenge)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_CHALLENGE_challenge)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has multiple component challenges: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_component_challenge = PartClassId(_loincify(part_code))
 
             # 1.3 component adjustment
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_ADJUSTMENT_adjustment)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_ADJUSTMENT_adjustment)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has multiple component adjustments: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_component_adjustment = PartClassId(_loincify(part_code))
 
             # 1.4 component count
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_COUNT_count)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_COUNT_count)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has multiple component counts: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_component_count = PartClassId(_loincify(part_code))
 
             # 2 property
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_PROPERTY)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_PROPERTY)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple properties: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_property = PartClassId(_loincify(part_code))
 
             # 3.1 time core
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_TIME_time_core)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_TIME_time_core)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple time cores: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_time_core = PartClassId(_loincify(part_code))
 
             # 3.2 time modifier
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_TIME_MODIFIER_time_modifier)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_TIME_MODIFIER_time_modifier)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple time modifiers: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_time_modifier = PartClassId(_loincify(part_code))
 
             # 4.1 system core
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_SYSTEM_system_core)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_SYSTEM_system_core)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple system cores: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_system_core = PartClassId(_loincify(part_code))
 
             # 4.2 system super system
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.DetailedModel_SUPER_SYSTEM_super_system)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_DetailedModel_SUPER_SYSTEM_super_system)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple system super systems: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_system_super_system = PartClassId(_loincify(part_code))
 
             # scale
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_SCALE)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_SCALE)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple scales: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_scale = PartClassId(_loincify(part_code))
 
             # method
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.Primary_METHOD)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_Primary_METHOD)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple methods: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.has_method = PartClassId(_loincify(part_code))
 
             # semantic analyte gene
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.SemanticEnhancement_GENE_analyte_gene)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_SemanticEnhancement_GENE_analyte_gene)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple semantic genes: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.semantic_analyte_gene = PartClassId(_loincify(part_code))
 
             # syntax analyte core
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.SyntaxEnhancement_COMPONENT_analyte_core)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_SyntaxEnhancement_COMPONENT_analyte_core)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple syntax analyte core: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.syntax_analyte_core = PartClassId(_loincify(part_code))
 
             # syntax analyte suffix
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.SyntaxEnhancement_SUFFIX_analyte_suffix)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_SyntaxEnhancement_SUFFIX_analyte_suffix)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple syntax analyte core: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.syntax_analyte_suffix = PartClassId(_loincify(part_code))
 
             # syntax analyte divisor
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.SyntaxEnhancement_DIVISOR_analyte_divisor)
+            parts = self.loinc_release.out_node_ids(loinc_node_id, ET.loinc_SyntaxEnhancement_DIVISOR_analyte_divisor)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple syntax analyte divisor: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.syntax_analyte_divisor = PartClassId(_loincify(part_code))
 
             # syntax analyte divisor suffix
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.SyntaxEnhancement_SUFFIX_analyte_divisor_suffix)
+            parts = self.loinc_release.out_node_ids(loinc_node_id,
+                                                    ET.loinc_SyntaxEnhancement_SUFFIX_analyte_divisor_suffix)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple syntax analyte divisor suffixes: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.syntax_analyte_divisor_suffix = PartClassId(_loincify(part_code))
 
             # syntax analyte numerator
-            parts = self.loinc_release.out_node_ids(loinc_node_id, LET.SyntaxEnhancement_NUMERATOR_analyte_numerator)
+            parts = self.loinc_release.out_node_ids(loinc_node_id,
+                                                    ET.loinc_SyntaxEnhancement_NUMERATOR_analyte_numerator)
             if len(parts) > 1:
                 raise ValueError(f'Loinc: {code} has has multiple syntax analyte numerators: {parts}')
             for key, part_node_id in parts.items():
-                part_code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+                part_code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
                 loinc.syntax_analyte_numerator = PartClassId(_loincify(part_code))
 
         self._outputs[Generator.LOINCS_SUPPLEMENTARY_DEFS] = loinc_code_map
@@ -432,7 +435,7 @@ class Generator:
 
             properties = self.loinc_release.get_node_properties(loinc_node_id)
 
-            component_names = properties.get(LAT.loinc_component, None)
+            component_names = properties.get(PT.loinc_component, None)
             if component_names:
                 component_name = component_names[0]
                 part_1 = component_name.split('^')[0]
@@ -450,7 +453,7 @@ class Generator:
 
     def generate_parts_trees(self):
 
-        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_part)
+        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinclib_part)
         code_part_map: t.Dict[str, PartClass] = {}
 
         parts_hierarchy_root = PartClass(id=_loincify('__parts_trees'))
@@ -460,7 +463,7 @@ class Generator:
         code_part_map['__parts_no_hierarchy'] = parts_no_hierarchy_root
 
         for part_node_id in part_node_ids:
-            loinc_part_identifier = NT.loinc_part.identifier_of_nodeid(part_node_id)
+            loinc_part_identifier = NT.loinclib_part.identifier_of_nodeid(part_node_id)
             part = PartClass(id=_loincify(loinc_part_identifier))
             code_part_map[loinc_part_identifier] = part
 
@@ -468,24 +471,24 @@ class Generator:
 
             # Do annotations.
             # Is this a new part code?
-            if LAT.part_name not in properties:
+            if PT.loinc_part_name not in properties:
                 # this code is not in the parts file
                 part.part_number = loinc_part_identifier
-                code_text = properties.get(LAT.tree_code_text, None)
+                code_text = properties.get(PT.loinc_tree_code_text, None)
                 if code_text:
                     part.label = f'_tree_label_ {code_text[0]}'
 
             # do subclass axioms
-            parent_ids = self.loinc_release.out_node_ids(part_node_id, LET.LoincTree_has_parent_has_parent)
+            parent_ids = self.loinc_release.out_node_ids(part_node_id, ET.loinc_LoincTree_has_parent_has_parent)
             if parent_ids:
-                part.subClassOf = [PartClassId(_loincify(NT.loinc_part.identifier_of_nodeid(parent_id))) for
+                part.subClassOf = [PartClassId(_loincify(NT.loinclib_part.identifier_of_nodeid(parent_id))) for
                                    parent_id in parent_ids.values()]
             else:
                 part_parent = None
-                child_node_ids = self.loinc_release.in_node_ids(part_node_id, LET.LoincTree_has_parent_has_parent)
+                child_node_ids = self.loinc_release.in_node_ids(part_node_id, ET.loinc_LoincTree_has_parent_has_parent)
                 for _, child_of_child_node_id in child_node_ids.items():
                     child_node_type = NT.type_for_node_id(child_of_child_node_id)
-                    if child_node_type and child_node_type == NT.loinc_part:
+                    if child_node_type and child_node_type == NT.loinclib_part:
                         part_parent = parts_hierarchy_root
                         break
 
@@ -503,24 +506,24 @@ class Generator:
         group.subClassOf = [LoincCodeClassId(Generator.GROUPS)]
         code_map[group.id] = group
 
-        chem_node_id = NT.loinc_part.nodeid_of_identifier('LP7786-9')
+        chem_node_id = NT.loinclib_part.nodeid_of_identifier('LP7786-9')
         chem = self._parts_group_comp_equivalences_recurse(chem_node_id, code_map)
         chem.subClassOf = [LoincCodeClassId(group.id)]
 
         self._outputs[Generator.PARTS_GROUP_CHEM_EQ] = code_map
 
     def _parts_group_comp_equivalences_recurse(self, part_node_id, code_map):
-        code = NT.loinc_part.identifier_of_nodeid(part_node_id)
+        code = NT.loinclib_part.identifier_of_nodeid(part_node_id)
         properties = self.loinc_release.get_node_properties(part_node_id)
 
         part_based_def = LoincCodeClassNonIntersection(id=_loincify(f'{code}_comp_eq'))
 
         label = None
-        part_names = properties.get(LAT.part_name, None)
+        part_names = properties.get(PT.loinc_part_name, None)
         if part_names:
             label = f'{part_names[0]} (COMP EQ)'
         if not label:
-            code_texts = properties.get(LAT.tree_code_text)
+            code_texts = properties.get(PT.loinc_tree_code_text)
             if code_texts:
                 label = f'{code_texts[0]} (COMP EQ)'
         if not label:
@@ -530,9 +533,9 @@ class Generator:
         part_based_def.has_component = PartClass(id=_loincify(code))
         code_map[code] = part_based_def
 
-        children_parts = self.loinc_release.in_node_ids(part_node_id, LET.LoincTree_has_parent_has_parent).values()
+        children_parts = self.loinc_release.in_node_ids(part_node_id, ET.loinc_LoincTree_has_parent_has_parent).values()
         for child_part_id in children_parts:
-            if NT.type_for_node_id(child_part_id) == NT.loinc_part:
+            if NT.type_for_node_id(child_part_id) == NT.loinclib_part:
                 child_def = self._parts_group_comp_equivalences_recurse(child_part_id, code_map)
                 child_def.subClassOf.append(LoincCodeClassNonIntersectionId(part_based_def.id))
 
@@ -543,15 +546,15 @@ class Generator:
 
     def _generate_mapping(self, namespace: ll.NameSpace):
         target_node_type = ll.NodeType.nodetype_for_namespace(namespace)
-        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinc_part)
+        part_node_ids = self.loinc_release.get_all_node_ids_for_node_type(NT.loinclib_part)
 
         part_map: dict[str, Thing] = {}
 
         for part_node_id in part_node_ids:
-            part_identifier = ll.NodeType.loinc_part.identifier_of_nodeid(part_node_id)
+            part_identifier = ll.NodeType.loinclib_part.identifier_of_nodeid(part_node_id)
             # equivalence axioms
             equivalent_target_node_ids = self.loinc_release.out_node_ids(part_node_id,
-                                                                         LET.Equivalence_equivalent_equivalent)
+                                                                         ET.loinc_Equivalence_equivalent_equivalent)
             for equivalent_target_node_id in [id for key, id in equivalent_target_node_ids.items() if
                                               target_node_type.is_type_of_nodeid(id)]:
                 loinc_part = part_map.setdefault(part_identifier,
@@ -559,7 +562,7 @@ class Generator:
                 target: Thing = Thing(
                     namespace.owl_url(target_node_type.identifier_of_nodeid(equivalent_target_node_id)))
                 properties = self.loinc_release.get_node_properties(equivalent_target_node_id)
-                displays = properties.get(LAT.display, None)
+                displays = properties.get(PT.loinc_display, None)
                 if displays:
                     target.label = displays[0]
                 loinc_part.equivalentClasses.append(target)
@@ -626,7 +629,7 @@ class Generator:
 
     def _loinc_parent(self, properties, code_map: dict[str, LoincCodeClass]) -> LoincCodeClass:
 
-        class_types = properties.get(LAT.loinc_class_type, None)
+        class_types = properties.get(PT.loinc_class_type, None)
         class_type = None
         if class_types:
             class_type_code = f'classtype_{class_types[0]}'
@@ -638,7 +641,7 @@ class Generator:
                                                                                          ]
                                                                                          ))
 
-        classes = properties.get(LAT.loinc_class, None)
+        classes = properties.get(PT.loinc_class, None)
         class_part = None
         if classes:
             class_parts = classes[0].split('.')
