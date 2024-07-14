@@ -13,12 +13,12 @@ default_curi_maps:
 classes:
   PartClass:
     is_a: Thing
-    slots:
+    slots:  # fields in LoincPartLink_Primary.csv (except for subClassOf:
       - subClassOf
-      - part_number
-      - part_type
-      - part_name
-      - part_display_name
+      - part_number  # PartNumber, e.g. LP7289-4
+      - part_type  # PartTypeName / Property
+      - part_name  # LongCommonName? e.g. "R wave duration in lead AVR"
+      - part_display_name  # PartName? e.g. "Heart"
     annotations:
       owl: Class
   ComponentClass:

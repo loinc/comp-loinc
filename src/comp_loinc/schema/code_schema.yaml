@@ -16,21 +16,21 @@ classes:
 
   LoincCodeClass:
     is_a: Thing
-    slots:
-      - loinc_number
-      - long_common_name
-      - formal_name
-      - short_name
-      - status
-      - loinc_class
-      - loinc_class_type
+    slots:  # First 2 blocks: LoincTableCore.csv | Last 2 blocks: LoincPartLink_Supplementary.csv
+      - loinc_number  # LOINC_NUM, e.g. 100018-1
+      - long_common_name  # LONG_COMMON_NAME, e.g. Hospice care Note
+      - formal_name  # todo: Is this the FSN (Fully Specified Name)? <component/analyte>:<kind of property>:<time aspect>:<system type>:<scale>:<method>
+      - short_name  # SHORTNAME, e.g. Hospice care Note
+      - status  # STATUS, e.g. ACTIVE
+      - loinc_class  # CLASS, e.g. DOC.ONTOLOGY
+      - loinc_class_type  # CLASS, e.g. 2
 
-      - has_component
-      - has_property
-      - has_time
-      - has_system
-      - has_scale
-      - has_method
+      - has_component  # COMPONENT, e.g. Note  -- This block of 6 properites: Primary part model (more detail in LoincPartLink_Primary.csv) --
+      - has_property  # PROPERTY, e.g. Find
+      - has_time  # TIME_ASPCT, e.g. Pt
+      - has_system  # SYSTEM, e.g. {Setting}
+      - has_scale  # SCALE_TYP, e.g. Doc
+      - has_method  # METHOD_TYP, e.g. Hospice care
 
       - has_component_analyte  # Supplementary
       - has_component_challenge  # Supplementary
@@ -198,7 +198,7 @@ slots:
     slot_uri: loinc:loinc_number
     annotations:
       owl: AnnotationAssertion
-  status:
+  status:  # todo: define valid range? enum: ACTIVE, DEPRECATED, DISCOURAGED, TRIAL
     slot_uri: loinc:status
     annotations:
       owl: AnnotationAssertion
@@ -214,7 +214,7 @@ slots:
     slot_uri: loinc:loinc_class
     annotations:
       owl: AnnotationAssertion
-  loinc_class_type:
+  loinc_class_type:  # todo: define valid range? enum: 1, 2, 3, 4. That's how they appear in LoincTableCore.csv. Not sure if these are mapped to a more descriptive class type name.
     slot_uri: loinc:loinc_class_type
     annotations:
       owl: AnnotationAssertion

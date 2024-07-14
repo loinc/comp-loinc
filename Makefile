@@ -1,3 +1,4 @@
+# LinkML project Cookie Cutter Makefile: https://github.com/linkml/linkml-project-cookiecutter
 MAKEFLAGS += --warn-undefined-variables
 SHELL := bash
 .SHELLFLAGS := -eu -o pipefail -c

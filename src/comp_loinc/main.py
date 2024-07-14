@@ -30,7 +30,7 @@ from comp_loinc.ingest.code_ingest import CodeIngest
 from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
 # try:
 from comp_loinc.ingest.part_ingest import PartOntology
-from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
+# from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
 
 from loinclib import PropertyType as AT
 
@@ -76,6 +76,7 @@ DEFAULTS = {
     # 'merged_owl': os.path.join(DATA_DIR, 'output', 'merged_loinc.owl'),
 }
 
+# todo: rename release?: Joe: This is ambiguous. I thought it was for CompLOINC release output, not LOINC release input.
 release: typing.Optional[loinclib.Graph] = None
 generator: typing.Optional[comp_loinc.Generator] = None
 
@@ -92,6 +93,7 @@ def get_latest_loinc_release():
 
 
 def get_latest_trees():
+    """Get path to """
     loinc_trees = None
     loinc_path = get_latest_loinc_release()
     if loinc_path:
@@ -111,31 +113,36 @@ def get_loinc_version():
 
 
 @app.callback()
-def comp_loinc_main(loinc_dir: Annotated[pathlib.Path, typer.Option()] = get_latest_loinc_release(),
-                    trees_date: Annotated[str, typer.Option()] = get_latest_trees(),
-                    loinc_version: Annotated[str, typer.Option()] = get_loinc_version(),
-                    out_dir: Annotated[pathlib.Path, typer.Option()] = PROJECT_DIR / 'data' / 'loinc_owl',
-                    log_level: Annotated[str, typer.Option()] = 'WARN',
-                    owl_output: Annotated[bool, typer.Option()] = True,
-                    rdf_output: Annotated[bool, typer.Option()] = True
-                    ):
-    logging.basicConfig(filename=PROJECT_DIR / 'logs' / f'log_{time.strftime("%Y%m%d-%H%M%S")}.txt',
-                        encoding='utf-8',
-                        level=logging.getLevelName(log_level.upper())
-                        )
+def comp_loinc_main(
+    loinc_dir: Annotated[pathlib.Path, typer.Option()] = get_latest_loinc_release(),
+    trees_date: Annotated[str, typer.Option()] = get_latest_trees(),
+    loinc_version: Annotated[str, typer.Option()] = get_loinc_version(),
+    out_dir: Annotated[pathlib.Path, typer.Option()] = PROJECT_DIR / 'data' / 'loinc_owl',
+    log_level: Annotated[str, typer.Option()] = 'WARN',
+    owl_output: Annotated[bool, typer.Option()] = True,
+    rdf_output: Annotated[bool, typer.Option()] = True
+):
+    """Runs before any command."""
+    logging.basicConfig(
+        filename=PROJECT_DIR / 'logs' / f'log_{time.strftime("%Y%m%d-%H%M%S")}.txt',
+        encoding='utf-8',
+        level=logging.getLevelName(log_level.upper())
+    )
 
     global release, generator
     release = loinclib.Graph(loinc_dir, loinc_version, loinc_dir / 'trees' / trees_date)
-    generator = comp_loinc.Generator(loinc_release=release,
-                                     schema_directory=pathlib.Path(SCHEMA_DIR),
-                                     output_directory=out_dir,
-                                     owl_output=owl_output,
-                                     rdf_output=rdf_output
-                                     )
+    generator = comp_loinc.Generator(
+        loinc_release=release,
+        schema_directory=pathlib.Path(SCHEMA_DIR),
+        output_directory=out_dir,
+        owl_output=owl_output,
+        rdf_output=rdf_output
+    )
 
 
 @app.command()
 def generate_all():
+    """Generate the entire ontology, utilizing the primary parts model, but not the supplementary."""
     print(f'Building all')
     loincs_list()
     loincs_primary_defs()
@@ -454,4 +461,5 @@ def loincs_primary_defs_csv():
 
 
 if __name__ == "__main__":
-    app()
+    # app()
+    get_latest_loinc_release()

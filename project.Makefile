@@ -1,1 +1,5 @@
-## Add your own custom Makefile targets here
+CLI=$(RUN) python -m src.comp_loinc
+
+.PHONY:
+build:
+	$(CLI) generate-all

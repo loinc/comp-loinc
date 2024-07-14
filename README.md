@@ -46,14 +46,11 @@ Use the `make` command to generate project artefacts:
 This project was made with
 [linkml-project-cookiecutter](https://github.com/linkml/linkml-project-cookiecutter).
 
-## Prerequisities
+## Prerequisites
 
 1. Python 3.9.7+
-2. Required LOINC Files
-   For now, these files
-   are [downloadable from GoogleDrive](https://drive.google.com/drive/u/0/folders/1SjDFYs1ocbpovGlAZDKuRVcTDoNztHOc).
+2. Required LOINC Files: For now, these files are [downloadable from GoogleDrive](https://drive.google.com/drive/u/0/folders/1ChxqPJhfGr5BUNbfHVXWulZ4aviQRLgC).
    They need to be put in these locations:
-
 - `data/part_files/ComponentTree.tsv`
 - `data/code_files/LOINC.csv`
 - `data/code_files/LoincPartlink_Primary.csv`
@@ -61,8 +58,8 @@ This project was made with
 ## Setup
 
 1. Clone this repository.
-2. install poetry
-3. run poetry install
+2. Install Poetry.
+3. Run `poetry install`.
 
 ## Usage
 
