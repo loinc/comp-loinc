@@ -1,0 +1,58 @@
+id: https://loinc.org/core
+name: loinc-owl-core-schema
+prefixes:
+  linkml: https://w3id.org/linkml/
+  loinc: https://loinc.org/
+  owl: http://www.w3.org/2002/07/owl#
+default_prefix: loinc
+default_range: string
+imports:
+  - linkml:types
+#  - code_schema
+#  - part_schema
+#  - set_schema
+#  - grouping_classes_schema
+
+
+classes:
+
+  Loinc:
+    slots:
+      - codes
+      - parts
+    class_uri: owl:Class
+
+
+
+
+
+
+slots:
+  id:
+    identifier: true
+    range:
+      uriorcurie
+  label:
+    slot_uri: rdfs:label
+    annotations:
+      owl: AnnotationAssertion
+  description:
+    slot_uri: rdfs:description
+    annotations:
+      owl: AnnotationAssertion
+  subClassOf:
+    annotations:
+      owl: SubClassOf
+    slot_uri: rdfs:subClassOf
+    multivalued: true
+    range: Thing
+  equivalentClasses:
+    annotations:
+      owl: EquivalentClasses
+    slot_uri: owl:equivalentClass
+    multivalued: true
+    range: Thing
+
+
+
+#    required: true

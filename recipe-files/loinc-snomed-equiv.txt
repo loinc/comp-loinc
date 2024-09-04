@@ -1,0 +1,18 @@
+# this turns on a fast run for dev mode
+--fast-run
+
+-o
+out-comploinc-2
+
+builder
+  set-module
+    -n
+    loinc-snomed-equiv
+
+  lp-sct-equiv
+
+  load-schema
+      -f
+      comp_loinc.yaml
+
+  save-owl

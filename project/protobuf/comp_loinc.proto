@@ -1,57 +1,135 @@
-message CodeByComponent
- {
-  uriorcurie id = 0
-  string label = 0
-  string description = 0
-  componentClass hasComponent = 0
- }
-message CodeBySystem
- {
-  uriorcurie id = 0
-  string label = 0
-  string description = 0
-  systemClass hasSystem = 0
- }
 message ComponentClass
  {
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing equivalentClasses = 0
   string partNumber = 0
   string partType = 0
+  string partName = 0
+  string partDisplayName = 0
  repeated  componentClass subClassOf = 0
+ }
+message Loinc
+ {
+ repeated  loincCodeClass codes = 0
+ repeated  partClass parts = 0
  }
 message LoincCodeClass
  {
   uriorcurie id = 0
   string label = 0
   string description = 0
- repeated  loincCodeClass subClassOf = 0
-  string formalName = 0
+ repeated  thing subClassOf = 0
+ repeated  thing equivalentClasses = 0
   string loincNumber = 0
-  string status = 0
-  string shortName = 0
   string longCommonName = 0
+  string formalName = 0
+  string shortName = 0
+  string status = 0
+  string loincClass = 0
+  string loincClassType = 0
   componentClass hasComponent = 0
   propertyClass hasProperty = 0
-  systemClass hasSystem = 0
-  methodClass hasMethod = 0
-  scaleClass hasScale = 0
   timeClass hasTime = 0
+  systemClass hasSystem = 0
+  scaleClass hasScale = 0
+  methodClass hasMethod = 0
+  partClass hasComponentAnalyte = 0
+  partClass hasComponentChallenge = 0
+  partClass hasComponentCount = 0
+  partClass hasComponentAdjustment = 0
+  partClass hasTimeCore = 0
+  partClass hasTimeModifier = 0
+  partClass hasSystemCore = 0
+  partClass hasSystemSuperSystem = 0
+  partClass semanticAnalyteGene = 0
+  partClass syntaxAnalyteCore = 0
+  partClass syntaxAnalyteSuffix = 0
+  partClass syntaxAnalyteDivisor = 0
+  partClass syntaxAnalyteDivisorSuffix = 0
+  partClass syntaxAnalyteNumerator = 0
  }
-message LoincCodeOntology
+message LoincCodeClassIntersection
  {
- repeated  componentClass componentClassSet = 0
- repeated  systemClass systemClassSet = 0
- repeated  loincCodeClass codeClassSet = 0
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+ repeated  thing subClassOf = 0
+ repeated  thing equivalentClasses = 0
+  string loincNumber = 0
+  string longCommonName = 0
+  string formalName = 0
+  string shortName = 0
+  string status = 0
+  string loincClass = 0
+  string loincClassType = 0
+  componentClass hasComponent = 0
+  propertyClass hasProperty = 0
+  timeClass hasTime = 0
+  systemClass hasSystem = 0
+  scaleClass hasScale = 0
+  methodClass hasMethod = 0
+  partClass hasComponentAnalyte = 0
+  partClass hasComponentChallenge = 0
+  partClass hasComponentCount = 0
+  partClass hasComponentAdjustment = 0
+  partClass hasTimeCore = 0
+  partClass hasTimeModifier = 0
+  partClass hasSystemCore = 0
+  partClass hasSystemSuperSystem = 0
+  partClass semanticAnalyteGene = 0
+  partClass syntaxAnalyteCore = 0
+  partClass syntaxAnalyteSuffix = 0
+  partClass syntaxAnalyteDivisor = 0
+  partClass syntaxAnalyteDivisorSuffix = 0
+  partClass syntaxAnalyteNumerator = 0
+ }
+message LoincCodeClassNonIntersection
+ {
+  uriorcurie id = 0
+  string label = 0
+  string description = 0
+ repeated  thing subClassOf = 0
+ repeated  thing equivalentClasses = 0
+  string loincNumber = 0
+  string longCommonName = 0
+  string formalName = 0
+  string shortName = 0
+  string status = 0
+  string loincClass = 0
+  string loincClassType = 0
+  componentClass hasComponent = 0
+  propertyClass hasProperty = 0
+  timeClass hasTime = 0
+  systemClass hasSystem = 0
+  scaleClass hasScale = 0
+  methodClass hasMethod = 0
+  partClass hasComponentAnalyte = 0
+  partClass hasComponentChallenge = 0
+  partClass hasComponentCount = 0
+  partClass hasComponentAdjustment = 0
+  partClass hasTimeCore = 0
+  partClass hasTimeModifier = 0
+  partClass hasSystemCore = 0
+  partClass hasSystemSuperSystem = 0
+  partClass semanticAnalyteGene = 0
+  partClass syntaxAnalyteCore = 0
+  partClass syntaxAnalyteSuffix = 0
+  partClass syntaxAnalyteDivisor = 0
+  partClass syntaxAnalyteDivisorSuffix = 0
+  partClass syntaxAnalyteNumerator = 0
  }
 message MethodClass
  {
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing equivalentClasses = 0
   string partNumber = 0
   string partType = 0
+  string partName = 0
+  string partDisplayName = 0
  repeated  methodClass subClassOf = 0
  }
 message PartClass
@@ -59,17 +137,23 @@ message PartClass
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing equivalentClasses = 0
  repeated  thing subClassOf = 0
   string partNumber = 0
   string partType = 0
+  string partName = 0
+  string partDisplayName = 0
  }
 message PropertyClass
  {
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing equivalentClasses = 0
   string partNumber = 0
   string partType = 0
+  string partName = 0
+  string partDisplayName = 0
  repeated  propertyClass subClassOf = 0
  }
 message ScaleClass
@@ -77,8 +161,11 @@ message ScaleClass
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing equivalentClasses = 0
   string partNumber = 0
   string partType = 0
+  string partName = 0
+  string partDisplayName = 0
  repeated  scaleClass subClassOf = 0
  }
 message SystemClass
@@ -86,8 +173,11 @@ message SystemClass
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing equivalentClasses = 0
   string partNumber = 0
   string partType = 0
+  string partName = 0
+  string partDisplayName = 0
  repeated  systemClass subClassOf = 0
  }
 message Thing
@@ -95,13 +185,18 @@ message Thing
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing subClassOf = 0
+ repeated  thing equivalentClasses = 0
  }
 message TimeClass
  {
   uriorcurie id = 0
   string label = 0
   string description = 0
+ repeated  thing equivalentClasses = 0
   string partNumber = 0
   string partType = 0
+  string partName = 0
+  string partDisplayName = 0
  repeated  timeClass subClassOf = 0
  }

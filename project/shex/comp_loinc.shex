@@ -18,7 +18,7 @@ linkml:Double xsd:double
 
 linkml:Decimal xsd:decimal
 
-linkml:Time xsd:dateTime
+linkml:Time xsd:time
 
 linkml:Date xsd:date
 
@@ -38,67 +38,126 @@ linkml:Objectidentifier IRI
 
 linkml:Nodeidentifier NONLITERAL
 
-<https://loinc.org/grouping_classes/CodeByComponent> CLOSED {
-    (  $<https://loinc.org/grouping_classes/CodeByComponent_tes> (  &<Thing_tes> ;
-          rdf:type [ owl:Class ] ? ;
-          <hasComponent> @<https://loinc.org/part/ComponentClass> ?
-       ) ;
-       rdf:type [ <https://loinc.org/grouping_classes/CodeByComponent> ]
-    )
-}
+linkml:Jsonpointer xsd:string
 
-<https://loinc.org/grouping_classes/CodeBySystem> CLOSED {
-    (  $<https://loinc.org/grouping_classes/CodeBySystem_tes> (  &<Thing_tes> ;
-          rdf:type [ owl:Class ] ? ;
-          <hasSystem> @<https://loinc.org/part/SystemClass> ?
-       ) ;
-       rdf:type [ <https://loinc.org/grouping_classes/CodeBySystem> ]
-    )
-}
+linkml:Jsonpath xsd:string
+
+linkml:Sparqlpath xsd:string
 
 <https://loinc.org/part/ComponentClass> CLOSED {
     (  $<https://loinc.org/part/ComponentClass_tes> (  &<https://loinc.org/part/PartClass_tes> ;
           rdf:type [ <https://loinc.org/part/PartClass> ] ? ;
-          rdfs:subClassOf @<https://loinc.org/part/ComponentClass> +
+          rdfs:subClassOf @<https://loinc.org/part/ComponentClass> *
        ) ;
        rdf:type [ <https://loinc.org/part/ComponentClass> ]
     )
 }
 
-<https://loinc.org/code/LoincCodeClass> CLOSED {
-    (  $<https://loinc.org/code/LoincCodeClass_tes> (  &<Thing_tes> ;
-          rdf:type [ owl:Class ] ? ;
-          rdfs:subClassOf @<https://loinc.org/code/LoincCodeClass> + ;
-          <formal_name> @linkml:String ? ;
-          <loinc_number> @linkml:String ? ;
-          <status> @linkml:String ? ;
-          <short_name> @linkml:String ? ;
-          <long_common_name> @linkml:String ? ;
-          <hasComponent> @<https://loinc.org/part/ComponentClass> ? ;
-          <hasProperty> @<https://loinc.org/part/PropertyClass> ? ;
-          <hasSystem> @<https://loinc.org/part/SystemClass> ? ;
-          <hasMethod> @<https://loinc.org/part/MethodClass> ? ;
-          <hasScale> @<https://loinc.org/part/ScaleClass> ? ;
-          <hasTime> @<https://loinc.org/part/TimeClass> ?
+<Loinc> CLOSED {
+    (  $<Loinc_tes> (  <codes> @<https://loinc.org/code/LoincCodeClass> * ;
+          <parts> @<https://loinc.org/part/PartClass> *
        ) ;
-       rdf:type [ <https://loinc.org/code/LoincCodeClass> ]
+       rdf:type [ owl:Class ] ?
     )
 }
 
-<https://loinc.org/set/LoincCodeOntology> CLOSED {
-    (  $<https://loinc.org/set/LoincCodeOntology_tes> (  <https://loinc.org/set/component_class_set>
-          @<https://loinc.org/part/ComponentClass> * ;
-          <https://loinc.org/set/system_class_set> @<https://loinc.org/part/SystemClass> * ;
-          <https://loinc.org/set/code_class_set> @<https://loinc.org/code/LoincCodeClass> *
+<https://loinc.org/code/LoincCodeClass>  (
+    CLOSED {
+       (  $<https://loinc.org/code/LoincCodeClass_tes> (  &<Thing_tes> ;
+             rdf:type [ owl:Class ] ? ;
+             <loinc_number> @linkml:String ? ;
+             <long_common_name> @linkml:String ? ;
+             <formal_name> @linkml:String ? ;
+             <short_name> @linkml:String ? ;
+             <status> @linkml:String ? ;
+             <loinc_class> @linkml:String ? ;
+             <loinc_class_type> @linkml:String ? ;
+             <hasComponent> @<https://loinc.org/part/ComponentClass> ? ;
+             <hasProperty> @<https://loinc.org/part/PropertyClass> ? ;
+             <hasTime> @<https://loinc.org/part/TimeClass> ? ;
+             <hasSystem> @<https://loinc.org/part/SystemClass> ? ;
+             <hasScale> @<https://loinc.org/part/ScaleClass> ? ;
+             <hasMethod> @<https://loinc.org/part/MethodClass> ? ;
+             <hasComponentAnalyte> @<https://loinc.org/part/PartClass> ? ;
+             <hasComponentChallenge> @<https://loinc.org/part/PartClass> ? ;
+             <hasComponentCount> @<https://loinc.org/part/PartClass> ? ;
+             <hasComponentAdjustment> @<https://loinc.org/part/PartClass> ? ;
+             <hasTimeCore> @<https://loinc.org/part/PartClass> ? ;
+             <hasTimeModifier> @<https://loinc.org/part/PartClass> ? ;
+             <hasSystemCore> @<https://loinc.org/part/PartClass> ? ;
+             <hasSystemSuperSystem> @<https://loinc.org/part/PartClass> ? ;
+             <semanticAnalyteGene> @<https://loinc.org/part/PartClass> ? ;
+             <syntaxAnalyteCore> @<https://loinc.org/part/PartClass> ? ;
+             <syntaxAnalyteSuffix> @<https://loinc.org/part/PartClass> ? ;
+             <syntaxAnalyteDivisor> @<https://loinc.org/part/PartClass> ? ;
+             <syntaxAnalyteDivisorSuffix> @<https://loinc.org/part/PartClass> ? ;
+             <syntaxAnalyteNumerator> @<https://loinc.org/part/PartClass> ?
+          ) ;
+          rdf:type [ <https://loinc.org/code/LoincCodeClass> ]
+       )
+    } OR @<https://loinc.org/code/LoincCodeClassIntersection> OR @<https://loinc.org/code/LoincCodeClassNonIntersection>
+)
+
+<https://loinc.org/code/LoincCodeClassIntersection> CLOSED {
+    (  $<https://loinc.org/code/LoincCodeClassIntersection_tes> (  &<https://loinc.org/code/LoincCodeClass_tes> ;
+          rdf:type [ <https://loinc.org/code/LoincCodeClass> ] ? ;
+          <hasComponent> @<https://loinc.org/part/ComponentClass> ? ;
+          <hasProperty> @<https://loinc.org/part/PropertyClass> ? ;
+          <hasTime> @<https://loinc.org/part/TimeClass> ? ;
+          <hasSystem> @<https://loinc.org/part/SystemClass> ? ;
+          <hasScale> @<https://loinc.org/part/ScaleClass> ? ;
+          <hasMethod> @<https://loinc.org/part/MethodClass> ? ;
+          <hasComponentAnalyte> @<https://loinc.org/part/PartClass> ? ;
+          <hasComponentChallenge> @<https://loinc.org/part/PartClass> ? ;
+          <hasComponentCount> @<https://loinc.org/part/PartClass> ? ;
+          <hasComponentAdjustment> @<https://loinc.org/part/PartClass> ? ;
+          <hasTimeCore> @<https://loinc.org/part/PartClass> ? ;
+          <hasTimeModifier> @<https://loinc.org/part/PartClass> ? ;
+          <hasSystemCore> @<https://loinc.org/part/PartClass> ? ;
+          <hasSystemSuperSystem> @<https://loinc.org/part/PartClass> ? ;
+          <semanticAnalyteGene> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteCore> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteSuffix> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteDivisor> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteDivisorSuffix> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteNumerator> @<https://loinc.org/part/PartClass> ?
        ) ;
-       rdf:type [ <https://loinc.org/set/LoincCodeOntology> ] ?
+       rdf:type [ <https://loinc.org/code/LoincCodeClassIntersection> ]
+    )
+}
+
+<https://loinc.org/code/LoincCodeClassNonIntersection> CLOSED {
+    (  $<https://loinc.org/code/LoincCodeClassNonIntersection_tes> (  &<https://loinc.org/code/LoincCodeClass_tes> ;
+          rdf:type [ <https://loinc.org/code/LoincCodeClass> ] ? ;
+          <hasComponent> @<https://loinc.org/part/ComponentClass> ? ;
+          <hasProperty> @<https://loinc.org/part/PropertyClass> ? ;
+          <hasTime> @<https://loinc.org/part/TimeClass> ? ;
+          <hasSystem> @<https://loinc.org/part/SystemClass> ? ;
+          <hasScale> @<https://loinc.org/part/ScaleClass> ? ;
+          <hasMethod> @<https://loinc.org/part/MethodClass> ? ;
+          <hasComponentAnalyte> @<https://loinc.org/part/PartClass> ? ;
+          <hasComponentChallenge> @<https://loinc.org/part/PartClass> ? ;
+          <hasComponentCount> @<https://loinc.org/part/PartClass> ? ;
+          <hasComponentAdjustment> @<https://loinc.org/part/PartClass> ? ;
+          <hasTimeCore> @<https://loinc.org/part/PartClass> ? ;
+          <hasTimeModifier> @<https://loinc.org/part/PartClass> ? ;
+          <hasSystemCore> @<https://loinc.org/part/PartClass> ? ;
+          <hasSystemSuperSystem> @<https://loinc.org/part/PartClass> ? ;
+          <semanticAnalyteGene> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteCore> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteSuffix> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteDivisor> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteDivisorSuffix> @<https://loinc.org/part/PartClass> ? ;
+          <syntaxAnalyteNumerator> @<https://loinc.org/part/PartClass> ?
+       ) ;
+       rdf:type [ <https://loinc.org/code/LoincCodeClassNonIntersection> ]
     )
 }
 
 <https://loinc.org/part/MethodClass> CLOSED {
     (  $<https://loinc.org/part/MethodClass_tes> (  &<https://loinc.org/part/PartClass_tes> ;
           rdf:type [ <https://loinc.org/part/PartClass> ] ? ;
-          rdfs:subClassOf @<https://loinc.org/part/MethodClass> +
+          rdfs:subClassOf @<https://loinc.org/part/MethodClass> *
        ) ;
        rdf:type [ <https://loinc.org/part/MethodClass> ]
     )
@@ -108,9 +167,10 @@ linkml:Nodeidentifier NONLITERAL
     CLOSED {
        (  $<https://loinc.org/part/PartClass_tes> (  &<Thing_tes> ;
              rdf:type [ owl:Class ] ? ;
-             rdfs:subClassOf @<Thing> + ;
              <part_number> @linkml:String ? ;
-             <part_type> @linkml:String ?
+             <part_type> @linkml:String ? ;
+             <part_name> @linkml:String ? ;
+             <part_display_name> @linkml:String ?
           ) ;
           rdf:type [ <https://loinc.org/part/PartClass> ]
        )
@@ -122,7 +182,7 @@ linkml:Nodeidentifier NONLITERAL
 <https://loinc.org/part/PropertyClass> CLOSED {
     (  $<https://loinc.org/part/PropertyClass_tes> (  &<https://loinc.org/part/PartClass_tes> ;
           rdf:type [ <https://loinc.org/part/PartClass> ] ? ;
-          rdfs:subClassOf @<https://loinc.org/part/PropertyClass> +
+          rdfs:subClassOf @<https://loinc.org/part/PropertyClass> *
        ) ;
        rdf:type [ <https://loinc.org/part/PropertyClass> ]
     )
@@ -131,7 +191,7 @@ linkml:Nodeidentifier NONLITERAL
 <https://loinc.org/part/ScaleClass> CLOSED {
     (  $<https://loinc.org/part/ScaleClass_tes> (  &<https://loinc.org/part/PartClass_tes> ;
           rdf:type [ <https://loinc.org/part/PartClass> ] ? ;
-          rdfs:subClassOf @<https://loinc.org/part/ScaleClass> +
+          rdfs:subClassOf @<https://loinc.org/part/ScaleClass> *
        ) ;
        rdf:type [ <https://loinc.org/part/ScaleClass> ]
     )
@@ -140,7 +200,7 @@ linkml:Nodeidentifier NONLITERAL
 <https://loinc.org/part/SystemClass> CLOSED {
     (  $<https://loinc.org/part/SystemClass_tes> (  &<https://loinc.org/part/PartClass_tes> ;
           rdf:type [ <https://loinc.org/part/PartClass> ] ? ;
-          rdfs:subClassOf @<https://loinc.org/part/SystemClass> +
+          rdfs:subClassOf @<https://loinc.org/part/SystemClass> *
        ) ;
        rdf:type [ <https://loinc.org/part/SystemClass> ]
     )
@@ -149,18 +209,19 @@ linkml:Nodeidentifier NONLITERAL
 <Thing>  (
     CLOSED {
        (  $<Thing_tes> (  rdfs:label @linkml:String ? ;
-             rdfs:description @linkml:String ?
+             rdfs:description @linkml:String ? ;
+             rdfs:subClassOf @<Thing> * ;
+             owl:equivalentClass @<Thing> *
           ) ;
           rdf:type [ owl:Class ]
        )
-    } OR @<https://loinc.org/grouping_classes/CodeByComponent> OR @<https://loinc.org/grouping_classes/CodeBySystem> OR
-    @<https://loinc.org/code/LoincCodeClass> OR @<https://loinc.org/part/PartClass>
+    } OR @<https://loinc.org/code/LoincCodeClass> OR @<https://loinc.org/part/PartClass>
 )
 
 <https://loinc.org/part/TimeClass> CLOSED {
     (  $<https://loinc.org/part/TimeClass_tes> (  &<https://loinc.org/part/PartClass_tes> ;
           rdf:type [ <https://loinc.org/part/PartClass> ] ? ;
-          rdfs:subClassOf @<https://loinc.org/part/TimeClass> +
+          rdfs:subClassOf @<https://loinc.org/part/TimeClass> *
        ) ;
        rdf:type [ <https://loinc.org/part/TimeClass> ]
     )

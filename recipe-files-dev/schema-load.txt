@@ -1,0 +1,14 @@
+# this turns on a fast run for dev mode
+--fast-run
+
+-o
+out-dev
+
+builder
+  set-module
+    -n
+    schema-load
+  load-schema
+    -f
+    comp_loinc.yaml
+    --equivalent-term

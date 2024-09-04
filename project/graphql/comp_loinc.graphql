@@ -1,27 +1,20 @@
-type CodeByComponent
-  {
-    id: Uriorcurie!
-    label: String
-    description: String
-    hasComponent: ComponentClass
-  }
-
-type CodeBySystem
-  {
-    id: Uriorcurie!
-    label: String
-    description: String
-    hasSystem: SystemClass
-  }
-
 type ComponentClass
   {
     id: Uriorcurie!
     label: String
     description: String
+    equivalentClasses: [Thing]
     partNumber: String
     partType: String
-    subClassOf: [ComponentClass]!
+    partName: String
+    partDisplayName: String
+    subClassOf: [ComponentClass]
+  }
+
+type Loinc
+  {
+    codes: [LoincCodeClass]
+    parts: [PartClass]
   }
 
 type LoincCodeClass
@@ -29,25 +22,107 @@ type LoincCodeClass
     id: Uriorcurie!
     label: String
     description: String
-    subClassOf: [LoincCodeClass]!
-    formalName: String
+    subClassOf: [Thing]
+    equivalentClasses: [Thing]
     loincNumber: String
-    status: String
-    shortName: String
     longCommonName: String
+    formalName: String
+    shortName: String
+    status: String
+    loincClass: String
+    loincClassType: String
     hasComponent: ComponentClass
     hasProperty: PropertyClass
-    hasSystem: SystemClass
-    hasMethod: MethodClass
-    hasScale: ScaleClass
     hasTime: TimeClass
+    hasSystem: SystemClass
+    hasScale: ScaleClass
+    hasMethod: MethodClass
+    hasComponentAnalyte: PartClass
+    hasComponentChallenge: PartClass
+    hasComponentCount: PartClass
+    hasComponentAdjustment: PartClass
+    hasTimeCore: PartClass
+    hasTimeModifier: PartClass
+    hasSystemCore: PartClass
+    hasSystemSuperSystem: PartClass
+    semanticAnalyteGene: PartClass
+    syntaxAnalyteCore: PartClass
+    syntaxAnalyteSuffix: PartClass
+    syntaxAnalyteDivisor: PartClass
+    syntaxAnalyteDivisorSuffix: PartClass
+    syntaxAnalyteNumerator: PartClass
   }
 
-type LoincCodeOntology
+type LoincCodeClassIntersection
   {
-    componentClassSet: [ComponentClass]
-    systemClassSet: [SystemClass]
-    codeClassSet: [LoincCodeClass]
+    id: Uriorcurie!
+    label: String
+    description: String
+    subClassOf: [Thing]
+    equivalentClasses: [Thing]
+    loincNumber: String
+    longCommonName: String
+    formalName: String
+    shortName: String
+    status: String
+    loincClass: String
+    loincClassType: String
+    hasComponent: ComponentClass
+    hasProperty: PropertyClass
+    hasTime: TimeClass
+    hasSystem: SystemClass
+    hasScale: ScaleClass
+    hasMethod: MethodClass
+    hasComponentAnalyte: PartClass
+    hasComponentChallenge: PartClass
+    hasComponentCount: PartClass
+    hasComponentAdjustment: PartClass
+    hasTimeCore: PartClass
+    hasTimeModifier: PartClass
+    hasSystemCore: PartClass
+    hasSystemSuperSystem: PartClass
+    semanticAnalyteGene: PartClass
+    syntaxAnalyteCore: PartClass
+    syntaxAnalyteSuffix: PartClass
+    syntaxAnalyteDivisor: PartClass
+    syntaxAnalyteDivisorSuffix: PartClass
+    syntaxAnalyteNumerator: PartClass
+  }
+
+type LoincCodeClassNonIntersection
+  {
+    id: Uriorcurie!
+    label: String
+    description: String
+    subClassOf: [Thing]
+    equivalentClasses: [Thing]
+    loincNumber: String
+    longCommonName: String
+    formalName: String
+    shortName: String
+    status: String
+    loincClass: String
+    loincClassType: String
+    hasComponent: ComponentClass
+    hasProperty: PropertyClass
+    hasTime: TimeClass
+    hasSystem: SystemClass
+    hasScale: ScaleClass
+    hasMethod: MethodClass
+    hasComponentAnalyte: PartClass
+    hasComponentChallenge: PartClass
+    hasComponentCount: PartClass
+    hasComponentAdjustment: PartClass
+    hasTimeCore: PartClass
+    hasTimeModifier: PartClass
+    hasSystemCore: PartClass
+    hasSystemSuperSystem: PartClass
+    semanticAnalyteGene: PartClass
+    syntaxAnalyteCore: PartClass
+    syntaxAnalyteSuffix: PartClass
+    syntaxAnalyteDivisor: PartClass
+    syntaxAnalyteDivisorSuffix: PartClass
+    syntaxAnalyteNumerator: PartClass
   }
 
 type MethodClass
@@ -55,9 +130,12 @@ type MethodClass
     id: Uriorcurie!
     label: String
     description: String
+    equivalentClasses: [Thing]
     partNumber: String
     partType: String
-    subClassOf: [MethodClass]!
+    partName: String
+    partDisplayName: String
+    subClassOf: [MethodClass]
   }
 
 type PartClass
@@ -65,9 +143,12 @@ type PartClass
     id: Uriorcurie!
     label: String
     description: String
-    subClassOf: [Thing]!
+    equivalentClasses: [Thing]
+    subClassOf: [Thing]
     partNumber: String
     partType: String
+    partName: String
+    partDisplayName: String
   }
 
 type PropertyClass
@@ -75,9 +156,12 @@ type PropertyClass
     id: Uriorcurie!
     label: String
     description: String
+    equivalentClasses: [Thing]
     partNumber: String
     partType: String
-    subClassOf: [PropertyClass]!
+    partName: String
+    partDisplayName: String
+    subClassOf: [PropertyClass]
   }
 
 type ScaleClass
@@ -85,9 +169,12 @@ type ScaleClass
     id: Uriorcurie!
     label: String
     description: String
+    equivalentClasses: [Thing]
     partNumber: String
     partType: String
-    subClassOf: [ScaleClass]!
+    partName: String
+    partDisplayName: String
+    subClassOf: [ScaleClass]
   }
 
 type SystemClass
@@ -95,9 +182,12 @@ type SystemClass
     id: Uriorcurie!
     label: String
     description: String
+    equivalentClasses: [Thing]
     partNumber: String
     partType: String
-    subClassOf: [SystemClass]!
+    partName: String
+    partDisplayName: String
+    subClassOf: [SystemClass]
   }
 
 type Thing
@@ -105,6 +195,8 @@ type Thing
     id: Uriorcurie!
     label: String
     description: String
+    subClassOf: [Thing]
+    equivalentClasses: [Thing]
   }
 
 type TimeClass
@@ -112,8 +204,11 @@ type TimeClass
     id: Uriorcurie!
     label: String
     description: String
+    equivalentClasses: [Thing]
     partNumber: String
     partType: String
-    subClassOf: [TimeClass]!
+    partName: String
+    partDisplayName: String
+    subClassOf: [TimeClass]
   }
 

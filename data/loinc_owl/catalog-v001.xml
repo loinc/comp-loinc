@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri id="Imports Wizard Entry" name="https://loinc.org/edit-examples" uri="edit-examples.owl"/>
+    <uri id="Imports Wizard Entry" name="https://loinc.org/parts-group-chem-eq" uri="parts-group-chem-eq.owl"/>
+    <uri id="Imports Wizard Entry" name="https://loinc.org/loincs-supplementary-defs" uri="loincs-supplementary-defs.owl"/>
+    <uri id="User Entered Import Resolution" name="https://loinc.org/parts-trees" uri="parts-trees.owl"/>
+    <uri id="User Entered Import Resolution" name="https://loinc.org/parts-list" uri="parts-list.owl"/>
+    <uri id="User Entered Import Resolution" name="https://loinc.org/loincs-primary-defs" uri="loincs-primary-defs.owl"/>
+    <uri id="User Entered Import Resolution" name="https://loinc.org/loincs-list" uri="loincs-list.owl"/>
+    <uri id="Imports Wizard Entry" name="https://loinc.org/group-component-has-slash" uri="group-component-has-slash.owl"/>
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1700001986154" name="http://purl.obolibrary.org/obo/chebi.owl" uri="external/chebi.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1700001986154" name="https://loinc.org/loinc/" uri="comp-loinc.owl"/>
+    </group>
+</catalog>

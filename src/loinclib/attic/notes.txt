@@ -1,0 +1,18 @@
+SNOMED file format: https://confluence.ihtsdotools.org/display/DOCRELFMT/4.2+File+Format+Specifications
+
+The relationships in the loinc snomed relationship file:
+
+4:59 $ csvtool -t TAB  col 8 xsct2_Relationship_Snapshot_LO1010000_20231015.txt | sort | uniq -c
+  27445 116680003   is a: https://browser.ihtsdotools.org/?perspective=full&conceptId1=116680003&edition=MAIN/2024-08-01&release=&languages=en
+  23707 246093002   component: https://browser.ihtsdotools.org/?perspective=full&conceptId1=246093002&edition=MAIN/2024-08-01&release=&languages=en
+   6617 246501002   technique: https://browser.ihtsdotools.org/?perspective=full&conceptId1=246501002&edition=MAIN/2024-08-01&release=&languages=en
+  23835 370130000   property: https://browser.ihtsdotools.org/?perspective=full&conceptId1=370130000&edition=MAIN/2024-08-01&release=&languages=en
+  23834 370132008   scale type: https://browser.ihtsdotools.org/?perspective=full&conceptId1=370132008&edition=MAIN/2024-08-01&release=&languages=en
+      3 370133003   specimen substance: https://browser.ihtsdotools.org/?perspective=full&conceptId1=370133003&edition=MAIN/2024-08-01&release=&languages=en
+  23782 370134009   time aspect: https://browser.ihtsdotools.org/?perspective=full&conceptId1=370134009&edition=MAIN/2024-08-01&release=&languages=en
+    127 704319004   inheres in: https://browser.ihtsdotools.org/?perspective=full&conceptId1=704319004&edition=MAIN/2024-08-01&release=&languages=en
+    378 704326004   precondition: https://browser.ihtsdotools.org/?perspective=full&conceptId1=704326004&edition=MAIN/2024-08-01&release=&languages=en
+  23220 704327008   direct site: https://browser.ihtsdotools.org/?perspective=full&conceptId1=704327008&edition=MAIN/2024-08-01&release=&languages=en
+      1 typeId
+
+

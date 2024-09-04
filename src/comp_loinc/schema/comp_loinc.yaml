@@ -3,39 +3,611 @@ name: loinc-owl-core-schema
 prefixes:
   linkml: https://w3id.org/linkml/
   loinc: https://loinc.org/
+  loinc_property: http://loinc.org/property/
+  owl: http://www.w3.org/2002/07/owl#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  sct: http://snomed.info/sct
 default_prefix: loinc
+default_range: string
 imports:
   - linkml:types
-  - code_schema
-  - part_schema
-  - set_schema
-  - grouping_classes_schema
+
 
 classes:
-  Thing:
-    slots:
-      - id
-      - label
-      - description
+
+  Loinc:
+    description: A container of Loinc term and part instances.
+    attributes:
+      codes:
+        description: Holds a list of LOINC term instances.
+        multivalued: true
+        range: LoincTerm
+      parts:
+        description: Holds a list of LOINC part instances.
+        multivalued: true
+        range: LoincPart
     class_uri: owl:Class
 
+  Entity:
+    attributes:
+      id:
+        identifier: true
+        range:
+          uriorcurie
+      entity_label:
+        slot_uri: rdfs:label
+        annotations:
+          owl: AnnotationAssertion
+      entity_description:
+        slot_uri: rdfs:description
+        annotations:
+          owl: AnnotationAssertion
+      sub_class_of:
+        annotations:
+          owl: SubClassOf
+        slot_uri: rdfs:subClassOf
+        multivalued: true
+        range: Entity
+      equivalent_class:
+        annotations:
+          owl: EquivalentClasses
+        slot_uri: owl:equivalentClass
+        multivalued: true
+        range: Entity
+    class_uri: owl:Class
+    annotations:
+      owl: Class
+
+  SnomedConcept:
+    is_a: Entity
+    class_uri: sct:SnomedConcept
+    attributes:
+      fully_specified_name:
+        slot_uri: sct:fully_specified_name
+        annotations:
+          owl: AnnotationAssertion
+    annotations:
+      owl: Class
+
+  LoincEntity:
+    is_a: Entity
+
+  LoincTerm:
+    is_a: LoincEntity
+    attributes:
+      # The naming here is intended to match the column naming in the CSV files
+      # TODO: review these names against the relevant CSVs.
+      loinc_number:
+        slot_uri: loinc:loinc_number
+        annotations:
+          owl: AnnotationAssertion
+      long_common_name:
+        slot_uri: loinc:long_common_name
+        annotations:
+          owl: AnnotationAssertion
+      short_name:
+        slot_uri: loinc:short_name
+        annotations:
+          owl: AnnotationAssertion
+      status:
+        slot_uri: loinc:status
+        annotations:
+          owl: AnnotationAssertion
+      loinc_class:
+        slot_uri: loinc:loinc_class
+        annotations:
+          owl: AnnotationAssertion
+      loinc_class_type:
+        slot_uri: loinc:loinc_class_type
+        annotations:
+          owl: AnnotationAssertion
+
+      # primary model properties: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#primary
+      # some are used in the supplementary model as well
+      # property naming has been changed (from previous schema) to match the LOINC naming
+      # to make the date model more approachable to LOINC folks.
+      primary_component:
+        slot_uri: loinc_property:COMPONENT
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # 2
+      primary_property:
+        slot_uri: loinc_property:PROPERTY
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_property:
+        slot_uri: loinc_property:PROPERTY
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # 3
+      primary_time_aspect:
+        slot_uri: loinc_property:TIME_ASPECT
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # 4
+      primary_system:
+        slot_uri: loinc_property:SYSTEM
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # 5
+      primary_scale_typ:
+        slot_uri: loinc_property:SCALE_TYP
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_scale_typ:
+        slot_uri: loinc_property:SCALE_TYP
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # 6
+      primary_method_typ:
+        slot_uri: loinc_property:METHOD_TYP
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_method_typ:
+        slot_uri: loinc_property:METHOD_TYP
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # for detailed model slots: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#detailedmodel
+
+      supplementary_analyte:
+        slot_uri: loinc_property:analyte
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_challenge:
+        slot_uri: loinc_property:challenge
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_adjustment:
+        slot_uri: loinc_property:adjustment
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_count:
+        slot_uri: loinc_property:count
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+      # property: # same as above for primary
+
+      supplementary_time_core:
+        slot_uri: loinc_property:time-core
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_time_modifier:
+        slot_uri: loinc_property:time-modifier
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_system_core:
+        slot_uri: loinc_property:system-core
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_super_system:
+        slot_uri: loinc_property:super-system
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+      #scale:  # same as above for primary
+      #method:  # same as above for primary
+
+      # syntax enhancements: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#syntax-enhancement
+      supplementary_analyte_core:
+        slot_uri: loinc_property:analyte-core
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_suffix:
+        slot_uri: loinc_property:analyte-suffix
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_numerator:
+        slot_uri: loinc_property:analyte-numerator
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_divisor:
+        slot_uri: loinc_property:analyte-divisor
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_divisor_suffix:
+        slot_uri: loinc_property:analyte-divisor-suffix
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+
+      # semantic enhancements: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#semantic-enhancement
+      supplementary_analyte_gene:
+        slot_uri: loinc_property:analyte_gene
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_genetic_variant:
+        slot_uri: loinc_property:analyte-genetic-variant
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_chemical:
+        slot_uri: loinc_property:analyte-chemical
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_divisor_chemical:
+        slot_uri: loinc_property:analyte-divisor-chemical
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_clinical_drug:
+        slot_uri: loinc_property:analyte-clinical-drug
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_system_core_anatomic_entity:
+        slot_uri: loinc_property:system-core-anatomic-entity
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_organism:
+        slot_uri: loinc_property:analyte-organism
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_challenge_route:
+        slot_uri: loinc_property:challenge-route
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_analyte_allergen:
+        slot_uri: loinc_property:analyte-allergen
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # metadata: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#metadata
+      supplementary_class: # the actual name 'class' conflicts with
+        slot_uri: loinc_property:class_   # TODO: the generated code has a conflict with the term 'class'. This should be a bug report.
+        # This hack, the trailing underscore, prevents the compile error caused by
+        # uri=LOINC_PROPERTY.class
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_category:
+        slot_uri: loinc_property:category
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_search:
+        slot_uri: loinc_property:category
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+
+
+      # radiology: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#radiology
+      primary_rad_anatomic_location_imaging_focus:
+        slot_uri: loinc_property:rad-anatomic-location-imaging-focus
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_anatomic_location_laterality:
+        slot_uri: loinc_property:rad-anatomic-location-laterality
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_anatomic_location_laterality_presence:
+        slot_uri: loinc_property:rad-anatomic-location-laterality-presence
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_anatomic_location_region_imaged:
+        slot_uri: loinc_property:rad-anatomic-location-region-imaged
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_guidance_for_action:
+        slot_uri: loinc_property:rad-guidance-for-action
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_guidance_for_approach:
+        slot_uri: loinc_property:rad-guidance-for-approach
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_guidance_for_object:
+        slot_uri: loinc_property:rad-guidance-for-object
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_guidance_for_presence:
+        slot_uri: loinc_property:rad-guidance-for-presence
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_maneuver_maneuver_type:
+        slot_uri: loinc_property:rad-maneuver-maneuver-type
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+      primary_rad_modality_subtype:
+        slot_uri: loinc_property:rad-modality-subtype
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_modality_type:
+        slot_uri: loinc_property:rad-modality-type
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_pharmaceutical_route:
+        slot_uri: loinc_property:rad-pharmaceutical-route
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_pharmaceutical_substance_given:
+        slot_uri: loinc_property:rad-pharmaceutical-substance-given
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_reason_for_exam:
+        slot_uri: loinc_property:rad-reason-for-exam
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_subject:
+        slot_uri: loinc_property:rad-subject
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_timing:
+        slot_uri: loinc_property:rad-timing
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_view_aggregation:
+        slot_uri: loinc_property:rad_view_aggregation
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_rad_view_view_type:
+        slot_uri: loinc_property:rad_view_view_type
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      # document ontology  https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#documentontology
+      primary_document_kind:
+        slot_uri: loinc_property:document-kind
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_document_role:
+        slot_uri: loinc_property:document-role
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_document_setting:
+        slot_uri: loinc_property:document-setting
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_document_subject_matter_domain:
+        slot_uri: loinc_property:document-subject-matter-domain
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      primary_document_type_of_service:
+        slot_uri: loinc_property:document-type-of-service
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+  LoincPart:
+    is_a: LoincEntity
+    attributes:
+      part_number:
+        slot_uri: loinc:part_number
+        annotations:
+          owl: AnnotationAssertion
+
+      part_type_name:
+        slot_uri: loinc:part-type-name
+        annotations:
+          owl: AnnotationAssertion
+
+      part_name:
+        slot_uri: loinc:part_name
+        annotations:
+          owl: AnnotationAssertion
+
+      part_display_name:
+        slot_uri: loinc:part_display_name
+        annotations:
+          owl: AnnotationAssertion
+
+      part_status:
+        slot_uri: loinc:status
+        annotations:
+          owl: AnnotationAssertion
+
+
 slots:
-  id:
-    identifier: true
-    range:
-      uriorcurie
-  label:
-    slot_uri: rdfs:label
-    annotations:
-      owl: AnnotationAssertion
-  description:
-    slot_uri: rdfs:description
-    annotations:
-      owl: AnnotationAssertion
-  subClassOf:
-    annotations:
-      owl: SubClassOf
-    slot_uri: rdfs:subClassOf
-    multivalued: true
-    range: Thing
-    required: true

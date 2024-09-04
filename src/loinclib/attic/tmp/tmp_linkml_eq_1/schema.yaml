@@ -1,0 +1,76 @@
+id: http://loinclib/eq-1
+name: eq-1
+prefixes:
+  linkml: https://w3id.org/linkml/
+  eq1: http://loinclib/eq-1
+default_prefix: eq1
+default_range: string
+imports:
+  - linkml:types
+
+classes:
+  Thing:
+    attributes:
+      id:
+        identifier: true
+        range:
+          uriorcurie
+      label:
+        slot_uri: rdfs:label
+        annotations:
+          owl: AnnotationAssertion
+
+  EQ1Thing:
+    is_a: Thing
+
+    slots:
+      - rel1
+      - rel2
+      - rel3
+
+    slot_usage:
+      rel1:
+        annotations:
+          owl: EquivalentClasses, IntersectionOf
+      rel2:
+        annotations:
+          owl: EquivalentClasses, IntersectionOf
+      rel3:
+        annotations:
+          owl: EquivalentClasses
+
+    annotations:
+      owl: Class
+
+  Something:
+    is_a: Thing
+    attributes:
+      name:
+        slot_uri: eq1:name
+        annotations:
+          owl: AnnotationAssertion
+
+slots:
+  rel1:
+    slot_uri: eq1:rel1
+    range: Thing
+    annotations:
+      owl: ObjectSomeValuesFrom
+      #      owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+      #          owl: ObjectSomeValuesFrom
+
+  rel2:
+    slot_uri: eq1:rel1
+    range: Thing
+    annotations:
+      owl: ObjectSomeValuesFrom
+      #      owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+      #          owl: ObjectSomeValuesFrom, EquivalentClasses
+
+  rel3:
+    slot_uri: eq1:rel1
+    range: Thing
+    annotations:
+      owl: ObjectSomeValuesFrom
+      #      owl: ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf
+      #          owl: ObjectSomeValuesFrom, EquivalentClasses

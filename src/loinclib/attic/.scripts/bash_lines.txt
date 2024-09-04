@@ -1,0 +1,85 @@
+# counts of url properties from that file
+csvtool col 8 LoincPartLink_Supplementary.csv | sort | uniq -c
+
+
+
+14:38 $ csvtool col 8 LoincPartLink_Primary.csv | sort | uniq -c
+ 101632 http://loinc.org/property/COMPONENT
+   3581 http://loinc.org/property/document-kind
+   1096 http://loinc.org/property/document-role
+   3584 http://loinc.org/property/document-setting
+   3006 http://loinc.org/property/document-subject-matter-domain
+   2453 http://loinc.org/property/document-type-of-service
+  55382 http://loinc.org/property/METHOD_TYP
+ 101632 http://loinc.org/property/PROPERTY
+   6135 http://loinc.org/property/rad-anatomic-location-imaging-focus
+   4004 http://loinc.org/property/rad-anatomic-location-laterality
+   3986 http://loinc.org/property/rad-anatomic-location-laterality-presence
+   7064 http://loinc.org/property/rad-anatomic-location-region-imaged
+   1156 http://loinc.org/property/rad-guidance-for-action
+    349 http://loinc.org/property/rad-guidance-for-approach
+    476 http://loinc.org/property/rad-guidance-for-object
+   1028 http://loinc.org/property/rad-guidance-for-presence
+    444 http://loinc.org/property/rad-maneuver-maneuver-type
+   1181 http://loinc.org/property/rad-modality-subtype
+   6660 http://loinc.org/property/rad-modality-type
+   1949 http://loinc.org/property/rad-pharmaceutical-route
+   2446 http://loinc.org/property/rad-pharmaceutical-substance-given
+    471 http://loinc.org/property/rad-reason-for-exam
+     34 http://loinc.org/property/rad-subject
+   2770 http://loinc.org/property/rad-timing
+   3905 http://loinc.org/property/rad-view-aggregation
+   1991 http://loinc.org/property/rad-view-view-type
+ 101632 http://loinc.org/property/SCALE_TYP
+ 101632 http://loinc.org/property/SYSTEM
+ 101632 http://loinc.org/property/TIME_ASPCT
+      1 Property
+
+
+
+14:38 $ csvtool col 8 LoincPartLink_Supplementary.csv | sort | uniq -c
+    204 http://loinc.org/property/adjustment
+  90944 http://loinc.org/property/analyte
+ 101632 http://loinc.org/property/analyte-core
+   5723 http://loinc.org/property/analyte-divisor
+     25 http://loinc.org/property/analyte-divisor-suffix
+   1709 http://loinc.org/property/analyte-gene
+    425 http://loinc.org/property/analyte-numerator
+  24368 http://loinc.org/property/analyte-suffix
+ 218515 http://loinc.org/property/category
+   6603 http://loinc.org/property/challenge
+ 101632 http://loinc.org/property/CLASS
+    148 http://loinc.org/property/count
+  44709 http://loinc.org/property/METHOD_TYP
+  90944 http://loinc.org/property/PROPERTY
+  90944 http://loinc.org/property/SCALE_TYP
+ 266570 http://loinc.org/property/search
+  22418 http://loinc.org/property/super-system
+  69832 http://loinc.org/property/system-core
+  90944 http://loinc.org/property/time-core
+    233 http://loinc.org/property/time-modifier
+      1 Property
+
+
+14:38 $ csvtool col 8 LoincPartLink_Supplementary.csv | sort | uniq _c
+    204 adjustment
+  90944 analyte
+ 101632 analyte_core
+   5723 analyte_divisor
+     25 analyte_divisor_suffix
+   1709 analyte_gene
+    425 analyte_numerator
+  24368 analyte_suffix
+ 218515 category
+   6603 challenge
+ 101632 CLASS
+    148 count
+  44709 METHOD_TYP
+  90944 PROPERTY
+  90944 SCALE_TYP
+ 266570 search
+  22418 super_system
+  69832 system_core
+  90944 time_core
+    233 time_modifier
+      1 Property

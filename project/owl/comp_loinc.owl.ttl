@@ -2,87 +2,224 @@
 @prefix linkml: <https://w3id.org/linkml/> .
 @prefix loinc: <https://loinc.org/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-loinc:core a owl:Ontology ;
-    rdfs:label "loinc-owl-core-schema" ;
-    IAO:0000700 loinc:Thing,
-        <https://loinc.org/set/LoincCodeOntology> ;
-    linkml:classes "{'Thing': ClassDefinition(name='Thing', id_prefixes=[], definition_uri='https://loinc.org/Thing', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/core', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=['owl:Class'], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description'], slot_usage={}, attributes={}, class_uri='owl:Class', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'LoincCodeClass': ClassDefinition(name='LoincCodeClass', id_prefixes=[], definition_uri='https://loinc.org/code/LoincCodeClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/code', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='Thing', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'LoincCodeClass_subClassOf', 'formal_name', 'loinc_number', 'status', 'short_name', 'long_common_name', 'has_component', 'has_property', 'has_system', 'has_method', 'has_scale', 'has_time'], slot_usage={'subClassOf': SlotDefinition(name='subClassOf', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range='LoincCodeClass', range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/code/LoincCodeClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'PartClass': ClassDefinition(name='PartClass', id_prefixes=[], definition_uri='https://loinc.org/part/PartClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/part', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='Thing', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'subClassOf', 'part_number', 'part_type'], slot_usage={}, attributes={}, class_uri='https://loinc.org/part/PartClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'ComponentClass': ClassDefinition(name='ComponentClass', id_prefixes=[], definition_uri='https://loinc.org/part/ComponentClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/part', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='PartClass', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'part_number', 'part_type', 'ComponentClass_subClassOf'], slot_usage={'subClassOf': SlotDefinition(name='subClassOf', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range='ComponentClass', range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/part/ComponentClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'SystemClass': ClassDefinition(name='SystemClass', id_prefixes=[], definition_uri='https://loinc.org/part/SystemClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/part', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='PartClass', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'part_number', 'part_type', 'SystemClass_subClassOf'], slot_usage={'subClassOf': SlotDefinition(name='subClassOf', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range='SystemClass', range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/part/SystemClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'MethodClass': ClassDefinition(name='MethodClass', id_prefixes=[], definition_uri='https://loinc.org/part/MethodClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/part', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='PartClass', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'part_number', 'part_type', 'MethodClass_subClassOf'], slot_usage={'subClassOf': SlotDefinition(name='subClassOf', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range='MethodClass', range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/part/MethodClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'TimeClass': ClassDefinition(name='TimeClass', id_prefixes=[], definition_uri='https://loinc.org/part/TimeClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/part', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='PartClass', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'part_number', 'part_type', 'TimeClass_subClassOf'], slot_usage={'subClassOf': SlotDefinition(name='subClassOf', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range='TimeClass', range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/part/TimeClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'PropertyClass': ClassDefinition(name='PropertyClass', id_prefixes=[], definition_uri='https://loinc.org/part/PropertyClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/part', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='PartClass', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'part_number', 'part_type', 'PropertyClass_subClassOf'], slot_usage={'subClassOf': SlotDefinition(name='subClassOf', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range='PropertyClass', range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/part/PropertyClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'ScaleClass': ClassDefinition(name='ScaleClass', id_prefixes=[], definition_uri='https://loinc.org/part/ScaleClass', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/part', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='PartClass', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'part_number', 'part_type', 'ScaleClass_subClassOf'], slot_usage={'subClassOf': SlotDefinition(name='subClassOf', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range='ScaleClass', range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/part/ScaleClass', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'LoincCodeOntology': ClassDefinition(name='LoincCodeOntology', id_prefixes=[], definition_uri='https://loinc.org/set/LoincCodeOntology', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/set', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['component_class_set', 'system_class_set', 'code_class_set'], slot_usage={}, attributes={}, class_uri='https://loinc.org/set/LoincCodeOntology', subclass_of=None, union_of=[], defining_slots=[], tree_root=True, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'CodeBySystem': ClassDefinition(name='CodeBySystem', id_prefixes=[], definition_uri='https://loinc.org/grouping_classes/CodeBySystem', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/grouping_classes', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='Thing', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'CodeBySystem_has_system'], slot_usage={'has_system': SlotDefinition(name='has_system', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={'owl': Annotation(tag='owl', value='EquivalentClasses', extensions={}, annotations={})}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range=None, range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/grouping_classes/CodeBySystem', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={}), 'CodeByComponent': ClassDefinition(name='CodeByComponent', id_prefixes=[], definition_uri='https://loinc.org/grouping_classes/CodeByComponent', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://loinc.org/grouping_classes', imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a='Thing', abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, slots=['id', 'label', 'description', 'CodeByComponent_has_component'], slot_usage={'has_component': SlotDefinition(name='has_component', id_prefixes=[], definition_uri=None, local_names={}, conforms_to=None, implements=[], extensions={}, annotations={'owl': Annotation(tag='owl', value='EquivalentClasses', extensions={}, annotations={})}, description=None, alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema=None, imported_from=None, source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, is_a=None, abstract=None, mixin=None, mixins=[], apply_to=[], values_from=[], string_serialization=None, singular_name=None, domain=None, slot_uri=None, multivalued=None, inherited=None, readonly=None, ifabsent=None, list_elements_unique=None, list_elements_ordered=None, shared=None, key=None, identifier=None, designates_type=None, alias=None, owner=None, domain_of=[], subproperty_of=None, symmetric=None, reflexive=None, locally_reflexive=None, irreflexive=None, asymmetric=None, transitive=None, inverse=None, is_class_field=None, transitive_form_of=None, reflexive_transitive_form_of=None, role=None, is_usage_slot=None, usage_slot_name=None, relational_role=None, slot_group=None, is_grouping_slot=None, path_rule=None, disjoint_with=[], children_are_mutually_disjoint=None, union_of=[], range=None, range_expression=None, enum_range=None, required=None, recommended=None, inlined=None, inlined_as_list=None, minimum_value=None, maximum_value=None, pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, value_presence=None, equals_string=None, equals_string_in=[], equals_number=None, equals_expression=None, minimum_cardinality=None, maximum_cardinality=None, has_member=None, all_members=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}, attributes={}, class_uri='https://loinc.org/grouping_classes/CodeByComponent', subclass_of=None, union_of=[], defining_slots=[], tree_root=None, unique_keys={}, rules=[], classification_rules=[], slot_names_unique=None, represents_relationship=None, disjoint_with=[], children_are_mutually_disjoint=None, any_of=[], exactly_one_of=[], none_of=[], all_of=[], slot_conditions={})}" ;
-    linkml:enums "{}" ;
-    linkml:id "https://loinc.org/core" ;
-    linkml:imports "code_schema",
-        "comp_loinc",
-        "grouping_classes_schema",
-        "linkml:types",
-        "part_schema",
-        "set_schema" ;
-    linkml:types "{'string': TypeDefinition(name='string', id_prefixes=[], definition_uri='https://w3id.org/linkml/String', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A character string', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=['schema:Text'], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='str', uri='xsd:string', repr=None, union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'integer': TypeDefinition(name='integer', id_prefixes=[], definition_uri='https://w3id.org/linkml/Integer', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='An integer', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=['schema:Integer'], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='int', uri='xsd:integer', repr=None, union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'boolean': TypeDefinition(name='boolean', id_prefixes=[], definition_uri='https://w3id.org/linkml/Boolean', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A binary (true or false) value', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=['schema:Boolean'], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='Bool', uri='xsd:boolean', repr='bool', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'float': TypeDefinition(name='float', id_prefixes=[], definition_uri='https://w3id.org/linkml/Float', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A real number that conforms to the xsd:float specification', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=['schema:Float'], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='float', uri='xsd:float', repr=None, union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'double': TypeDefinition(name='double', id_prefixes=[], definition_uri='https://w3id.org/linkml/Double', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A real number that conforms to the xsd:double specification', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=['schema:Float'], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='float', uri='xsd:double', repr=None, union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'decimal': TypeDefinition(name='decimal', id_prefixes=[], definition_uri='https://w3id.org/linkml/Decimal', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A real number with arbitrary precision that conforms to the xsd:decimal specification', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=['schema:Number'], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='Decimal', uri='xsd:decimal', repr=None, union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'time': TypeDefinition(name='time', id_prefixes=[], definition_uri='https://w3id.org/linkml/Time', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A time object represents a (local) time of day, independent of any particular day', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=['URI is dateTime because OWL reasoners do not work with straight date or time'], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=['schema:Time'], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='XSDTime', uri='xsd:dateTime', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'date': TypeDefinition(name='date', id_prefixes=[], definition_uri='https://w3id.org/linkml/Date', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='a date (year, month and day) in an idealized calendar', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[\"URI is dateTime because OWL reasoners don't work with straight date or time\"], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=['schema:Date'], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='XSDDate', uri='xsd:date', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'datetime': TypeDefinition(name='datetime', id_prefixes=[], definition_uri='https://w3id.org/linkml/Datetime', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='The combination of a date and time', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=['schema:DateTime'], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='XSDDateTime', uri='xsd:dateTime', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'date_or_datetime': TypeDefinition(name='date_or_datetime', id_prefixes=[], definition_uri='https://w3id.org/linkml/DateOrDatetime', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='Either a date or a datetime', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='str', uri='linkml:DateOrDatetime', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'uriorcurie': TypeDefinition(name='uriorcurie', id_prefixes=[], definition_uri='https://w3id.org/linkml/Uriorcurie', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='a URI or a CURIE', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='URIorCURIE', uri='xsd:anyURI', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'curie': TypeDefinition(name='curie', id_prefixes=[], definition_uri='https://w3id.org/linkml/Curie', local_names={}, conforms_to='https://www.w3.org/TR/curie/', implements=[], extensions={}, annotations={}, description='a compact URI', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=['in RDF serializations this MUST be expanded to a URI', 'in non-RDF serializations MAY be serialized as the compact representation'], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='Curie', uri='xsd:string', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'uri': TypeDefinition(name='uri', id_prefixes=[], definition_uri='https://w3id.org/linkml/Uri', local_names={}, conforms_to='https://www.ietf.org/rfc/rfc3987.txt', implements=[], extensions={}, annotations={}, description='a complete URI', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=['in RDF serializations a slot with range of uri is treated as a literal or type xsd:anyURI unless it is an identifier or a reference to an identifier, in which case it is translated directly to a node'], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=['schema:URL'], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='URI', uri='xsd:anyURI', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'ncname': TypeDefinition(name='ncname', id_prefixes=[], definition_uri='https://w3id.org/linkml/Ncname', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='Prefix part of CURIE', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='NCName', uri='xsd:string', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'objectidentifier': TypeDefinition(name='objectidentifier', id_prefixes=[], definition_uri='https://w3id.org/linkml/Objectidentifier', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A URI or CURIE that represents an object in the model.', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=['Used for inheritence and type checking'], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='ElementIdentifier', uri='shex:iri', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[]), 'nodeidentifier': TypeDefinition(name='nodeidentifier', id_prefixes=[], definition_uri='https://w3id.org/linkml/Nodeidentifier', local_names={}, conforms_to=None, implements=[], extensions={}, annotations={}, description='A URI, CURIE or BNODE that represents a node in a model.', alt_descriptions={}, title=None, deprecated=None, todos=[], notes=[], comments=[], examples=[], in_subset=[], from_schema='https://w3id.org/linkml/types', imported_from='linkml:types', source=None, in_language=None, see_also=[], deprecated_element_has_exact_replacement=None, deprecated_element_has_possible_replacement=None, aliases=[], structured_aliases={}, mappings=[], exact_mappings=[], close_mappings=[], related_mappings=[], narrow_mappings=[], broad_mappings=[], created_by=None, created_on=None, last_updated_on=None, modified_by=None, status=None, rank=None, typeof=None, base='NodeIdentifier', uri='shex:nonLiteral', repr='str', union_of=[], pattern=None, structured_pattern=None, unit=None, implicit_prefix=None, equals_string=None, equals_string_in=[], equals_number=None, minimum_value=None, maximum_value=None, none_of=[], exactly_one_of=[], any_of=[], all_of=[])}" .
-
-<https://loinc.org/grouping_classes/CodeByComponent> a owl:Class,
+<https://loinc.org/code/LoincCodeClassIntersection> a owl:Class,
         linkml:ClassDefinition ;
-    rdfs:label "CodeByComponent" ;
+    rdfs:label "LoincCodeClassIntersection" ;
     rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentChallenge ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentCount ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasTimeModifier ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/TimeClass> ;
+            owl:onProperty loinc:hasTime ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasSystemCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasTimeCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PropertyClass> ;
+            owl:onProperty loinc:hasProperty ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteDivisorSuffix ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/MethodClass> ;
+            owl:onProperty loinc:hasMethod ],
+        [ a owl:Restriction ;
             owl:maxQualifiedCardinality 1 ;
             owl:onClass <https://loinc.org/part/ComponentClass> ;
             owl:onProperty loinc:hasComponent ],
-        loinc:Thing ;
-    linkml:attributes "{}" ;
-    linkml:is_a "Thing" .
-
-<https://loinc.org/grouping_classes/CodeBySystem> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "CodeBySystem" ;
-    rdfs:subClassOf [ a owl:Restriction ;
+        [ a owl:Restriction ;
             owl:maxQualifiedCardinality 1 ;
             owl:onClass <https://loinc.org/part/SystemClass> ;
             owl:onProperty loinc:hasSystem ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentAdjustment ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteSuffix ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteNumerator ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentAnalyte ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:semanticAnalyteGene ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/ScaleClass> ;
+            owl:onProperty loinc:hasScale ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasSystemSuperSystem ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteDivisor ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteCore ],
+        <https://loinc.org/code/LoincCodeClass> ;
+    loinc:owl "Class" .
+
+<https://loinc.org/code/LoincCodeClassNonIntersection> a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "LoincCodeClassNonIntersection" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentAdjustment ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteNumerator ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentChallenge ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteDivisorSuffix ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteDivisor ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/TimeClass> ;
+            owl:onProperty loinc:hasTime ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PropertyClass> ;
+            owl:onProperty loinc:hasProperty ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasTimeCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/MethodClass> ;
+            owl:onProperty loinc:hasMethod ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasTimeModifier ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentCount ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:semanticAnalyteGene ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/ScaleClass> ;
+            owl:onProperty loinc:hasScale ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/SystemClass> ;
+            owl:onProperty loinc:hasSystem ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasSystemSuperSystem ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentAnalyte ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasSystemCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteSuffix ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/ComponentClass> ;
+            owl:onProperty loinc:hasComponent ],
+        <https://loinc.org/code/LoincCodeClass> ;
+    loinc:owl "Class" .
+
+loinc:core a owl:Ontology ;
+    rdfs:label "loinc-owl-core-schema" ;
+    IAO:0000700 loinc:Loinc,
         loinc:Thing ;
-    linkml:attributes "{}" ;
-    linkml:is_a "Thing" .
+    linkml:id "https://loinc.org/core" ;
+    linkml:imports "code_schema",
+        "comp_loinc",
+        "linkml:types",
+        "part_schema" .
 
-linkml:SubsetDefinition a owl:Class ;
-    rdfs:label "subset_definition" ;
-    linkml:attributes "{}" ;
-    linkml:is_a "element" .
+linkml:SubsetDefinition a owl:Class .
 
-linkml:TypeDefinition a owl:Class ;
-    rdfs:label "type_definition" ;
-    linkml:attributes "{}" ;
-    linkml:is_a "element" ;
-    linkml:mixins "type_expression" .
+linkml:TypeDefinition a owl:Class .
 
 linkml:topValue a owl:DatatypeProperty ;
     rdfs:label "value" .
+
+loinc:Loinc a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "Loinc" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:parts ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/code/LoincCodeClass> ;
+            owl:onProperty loinc:codes ] ;
+    skos:exactMatch owl:Class .
+
+loinc:codes a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "codes" ;
+    rdfs:range <https://loinc.org/code/LoincCodeClass> .
 
 loinc:id a owl:ObjectProperty,
         linkml:SlotDefinition ;
     rdfs:label "id" ;
     rdfs:range linkml:Uriorcurie .
 
-<https://loinc.org/set/code_class_set> a owl:ObjectProperty,
+loinc:parts a owl:ObjectProperty,
         linkml:SlotDefinition ;
-    rdfs:label "code_class_set" ;
-    rdfs:domain <https://loinc.org/set/LoincCodeOntology> ;
-    rdfs:range <https://loinc.org/code/LoincCodeClass> ;
-    skos:definition "" .
-
-<https://loinc.org/set/component_class_set> a owl:ObjectProperty,
-        linkml:SlotDefinition ;
-    rdfs:label "component_class_set" ;
-    rdfs:domain <https://loinc.org/set/LoincCodeOntology> ;
-    rdfs:range <https://loinc.org/part/ComponentClass> ;
-    skos:definition "" .
-
-<https://loinc.org/set/system_class_set> a owl:ObjectProperty,
-        linkml:SlotDefinition ;
-    rdfs:label "system_class_set" ;
-    rdfs:domain <https://loinc.org/set/LoincCodeOntology> ;
-    rdfs:range <https://loinc.org/part/SystemClass> ;
-    skos:definition "" .
+    rdfs:label "parts" ;
+    rdfs:range <https://loinc.org/part/PartClass> .
 
 rdfs:description a owl:ObjectProperty,
         linkml:SlotDefinition ;
@@ -98,6 +235,13 @@ rdfs:label a owl:ObjectProperty,
     skos:exactMatch rdfs:label ;
     loinc:owl "AnnotationAssertion" .
 
+owl:equivalentClass a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "equivalentClasses" ;
+    rdfs:range loinc:Thing ;
+    skos:exactMatch owl:equivalentClass ;
+    loinc:owl "EquivalentClasses" .
+
 loinc:formal_name a owl:ObjectProperty,
         linkml:SlotDefinition ;
     rdfs:label "formal_name" ;
@@ -105,33 +249,19 @@ loinc:formal_name a owl:ObjectProperty,
     skos:exactMatch loinc:formal_name ;
     loinc:owl "AnnotationAssertion" .
 
-loinc:hasMethod a owl:ObjectProperty,
+loinc:loinc_class a owl:ObjectProperty,
         linkml:SlotDefinition ;
-    rdfs:label "has_method" ;
-    rdfs:range <https://loinc.org/part/MethodClass> ;
-    skos:exactMatch loinc:hasMethod ;
-    loinc:owl "ObjectSomeValuesFrom" .
+    rdfs:label "loinc_class" ;
+    rdfs:range linkml:String ;
+    skos:exactMatch loinc:loinc_class ;
+    loinc:owl "AnnotationAssertion" .
 
-loinc:hasProperty a owl:ObjectProperty,
+loinc:loinc_class_type a owl:ObjectProperty,
         linkml:SlotDefinition ;
-    rdfs:label "has_property" ;
-    rdfs:range <https://loinc.org/part/PropertyClass> ;
-    skos:exactMatch loinc:hasProperty ;
-    loinc:owl "ObjectSomeValuesFrom" .
-
-loinc:hasScale a owl:ObjectProperty,
-        linkml:SlotDefinition ;
-    rdfs:label "has_scale" ;
-    rdfs:range <https://loinc.org/part/ScaleClass> ;
-    skos:exactMatch loinc:hasScale ;
-    loinc:owl "ObjectSomeValuesFrom" .
-
-loinc:hasTime a owl:ObjectProperty,
-        linkml:SlotDefinition ;
-    rdfs:label "has_time" ;
-    rdfs:range <https://loinc.org/part/TimeClass> ;
-    skos:exactMatch loinc:hasTime ;
-    loinc:owl "ObjectSomeValuesFrom" .
+    rdfs:label "loinc_class_type" ;
+    rdfs:range linkml:String ;
+    skos:exactMatch loinc:loinc_class_type ;
+    loinc:owl "AnnotationAssertion" .
 
 loinc:loinc_number a owl:ObjectProperty,
         linkml:SlotDefinition ;
@@ -145,6 +275,20 @@ loinc:long_common_name a owl:ObjectProperty,
     rdfs:label "long_common_name" ;
     rdfs:range linkml:String ;
     skos:exactMatch loinc:long_common_name ;
+    loinc:owl "AnnotationAssertion" .
+
+loinc:part_display_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "part_display_name" ;
+    rdfs:range linkml:String ;
+    skos:exactMatch loinc:part_display_name ;
+    loinc:owl "AnnotationAssertion" .
+
+loinc:part_name a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "part_name" ;
+    rdfs:range linkml:String ;
+    skos:exactMatch loinc:part_name ;
     loinc:owl "AnnotationAssertion" .
 
 loinc:part_number a owl:ObjectProperty,
@@ -175,11 +319,173 @@ loinc:status a owl:ObjectProperty,
     skos:exactMatch loinc:status ;
     loinc:owl "AnnotationAssertion" .
 
+<https://loinc.org/code/LoincCodeClass> a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "LoincCodeClass" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentCount ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteDivisorSuffix ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/SystemClass> ;
+            owl:onProperty loinc:hasSystem ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentAdjustment ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteDivisor ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:loinc_class_type ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentAnalyte ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasTimeCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:semanticAnalyteGene ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/ScaleClass> ;
+            owl:onProperty loinc:hasScale ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasSystemCore ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:status ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteNumerator ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:long_common_name ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasComponentChallenge ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:loinc_class ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasTimeModifier ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:hasSystemSuperSystem ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/MethodClass> ;
+            owl:onProperty loinc:hasMethod ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/ComponentClass> ;
+            owl:onProperty loinc:hasComponent ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:short_name ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:loinc_number ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PropertyClass> ;
+            owl:onProperty loinc:hasProperty ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/TimeClass> ;
+            owl:onProperty loinc:hasTime ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:formal_name ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass <https://loinc.org/part/PartClass> ;
+            owl:onProperty loinc:syntaxAnalyteSuffix ],
+        loinc:Thing .
+
 loinc:hasComponent a owl:ObjectProperty,
         linkml:SlotDefinition ;
     rdfs:label "has_component" ;
     rdfs:range <https://loinc.org/part/ComponentClass> ;
     skos:exactMatch loinc:hasComponent ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:hasComponentAdjustment a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_component_adjustment" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasComponentAdjustment ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:hasComponentAnalyte a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_component_analyte" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasComponentAnalyte ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:hasComponentChallenge a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_component_challenge" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasComponentChallenge ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:hasComponentCount a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_component_count" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasComponentCount ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:hasMethod a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_method" ;
+    rdfs:range <https://loinc.org/part/MethodClass> ;
+    skos:exactMatch loinc:hasMethod ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:hasProperty a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_property" ;
+    rdfs:range <https://loinc.org/part/PropertyClass> ;
+    skos:exactMatch loinc:hasProperty ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:hasScale a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_scale" ;
+    rdfs:range <https://loinc.org/part/ScaleClass> ;
+    skos:exactMatch loinc:hasScale ;
     loinc:owl "ObjectSomeValuesFrom" .
 
 loinc:hasSystem a owl:ObjectProperty,
@@ -189,180 +495,138 @@ loinc:hasSystem a owl:ObjectProperty,
     skos:exactMatch loinc:hasSystem ;
     loinc:owl "ObjectSomeValuesFrom" .
 
-<https://loinc.org/code/LoincCodeClass> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "LoincCodeClass" ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass <https://loinc.org/part/TimeClass> ;
-            owl:onProperty loinc:hasTime ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass linkml:String ;
-            owl:onProperty loinc:status ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass <https://loinc.org/part/ScaleClass> ;
-            owl:onProperty loinc:hasScale ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass <https://loinc.org/part/ComponentClass> ;
-            owl:onProperty loinc:hasComponent ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass linkml:String ;
-            owl:onProperty loinc:formal_name ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass <https://loinc.org/part/MethodClass> ;
-            owl:onProperty loinc:hasMethod ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass <https://loinc.org/part/PropertyClass> ;
-            owl:onProperty loinc:hasProperty ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass linkml:String ;
-            owl:onProperty loinc:long_common_name ],
-        [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom <https://loinc.org/code/LoincCodeClass> ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom <https://loinc.org/code/LoincCodeClass> ] ) ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass linkml:String ;
-            owl:onProperty loinc:loinc_number ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass linkml:String ;
-            owl:onProperty loinc:short_name ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass <https://loinc.org/part/SystemClass> ;
-            owl:onProperty loinc:hasSystem ],
-        loinc:Thing ;
-    linkml:attributes "{}" ;
-    linkml:is_a "Thing" .
+loinc:hasSystemCore a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_system_core" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasSystemCore ;
+    loinc:owl "ObjectSomeValuesFrom" .
 
-<https://loinc.org/part/MethodClass> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "MethodClass" ;
-    rdfs:subClassOf [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom <https://loinc.org/part/MethodClass> ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom <https://loinc.org/part/MethodClass> ] ) ],
-        <https://loinc.org/part/PartClass> ;
-    linkml:attributes "{}" ;
-    linkml:is_a "PartClass" .
+loinc:hasSystemSuperSystem a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_system_super_system" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasSystemSuperSystem ;
+    loinc:owl "ObjectSomeValuesFrom" .
 
-<https://loinc.org/part/PropertyClass> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "PropertyClass" ;
-    rdfs:subClassOf [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom <https://loinc.org/part/PropertyClass> ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom <https://loinc.org/part/PropertyClass> ] ) ],
-        <https://loinc.org/part/PartClass> ;
-    linkml:attributes "{}" ;
-    linkml:is_a "PartClass" .
+loinc:hasTime a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_time" ;
+    rdfs:range <https://loinc.org/part/TimeClass> ;
+    skos:exactMatch loinc:hasTime ;
+    loinc:owl "ObjectSomeValuesFrom" .
 
-<https://loinc.org/part/ScaleClass> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "ScaleClass" ;
-    rdfs:subClassOf [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom <https://loinc.org/part/ScaleClass> ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom <https://loinc.org/part/ScaleClass> ] ) ],
-        <https://loinc.org/part/PartClass> ;
-    linkml:attributes "{}" ;
-    linkml:is_a "PartClass" .
+loinc:hasTimeCore a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_time_core" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasTimeCore ;
+    loinc:owl "ObjectSomeValuesFrom" .
 
-<https://loinc.org/part/TimeClass> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "TimeClass" ;
-    rdfs:subClassOf [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom <https://loinc.org/part/TimeClass> ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom <https://loinc.org/part/TimeClass> ] ) ],
-        <https://loinc.org/part/PartClass> ;
-    linkml:attributes "{}" ;
-    linkml:is_a "PartClass" .
+loinc:hasTimeModifier a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "has_time_modifier" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:hasTimeModifier ;
+    loinc:owl "ObjectSomeValuesFrom" .
 
-<https://loinc.org/set/LoincCodeOntology> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "LoincCodeOntology" ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:allValuesFrom <https://loinc.org/part/SystemClass> ;
-            owl:onProperty <https://loinc.org/set/system_class_set> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom <https://loinc.org/code/LoincCodeClass> ;
-            owl:onProperty <https://loinc.org/set/code_class_set> ],
-        [ a owl:Restriction ;
-            owl:allValuesFrom <https://loinc.org/part/ComponentClass> ;
-            owl:onProperty <https://loinc.org/set/component_class_set> ] ;
-    linkml:attributes "{}" .
+loinc:semanticAnalyteGene a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "semantic_analyte_gene" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:semanticAnalyteGene ;
+    loinc:owl "ObjectSomeValuesFrom" .
 
-<https://loinc.org/part/PartClass> a owl:Class,
-        linkml:ClassDefinition ;
-    rdfs:label "PartClass" ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass linkml:String ;
-            owl:onProperty loinc:part_type ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality 1 ;
-            owl:onClass linkml:String ;
-            owl:onProperty loinc:part_number ],
-        [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom loinc:Thing ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom loinc:Thing ] ) ],
-        loinc:Thing ;
-    linkml:attributes "{}" ;
-    linkml:is_a "Thing" .
+loinc:syntaxAnalyteCore a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "syntax_analyte_core" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:syntaxAnalyteCore ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:syntaxAnalyteDivisor a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "syntax_analyte_divisor" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:syntaxAnalyteDivisor ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:syntaxAnalyteDivisorSuffix a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "syntax_analyte_divisor_suffix" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:syntaxAnalyteDivisorSuffix ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:syntaxAnalyteNumerator a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "syntax_analyte_numerator" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:syntaxAnalyteNumerator ;
+    loinc:owl "ObjectSomeValuesFrom" .
+
+loinc:syntaxAnalyteSuffix a owl:ObjectProperty,
+        linkml:SlotDefinition ;
+    rdfs:label "syntax_analyte_suffix" ;
+    rdfs:range <https://loinc.org/part/PartClass> ;
+    skos:exactMatch loinc:syntaxAnalyteSuffix ;
+    loinc:owl "ObjectSomeValuesFrom" .
 
 <https://loinc.org/part/ComponentClass> a owl:Class,
         linkml:ClassDefinition ;
     rdfs:label "ComponentClass" ;
-    rdfs:subClassOf [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom <https://loinc.org/part/ComponentClass> ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom <https://loinc.org/part/ComponentClass> ] ) ],
-        <https://loinc.org/part/PartClass> ;
-    linkml:attributes "{}" ;
-    linkml:is_a "PartClass" .
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/part/ComponentClass> ;
+            owl:onProperty rdfs:subClassOf ],
+        <https://loinc.org/part/PartClass> .
+
+<https://loinc.org/part/MethodClass> a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "MethodClass" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/part/MethodClass> ;
+            owl:onProperty rdfs:subClassOf ],
+        <https://loinc.org/part/PartClass> .
+
+<https://loinc.org/part/PropertyClass> a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "PropertyClass" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/part/PropertyClass> ;
+            owl:onProperty rdfs:subClassOf ],
+        <https://loinc.org/part/PartClass> .
+
+<https://loinc.org/part/ScaleClass> a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "ScaleClass" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/part/ScaleClass> ;
+            owl:onProperty rdfs:subClassOf ],
+        <https://loinc.org/part/PartClass> .
 
 <https://loinc.org/part/SystemClass> a owl:Class,
         linkml:ClassDefinition ;
     rdfs:label "SystemClass" ;
-    rdfs:subClassOf [ a owl:Class ;
-            owl:intersectionOf ( [ a owl:Restriction ;
-                        owl:allValuesFrom <https://loinc.org/part/SystemClass> ;
-                        owl:onProperty rdfs:subClassOf ] [ a owl:Restriction ;
-                        owl:onProperty rdfs:subClassOf ;
-                        owl:someValuesFrom <https://loinc.org/part/SystemClass> ] ) ],
-        <https://loinc.org/part/PartClass> ;
-    linkml:attributes "{}" ;
-    linkml:is_a "PartClass" .
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/part/SystemClass> ;
+            owl:onProperty rdfs:subClassOf ],
+        <https://loinc.org/part/PartClass> .
+
+<https://loinc.org/part/TimeClass> a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "TimeClass" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <https://loinc.org/part/TimeClass> ;
+            owl:onProperty rdfs:subClassOf ],
+        <https://loinc.org/part/PartClass> .
 
 loinc:Thing a owl:Class,
         linkml:ClassDefinition ;
     rdfs:label "Thing" ;
     rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom loinc:Thing ;
+            owl:onProperty rdfs:subClassOf ],
+        [ a owl:Restriction ;
             owl:onClass linkml:Uriorcurie ;
             owl:onProperty loinc:id ;
             owl:qualifiedCardinality 1 ],
@@ -371,17 +635,13 @@ loinc:Thing a owl:Class,
             owl:onClass linkml:String ;
             owl:onProperty rdfs:label ],
         [ a owl:Restriction ;
+            owl:allValuesFrom loinc:Thing ;
+            owl:onProperty owl:equivalentClass ],
+        [ a owl:Restriction ;
             owl:maxQualifiedCardinality 1 ;
             owl:onClass linkml:String ;
             owl:onProperty rdfs:description ] ;
-    skos:exactMatch owl:Class ;
-    linkml:attributes "{}" .
-
-linkml:ClassDefinition a owl:Class ;
-    rdfs:label "class_definition" ;
-    linkml:attributes "{}" ;
-    linkml:is_a "definition" ;
-    linkml:mixins "class_expression" .
+    skos:exactMatch owl:Class .
 
 rdfs:subClassOf a owl:ObjectProperty,
         linkml:SlotDefinition ;
@@ -390,10 +650,30 @@ rdfs:subClassOf a owl:ObjectProperty,
     skos:exactMatch rdfs:subClassOf ;
     loinc:owl "SubClassOf" .
 
-linkml:SlotDefinition a owl:Class ;
-    rdfs:label "slot_definition" ;
-    linkml:attributes "{}" ;
-    linkml:is_a "definition" ;
-    linkml:mixins "slot_expression" .
+linkml:ClassDefinition a owl:Class .
+
+linkml:SlotDefinition a owl:Class .
+
+<https://loinc.org/part/PartClass> a owl:Class,
+        linkml:ClassDefinition ;
+    rdfs:label "PartClass" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:part_number ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:part_name ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:part_type ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality 1 ;
+            owl:onClass linkml:String ;
+            owl:onProperty loinc:part_display_name ],
+        loinc:Thing ;
+    loinc:owl "Class" .
 
 

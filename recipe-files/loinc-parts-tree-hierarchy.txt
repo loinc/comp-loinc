@@ -1,0 +1,20 @@
+# this turns on a fast run for dev mode
+#--fast-run
+
+-o
+out-comploinc
+
+builder
+
+  set-module
+    -n
+    loinc-parts-tree-hierarchy
+
+  lp-part-tree-hierarchy-all
+
+  lp-parent
+
+  load-schema
+      -f
+      comp_loinc.yaml
+  save-owl
