@@ -145,6 +145,7 @@ dmypy.json
 /loinc_trees/
 /comp_loinc/
 /comploinc_out/
+/build-files*
 
 /*_release
 /*_demo*
