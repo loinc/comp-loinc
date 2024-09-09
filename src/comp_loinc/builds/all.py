@@ -8,7 +8,10 @@ cli = typer.Typer()
 
 
 @cli.command()
-def main(fast_run: bool = typer.Option(False, "--fast-run", help="Files will be created with only 100 entries each.")):
+def main(
+    fast_run: bool = typer.Option(False, "--fast-run", hidden=True,
+    help="Files will be created with only 100 entries each.")
+):
     """Wrapper CLI to create all artefacts at once."""
     comploinc_file_cli_all(fast_run)
 
