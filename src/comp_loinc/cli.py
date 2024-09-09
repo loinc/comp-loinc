@@ -133,3 +133,11 @@ def parse_build_file(build_file_path: Path):
       if line and not line.startswith('#'):
         args.append(line)
   return args
+
+
+# TODO: finish here
+def comploinc_file_cli_all(fast_run=False):
+  """Runs all in recipe-files/"""
+  # TODO: replace args in each file with value of --fast-run
+  files = []
+  print()
