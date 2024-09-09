@@ -1,12 +1,13 @@
 loinc:
   release:
-    default: '2.67'
+    default: '2.78'
     '2.67':
-      version: '2.78'
+      version: '2.67'
       path: 'loinc_release/2.67' # runtime home directory-relative path
     '2.78':
       version:  '2.78'
       path: 'loinc_release/Loinc_2.78'
+      classes: 'data/loinc_classes.csv'
 
 loinc_tree:
   release:

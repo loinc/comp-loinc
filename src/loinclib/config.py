@@ -1,3 +1,4 @@
+import typing as t
 from pathlib import Path
 
 import yaml
@@ -25,18 +26,23 @@ class Configuration:
       return self.home_path / 'loinc_release'
     return self.home_path / path
 
-
-  def get_trees_path(self) -> Path:
+  def get_loinc_trees_path(self) -> Path:
     default = self.config['loinc_tree']['release']['default']
     path = self.config['loinc_tree']['release'][default]['tree_path']
     return self.home_path / path
 
+  def get_loinc_classes_path(self) -> t.Optional[Path]:
+    try:
+      default = self.config['loinc']['release']['default']
+      path = self.config['loinc']['release'][default]['classes']
+      return self.home_path / path
+    except KeyError as e:
+      pass
 
   def get_snomed_relations_path(self) -> Path:
     release_version = self.config['snomed']['release']['default']
     relationship_path = self.config['snomed']['release'][release_version]['files']['relationship']
     return (self.home_path / relationship_path).absolute()
-
 
   def get_snomed_description_path(self) -> Path:
     default = self.config['snomed']['release']['default']
@@ -65,4 +71,3 @@ class Configuration:
 
   def get_logging_configuration(self):
     return self.config['logging']
-

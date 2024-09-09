@@ -20,7 +20,7 @@ class Runtime:
     self.name = name
     self.pickled_graph_path = pickled_graph_path
 
-    self.graph = LoinclibGraph(graph_path=self.pickled_graph_path)
+    self.graph: LoinclibGraph = LoinclibGraph(graph_path=self.pickled_graph_path)
 
     from comp_loinc.module import Module
     self.modules: t.Dict[str, Module] = dict()

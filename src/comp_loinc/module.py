@@ -40,6 +40,13 @@ class Module:
     return self.entities_by_type.setdefault(entity_class, {}).get(entity_id,
                                                                   None)
 
+  def getsert_entity(self, entity_id: str, entity_class: t.Type[Entity]) -> Entity:
+    entity = self.entities_by_type.setdefault(entity_class, {}).get(entity_id, None)
+    if entity is None:
+      entity = entity_class(id=entity_id)
+      self.add_entity(entity)
+    return entity
+
   def add_entity(self, entity: Entity, replace: bool = False):
     if self.get_entity(entity.id, type(entity)) is not None and not replace:
       raise ValueError(f'Replacing entity {entity} not allowed.')

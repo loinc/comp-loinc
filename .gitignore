@@ -150,3 +150,4 @@ dmypy.json
 /*_demo*
 
 *.zip
+.~*

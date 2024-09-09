@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 import logging.config
-import sys
 import typing as t
 from pathlib import Path
-from sys import argv
 
 import typer
 
@@ -50,6 +48,10 @@ class CompLoincCli:
     self.cli = typer.Typer()
     self.cli.callback(invoke_without_command=True)(self.callback)
 
+    self.cli.command('build',
+                     help='Performs a build from a build file as opposed to the "builder" command which takes build steps.')(
+        self.build)
+
     self.builder_cli = BuilderCli(runtime=self.runtime)
     self.cli.add_typer(self.builder_cli.cli, name='builder')
 
@@ -59,31 +61,17 @@ class CompLoincCli:
     self.snomed_builders = SnomedBuilderSteps(configuration=self.config)
     self.snomed_builders.setup_cli_builder_steps_all(self.builder_cli)
 
-  def callback(self, *,
-      work_dir: t.Annotated[
-        t.Optional[Path], typer.Option(help='CompLOINC work directory, defaults to current work directory.',
-                                       default_factory=Path.cwd)],
-      config_file: t.Annotated[
-        t.Optional[Path], typer.Option(help='Configuration file name. Defaults to "comploinc_config.yaml"')] = Path(
-          'comploinc_config.yaml'),
+  def callback(self, *, work_dir: t.Annotated[
+    t.Optional[Path], typer.Option(help='CompLOINC work directory, defaults to current work directory.',
+                                   default_factory=Path.cwd)], config_file: t.Annotated[
+    t.Optional[Path], typer.Option(help='Configuration file name. Defaults to "comploinc_config.yaml"')] = Path(
+      'comploinc_config.yaml'),
 
       output_dir: t.Annotated[t.Optional[Path], typer.Option('--out-dir', '-o',
                                                              help='The output folder name. Defaults to "output".')] = 'output',
 
       fast_run: t.Annotated[
         bool, typer.Option(help='Turns on a fast run feature which is useful for development.', hidden=True)] = False,
-
-      # graph_path: t.Annotated[
-      #   t.Optional[Path], typer.Option(help='Pickled graph path, relative to current work directory path')] = None,
-      #
-      # loinc_release: t.Annotated[t.Optional[Path], typer.Option(
-      #     help=f'Path to a directory containing an unpacked LOINC release. Defaults to: ./{LOINC_RELEASE_DIR_NAME}')] = None,
-      #
-      # pickled_path: t.Annotated[
-      #   t.Optional[Path], typer.Option(help='Path to an already pickled loinclib graph.')] = None,
-      #
-      # to_pickle_path: t.Annotated[
-      #   t.Optional[Path], typer.Option(help='A path to which  the loinclib Graph will be saved to.')] = None,
 
   ):
     self.work_dir = work_dir.absolute()
@@ -105,24 +93,37 @@ class CompLoincCli:
 
     self.builder_cli.runtime = self.runtime
 
+  def build(self,
+      build_name: t.Annotated[Path, typer.Argument(help='The build name or a path to a build file.')] = 'default'):
+    build_file_path: Path
+    if build_name.name.endswith('.txt'):
+      if build_name.is_absolute():
+        build_file_path = build_name
+      else:
+        build_file_path = self.work_dir / build_name
+    else:
+      from comp_loinc import builds_path
+      build_file_path = builds_path / build_name.with_suffix('.txt')
+
+    args = []
+
+    if self.config.fast_run:
+      args.append('--fast-run')
+
+    args = args + ['--out-dir', self.config.output] + parse_build_file(build_file_path)
+
+    logging.debug(f'Running: {args}')
+    self.cli(args)
+
 
 comploinc_cli = CompLoincCli().cli
 
 
-def comploinc_file_cli():
-  cwd = Path.cwd()
-  cli_file_path = Path(argv[1])
-  if not cli_file_path.is_absolute():
-    cli_file_path = cwd / cli_file_path
-
-  args = ['comploinc-file']
-  with open(cli_file_path, 'r') as f:
+def parse_build_file(build_file_path: Path):
+  args = []
+  with open(build_file_path, 'r') as f:
     for line in f:
       line = line.strip()
       if line and not line.startswith('#'):
         args.append(line)
-
-  sys.argv = args
-  print(f'running command: {args}')
-
-  comploinc_cli()
+  return args

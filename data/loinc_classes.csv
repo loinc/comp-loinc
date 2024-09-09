@@ -1,0 +1,427 @@
+Abbreviation,Clinical Term Classes,Part
+ADMIN,Administrative,LP212481-8
+ADMIN.DEMOG,Demographics,LP212480-0
+ADMIN.FACILITY,Facility,LP248694-4
+ADMIN.ID,Identification numbers,LP248697-7
+ADMIN.PATIENT,ADMIN.PATIENT,LP345159-0
+ADMIN.PATIENT.DEMOG,Patient demographics,LP410757-1
+ADMIN.PATIENT.ID,ADMIN.PATIENT.ID,LP345160-8
+APTA,American Physical Therapy Association (APTA),LP188761-3
+ART,Antiretroviral therapy,LP66375-4
+AUDIO,Audiology,LP266551-3
+BDYCRC.ATOM,General body circumference,LP7766-1
+BDYCRC.MOLEC,Specific body circumference,LP7767-9
+BDYHGT.ATOM,General body height (length),LP7768-7
+BDYHGT.MOLEC,Specific body height (length),LP7769-5
+BDYSURF.ATOM,General body surface area,LP7770-3
+BDYTMP.ATOM,General body temperature,LP7771-1
+BDYTMP.MOLEC,Specific body temperature,LP7772-9
+BDYTMP.TIMED.MOLEC,Timed specific body temperature,LP7773-7
+BDYWGT.ATOM,General body weight,LP7774-5
+BDYWGT.MOLEC,Specific body weight,LP7775-2
+BP.ATOM,General blood pressure,LP7777-8
+BP.CENT.MOLEC,Specific central blood pressure,LP7778-6
+BP.MOLEC,Specific blood pressure,LP7779-4
+BP.PSTN.MOLEC,Specific position blood pressure,LP7780-2
+BP.TIMED.MOLEC,Timed specific blood pressure,LP7781-0
+BP.VENOUS.MOLEC,Specific venous blood pressure,LP7782-8
+CARD.PROC,Cardiac procedures,LP200320-2
+CARD.RISK,Cardiac risk,LP121306-7
+CARD.US,Cardiac ultrasound,LP29672-0
+CARD.US.DICOM,DICOM Simplified Adult Echo Report concepts,LP203309-2
+CARDIO-PULM,Cardiopulmonary,LP172861-9
+CLIN,Clinical,LP7787-7
+CLIN.RISK,Clinical risk,LP267621-3
+CLIN.VET,Clinical veterinary terms,LP412177-0
+CLINTRIAL,Clinical trials,LP231796-6
+DENTAL,Dental,LP31759-1
+DEVICES,Devices,LP35960-1
+DOC.ADMIN,Administrative document,LP111151-9
+DOC.MISC,Miscellaneous document,LP76349-7
+DOC.ONTOLOGY,Document ontology,LP32519-8
+DOC.PUBLICHEALTH,Public health document,LP121010-5
+DOC.QUALITY,Quality document,LP96830-2
+DOC.REF,Reference document,LP32520-6
+DOC.REF.CTP,Clinical Trial Protocol reference document,LP33258-2
+DOCUMENT.REGULATORY,Regulatory document,LP32521-4
+ED,Emergency Department (DEEDS) variables,LP7792-7
+EKG.ATOM,General EKG,LP7793-5
+EKG.IMP,Impression,LP7794-3
+EKG.MEAS,EKG measurements,LP7795-0
+ENDO.GI,Endoscopy,LP7796-8
+ENDO.PULM,ENDO.PULM,LP432299-8
+EYE,Ophthalmology and Optometry,LP7797-6
+EYE.ANGIO,Eye angiography,LP201633-7
+EYE.ANGIO.NEI,NEI eyeGENE angiography,LP203646-7
+EYE.CONTACT_LENS,Contact lens,LP29673-8
+EYE.EOG.NEI,NEI eyeGENE electrooculogram,LP203647-5
+EYE.ERG,Electroretinogram,LP201214-6
+EYE.ERG.NEI,NEI eyeGENE electroretinogram,LP203648-3
+EYE.GLASSES,Eyeglasses,LP29674-6
+EYE.HETEROPHORIA,Heterophoria,LP29675-3
+EYE.HX,Eye history,LP201226-0
+EYE.HX.NEI,NEI eyeGENE eye history,LP203649-1
+EYE.LENSOMETRY,Lensometry,LP418652-6
+EYE.OCT,Ophthalmic optical coherence tomography,LP97024-1
+EYE.OCT.NEI,NEI eyeGENE optical coherence tomography,LP203651-7
+EYE.PX,Eye physical exam,LP29676-1
+EYE.PX.NEI,NEI eyeGENE eye physical exam,LP203650-9
+EYE.REFRACTION,Refraction,LP29677-9
+EYE.REFRACTION.NEI,NEI eyeGENE refraction,LP203652-5
+EYE.RETINAL_RX,Retinal laser photocoagulation,LP29678-7
+EYE.SLITLAMP.NEI,NEI eyeGENE slit lamp biomicroscopy,LP203653-3
+EYE.SPECULAR MICROSCOPY,EYE.SPECULAR MICROSCOPY,LP431273-4
+EYE.TONOMETRY,Tonometry,LP29679-5
+EYE.TONOMETRY.NEI,NEI eyeGENE tonometry,LP203654-1
+EYE.US,Eye ultrasound,LP29680-3
+EYE.VISUAL_FIELD,Visual field,LP29681-1
+EYE.VISUAL_FIELD.NEI,NEI eyeGENE visual field,LP203655-8
+FUNCTION,Physical function,LP7799-2
+GEN.US,General ultrasound,LP32523-0
+GI,Gastroenterology,LP29710-8
+H&P.HX,History,LP7800-8
+H&P.PX,Physical exam,LP7801-6
+H&P.SURG PROC,Surgical procedures history,LP7802-4
+HEMODYN.ATOM,General hemodynamics,LP7804-0
+HEMODYN.MOLEC,Specific hemodynamics,LP7805-7
+HL7.CCDA,HL7 Consolidated Clinical Document Architecture (CCDA),LP184336-8
+HL7.SMP,HL7 Standardization Medication Profile (SMP),LP438357-8
+HRTRATE.ATOM,General heart rate,LP7807-3
+HRTRATE.MOLEC,Specific heart rate,LP7808-1
+HRTRATE.PSTN.MOLEC,Heart rate taken in specific position,LP135721-1
+HRTRATE.TIMED.MOL,Timed specific heart rate,LP7809-9
+ICU,ICU,LP438374-3
+IEEE Rosetta,IEEE Rosetta,LP101870-6
+IO_IN_SALTS+CALS,Intake of salts + calories,LP7815-6
+IO_IN.ATOM,General intake,LP7811-5
+IO_IN.INFUS,Infusion pump intake,LP201887-9
+IO_IN.MOLEC,Specific intake,LP7812-3
+IO_IN.SUMMARY,Intake summary,LP7813-1
+IO_IN.TIMED.MOLEC,Timed specific intake,LP7814-9
+IO_OUT.ATOM,General output,LP7816-4
+IO_OUT.MOLEC,Specific output,LP7817-2
+IO_OUT.TIMED.MOLE,Timed specific output,LP7818-0
+IO.TUBE,Intake and Output - tube,LP7810-7
+MEDS,Medications,LP230280-2
+NEMSIS,National Emergency Medical Services Information System (NEMSIS),LP133214-9
+NEONAT,Neonatalology,LP7829-7
+NEURO,Neurology,LP201883-8
+NIH.COGNITIVE,NIH - cognitive,LP234857-3
+NIH.MOTOR,NIH - motor,LP232486-3
+NIH.SENSORY,NIH - sensory,LP234772-4
+NUTRITION&DIETETICS,Nutrition and Dietetics,LP185381-3
+OB.US,OB ultrasound,LP7830-5
+OBGYN,Obstetrics and Gynecology,LP7831-3
+ONCOLOGY,Oncology,LP186995-9
+PANEL.ADMIN,Administrative information panel,LP267194-1
+PANEL.APTA,American Physical Therapy Association (APTA) panels,LP189424-7
+PANEL.ART,Antiretroviral therapy Panels,LP66376-2
+PANEL.BDYTMP,Temperature Panel,LP33028-9
+PANEL.BP,Blood pressure Panels,LP31907-6
+PANEL.CARDIAC,Cardiac Panels,LP31905-0
+PANEL.CLIN,Clinical panels,LP94654-8
+PANEL.CLIN.RISK,Clinical Risk Panel,LP267622-1
+PANEL.CV,CV Panels,LP57530-5
+PANEL.DEVICES,Panel.devices,LP36380-1
+PANEL.DOC,Document panels,LP96828-6
+PANEL.ED,Emergency Department (DEEDS) panel,LP93489-0
+PANEL.EYE,Ophthalmic panels,LP97037-3
+PANEL.FUNCTION,Function panel,LP33030-5
+PANEL.H&P,HandP panels,LP33024-8
+PANEL.HL7.CCDA,HL7 Consolidated Clinical Document Architecture (CCDA) set,LP184353-3
+PANEL.IEEE ROSETTA,IEEE Rosetta panels,LP186239-2
+PANEL.IO,IO Panels,LP31906-8
+PANEL.MEDS,PANEL.MEDS,LP241884-8
+PANEL.NEMSIS,National Emergency Medical Services Information System (NEMSIS) panels,LP134033-2
+PANEL.NEONAT,Neonatal Apgar Panels,LP62408-7
+PANEL.NEURO,Neurology panels,LP429497-3
+PANEL.NIH.COGNITIVE,PANEL.NIH.COGNITIVE,LP234856-5
+PANEL.NIH.MOTOR,PANEL.NIH.MOTOR,LP234847-4
+PANEL.NUTRITION&DIET,Nutrition and Dietetics panels,LP185383-9
+PANEL.OB.US,Ob Ultrasound Panel,LP33029-7
+PANEL.ONCO,Oncology panels,LP186996-7
+PANEL.PATIENT SAFETY,Patient Safety panel,LP63173-6
+PANEL.PHENX,Consensus measures for Phenotypes and eXposures (PhenX) panels,LP95319-7
+PANEL.PHR,Patient Health Record Panels,LP94734-8
+PANEL.PULM,Pulmonary panels,LP145628-6
+PANEL.RAD,Radiology Panels,LP66342-4
+PANEL.SURG,Surgery panels,LP212450-3
+PANEL.TRAUMA,Trauma panel sets,LP264341-1
+PANEL.TUMRRGT,Tumor Registry Panels,LP57531-3
+PANEL.UPDRS,PANEL.UPDRS,LP234175-0
+PANEL.US.URO,Urology US Panel,LP33027-1
+PANEL.VACCIN,Vaccination records panel,LP93356-1
+PANEL.VITALS,Vital Signs Panels,LP31904-3
+PATIENT SAFETY,Patient safety,LP36122-7
+PHENX,Consensus measures for Phenotypes and eXposures (PhenX),LP95321-3
+PUBLICHEALTH,Public health,LP94254-7
+PULM,Respiratory measures and Ventilator management,LP7840-4
+RAD,Radiology,LP29684-5
+RESP.ATOM,General respiratory,LP7841-2
+RESP.MOLEC,Specific respiratory,LP7842-0
+RESP.TIMED.MOLEC,Timed specific respiratory,LP7843-8
+SKNFLD.MOLEC,Specific skin fold,LP7845-3
+SURG,Surgery,LP209048-0
+TRAUMA,Trauma,LP174433-5
+TRNSPLNT.ORGAN,Organ transplant,LP36771-1
+TUMRRGT,Tumor registry (NAACCR),LP7850-3
+UPDRS,UPDRS,LP262343-9
+US.URO,Ultrasound,LP7853-7
+VACCIN,Vaccination records,LP29692-8
+VOLUME.MOLEC,Specific volume,LP7854-5
+ABXBACT,Antibiotic susceptibilities,LP7755-4
+ALLERGY,Allergy,LP7756-2
+BLDBK,Blood bank,LP7776-0
+BLDBK.GENOTYPING,Blood bank genotyping,LP343632-8
+CELLMARK,Cell markers,LP7783-6
+CHAL,Chemistry - challenge,LP7784-4
+CHAL.ROUTINE,Chemistry - routine challenge,LP234174-3
+CHALSKIN,Skin challenge,LP7785-1
+CHEM,Chemistry - non-challenge,LP7786-9
+COAG,Coagulation,LP7788-5
+CYTO,Cytology,LP7789-3
+DRUG/TOX,Drug toxicology,LP7790-1
+DRUGDOSE,Drug doses,LP7791-9
+FERT,Fertility testing,LP7798-4
+H&P.HX.LAB,History relevant to laboratory testing,LP175679-2
+HEM/BC,Hematology and Cell counts,LP7803-2
+HL7.CYTOGEN,HL7 cytogenetics,LP111381-2
+HL7.GENETICS,HL7 genetics,LP70593-6
+HLA,HLA antigens,LP7806-5
+HNA,HNA,LP158133-1
+HPA,HPA antigen,LP65557-8
+LABORDERS,Laboratory orders,LP94892-4
+MICRO,Microbiology,LP7819-8
+MISC,Miscellaneous tests,LP7820-6
+MOLPATH,Molecular pathology,LP7822-2
+MOLPATH.DEL,Deletions,LP7823-0
+MOLPATH.DELDUP,Deletions or Duplications,LP190353-5
+MOLPATH.INV,Inversions,LP146061-9
+MOLPATH.MISC,Miscellaneous molecular pathology,LP121011-3
+MOLPATH.MUT,Mutations,LP7824-8
+MOLPATH.NUCREPEAT,Nucleotide repeats,LP193279-9
+MOLPATH.PHARMG,Pharmacogenomics,LP202929-8
+MOLPATH.REARRANGE,Rearrangements,LP7825-5
+MOLPATH.TRISOMY,Trisomies,LP7827-1
+MOLPATH.TRNLOC,Translocations,LP7828-9
+NR STATS,Normal range statistics,LP62148-9
+PANEL.ABXBACT,Antibiotic Susceptibility Panels,LP29682-9
+PANEL.ALLERGY,Allergy Panels,LP33267-3
+PANEL.BLDBK,Blood Bank Panels,LP31894-6
+PANEL.BLDBK.GENOTYPE,Blood bank genotyping panel,LP345096-4
+PANEL.CELLMARK,Cellmarker Panels,LP36900-6
+PANEL.CHAL,Challenge Bank Panels,LP31895-3
+PANEL.CHEM,Chemistry Panels,LP7834-7
+PANEL.COAG,Coagulation Panels,LP31893-8
+PANEL.DRUG/TOX,Drug and Toxicology Panels,LP29683-7
+PANEL.FERT,Fertility Panels,LP36844-6
+PANEL.HEDIS,HEDIS panels,LP71800-4
+PANEL.HEM/BC,Hematology and Cell Count Panels,LP7833-9
+PANEL.HL7.CYTOGEN,HL7 cytogenetics panels,LP111373-9
+PANEL.HL7.GENETICS,HL7 genetics panels,LP70592-8
+PANEL.HLA,HLA Panels,LP36817-2
+PANEL.HNA,HNA panels,LP171373-6
+PANEL.HPA,HPA Panels,LP65574-3
+PANEL.MICRO,Microbiology Panels,LP7835-4
+PANEL.MISC,Miscellaneous lab panels,LP67155-9
+PANEL.MOLPATH,Molecular Pathology Panels,LP62072-1
+PANEL.MOLPATH.PHARMG,Pharmacogenomics Panels,LP411304-1
+PANEL.OBS,Obstetrical Panels,LP7836-2
+PANEL.PATH,Pathology panels,LP116676-0
+PANEL.SERO,Serology Panels,LP7837-0
+PANEL.SPEC,Specimen panels,LP135665-0
+PANEL.UA,Urinalysis Panels,LP7838-8
+PATH,Pathology,LP7839-6
+PATH.HISTO,Histology,LP261286-1
+PATH.PROTOCOLS.BRST,Pathology protocols - breast,LP36753-9
+PATH.PROTOCOLS.GENER,Pathology protocols - general,LP36751-3
+PATH.PROTOCOLS.PROST,Pathology protocols - prostate,LP36752-1
+PATH.PROTOCOLS.SKIN,Pathology protocols - skin,LP36754-7
+SERO,Serology - non-micro,LP7844-6
+SPEC,Specimen information,LP7846-1
+UA,Urinalysis,LP7851-1
+ATTACH,HIPAA Attachments,LP7757-0
+ATTACH.AMB,Ambulance attachments,LP7758-8
+ATTACH.CARD,Cardiac,LP29659-7
+ATTACH.CLINRPT,Clinical report attachments,LP7759-6
+ATTACH.CPHS,Children's Preventative Health System Attachments,LP35152-5
+ATTACH.ED,Emergency visit attachments,LP7760-4
+ATTACH.GI,Gastrointestinal,LP29660-5
+ATTACH.LAB,Laboratory data attachment set,LP7761-2
+ATTACH.MEDS,Medication attachments,LP7762-0
+ATTACH.MODIFIER,HIPAA attachment request modifier codes,LP7763-8
+ATTACH.OBS,Obstetrical,LP29661-3
+ATTACH.PERIODONTAL,Periodontal attachments,LP173666-1
+ATTACH.REHAB,Rehabilitation attachments,LP7764-6
+ATTACH.REHAB.ABUSE,Alcohol and substance abuse rehabilitation attachments,LP29662-1
+ATTACH.REHAB.CARDIAC,Cardiac rehabilitation attachments,LP29663-9
+ATTACH.REHAB.NURS,Skilled nursing rehabilitation attachments,LP29664-7
+ATTACH.REHAB.OT,Occupational therapy rehabilitation attachments,LP29665-4
+ATTACH.REHAB.PSYCH,Psychiatric rehabilitation attachments,LP29666-2
+ATTACH.REHAB.PT,Physical therapy rehabilitation attachments,LP29667-0
+ATTACH.REHAB.PULM,Pulmonary rehabilitation attachments,LP68332-3
+ATTACH.REHAB.RT,Respiratory therapy rehabilitation attachments,LP29668-8
+ATTACH.REHAB.SOCIAL,Medical social work rehabilitation attachments,LP29669-6
+ATTACH.REHAB.SPEECH,Speech therapy rehabilitation attachments,LP29670-4
+ATTACH.RESP,Respiratory,LP29671-2
+PANEL.ATTACH.MOD,HIPAA attachment request modifier code sets,LP212320-8
+PANEL.SURVEY.ACT,PANEL.SURVEY.ACT,LP221228-2
+PANEL.SURVEY.ADVAULT,ADVault survey set,LP186147-7
+PANEL.SURVEY.AHRQ,Agency for Healthcare Research and Quality (AHRQ) survey panels,LP173700-8
+PANEL.SURVEY.ALSFRSR,PANEL.SURVEY.ALSFRSR,LP253520-3
+PANEL.SURVEY.AMNART,American National Adult Reading Test (AmNART) set,LP191417-7
+PANEL.SURVEY.BDI,PANEL.SURVEY.BDI,LP266766-7
+PANEL.SURVEY.BIMS,Brief Interview for Mental Status (BIMS) panels,LP68338-0
+PANEL.SURVEY.BPI,Brief Pain Inventory (BPI) set,LP191921-8
+PANEL.SURVEY.BRIEF,BRIEF Health Literacy Screening Tool Panel,LP419959-4
+PANEL.SURVEY.CAM,Confusion Assessment Method (CAM) panels,LP68339-8
+PANEL.SURVEY.CARE,Continuity Assessment Record and Evaluation (CARE) panels,LP68336-4
+PANEL.SURVEY.CBS-8,PANEL.SURVEY.CBS-8,LP430765-0
+PANEL.SURVEY.CDC,Centers for Disease Control Panels,LP135709-6
+PANEL.SURVEY.CESD,PANEL.SURVEY.CESD,LP266774-1
+PANEL.SURVEY.CHILD-PUGH,PANEL.SURVEY.Child-Pugh,LP428314-1
+PANEL.SURVEY.CMS,Centers for Medicaid and Medicare (CMS) Pnl,LP149246-3
+PANEL.SURVEY.CNPI,PANEL.SURVEY.CNPI,LP431638-8
+PANEL.SURVEY.COOP,Dartmouth Cooperative Functional Status Test (COOP) set,LP186129-5
+PANEL.SURVEY.COVID,PANEL.SURVEY.COVID,LP428371-1
+PANEL.SURVEY.CSSRS,PANEL.SURVEY.CSSRS,LP415697-4
+PANEL.SURVEY.DAST,PANEL.SURVEY.DAST,LP221229-0
+PANEL.SURVEY.DUKE-AD,PANEL.SURVEY.DUKE-AD,LP270010-4
+PANEL.SURVEY.EPDS,Edinburgh Postnatal Depression Scale (EPDS) Pnl,LP149218-2
+PANEL.SURVEY.ESRD,End Stage Renal Disease (ESRD) panels,LP121006-3
+PANEL.SURVEY.GDS,Geriatric Depression Scale (GDS) panels,LP62737-9
+PANEL.SURVEY.GNHLTH,General Health Survey panels,LP146498-3
+PANEL.SURVEY.GPCOG,General Practitioner Assessment of Cognition (GPCOG) set,LP200140-4
+PANEL.SURVEY.HAQ,Health Assessment Questionnaire (HAQ) set,LP186207-9
+PANEL.SURVEY.HARK,"Humiliation, Afraid, Rape, and Kick (HARK) survey",LP189610-1
+PANEL.SURVEY.HENDRICH,PANEL.SURVEY.HENDRICH,LP438519-3
+PANEL.SURVEY.HHCC,Home Health Care Classification (HHCC) panels,LP62739-5
+PANEL.SURVEY.HHS,Health and Human Services (HHS) panel,LP145577-5
+PANEL.SURVEY.HITS,PANEL.SURVEY.HITS,LP422018-4
+PANEL.SURVEY.HIV-SSC,HIV-Signs and Symptoms Checklist (SSC) panel,LP64589-2
+PANEL.SURVEY.IPAQ,International Physical Activity Questionnaire (IPAQ) set,LP191414-4
+PANEL.SURVEY.LIV-HIV,Living with HIV panels,LP62743-7
+PANEL.SURVEY.LKSS,PANEL.SURVEY.LKSS,LP430561-3
+PANEL.SURVEY.MDS,Minimum Data Set (MDS) for Nursing Home Resident Assessment and Care Screening Panels,LP40269-0
+PANEL.SURVEY.MFS,Morse Fall Scale (MFS) panels,LP100239-5
+PANEL.SURVEY.MLHFQ,Minnesota Living with Heart Failure Questionnaire (MLHFQ) set,LP248520-1
+PANEL.SURVEY.MTLHLTH,Mental Health Survey panel,LP145936-3
+PANEL.SURVEY.NEURO,Neurological Survey panel,LP145897-7
+PANEL.SURVEY.NEUROQ,Quality of Life Outcomes in Neurological Disorders (NEURO-Qol) panels,LP134157-9
+PANEL.SURVEY.NHANES,National Health and Nutrition Examination Survey (NHANES) set,LP189611-9
+PANEL.SURVEY.NICHQ,ADHD Questionnaire panels,LP443020-5
+PANEL.SURVEY.NIDA,PANEL.SURVEY.NIDA,LP419639-2
+PANEL.SURVEY.NIH.EMO,PANEL.SURVEY.NIH.EMO,LP238881-9
+PANEL.SURVEY.NMMDS,Nursing Management Minimum Data Set (NMMDS) panels,LP69882-6
+PANEL.SURVEY.NORTON,Norton Scale panel,LP184269-1
+PANEL.SURVEY.NSRAS,Neonatal Skin Risk Assessment Scale panel,LP172758-7
+PANEL.SURVEY.OASIS,Outcome and Assessment Information Set (OASIS) set,LP40482-9
+PANEL.SURVEY.OMAHA,OMAHA panels,LP62741-1
+PANEL.SURVEY.OPTIMAL,Outpatient physical therapy improvement in movement assessment log (OPTIMAL) panel,LP136325-0
+PANEL.SURVEY.ORTHOPEDICS,PANEL.SURVEY.ORTHOPEDICS,LP431402-9
+PANEL.SURVEY.PAS,Patient Activity Scale (PAS) set,LP186131-1
+PANEL.SURVEY.PASII,Patient Activity Scale II (PASII) set,LP186132-9
+PANEL.SURVEY.PCORI,Patient-Centered Outcomes Research Institute (PCORI) set,LP185825-9
+PANEL.SURVEY.PCORNET,Patient Centered Outcomes Research Network (PCORnet) Common Data Model (CDM) set,LP186213-7
+PANEL.SURVEY.PHQ,Patient Health Questionnaire (PHQ)panels,LP140592-9
+PANEL.SURVEY.PNDS,PANEL.SURVEY.PNDS,LP430693-4
+PANEL.SURVEY.PROMIS,Patient Reported Outcomes Information System (PROMIS) panels,LP102766-5
+PANEL.SURVEY.PROWL,PANEL.SURVEY.PROWL,LP429827-1
+PANEL.SURVEY.QAM,Quality Audit Marker panels,LP62746-0
+PANEL.SURVEY.QRDA,Qualty Reporting Document Architecture (QRDA) panels,LP93739-8
+PANEL.SURVEY.R-OUTCOMES,R-Outcomes panels,LP422422-8
+PANEL.SURVEY.RFC,Residual Functional Capacity Assessment (RFC) Set,LP40485-2
+PANEL.SURVEY.RMDQ,PANEL.SURVEY.RMDQ,LP429904-8
+PANEL.SURVEY.RSS,Ramsay Sedation Scale panel,LP441553-7
+PANEL.SURVEY.RUDAS,Rowland Universal Dementia Assessment Scale panel,LP428276-2
+PANEL.SURVEY.SAMHSA,Substance Abuse and Mental Health Services Administration (SAMHSA) panels,LP135592-6
+PANEL.SURVEY.SDOH,PANEL.SURVEY.SDOH,LP422015-0
+PANEL.SURVEY.SEEK,PANEL.SURVEY.SEEK,LP419121-1
+PANEL.SURVEY.SLP,Speech-language pathology (SLP) related survey panels,LP431355-9
+PANEL.SURVEY.UNMETHELNEED,PANEL.SURVEY.UNMETHELNEED,LP439253-8
+PANEL.SURVEY.USSGFHT,US Surgeon General's family history tool panels,LP76363-8
+PANEL.SURVEY.WELLRX,PANEL.SURVEY.WELLRX,LP411940-2
+PANEL.TIMP,Test of Infant Motor Performance (TIMP) panels,LP101817-7
+SURVEY.AAOS,American Association of Orthopaedic Surgeons (AAOS),LP149839-5
+SURVEY.ACT,SURVEY.ACT,LP221227-4
+SURVEY.ADHD,Attention Deficit Hyperactivity Disorder (ADHD),LP199487-2
+SURVEY.ADVAULT,ADVault survey,LP186146-9
+SURVEY.AHRQ,Agency for Healthcare Research and Quality (AHRQ) forms,LP173650-5
+SURVEY.ALSFRSR,SURVEY.ALSFRSR,LP230010-3
+SURVEY.AMNART,American National Adult Reading Test (AmNART),LP191416-9
+SURVEY.BDI,SURVEY.BDI,LP266765-9
+SURVEY.BPI,Brief Pain Inventory (BPI),LP191920-0
+SURVEY.BRIEF,SURVEY.BRIEF,LP422019-2
+SURVEY.CARE,Continuity Assessment Record and Evaluation (CARE) survey,LP68337-2
+SURVEY.CBS-8,SURVEY.CBS-8,LP430758-5
+SURVEY.CDC,Centers for Disease Control (CDC) surveys,LP135481-2
+SURVEY.CERNER,Cerner survey,LP136009-0
+SURVEY.CESD,SURVEY.CESD,LP266773-3
+SURVEY.CHILD-PUGH,SURVEY.CHILD-PUGH,LP428312-5
+SURVEY.CMS,SURVEY.CMS,LP231645-5
+SURVEY.CNPI,SURVEY.CNPI,LP429868-5
+SURVEY.COOP,Dartmouth Cooperative Functional Status Test (COOP),LP186067-7
+SURVEY.COVID,SURVEY.COVID,LP428372-9
+SURVEY.CSSRS,SURVEY.CSSRS,LP415696-6
+SURVEY.DAST,SURVEY.DAST,LP253522-9
+SURVEY.DUKE-AD,SURVEY.DUKE-AD,LP270009-6
+SURVEY.EPDS,Edinburgh Postnatal Depression Scale,LP149207-5
+SURVEY.ESRD,End Stage Renal Disease (ESRD) survey,LP116201-7
+SURVEY.GDS,Geriatric Depression Scale (GDS) survey,LP62736-1
+SURVEY.GNHLTH,General Health Survey,LP146111-2
+SURVEY.GPCOG,General Practitioner Assessment of Cognition (GPCOG),LP200139-6
+SURVEY.HAQ,Health Assessment Questionnaire (HAQ),LP186206-1
+SURVEY.HARK,"Humiliation, Afraid, Rape, and Kick (HARK)",LP189609-3
+SURVEY.HHS,Health and Human Services Department (HHS),LP145407-5
+SURVEY.HITS,SURVEY.HITS,LP422017-6
+SURVEY.HWS,Healthy Weight Summary,LP189613-5
+SURVEY.IPAQ,International Physical Activity Questionnaire (IPAQ),LP191415-1
+SURVEY.LKSS,SURVEY.LKSS,LP430563-9
+SURVEY.MDS,Minimum Data Set (MDS) for Nursing Home Resident Assessment and Care Screening,LP40268-2
+SURVEY.MFS,Morse Fall Scale (MFS),LP100242-9
+SURVEY.MISC,Miscellaneous survey,LP175703-0
+SURVEY.MLHFQ,Minnesota Living with Heart Failure Questionnaire (MLHFQ),LP248518-5
+SURVEY.MTLHLTH,Mental Health Survey,LP145934-8
+SURVEY.NEURO,Neurological Survey,LP145899-3
+SURVEY.NEUROQ,Quality of Life Outcomes in Neurological Disorders (NEURO-Qol),LP134184-3
+SURVEY.NHANES,National Health and Nutrition Examination Survey (NHANES),LP189612-7
+SURVEY.NHCS,National Health Care Survey (NHCS),LP193853-1
+SURVEY.NICHQ,ADHD Questionnaire,LP443019-7
+SURVEY.NIDA,SURVEY.NIDA,LP419587-3
+SURVEY.NIH_TOOLBOX,NIH Toolbox,LP185814-3
+SURVEY.NIH.EMO,SURVEY.NIH.EMO,LP238880-1
+SURVEY.NMMDS,Nursing Management Minimum Data Set (NMMDS),LP69883-4
+SURVEY.NORTON,Norton Scale,LP184270-9
+SURVEY.NSRAS,Neonatal Skin Risk Assessment Scale (NSRAS),LP172759-5
+SURVEY.NURSE.HHCC,Home Health Care Classification (HHCC),LP29687-8
+SURVEY.NURSE.HIV-SSC,Signs and Symptoms Checklist for Persons with HIV,LP29688-6
+SURVEY.NURSE.LIV-HIV,Living with HIV,LP29689-4
+SURVEY.NURSE.OMAHA,OMAHA,LP29690-2
+SURVEY.NURSE.QAM,Quality Audit Marker,LP29691-0
+SURVEY.OASIS,Outcome and Assessment Information Set (OASIS),LP40481-1
+SURVEY.OPTIMAL,Outpatient physical therapy improvement in movement assessment log (OPTIMAL),LP136321-9
+SURVEY.ORTHOPEDICS,SURVEY.ORTHOPEDICS,LP431401-1
+SURVEY.PAIN,SURVEY.PAIN,LP431403-7
+SURVEY.PAS,Patient Activity Scale (PAS),LP186014-9
+SURVEY.PASII,Patient Activity Scale II (PASII),LP186015-6
+SURVEY.PCORNET,Patient Centered Outcomes Research Network (PCORnet) Common Data Model (CDM),LP185871-3
+SURVEY.PEG,SURVEY.PEG,LP269362-2
+SURVEY.PHQ,PHQ Patient Health Questionnaire,LP36709-1
+SURVEY.PNDS,SURVEY.PNDS,LP430695-9
+SURVEY.PRAPARE,"Protocol for Responding to and Assessing Patients' Assets, Risks, and Experiences (PRAPARE)",LP410758-9
+SURVEY.PROMIS,Patient Reported Outcomes Information System (PROMIS),LP102768-1
+SURVEY.PROWL,SURVEY.PROWL,LP429471-8
+SURVEY.QRDA,Qualty Reporting Document Architecture (QRDA),LP93741-4
+SURVEY.R-OUTCOMES,R-Outcomes,LP422423-6
+SURVEY.RFC,Residual Functional Capacity Assessment (RFC),LP40487-8
+SURVEY.RMDQ,SURVEY.RMDQ,LP429903-0
+SURVEY.RSS,Ramsay Sedation Scale,LP441559-4
+SURVEY.RUDAS,Rowland Universal Dementia Assessment Scale,LP428277-0
+SURVEY.SAMHSA,Substance Abuse and Mental Health Services Administration (SAMHSA) survey,LP135494-5
+SURVEY.SDOH,SURVEY.SDOH,LP422016-8
+SURVEY.SEEK,SURVEY.SEEK,LP417561-0
+SURVEY.SLP,Speech-language pathology (SLP) related surveys,LP431240-3
+SURVEY.UNMETHELNEED,SURVEY.UNMETHELNEED,LP438348-7
+SURVEY.USSGFHT,US Surgeon General's family history tool,LP76360-4
+SURVEY.WELLRX,SURVEY.WELLRX,LP411939-4
+TIMP,Test of Infant Motor Performance (TIMP),LP101819-3

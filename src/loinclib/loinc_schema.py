@@ -4,6 +4,7 @@ from enum import StrEnum, Enum
 class LoincNodeType(StrEnum):
   LoincTerm = 'LoincTerm'
   LoincPart = 'LoincPart'
+  LoincClass = 'LoincClass'
 
 
 class LoincTermProps(StrEnum):
@@ -189,3 +190,12 @@ class LoincPartEdge(StrEnum):
 #
 # # edge
 # loinc_term.add_edge_type(EdgeType(node_type=loinc_term, type_=LoincPartEdges.sub_class_of))
+
+
+class LoincClassProps(StrEnum):
+  abbreviation = 'Abbreviation'
+  title = 'title'
+  part_number = 'part_number'
+
+class LoincClassEdge(StrEnum):
+  part = 'part'

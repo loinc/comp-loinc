@@ -134,7 +134,9 @@ class NodeType(PropertyOwnerType):
       base_url = f'tag:loinclib:{type_.name}.{type_.value}/'
 
     if url_regex is None:
-      url_regex = fr'^{base_url}(P<code>.+)$'
+      url_regex = fr'^{base_url}(?P<code>.+)$'
+    self.url_regex = url_regex
+
 
     self.base_url = base_url
     self.code_prefix = code_prefix
@@ -145,7 +147,7 @@ class NodeType(PropertyOwnerType):
     flags = 0
     if url_regex_ignore_case:
       flags = flags | re.IGNORECASE
-    self.url_regex_pattern: re.Pattern = re.compile(url_regex, flags)
+    self.url_regex_pattern: re.Pattern = re.compile(self.url_regex, flags)
 
   def get_node(self, code: str) -> t.Optional[Node]:
     node_id = self.get_id_from_code(code)
@@ -167,6 +169,10 @@ class NodeType(PropertyOwnerType):
 
   def get_id_from_code(self, code: str) -> str:
     return self.get_url_from_code(code)
+
+  def get_code_from_id(self, node_id: str) -> str:
+    match = self.url_regex_pattern.match(node_id)
+    return match.group('code')
 
   def get_url_from_code(self, code: str) -> str:
     return self.base_url + code
@@ -349,16 +355,11 @@ class Node(Element):
       edge_type = self.node_type.get_out_edge_type(type_=data[SchemaEnum.TYPE_KEY], to_node_type=to_node.node_type)
       yield Edge(from_node=from_node, to_node=to_node, edge_key=key, edge_type=edge_type)
 
+  def get_id_code(self):
+    return self.node_type.get_code_from_id()
+
   def __str__(self):
     return f'Node: {self.node_id} with data {self.get_properties()}'
-
-  # def get_out_edges(self, type_keys: t.Optional[StrEnum | t.Set[StrEnum]] = None) -> \  #     t.Iterator[Edge]:  #   type_keys = type_keys if isinstance(type_keys, set) else set(  #       type_keys) if type_keys else None  # todo: fix?  #   for from_node, to_node, edge_key, data in self.graph.edges(  #       nbunch=self.node_id, data=True, keys=True):  #     type_key = data.get(TYPE_KEY, None)  #     self.node_type.get_edge()  #     if type_keys is None or type_key in type_keys:  #       edge_view = Edge(edge_type_key=type_key, from_node_id=from_node,  #                        to_node_id=to_node,  #                        edge_key=edge_key, graph=self.graph)  #   # todo: fix  #   return None
-
-  # def get_out_edges_by_type(self, type_key:StrEnum) -> t.Iterator[Edge]:  #  #   for from_node, to_node, edge_key, data in self.graph.edges(  #       nbunch=self.node_id, data=True, keys=True):  #     if TYPE_KEY in data and data[TYPE_KEY] == type_key:  #       edge_view = Edge(edge_type_key=type_key, from_node_id=from_node,  #                        to_node_id=to_node,  #                        edge_key=edge_key, graph=self.graph)  #       yield edge_view
-
-  # def get_or_create_out_edge_type(self, *,  #     edge_type_key:StrEnum, target_type_key:StrEnum,  #     target_code_code: str) -> Edge:  #  #   target_type = self.node_type_key.schema.get_node_type()  #   target_id = target_type.get_id_from_code(target_code_code)  #  #   target = self.graph.succ[self.node_id].get(target_id, None)  #   if target is None:  #     self.graph.add_edge(self.node_id, target_id,  #                         TYPE_KEY=target_node_type.type_)  #   else:  #     pass
-
-  # @staticmethod  # def get_node_by_code(code: str, type_key:StrEnum, graph: nx.Graph, schema: Schema, create: bool = False) -> \  #         t.Optional[Node]:  #     node_type = schema.get_node_type(type_key)  #     node_id = node_type.get_id_from_code(code)  #     node = graph.nodes.get(node_id)  #     if node is None and create:  #         graph.add_node(node_id)  #         node = graph.nodes.get(node_id)  #  #     return Node(node_type, node_id, graph)
 
 
 class Edge(Element):

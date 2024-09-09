@@ -1,3 +1,4 @@
+import logging
 import typing as t
 from pathlib import Path
 
@@ -8,15 +9,18 @@ from linkml_runtime import SchemaView
 from linkml_runtime.linkml_model import ClassDefinition, SlotDefinition, Annotation
 
 from comp_loinc import Runtime
-from comp_loinc.datamodel import LoincPart, LoincPartId
+from comp_loinc.datamodel import LoincPart, LoincPartId, LoincTermClass, Entity, LoincTermId, EntityId, LoincEntity
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
 from loinclib import Configuration, SnomedEdges, Node, SnomedProperteis, Edge
 from loinclib import LoincLoader
 from loinclib import LoincNodeType, LoincTermProps
-from loinclib.loinc_schema import LoincPartProps, LoincPartEdge, LoincTermPrimaryEdges, LoincTermSupplementaryEdges
+from loinclib.loinc_schema import LoincPartProps, LoincPartEdge, LoincTermPrimaryEdges, LoincTermSupplementaryEdges, \
+  LoincClassProps
 from loinclib.loinc_snomed_loader import LoincSnomedLoader
 from loinclib.loinc_tree_loader import LoincTreeLoader
 from loinclib.loinc_tree_schema import LoincTreeProps
+
+logger = logging.getLogger('LoincBuilder')
 
 
 class LoincBuilderSteps:
@@ -34,11 +38,17 @@ class LoincBuilderSteps:
     builder.cli.command('lt-parent', help='Make LOINC terms a child of a grouper LoincTerm class.')(
         self.loinc_terms_root_parent)
 
+    builder.cli.command('lt-class-roots', help='Make LOINC terms a child of its class, and do that recursively')(
+        self.loinc_term_class_roots)
+
     builder.cli.command('lt-primary-def',
                         help='Populate primary def slots.')(self.loinc_term_primary_def)
 
     builder.cli.command('lt-supplementary-def',
                         help='Populate supplementary def slots.')(self.loinc_term_supplementary_def)
+
+    builder.cli.command('lt-class-roots',
+                        help='Adds class roots to LOINC terms in the current module.')(self.loinc_term_class_roots)
 
     builder.cli.command('lp-inst-all', help='Instantiate all LOINC parts into current module.')(
         self.loinc_parts_all)
@@ -98,8 +108,6 @@ class LoincBuilderSteps:
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
     loinc_loader.load_accessory_files__part_file__part_csv()
     loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
-    loinc_loader.load_accessory_files__part_file__loinc_part_link_primary_csv()
-    loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
 
     loinc_tree_loader = LoincTreeLoader(config=self.configuration, graph=graph)
     loinc_tree_loader.load_class_tree()
@@ -225,10 +233,7 @@ class LoincBuilderSteps:
 
   def loinc_terms_root_parent(self):
     term: LoincTerm
-    loinc_term_parent = self.runtime.current_module.get_entity(entity_class=LoincTerm, entity_id='LoincTerm')
-    if loinc_term_parent is None:
-      loinc_term_parent = LoincTerm(id='LoincTerm')
-      self.runtime.current_module.add_entity(loinc_term_parent)
+    loinc_term_parent = self.runtime.current_module.getset_entity(entity_class=LoincTerm, entity_id='LoincTerm')
     for term in self.runtime.current_module.get_entities_of_type(entity_class=LoincTerm):
       if term == loinc_term_parent:
         continue
@@ -248,7 +253,7 @@ class LoincBuilderSteps:
       if part == loinc_part_parent:
         continue
 
-      if len(part.sub_class_of) == 0 :
+      if len(part.sub_class_of) == 0:
         part.sub_class_of.append(loinc_part_parent)
 
   def loinc_part_to_snomed_quivalence(self):
@@ -286,8 +291,6 @@ class LoincBuilderSteps:
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
     loinc_loader.load_accessory_files__part_file__part_csv()
     loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
-    loinc_loader.load_accessory_files__part_file__loinc_part_link_primary_csv()
-    loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
 
     loinc_tree_loader = LoincTreeLoader(config=self.configuration, graph=graph)
     loinc_tree_loader.load_class_tree()
@@ -462,6 +465,89 @@ class LoincBuilderSteps:
             loinc_term.supplementary_time_core = loinc_part_id
           case LoincTermSupplementaryEdges.supplementary_time_modifier:
             loinc_term.supplementary_time_modifier = loinc_part_id
+
+  def loinc_term_class_roots(self):
+    graph = self.runtime.graph
+    loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
+    loinc_loader.load_loinc_table__loinc_csv()
+    loinc_loader.load_loinc_classes()
+
+    loinc_term_top_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass, entity_id='LoincTerm')
+
+    loinc_term_entity: LoincTerm
+    for loinc_term_entity in self.runtime.current_module.get_entities_of_type(entity_class=LoincTerm):
+      loinc_number: EntityId = loinc_term_entity.id
+      loinc_term_node = self.runtime.graph.get_node_by_code(type_=LoincNodeType.LoincTerm, code=loinc_number)
+
+      if loinc_term_node is None:
+        logger.warning(f'LOINC term: {loinc_number} not found in graph.')
+        if loinc_term_top_entity not in loinc_term_entity.sub_class_of:
+          loinc_term_entity.sub_class_of.append(loinc_term_top_entity)
+        continue
+
+      class_type = loinc_term_node.get_property(LoincTermProps.class_type)
+      class_ = loinc_term_node.get_property(LoincTermProps.class_)
+
+      match class_type:
+        case '1':
+          class_type = 'LTC___Laboratory'
+        case '2':
+          class_type = 'LTC___Clinical'
+        case '3':
+          class_type = 'LTC___Claims_attachments'
+        case '4':
+          class_type = 'LTC___Surveys'
+
+      class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass, entity_id=class_type)
+      if loinc_term_top_entity.id not in class_type_entity.sub_class_of:
+        class_type_entity.sub_class_of.append(loinc_term_top_entity)
+
+      child_entity: LoincEntity = loinc_term_entity
+
+      while True:
+        class_title = None
+        class_part_number = None
+        class_abbreviation = self._normalize_type_string(class_)
+
+        class_node = self.runtime.graph.get_node_by_code(type_=LoincNodeType.LoincClass, code=class_)
+        if class_node:
+          class_title = class_node.get_property(type_=LoincClassProps.title)
+          class_part_number = class_node.get_property(type_=LoincClassProps.part_number)
+
+
+
+
+        parent_entity: LoincTermClass = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
+                                                                                   entity_id=class_abbreviation)
+        parent_entity.class_title = class_title
+        parent_entity.class_part = class_part_number
+        parent_entity.class_abbreviation = class_abbreviation
+        parent_entity.entity_label = f'LTC   {class_title or class_abbreviation}'
+
+        if parent_entity.id not in child_entity.sub_class_of:
+          child_entity.sub_class_of.append(parent_entity.id)
+
+        class_ = self._parent_class_string(class_abbreviation)
+        child_entity = parent_entity
+        if class_ is None:
+          break
+      if class_type_entity.id not in child_entity.sub_class_of:
+        child_entity.sub_class_of.append(class_type_entity)
+
+
+  def _normalize_type_string(self, type_string: str) -> str:
+    if type_string is None:
+      return None
+    return type_string.replace(' ', '_')
+
+  def _parent_class_string(self, class_string: str) -> t.Optional[str]:
+    last_index = class_string.rfind('.')
+    if last_index > 0:
+      return class_string[:last_index]
+    return None
+
+  def loinc_part_class_hierarchy(self):
+    pass
 
   def load_schema(self, filename: t.Annotated[str, typer.Option('--file-name', '-f',
                                                                 help='The LinkML schema file name in the schema directory. For example: "comp_loinc.yaml"')],

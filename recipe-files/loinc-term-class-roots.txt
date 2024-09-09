@@ -1,21 +1,26 @@
 # this turns on a fast run for dev mode
-#--fast-run
+--fast-run
 
 -o
 out-comploinc-2
 
 builder
+
   set-module
     -n
-    loinc-primary-def
+    loinc-terms-class-roots
 
   lt-inst-all
+    --active
 
-  lt-primary-def
+  lt-class-roots
+
+  #l-label
+
+  #l-annotate
 
   load-schema
       -f
       comp_loinc.yaml
-      --equivalent-term
 
   save-owl

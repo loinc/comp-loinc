@@ -32,8 +32,7 @@ classes:
     attributes:
       id:
         identifier: true
-        range:
-          uriorcurie
+        range: uriorcurie
       entity_label:
         slot_uri: rdfs:label
         annotations:
@@ -60,7 +59,6 @@ classes:
 
   SnomedConcept:
     is_a: Entity
-    class_uri: sct:SnomedConcept
     attributes:
       fully_specified_name:
         slot_uri: sct:fully_specified_name
@@ -72,10 +70,27 @@ classes:
   LoincEntity:
     is_a: Entity
 
-  LoincTerm:
+  LoincTermClass:
     is_a: LoincEntity
     attributes:
-      # The naming here is intended to match the column naming in the CSV files
+      class_title:
+        slot_uri: loinc:class_title
+        annotations:
+          owl: AnnotationAssertion
+
+      class_abbreviation:
+        slot_uri: loinc:class_abbreviation
+        annotations:
+          owl: AnnotationAssertion
+      class_part:
+        slot_uri: loinc:class_part
+        range: uriorcurie
+        annotations:
+          owl: AnnotationAssertion
+
+  LoincTerm:
+    is_a: LoincEntity
+    attributes: # The naming here is intended to match the column naming in the CSV files
       # TODO: review these names against the relevant CSVs.
       loinc_number:
         slot_uri: loinc:loinc_number
@@ -123,13 +138,7 @@ classes:
         annotations:
           owl: ObjectSomeValuesFrom
 
-      supplementary_property:
-        slot_uri: loinc_property:PROPERTY
-        multivalued: false
-        range: LoincPart
-        required: false
-        annotations:
-          owl: ObjectSomeValuesFrom
+
 
       # 3
       primary_time_aspect:
@@ -158,14 +167,6 @@ classes:
         annotations:
           owl: ObjectSomeValuesFrom
 
-      supplementary_scale_typ:
-        slot_uri: loinc_property:SCALE_TYP
-        multivalued: false
-        range: LoincPart
-        required: false
-        annotations:
-          owl: ObjectSomeValuesFrom
-
       # 6
       primary_method_typ:
         slot_uri: loinc_property:METHOD_TYP
@@ -175,15 +176,32 @@ classes:
         annotations:
           owl: ObjectSomeValuesFrom
 
-      supplementary_method_typ:
-        slot_uri: loinc_property:METHOD_TYP
+
+      # for supplementary model slots: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#detailedmodel
+
+      supplementary_property:
+        slot_uri: loinc_property:PROPERTY-supplementary
         multivalued: false
         range: LoincPart
         required: false
         annotations:
           owl: ObjectSomeValuesFrom
 
-      # for detailed model slots: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#detailedmodel
+      supplementary_scale_typ:
+        slot_uri: loinc_property:SCALE_TYP-supplementary
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
+
+      supplementary_method_typ:
+        slot_uri: loinc_property:METHOD_TYP-supplementary
+        multivalued: false
+        range: LoincPart
+        required: false
+        annotations:
+          owl: ObjectSomeValuesFrom
 
       supplementary_analyte:
         slot_uri: loinc_property:analyte
