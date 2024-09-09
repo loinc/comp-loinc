@@ -4,7 +4,9 @@
 ---
 name: Build and test comp_loinc
 
-on: [pull_request]
+# todo: deactivated, pending: https://github.com/loinc/comp-loinc/issues/21
+#on: [pull_request, workflow_dispatch]
+on: [workflow_dispatch]
 
 jobs:
   test:
@@ -12,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.11"]
 
     steps:
 
