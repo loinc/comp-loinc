@@ -1,0 +1,11 @@
+builder
+  set-module
+    -n
+    loinc-term-primary-def
+  lt-inst-all
+  lt-primary-def
+  load-schema
+      -f
+      comp_loinc.yaml
+      --equivalent-term
+  save-owl

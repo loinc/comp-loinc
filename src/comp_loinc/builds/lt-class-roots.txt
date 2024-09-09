@@ -1,0 +1,11 @@
+builder
+  set-module
+    -n
+    loinc-terms-class-roots
+  lt-inst-all
+    --active
+  lt-class-roots
+  load-schema
+      -f
+      comp_loinc.yaml
+  save-owl

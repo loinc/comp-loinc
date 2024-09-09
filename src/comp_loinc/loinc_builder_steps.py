@@ -549,7 +549,8 @@ class LoincBuilderSteps:
   def loinc_part_class_hierarchy(self):
     pass
 
-  def load_schema(self, filename: t.Annotated[str, typer.Option('--file-name', '-f',
+  def load_schema(self,
+      filename: t.Annotated[str, typer.Option('--file-name', '-f',
                                                                 help='The LinkML schema file name in the schema directory. For example: "comp_loinc.yaml"')],
       schema_name: t.Annotated[str, typer.Option('--schema-name', '-n',
                                                  help='A name to hold the loaded schema under. Defaults to the file name without the .yaml suffix')] = None,
@@ -594,3 +595,5 @@ class LoincBuilderSteps:
     typer.echo(f'Writing file: {owl_file_path}')
     with open(owl_file_path, 'w') as f:
       f.write(str(document))
+
+

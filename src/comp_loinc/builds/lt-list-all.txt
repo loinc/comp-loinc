@@ -1,0 +1,13 @@
+builder
+  set-module
+    -n
+    loinc-terms-list-all
+  lt-inst-all
+    --active
+  lt-parent
+  l-label
+  l-annotate
+  load-schema
+      -f
+      comp_loinc.yaml
+  save-owl

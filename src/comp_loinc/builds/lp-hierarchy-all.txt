@@ -1,0 +1,12 @@
+
+builder
+  set-module
+    -n
+    loinc-part-hierarchy-all
+  # todo: this includes the trees for now, split into two steps
+  lp-part-hierarchy-all
+  lp-parent
+  load-schema
+      -f
+      comp_loinc.yaml
+  save-owl

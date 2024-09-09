@@ -1,0 +1,124 @@
+
+builder
+
+# build all loinc parts list ====================================================
+
+  set-module
+    -n
+    loinc-part-list-all
+  lp-inst-all
+  l-label
+  l-annotate
+  load-schema
+    --reload
+    -f
+    comp_loinc.yaml
+  save-owl
+  rm-module
+    -n
+    loinc-part-list-all
+
+# build loinc parts hierarchy all ===============================================
+
+  set-module
+    -n
+    loinc-part-hierarchy-all
+  # todo: this includes the trees for now, split into two steps
+  lp-part-hierarchy-all
+  lp-parent
+  load-schema
+    --reload
+    -f
+    comp_loinc.yaml
+  save-owl
+  rm-module
+      -n
+      loinc-part-hierarchy-all
+
+
+# build all loinc terms list =====================================================
+
+  set-module
+    -n
+    loinc-terms-list-all
+  lt-inst-all
+    --active
+  l-label
+  l-annotate
+  lt-class-roots
+  load-schema
+      --reload
+      -f
+      comp_loinc.yaml
+  save-owl
+  rm-module
+      -n
+      loinc-terms-list-all
+
+# primary def  =====================================================================
+
+  set-module
+    -n
+    loinc-term-primary-def
+  lt-inst-all
+  lt-primary-def
+  load-schema
+      --reload
+      -f
+      comp_loinc.yaml
+      --equivalent-term
+
+  save-owl
+  rm-module
+        -n
+        loinc-term-primary-def
+
+# supplementary def  ======================================================
+
+  set-module
+    -n
+    loinc-term-supplementary-def
+  lt-inst-all
+  lt-supplementary-def
+  load-schema
+      --reload
+      -f
+      comp_loinc.yaml
+      --equivalent-term
+  save-owl
+  rm-module
+          -n
+          loinc-term-primary-def
+
+#  loinc snomed part equiv  ============================
+
+  set-module
+    -n
+    loinc-snomed-equiv
+  lp-sct-equiv
+  load-schema
+      --reload
+      -f
+      comp_loinc.yaml
+  save-owl
+  rm-module
+            -n
+            loinc-snomed-equiv
+
+# snomed parts  ========================================================
+
+  set-module
+    -n
+    snomed-parts
+  sct-loinc-part-map-instances
+  sct-close-isa
+  sct-label
+  load-schema
+      --reload
+      -f
+      comp_loinc.yaml
+  save-owl
+  rm-module
+      -n
+      snomed-parts
+

@@ -1,0 +1,9 @@
+builder
+  set-module
+    -n
+    loinc-snomed-equiv
+  lp-sct-equiv
+  load-schema
+      -f
+      comp_loinc.yaml
+  save-owl

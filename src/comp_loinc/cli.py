@@ -16,6 +16,7 @@ LOINC_TREES_DIR_NAME = 'loinc_trees'
 
 COMPLOINC_OUT_DIR_NAME = 'comploinc_out'
 
+logger = logging.getLogger('cl-cli')
 
 class BuilderCli:
 
@@ -26,6 +27,7 @@ class BuilderCli:
     self.cli.callback(invoke_without_command=True)(self.callback)
 
     self.cli.command('set-module')(self.set_current_module)
+    self.cli.command('rm-module')(self.remove_module)
 
   def callback(self):
     pass
@@ -37,6 +39,12 @@ class BuilderCli:
       self.runtime.modules[name] = Module(name=name, runtime=self.runtime)
     self.runtime.current_module = self.runtime.modules[name]
 
+  def remove_module(self,
+      module_name: t.Annotated[str, typer.Option('--name', '-n', help='Removes the named module from the runtime.')]
+  ):
+    del self.runtime.modules[module_name]
+    if self.runtime.current_module.name == module_name:
+      self.runtime.current_module = None
 
 class CompLoincCli:
 
@@ -110,14 +118,12 @@ class CompLoincCli:
     if self.config.fast_run:
       args.append('--fast-run')
 
-    args = args + ['--out-dir', self.config.output] + parse_build_file(build_file_path)
+    args = args + ['--out-dir', f'{self.config.output / f"build-{build_name}"}'] + parse_build_file(build_file_path)
 
-    logging.debug(f'Running: {args}')
+    logger.info(f'Running: {args}')
     self.cli(args)
 
-
 comploinc_cli = CompLoincCli().cli
-
 
 def parse_build_file(build_file_path: Path):
   args = []

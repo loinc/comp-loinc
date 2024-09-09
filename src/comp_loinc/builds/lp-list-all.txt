@@ -1,0 +1,11 @@
+builder
+  set-module
+    -n
+    loinc-part-list-all
+  lp-inst-all
+  l-label
+  l-annotate
+  load-schema
+      -f
+      comp_loinc.yaml
+  save-owl
