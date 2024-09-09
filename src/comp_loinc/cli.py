@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 import logging.config
+import os
+import sys
 import typing as t
 from pathlib import Path
+from sys import argv
 
 import typer
 
-from comp_loinc import Runtime
+from comp_loinc import Runtime, builds_path
 from comp_loinc.loinc_builder_steps import LoincBuilderSteps
 from comp_loinc.snomed_builder_steps import SnomedBuilderSteps
 from loinclib import Configuration
@@ -125,6 +128,12 @@ class CompLoincCli:
 
 comploinc_cli = CompLoincCli().cli
 
+
+# TODO: I think refactor this into parse_build_file() below
+def _run_from_recipe_file(cli_file_path: t.Union[str, Path], fast_run_override: bool = None):
+  """Reads a recipe file and passes it to the CLI."""
+  pass
+
 def parse_build_file(build_file_path: Path):
   args = []
   with open(build_file_path, 'r') as f:
@@ -134,10 +143,29 @@ def parse_build_file(build_file_path: Path):
         args.append(line)
   return args
 
+  # if '--fast-run' in args and not fast_run_override:
+  #   args.remove('--fast-run')
+  # elif '--fast-run' not in args and fast_run_override:
+  #   args = ['--fast-run'] + args
+  #
+  # sys.argv = args
+  # print(f'\nRunning: {os.path.basename(cli_file_path)}\n{" ".join(args)}')
+  # comploinc_cli()
+
+
+# TODO: check for refs. check in main. looks like shahim deleted.
+def comploinc_file_cli():
+  cwd = Path.cwd()
+  cli_file_path = Path(argv[1])
+  if not cli_file_path.is_absolute():
+    cli_file_path = cwd / cli_file_path
+  _run_from_recipe_file(cli_file_path)
+
 
 # TODO: finish here
 def comploinc_file_cli_all(fast_run=False):
   """Runs all in recipe-files/"""
-  # TODO: replace args in each file with value of --fast-run
-  files = []
-  print()
+  recipe_files: t.List[str] = [x for x in os.listdir(builds_path) if x.endswith('.txt')]
+  for recipe in recipe_files:
+    sys.argv = None
+    _run_from_recipe_file(builds_path / recipe, fast_run)
