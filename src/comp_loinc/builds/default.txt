@@ -88,7 +88,7 @@ builder
   save-owl
   rm-module
           -n
-          loinc-term-primary-def
+          loinc-term-supplementary-def
 
 #  loinc snomed part equiv  ============================
 

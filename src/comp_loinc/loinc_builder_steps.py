@@ -9,7 +9,7 @@ from linkml_runtime import SchemaView
 from linkml_runtime.linkml_model import ClassDefinition, SlotDefinition, Annotation
 
 from comp_loinc import Runtime
-from comp_loinc.datamodel import LoincPart, LoincPartId, LoincTermClass, Entity, LoincTermId, EntityId, LoincEntity
+from comp_loinc.datamodel import LoincPart, LoincPartId, LoincTermClass, EntityId, LoincEntity
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
 from loinclib import Configuration, SnomedEdges, Node, SnomedProperteis, Edge
 from loinclib import LoincLoader
@@ -80,25 +80,26 @@ class LoincBuilderSteps:
       active_only: t.Annotated[
         bool, typer.Option('--active', help='Use active concepts only. Defaults to true.')] = False,
   ):
+    logger.info(f'Starting lt-inst-all')
     graph = self.runtime.graph
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
     loinc_loader.load_loinc_table__loinc_csv()
     count = 0
     for node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
-      count = count + 1
-      if self.configuration.fast_run and count > 100:
+      count +=  1
+      if self.configuration.fast_run and count > 10000:
         break
+      if count % 1000 == 0:
+        logger.info(f'Finished {count}')
 
       status = node.get_property(LoincTermProps.status)
       if active_only and status != 'ACTIVE':
         continue
 
       loinc_number = node.get_property(LoincTermProps.loinc_number)
+      self.runtime.current_module.getsert_entity(loinc_number, LoincTerm)
 
-      # add if not already instantiated, to not override an existing one
-      if self.runtime.current_module.get_entity(loinc_number, LoincTerm) is None:
-        loinc_term = LoincTerm(id=loinc_number)
-        self.runtime.current_module.add_entity(loinc_term)
+    logger.info(f'Finished lt-inst-all')
 
   def loinc_parts_all(self,
       active_only: t.Annotated[
@@ -233,7 +234,7 @@ class LoincBuilderSteps:
 
   def loinc_terms_root_parent(self):
     term: LoincTerm
-    loinc_term_parent = self.runtime.current_module.getset_entity(entity_class=LoincTerm, entity_id='LoincTerm')
+    loinc_term_parent = self.runtime.current_module.getsert_entity(entity_class=LoincTerm, entity_id='LoincTerm')
     for term in self.runtime.current_module.get_entities_of_type(entity_class=LoincTerm):
       if term == loinc_term_parent:
         continue
@@ -467,20 +468,38 @@ class LoincBuilderSteps:
             loinc_term.supplementary_time_modifier = loinc_part_id
 
   def loinc_term_class_roots(self):
+    logger.info(f'Starting lt-class-roots')
     graph = self.runtime.graph
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
     loinc_loader.load_loinc_table__loinc_csv()
     loinc_loader.load_loinc_classes()
 
-    loinc_term_top_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass, entity_id='LoincTerm')
+    loinc_term_top_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
+                                                                       entity_id='LoincTerm')
 
+
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Laboratory')
+    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
+
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Clinical')
+    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
+
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Claims_attachments')
+    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
+
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Surveys')
+    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
+
+    count = 0
     loinc_term_entity: LoincTerm
     for loinc_term_entity in self.runtime.current_module.get_entities_of_type(entity_class=LoincTerm):
-      loinc_number: EntityId = loinc_term_entity.id
-      loinc_term_node = self.runtime.graph.get_node_by_code(type_=LoincNodeType.LoincTerm, code=loinc_number)
+      count += 1
+      if count % 1000 == 0:
+        logger.info(f'Finished {count}')
+      loinc_term_node = self.runtime.graph.get_node_by_code(type_=LoincNodeType.LoincTerm, code=loinc_term_entity.id)
 
       if loinc_term_node is None:
-        logger.warning(f'LOINC term: {loinc_number} not found in graph.')
+        logger.warning(f'LOINC term: {loinc_term_entity.id} not found in graph.')
         if loinc_term_top_entity not in loinc_term_entity.sub_class_of:
           loinc_term_entity.sub_class_of.append(loinc_term_top_entity)
         continue
@@ -499,11 +518,8 @@ class LoincBuilderSteps:
           class_type = 'LTC___Surveys'
 
       class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass, entity_id=class_type)
-      if loinc_term_top_entity.id not in class_type_entity.sub_class_of:
-        class_type_entity.sub_class_of.append(loinc_term_top_entity)
 
       child_entity: LoincEntity = loinc_term_entity
-
       while True:
         class_title = None
         class_part_number = None
@@ -514,8 +530,12 @@ class LoincBuilderSteps:
           class_title = class_node.get_property(type_=LoincClassProps.title)
           class_part_number = class_node.get_property(type_=LoincClassProps.part_number)
 
-
-
+        parent_entity: LoincTermClass = self.runtime.current_module.get_entity(entity_class=LoincTermClass,
+                                                                                   entity_id=class_abbreviation)
+        if parent_entity is not None:
+          if parent_entity.id not in child_entity.sub_class_of:
+            child_entity.sub_class_of.append(parent_entity.id)
+          break
 
         parent_entity: LoincTermClass = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
                                                                                    entity_id=class_abbreviation)
@@ -527,13 +547,14 @@ class LoincBuilderSteps:
         if parent_entity.id not in child_entity.sub_class_of:
           child_entity.sub_class_of.append(parent_entity.id)
 
-        class_ = self._parent_class_string(class_abbreviation)
         child_entity = parent_entity
+        class_ = self._parent_class_string(class_abbreviation)
         if class_ is None:
           break
       if class_type_entity.id not in child_entity.sub_class_of:
         child_entity.sub_class_of.append(class_type_entity)
 
+    logger.info(f'Finished lt-class-roots')
 
   def _normalize_type_string(self, type_string: str) -> str:
     if type_string is None:
@@ -551,7 +572,7 @@ class LoincBuilderSteps:
 
   def load_schema(self,
       filename: t.Annotated[str, typer.Option('--file-name', '-f',
-                                                                help='The LinkML schema file name in the schema directory. For example: "comp_loinc.yaml"')],
+                                              help='The LinkML schema file name in the schema directory. For example: "comp_loinc.yaml"')],
       schema_name: t.Annotated[str, typer.Option('--schema-name', '-n',
                                                  help='A name to hold the loaded schema under. Defaults to the file name without the .yaml suffix')] = None,
       reload: t.Annotated[bool, typer.Option('--reload', '-r',
@@ -580,10 +601,11 @@ class LoincBuilderSteps:
       schema_name: t.Annotated[str, typer.Option('--schema-name', '-s',
                                                  help='A loaded schema name to use while saving. If not provided, the "current schema" will be used.')] = None):
 
-    typer.echo(f'Running save_to_owl')
+    logger.info(f'Starting save-owl')
     owl_dumper = OWLDumper()
     document = owl_dumper.to_ontology_document(schema=self.runtime.current_schema_view.schema,
                                                element=list(self.runtime.current_module.get_all_entities()))
+    logger.info(f'save-owl document created.')
     document.ontology.iri = funowl.identifiers.IRI(f'https://comploinc/{self.runtime.current_module.name}')
     owl_file_path = file_path
     if owl_file_path is None:
@@ -594,6 +616,6 @@ class LoincBuilderSteps:
     owl_file_path.parent.mkdir(parents=True, exist_ok=True)
     typer.echo(f'Writing file: {owl_file_path}')
     with open(owl_file_path, 'w') as f:
+      logger.info(f'save-owl writing document.')
       f.write(str(document))
-
-
+      logger.info(f'save-owl writing document finished.')

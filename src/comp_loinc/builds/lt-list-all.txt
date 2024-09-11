@@ -4,7 +4,7 @@ builder
     loinc-terms-list-all
   lt-inst-all
     --active
-  lt-parent
+  lt-class-roots
   l-label
   l-annotate
   load-schema

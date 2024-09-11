@@ -57,8 +57,13 @@ logging:
     '':
       level: WARN
       handlers: [console]
+    'LoincBuilder':
+      level: INFO
+      handlers: [ console ]
+      propagate: False
 #    cli_runtime:
 #      handlers: [console]
 #      level: INFO
 #      propagate: False
+
   version: 1
