@@ -61,6 +61,7 @@ builder
     -n
     loinc-term-primary-def
   lt-inst-all
+    --active
   lt-primary-def
   load-schema
       --reload
@@ -79,6 +80,7 @@ builder
     -n
     loinc-term-supplementary-def
   lt-inst-all
+    --active
   lt-supplementary-def
   load-schema
       --reload

@@ -3,6 +3,7 @@ builder
     -n
     loinc-term-supplementary-def
   lt-inst-all
+    --active
   lt-supplementary-def
   load-schema
       -f

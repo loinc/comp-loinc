@@ -35,9 +35,6 @@ class LoincBuilderSteps:
     builder.cli.command('lt-inst-all', help='Instantiate all LOINC terms into current module.')(
         self.loinc_terms_all)
 
-    builder.cli.command('lt-parent', help='Make LOINC terms a child of a grouper LoincTerm class.')(
-        self.loinc_terms_root_parent)
-
     builder.cli.command('lt-class-roots', help='Make LOINC terms a child of its class, and do that recursively')(
         self.loinc_term_class_roots)
 
@@ -158,7 +155,7 @@ class LoincBuilderSteps:
         continue
       long_name = node.get_property(LoincTermProps.long_common_name)
       class_ = node.get_property(LoincTermProps.class_)
-      loinc_term.entity_label = f'LT   {class_}   {long_name}'
+      loinc_term.entity_label = f'LT {long_name}'
 
     loinc_part: LoincPart
     for loinc_part in self.runtime.current_module.get_entities_of_type(LoincPart):
@@ -167,23 +164,18 @@ class LoincBuilderSteps:
         continue
 
       final_name = node.get_property(LoincPartProps.part_display_name)
+      prefix = 'LP'
       if final_name is None:
         final_name = node.get_property(LoincPartProps.code_text__from_comp_hierarch)
+        prefix = 'LPH'
       if final_name is None:
         final_name = node.get_property(LoincTreeProps.code_text)
+        prefix = 'LPT'
       if final_name is None:
-        final_name = f'NONAME:{loinc_part.id}'
-      part_type_name = node.get_property(LoincPartProps.part_type_name)
-      if part_type_name is None:
-        part_type_name = f'NOTYPENAME'
+        final_name = f'{loinc_part.id}'
+        prefix = 'LPNN'
 
-      prefix = 'LP'
-      if node.get_property(LoincPartProps.from_hierarchy):
-        prefix = 'LHP'
-      if node.get_property(LoincTreeProps.from_trees):
-        prefix = 'LTP'
-
-      loinc_part.entity_label = f'{prefix}   {part_type_name}   {final_name}'
+      loinc_part.entity_label = f'{prefix} {final_name}'
 
   def entity_annotations(self):
     graph = self.runtime.graph
@@ -232,14 +224,6 @@ class LoincBuilderSteps:
       loinc_part.part_type_name = part_type
       loinc_part.part_display_name = part_display
 
-  def loinc_terms_root_parent(self):
-    term: LoincTerm
-    loinc_term_parent = self.runtime.current_module.getsert_entity(entity_class=LoincTerm, entity_id='LoincTerm')
-    for term in self.runtime.current_module.get_entities_of_type(entity_class=LoincTerm):
-      if term == loinc_term_parent:
-        continue
-      if not term.sub_class_of:
-        term.sub_class_of.append(loinc_term_parent)
 
   def loinc_parts_root_parent(self):
     loinc_part_parent = self.runtime.current_module.get_entity(entity_class=LoincPart, entity_id='LoincPart')

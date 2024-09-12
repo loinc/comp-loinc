@@ -3,6 +3,7 @@ builder
     -n
     loinc-term-primary-def
   lt-inst-all
+    --active
   lt-primary-def
   load-schema
       -f
