@@ -1,7 +1,17 @@
-/comploinc-default/loinc-part-hierarchy-all.owl
-/comploinc-default/loinc-part-list-all.owl
-/comploinc-default/loinc-snomed-equiv.owl
-/comploinc-default/loinc-term-primary-def.owl
-/comploinc-default/loinc-term-supplementary-def.owl
-/comploinc-default/loinc-terms-list-all.owl
-/comploinc-default/snomed-parts.owl
+# output
+loinc-part-hierarchy-all.owl
+loinc-part-list-all.owl
+loinc-snomed-equiv.owl
+loinc-term-primary-def.owl
+loinc-term-supplementary-def.owl
+loinc-terms-list-all.owl
+snomed-parts.owl
+
+# Imports
+!catalog-v001.xml
+!comploinc-axioms.owl
+!comploinc-query-examples.owl
+!comploinc.owl
+
+# Docs
+!README.md

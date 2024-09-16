@@ -4,7 +4,7 @@ import pandas as pd
 
 from loinclib import LoinclibGraph, SnomedNodeType, SnomedEdges, Configuration
 from loinclib.loinc_schema import LoincNodeType, LoincPartProps
-from loinclib.snomed_schema_v2 import SnomedProperteis
+from loinclib.snomed_schema_v2 import SnomedProperties
 
 
 class LoincSnomedSources(StrEnum):
@@ -52,8 +52,8 @@ class LoincSnomedLoader:
       # @formatter:on
 
       snomed_node = self.graph.getsert_node(SnomedNodeType.Concept, concept_id)
-      snomed_node.set_property(type_=SnomedProperteis.fully_specified_name, value=term)
-      snomed_node.set_property(type_=SnomedProperteis.concept_id, value=concept_id)
+      snomed_node.set_property(type_=SnomedProperties.fully_specified_name, value=term)
+      snomed_node.set_property(type_=SnomedProperties.concept_id, value=concept_id)
 
     self.graph.loaded_sources[LoincSnomedSources.description] = {}
 
@@ -109,6 +109,7 @@ class LoincSnomedLoader:
     self.graph.loaded_sources[LoincSnomedSources.relation] = {}
 
   def load_part_mapping(self):
+    """Populate graph with SNOMED<->LOINC part mappings from SNOMED(-LOINC) Ontology."""
     if LoincSnomedSources.part_mapping in self.graph.loaded_sources:
       return
 
@@ -134,8 +135,8 @@ class LoincSnomedLoader:
         loinc_part.set_property(type_=LoincPartProps.part_number, value=source_code)
 
         snomed_cocept = self.graph.getsert_node(type_=SnomedNodeType.Concept, code=target_code)
-        snomed_cocept.set_property(type_=SnomedProperteis.concept_id, value=target_code)
-        snomed_cocept.set_property(type_=SnomedProperteis.fully_specified_name, value=target_display)
+        snomed_cocept.set_property(type_=SnomedProperties.concept_id, value=target_code)
+        snomed_cocept.set_property(type_=SnomedProperties.fully_specified_name, value=target_display)
 
         loinc_part.add_edge_single(type_=SnomedEdges.maps_to, to_node=snomed_cocept)
 

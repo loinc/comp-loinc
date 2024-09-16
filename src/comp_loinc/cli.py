@@ -80,7 +80,6 @@ class CompLoincCli:
 
       fast_run: t.Annotated[
         bool, typer.Option(help='Turns on a fast run feature which is useful for development.', hidden=True)] = False,
-
   ):
     self.work_dir = work_dir.absolute()
     if not self.work_dir.exists():
@@ -102,7 +101,9 @@ class CompLoincCli:
     self.builder_cli.runtime = self.runtime
 
   def build(self,
-      build_name: t.Annotated[Path, typer.Argument(help='The build name or a path to a build file.')] = 'default'):
+    build_name: t.Annotated[Path, typer.Argument(help='The build name or a path to a build file. The "default" build '
+    'will build all outputs.')] = 'default'
+  ):
     build_file_path: Path
     if build_name.name.endswith('.txt'):
       if build_name.is_absolute():
@@ -123,7 +124,9 @@ class CompLoincCli:
     logger.info(f'Running: {args}')
     self.cli(args)
 
+
 comploinc_cli = CompLoincCli().cli
+
 
 def parse_build_file(build_file_path: Path):
   args = []
@@ -133,3 +136,8 @@ def parse_build_file(build_file_path: Path):
       if line and not line.startswith('#'):
         args.append(line)
   return args
+
+
+if __name__ == "__main__":
+    import sys
+    comploinc_cli(sys.argv[1:])

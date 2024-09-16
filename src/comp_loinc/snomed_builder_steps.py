@@ -5,7 +5,7 @@ from comp_loinc import Runtime
 from comp_loinc.datamodel import SnomedConcept
 from loinclib import Configuration, SnomedNodeType, LoincNodeType, SnomedEdges, SnomedLoader
 from loinclib.loinc_snomed_loader import LoincSnomedLoader
-from loinclib.snomed_schema_v2 import SnomedProperteis
+from loinclib.snomed_schema_v2 import SnomedProperties
 
 
 class SnomedBuilderSteps:
@@ -31,21 +31,23 @@ class SnomedBuilderSteps:
         self.check_cycles)
 
   def loinc_part_mapping_instances(self):
+    """Generates any missing LinkML SnomedConcept entities for any that are mapped to LOINC parts."""
     loader = LoincSnomedLoader(config=self.configuration, graph=self.runtime.graph)
     loader.load_part_mapping()
 
     for part in self.runtime.graph.get_nodes(type_=LoincNodeType.LoincPart):
       for edge in part.get_all_out_edges():
         if edge.edge_type.type_ is SnomedEdges.maps_to:
-          concept_id = edge.to_node.get_property(type_=SnomedProperteis.concept_id)
+          concept_id = edge.to_node.get_property(type_=SnomedProperties.concept_id)
           concept: SnomedConcept = self.runtime.current_module.get_entity(entity_id=concept_id,
                                                                           entity_class=SnomedConcept)
           if concept is None:
             concept = SnomedConcept(id=concept_id)
-            concept.fully_specified_name = edge.to_node.get_property(type_=SnomedProperteis.fully_specified_name)
+            concept.fully_specified_name = edge.to_node.get_property(type_=SnomedProperties.fully_specified_name)
             self.runtime.current_module.add_entity(concept)
 
   def close_is_a(self):
+    """Populates LinkML entities with is-a relationships."""
     loader = SnomedLoader(config=self.configuration, graph=self.runtime.graph)
     loader.load_selected_relations(SnomedEdges.is_a)
 
@@ -64,7 +66,7 @@ class SnomedBuilderSteps:
 
           if edge.edge_type.type_ is SnomedEdges.is_a:
             parent_node = edge.to_node
-            parent_id = parent_node.get_property(type_=SnomedProperteis.concept_id)
+            parent_id = parent_node.get_property(type_=SnomedProperties.concept_id)
 
             if parent_id not in seen_set and parent_id not in current_set:
               todo_set.add(parent_id)
@@ -102,18 +104,16 @@ class SnomedBuilderSteps:
         path.pop()
 
   def label(self):
+    """Updates SnomedConcepts with their fully specified names as labels."""
     loader = SnomedLoader(config=self.configuration, graph=self.runtime.graph)
     loader.load_fully_specified_names()
 
     concept: SnomedConcept
     for concept in self.runtime.current_module.get_entities_of_type(entity_class=SnomedConcept):
       concept_node = self.runtime.graph.get_node_by_code(type_=SnomedNodeType.Concept, code=concept.id)
-      fsn = concept_node.get_property(type_=SnomedProperteis.fully_specified_name)
+      fsn = concept_node.get_property(type_=SnomedProperties.fully_specified_name)
       if fsn is None:
-        # just in case we have a fsn from the loin mappings
+        # just in case we have a fsn from the LOINC mappings
         concept.entity_label = f'SCT   {concept.fully_specified_name}'
       else:
         concept.entity_label = f'SCT   {fsn}'
-
-
-

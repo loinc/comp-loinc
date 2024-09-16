@@ -5,7 +5,7 @@ class SnomedNodeType(StrEnum):
   Concept = 'Concept'
 
 
-class SnomedProperteis(StrEnum):
+class SnomedProperties(StrEnum):
   concept_id = ''
   fully_specified_name = '900000000000003001'
 
