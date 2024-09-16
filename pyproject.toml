@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "comp-loinc"
-version = "0.1.0"
+version = "0.2.0"
 description = "Computable OWL Formalization of LOINC"
-authors = ["Tim  Putman <putmantime@users.noreply.github.com>"]
+authors = ["Shahim Essaid <shahim@essaid.com>", "Tim Putman <putmantime@users.noreply.github.com>", "Joe Flack <jflack@jhu.edu"]
 readme = "README.md"
 
 packages = [
