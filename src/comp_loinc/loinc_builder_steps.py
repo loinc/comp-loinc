@@ -775,7 +775,6 @@ class LoincBuilderSteps:
             ),
         ] = None,
     ):
-
         logger.info(f"Starting save-owl")
         owl_dumper = OWLDumper()
         document = owl_dumper.to_ontology_document(
@@ -790,7 +789,10 @@ class LoincBuilderSteps:
         if owl_file_path is None:
             owl_file_path = Path(self.runtime.current_module.name + ".owl")
         if not owl_file_path.is_absolute():
-            owl_file_path = self.configuration.output / owl_file_path
+            outdir = self.configuration.output
+            if self.configuration.fast_run:
+                outdir = outdir / "fast_run"
+            owl_file_path = outdir / owl_file_path
 
         owl_file_path.parent.mkdir(parents=True, exist_ok=True)
         typer.echo(f"Writing file: {owl_file_path}")
