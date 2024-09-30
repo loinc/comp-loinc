@@ -7,21 +7,25 @@ from loinclib.snomed_schema_v2 import SnomedNodeType, SnomedEdges, SnomedPropert
 
 
 class SnomedSources(StrEnum):
+  """Enum for the different sources of SNOMED data."""
   relations = 'relations'
   descriptions = 'descriptions'
   fully_specified_name = 'fully_specified_name'
 
 
 class SnomedLoader:
+  """Class to load SNOMED data into a graph."""
 
   def __init__(self, *, graph: LoinclibGraph, config: Configuration):
     self.config = config
     self.graph = graph
 
   def read_relationship(self) -> pd.DataFrame:
+    """Reads the SNOMED relationships file."""
     return pd.read_csv(self.config.get_snomed_relations_path(), dtype=str, na_filter=False, sep='\t')
 
   def read_description(self) -> pd.DataFrame:
+    """Reads the SNOMED descriptions."""
     return pd.read_csv(self.config.get_snomed_description_path(), dtype=str, na_filter=False, sep='\t')
 
   def load_selected_relations(self, *types_: StrEnum) -> None:
