@@ -162,7 +162,7 @@ class NodeType(PropertyOwnerType):
     node_id = self.get_id_from_code(code)
     graph = self.schema.graph.nx_graph
     graph.add_node(node_id)
-    data =graph.nodes[node_id]
+    data = graph.nodes[node_id]
     data[SchemaEnum.TYPE_KEY] = self.type_
     node = Node(node_id=node_id, node_type=self, properties=data)
     return node

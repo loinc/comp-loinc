@@ -91,6 +91,7 @@ class LoincLoader:
     self.graph.loaded_sources[LoincSources.LoincTable__LoincCsv] = {}
 
   def load_accessory_files__part_file__part_csv(self) -> None:
+    """Populates graph with part nodes & their most basic properties"""
     if LoincSources.AccessoryFiles__PartFile__PartCsv in self.graph.loaded_sources:
       return
 
@@ -114,6 +115,7 @@ class LoincLoader:
     self.graph.loaded_sources[LoincSources.AccessoryFiles__PartFile__PartCsv] = {}
 
   def load_accessory_files__part_file__loinc_part_link_primary_csv(self) -> None:
+    """Populates graph part nodes with properties from the primary part model."""
     if LoincSources.AccessoryFiles__PartFile__LoincPartLink_PrimaryCsv in self.graph.loaded_sources:
       return
 
@@ -136,12 +138,13 @@ class LoincLoader:
       part_node: Node = self.graph.getsert_node(LS.LoincNodeType.LoincPart, part_number)
       part_node.set_property(type_=LoincPartProps.part_number, value=part_number)
 
-      loinc_node.add_edge_single(LS.LoincTermPrimaryEdges(property_),part_node,False)
+      loinc_node.add_edge_single(LS.LoincTermPrimaryEdges(property_), part_node, False)
 
     self.graph.loaded_sources[LoincSources.AccessoryFiles__PartFile__LoincPartLink_PrimaryCsv] = {}
 
 
   def load_accessory_files__part_file__loinc_part_link_supplementary_csv(self) -> None:
+    """Populates graph part nodes with properties from the supplementary part model."""
     if LoincSources.AccessoryFiles__PartFile__LoincPartLink_SupplementaryCsv in self.graph.loaded_sources:
       return
 

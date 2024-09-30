@@ -3,7 +3,7 @@ from enum import StrEnum
 import pandas as pd
 
 from loinclib import LoinclibGraph, Node, Configuration
-from loinclib.snomed_schema_v2 import SnomedNodeType, SnomedEdges, SnomedProperteis
+from loinclib.snomed_schema_v2 import SnomedNodeType, SnomedEdges, SnomedProperties
 
 
 class SnomedSources(StrEnum):
@@ -25,7 +25,7 @@ class SnomedLoader:
     return pd.read_csv(self.config.get_snomed_description_path(), dtype=str, na_filter=False, sep='\t')
 
   def load_selected_relations(self, *types_: StrEnum) -> None:
-
+    """Populates graph with node-(EDGE)->node's, for 1+ EDGEs (`*types_`)."""
     loaded_relationships = self.graph.loaded_sources.get(SnomedSources.relations, {})
 
     # check if any relationship type is new
@@ -70,10 +70,10 @@ class SnomedLoader:
 
       if type_ in types_:
         from_node: Node = self.graph.getsert_node(type_=SnomedNodeType.Concept, code=source_id)
-        from_node.set_property(type_=SnomedProperteis.concept_id , value=source_id)
+        from_node.set_property(type_=SnomedProperties.concept_id, value=source_id)
 
         to_node: Node = self.graph.getsert_node(type_=SnomedNodeType.Concept, code=destination_id)
-        to_node.set_property(type_=SnomedProperteis.concept_id , value=destination_id)
+        to_node.set_property(type_=SnomedProperties.concept_id, value=destination_id)
 
         from_node.add_edge_single(type_, to_node=to_node)
 
@@ -81,6 +81,7 @@ class SnomedLoader:
       loaded_relationships[type_] = True
 
   def load_fully_specified_names(self):
+    """Populate SNOMED concept nodes in graph with their FSN (Fully Specified Names), and add any missing nodes in the process."""
     if SnomedSources.fully_specified_name in self.graph.loaded_sources:
       return
 
@@ -93,9 +94,9 @@ class SnomedLoader:
         module_id,
         concept_id,
         language_code,
-        type_id,
-        term,
-        case_significance_id,
+        type_id,  # e.g., Fully Specified Name, Preferred Term, Synonym
+        term,  # The term label
+        case_significance_id,  # Whethe capitalization is important, and if so in what way.
       ) = tpl
     # @formatter:on
 
@@ -104,15 +105,15 @@ class SnomedLoader:
 
       term_type = None
       try:
-        term_type = SnomedProperteis(type_id)
+        term_type = SnomedProperties(type_id)
       except ValueError:
         pass
 
-      if term_type is not SnomedProperteis.fully_specified_name:
+      if term_type is not SnomedProperties.fully_specified_name:
         continue
 
       concept = self.graph.getsert_node(type_=SnomedNodeType.Concept, code=concept_id)
-      concept.set_property(type_=SnomedProperteis.concept_id, value=concept_id)
+      concept.set_property(type_=SnomedProperties.concept_id, value=concept_id)
       concept.set_property(type_=term_type, value=term)
 
     self.graph.loaded_sources[SnomedSources.fully_specified_name] = {}

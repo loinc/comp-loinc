@@ -1,116 +1,76 @@
-# Update
-The documentation below no longer reflects the current implemenation. It might still work but there is a parallel
-implementation in the works that is not documented yet. In the meantime, please reach out for guidance if you're
-attempting to use this tooling on your own. There is additional setup that needs to be performed manually after cloning 
-the repository. Some of this setup is already documented in the readme at `data/loinc_release/README.md`, and it should 
-be up-to-date at the time this was written.
-
-# CompLOINC LinkML
-Computable OWL Formalization of LOINC
-
-## Website
-
-## Repository Structure
-* [comp-loinc/](comp-loinc/) - Python package for this project
-    * [data/](data/) - LOINC Input data and output OWL Files
-        * [code_files/](data/code_files) - LOINC Code Files
-        * [part_files/](data/part_files) - LOINC Part Files
-        * [output/](data/output) - OWL Output Files
-            * [owl_component_files/](data/output/owl_component_files) - OWL Component Files
-            * [merged_loinc.owl](data/output/merged_loinc.owl) - Merged OWL File
-            * [merged_reasoned_loinc.owl](data/output/merged_reasoned_loinc.owl) - Merged and Reasoned OWL File
-    * [project/](project/) - project files (do not edit these)
-    * [src/](src/) - source files (edit these)
-        * [comp_loinc](src/comp_loinc)
-            * [schema](src/comp_loinc/schema) -- LinkML schema
-            * [datamodel](src/comp_loinc/datamodel) -- generated Python datamodel
-            * [cli](src/comp_loinc/cli) -- command line interface
-            * [ingest](src/comp_loinc/ingest) -- ingest code
-            * [mapping](src/comp_loinc/mapping) -- mapping code for extracting mappings from the loin fhir server
-            * [ROBOT](src/comp_loinc/ROBOT) -- ROBOT tools for OWL Operations
-    * [tests/](test/) - Python tests
-
-## Developer Documentation
-<details>
-Use the `make` command to generate project artefacts:
-
-* `make all`: make everything
-* `make deploy`: deploys site
-
-</details>
-
-## Credits
-
-This project was made with
-[linkml-project-cookiecutter](https://github.com/linkml/linkml-project-cookiecutter).
-
-## Prerequisities
-1. Python 3.11
-2. Required LOINC Files
-   For now, these files
-   are [downloadable from GoogleDrive](https://drive.google.com/drive/u/0/folders/1SjDFYs1ocbpovGlAZDKuRVcTDoNztHOc).
-   They need to be put in these locations:
-
-- `data/part_files/ComponentTree.tsv`
-- `data/code_files/LOINC.csv`
-- `data/code_files/LoincPartlink_Primary.csv`
+# CompLOINC
+Computational LOINC (in OWL).
 
 ## Setup
-1. Clone this repository.
-2. install poetry
-3. run poetry install
+### Prerequisities
+1. Python 3.11
+2. Inputs: Download the latest `*-build-sources.zip` from [Google Drive](
+https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh).
+
+### Installation
+1. Clone repo: `git clone https://github.com/loinc/comp-loinc.git`
+2. Set up virtual environment & activate: `python -m venv venv` & `source venv/bin/activate`
+3. Install [Poetry](https://python-poetry.org/): `pip install poetry`
+4. Install dependencies: `poetry install`
+5. Unzip downloaded inputs into the root directory of the repo.
+
+## Repository Structure
+* [data/](data/) - Static input files that don't need to be downloaded.
+* [logs/](logs/output) - Logs
+* [owl-files/](owl-files/) - Place the default build output files in this directory and then open the comploinc.owl file in Protege to get what is considered to be the default content of CompLOINC (still WIP).
+* [src/comp_loinc/](src/comp_loinc) - Uses a loinclib `networkx` graph to generate ontological outputs.
+  * [builds/](src/comp_loinc/builds) -- LinkML schema
+  * [datamodel/](src/comp_loinc/datamodel) - generated Python LinkML datamodel
+  * [schema/](src/comp_loinc/schema) - LinkML source schema
+  * [cli.py](src/comp_loinc/cli.py) - Command line interface
+  * [loinc_builder_steps.py](src/comp_loinc/loinc_builder_steps.py) - LOINC builder steps
+  * [module.py](src/comp_loinc/module.py) - Instantiates and processes builder modules.
+  * [runtime.py](src/comp_loinc/runtime.py) - Manages the runtime environment. Allows sharing of data between modules.
+  * [snomed_builder_steps.py](src/comp_loinc/snomed_builder_steps.py) - SNOMED builder steps
+* [src/loinclib](src/loinclib) - Uses inputs from LOINC and other sources to create a `networkx` graph.
+  * [config.py](src/loinclib/config.py) - Configuration
+  * [graph.py](src/loinclib/graph.py) - `networkx` graph ops
+  * [loinc_loader.py](src/loinclib/loinc_loader.py) - Loads LOINC release data
+  * [loinc_schema.py](src/loinclib/loinc_schema.py) - Schema for LOINC
+  * [loinc_snomed_loader.py](src/loinclib/loinc_snomed_loader.py) - Loads SNOMED-LOINC Ontology data
+  * [loinc_snomed_schema.py](src/loinclib/loinc_snomed_schema.py) - Schema for SNOMED-LOINC Ontology
+  * [loinc_tree_loader.py](src/loinclib/loinc_tree_loader.py) - Loads LOINC web app hierarchical data 
+  * [loinc_tree_schema.py](src/loinclib/loinc_tree_schema.py) - Schema for LOINC web app hierarchical data
+  * [snomed_loader.py](src/loinclib/snomed_loader.py) - Loads SNOMED release data
+  * [snomed_schema_v2.py](src/loinclib/snomed_schema_v2.py) - Schema for SNOMED release data
+* [tests/](test/) - Tests
+* [comploinc_config.yaml/](comploinc_config.yaml) - Configuration (discussed further below)
 
 ## Usage
-Commands 1.1 - 1.5 are meant to be run sequentially.
+If you just want to run a build of default artefacts / options, use the command `comploinc build`.
 
-Alternatively, you can run all of them at once using default values by running `python src/comp_loinc/cli/main.py all`.
+### Command reference
+`comploinc --help`:
 
-Help text can be run via `python src/comp_loinc/cli/main.py --help`. You can see help text for a specific command,
-including
-information about its parameters, by running `python src/comp_loinc/cli/main.py COMMAND_NAME --help`.
+Options:
 
-### 1.0. `loinc_release`
-Download the latest LOINC release files and put them in the correct locations. Zip LoincRelease needs to be in the 
-data/loinc_release directory.
+| Arg usage            | Description                                                                                    |
+|----------------------|------------------------------------------------------------------------------------------------|
+| --work-dir PATH      | CompLOINC work directory, defaults to current work directory.  [default: (dynamic)]            |
+| --config-file PATH   | Configuration file name. Defaults to "comploinc_config.yaml"  [default: comploinc_config.yaml] |
+| -o, --out-dir PATH   | The output folder name. Defaults to "output". [default: output]                                |
+| --install-completion | Install completion for the current shell.                                                      |
+| --show-completion    | Show completion for the current shell, to copy it or customize the installation.               |
 
-`python src/comp_loinc/main.py loinc_release`
+Commands:
+* `build`: Performs a build from a build file as opposed to the "builder"...
+* `builder` ...
 
-### 1.1. `parts`
-Build the part ontology from the intermediate Part Hierarchy files
+### `build` 
+Usage: `comploinc build [OPTIONS] [BUILD_NAME]`
 
-`python src/comp_loinc/main.py parts --schema-file src/comp_loinc/schema/part_schema.yaml --part-directory 
-data/part_files --output data/output/owl_component_files/part_ontology.owl`
+Performs a build from a build file as opposed to the "builder" command which takes build steps.
 
-### 1.2. `codes`
-Build the code classes from the intermediate Part Hierarchy files
+Arguments:
+* `[BUILD_NAME]`  The build name or a path to a build file. The "default" build will build all outputs. 
+`[default: default]`
 
-`python src/comp_loinc/main.py codes --schema-file src/comp_loinc/schema/code_schema.yaml --code-directory 
-data/code_files --output data/output/owl_component_files/code_classes.owl`
+## Configuration
+See: `comploinc_config.yaml`
 
-### 1.3. `composed`
-Build the composed class axioms for the reasoner to group classes (this is pretty bespoke, and hardcoded at the moment)
-
-`python src/comp_loinc/main.py composed --schema-file src/comp_loinc/schema/grouping_classes_schema.yaml 
---composed-classes-data-file data/composed_classes_data.yaml --output data/output/owl_component_files/
-composed_component_classes.owl`
-
-### 1.4. `map`
-Get Mappings from the LOINC FHIR Server and use SSSOM to convert to OWL (Requires LOINC FHIR Server credentials)
-
-`python src/comp_loinc/main.py map --username username --password password --output loinc2chebi.owl`
-
-### 1.5. `merge`
-Merge all owl files into single merged ontology
-
-`python src/comp_loinc/main.py merge --owl-directory data/output/owl_component_files/ --output 
-data/output/merged_loinc.owl`
-
-### 1.6. `reason`
-Run the reasoner using elk to create the composed code classes
-
-`python src/comp_loinc/main.py reason --output latest/comp_loinc.owl`
-
-### 2. Examining
-Open the merged and reasoned owl file in Protégé for viewing
-
-Open `data/output/merged_reasoned_loinc.owl`
+If following the setup exactly, this configuration will not need to be modified.

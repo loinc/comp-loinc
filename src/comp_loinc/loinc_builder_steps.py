@@ -11,7 +11,7 @@ from linkml_runtime.linkml_model import ClassDefinition, SlotDefinition, Annotat
 from comp_loinc import Runtime
 from comp_loinc.datamodel import LoincPart, LoincPartId, LoincTermClass, EntityId, LoincEntity
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
-from loinclib import Configuration, SnomedEdges, Node, SnomedProperteis, Edge
+from loinclib import Configuration, SnomedEdges, Node, SnomedProperties, Edge
 from loinclib import LoincLoader
 from loinclib import LoincNodeType, LoincTermProps
 from loinclib.loinc_schema import LoincPartProps, LoincPartEdge, LoincTermPrimaryEdges, LoincTermSupplementaryEdges, \
@@ -133,6 +133,12 @@ class LoincBuilderSteps:
         self.runtime.current_module.add_entity(part)
 
   def entity_labels(self):
+    """Applies prefixes to labels.
+
+    LT for "Loinc Term". LP for "Loinc Part", assuming it appears in parts.csv, else LPH for "Loinc Part - Hierarchy" if
+    it appears in component_hierarchy_by_system.csv, else LPT for "Loinc Part - Tree" if it originates from the tree
+    browser, else LPNN for "Loinc Part - No Name".
+    """
     graph = self.runtime.graph
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
     loinc_loader.load_loinc_table__loinc_csv()
@@ -178,6 +184,7 @@ class LoincBuilderSteps:
       loinc_part.entity_label = f'{prefix} {final_name}'
 
   def entity_annotations(self):
+    """Updates / synchronizes properties in LinkML model Entity class representations of terms with any properties that exist on the term from its node within the graph."""
     graph = self.runtime.graph
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
     loinc_loader.load_loinc_table__loinc_csv()
@@ -242,6 +249,7 @@ class LoincBuilderSteps:
         part.sub_class_of.append(loinc_part_parent)
 
   def loinc_part_to_snomed_quivalence(self):
+    """Generate LinkML entities for SNOMED<->LOINC part mappings from SNOMED(-LOINC) Ontology."""
     graph = self.runtime.graph
     loader = LoincSnomedLoader(config=self.configuration, graph=self.runtime.graph)
     loader.load_part_mapping()
@@ -257,7 +265,7 @@ class LoincBuilderSteps:
           snomed_node: Node = edge.to_node
 
           part_id = part_node.get_property(type_=LoincPartProps.part_number)
-          snomed_id = snomed_node.get_property(type_=SnomedProperteis.concept_id)
+          snomed_id = snomed_node.get_property(type_=SnomedProperties.concept_id)
 
           part = self.runtime.current_module.get_entity(entity_class=LoincPart, entity_id=part_id)
           if part is None:
@@ -312,6 +320,10 @@ class LoincBuilderSteps:
   #   pass
 
   def loinc_term_primary_def(self):
+    """Gets graph representation of primary part model.
+
+    Creates 'property' edges between terms and parts, and creates LinkML LoincTerm Entity classes.
+    """
     graph = self.runtime.graph
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
     loinc_loader.load_accessory_files__part_file__loinc_part_link_primary_csv()
@@ -328,6 +340,7 @@ class LoincBuilderSteps:
           continue
         loinc_part_id = LoincPartId(part_number)
 
+        setattr(loinc_term, edge_type.name, loinc_part_id)
         match edge_type:
           case LoincTermPrimaryEdges.primary_component:
             loinc_term.primary_component = loinc_part_id
@@ -452,6 +465,11 @@ class LoincBuilderSteps:
             loinc_term.supplementary_time_modifier = loinc_part_id
 
   def loinc_term_class_roots(self):
+    """Sets up LOINC Term hierarchy.
+
+    Sets  LoincTerm at the top, and major class branches directly below it. Each class branch is prefixed with "LTC" for
+    "LOINC Term Class". Assigns LOINC Terms to their branches. Sets up is_a hierarchy.
+    """
     logger.info(f'Starting lt-class-roots')
     graph = self.runtime.graph
     loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
@@ -491,7 +509,7 @@ class LoincBuilderSteps:
       class_type = loinc_term_node.get_property(LoincTermProps.class_type)
       class_ = loinc_term_node.get_property(LoincTermProps.class_)
 
-      match class_type:
+      match class_type:  # todo: Possibly throw error if class_type is not a recognized case
         case '1':
           class_type = 'LTC___Laboratory'
         case '2':
@@ -504,7 +522,7 @@ class LoincBuilderSteps:
       class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass, entity_id=class_type)
 
       child_entity: LoincEntity = loinc_term_entity
-      while True:
+      while True:  # identify all ancestors and add class-oriented is_a subclass relationships
         class_title = None
         class_part_number = None
         class_abbreviation = self._normalize_type_string(class_)
@@ -516,12 +534,12 @@ class LoincBuilderSteps:
 
         parent_entity: LoincTermClass = self.runtime.current_module.get_entity(entity_class=LoincTermClass,
                                                                                    entity_id=class_abbreviation)
-        if parent_entity is not None:
+        if parent_entity is not None:  # if parent found, set is_a relation and break
           if parent_entity.id not in child_entity.sub_class_of:
             child_entity.sub_class_of.append(parent_entity.id)
           break
 
-        parent_entity: LoincTermClass = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
+        parent_entity: LoincTermClass = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,  # instantiate parent "class" term if doesn't exist
                                                                                    entity_id=class_abbreviation)
         parent_entity.class_title = class_title
         parent_entity.class_part = class_part_number
@@ -556,14 +574,14 @@ class LoincBuilderSteps:
 
   def load_schema(self,
       filename: t.Annotated[str, typer.Option('--file-name', '-f',
-                                              help='The LinkML schema file name in the schema directory. For example: "comp_loinc.yaml"')],
+        help='The LinkML schema file name in the schema directory. For example: "comp_loinc.yaml"')],
       schema_name: t.Annotated[str, typer.Option('--schema-name', '-n',
-                                                 help='A name to hold the loaded schema under. Defaults to the file name without the .yaml suffix')] = None,
+        help='A name to hold the loaded schema under. Defaults to the file name without the .yaml suffix')] = None,
       reload: t.Annotated[bool, typer.Option('--reload', '-r',
-                                             help='A previously loaded schema under the same name will be reloaded if true.')] = False,
+        help='A previously loaded schema under the same name will be reloaded if true.')] = False,
       equivalent_term: t.Annotated[bool, typer.Option('--equivalent-term',
-                                                      help='Modifies the LoincTerm OWL annotations from "ObjectSomeValuesFrom" to '
-                                                           '"EquivalentClasses, IntersectionOf"')] = False
+        help='Modifies the LoincTerm OWL annotations from "ObjectSomeValuesFrom" to '
+        '"EquivalentClasses, IntersectionOf"')] = False
   ) -> SchemaView:
     typer.echo(f'Running load_linkml_schema')
     schema_view = self.runtime.load_linkml_schema(filename, schema_name, reload)
@@ -580,8 +598,8 @@ class LoincBuilderSteps:
     return schema_view
 
   def save_to_owl(self, file_path: t.Annotated[Path, typer.Option('--file', '-f',
-                                                                  help='The output file path. If relative, it will be saved under the "output" directory in the runtime directory. '
-                                                                       'If not given, it will be saved after the modul\'s name in the output directory.')] = None,
+    help='The output file path. If relative, it will be saved under the "output" directory in the runtime directory. '
+    'If not given, it will be saved after the modul\'s name in the output directory.')] = None,
       schema_name: t.Annotated[str, typer.Option('--schema-name', '-s',
                                                  help='A loaded schema name to use while saving. If not provided, the "current schema" will be used.')] = None):
 
