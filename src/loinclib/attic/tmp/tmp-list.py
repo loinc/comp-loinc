@@ -1,12 +1,12 @@
 l = [1]
 if l:
-    print('yes')
+    print("yes")
 else:
-    print('no')
+    print("no")
 
 
 l = None
 if l:
-    print('yes')
+    print("yes")
 else:
-    print('no')
+    print("no")

@@ -6,4 +6,4 @@
 a = []
 
 if a:
-    print('Yes')
+    print("Yes")

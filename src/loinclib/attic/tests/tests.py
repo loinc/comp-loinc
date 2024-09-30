@@ -6,16 +6,20 @@ from networkx import MultiDiGraph
 
 from loinclib.loinc_schema import loinc_schema, LoincNodeType, LoincTermProps
 
-LOINC_PATH = Path('../../../loinc_release/2.67')
-TREE_PATH = Path('../../../loinc_trees/2023-09-26')
-
+LOINC_PATH = Path("../../../loinc_release/2.67")
+TREE_PATH = Path("../../../loinc_trees/2023-09-26")
 
 
 class TestHello(TestCase):
 
     def test_hello(self):
 
-        loinc_graph = LoincGraph(release_path=LOINC_PATH, trees_path=TREE_PATH, loinc_version='2.67', schema=loinc_schema)
+        loinc_graph = LoincGraph(
+            release_path=LOINC_PATH,
+            trees_path=TREE_PATH,
+            loinc_version="2.67",
+            schema=loinc_schema,
+        )
         loinc_graph.load_loinc_table__loinc_csv()
 
         print(loinc_graph)
@@ -46,15 +50,13 @@ class TestHello(TestCase):
     #     value = node_view.get_property(LoincTermProps.loinc_number)
     #     self.assertEqual('test', value, 'Not there')
 
-
     def test_multidi_edges(self):
         mdg = MultiDiGraph()
-        mdg.add_edge('from', 'to', color='red', name='test')
+        mdg.add_edge("from", "to", color="red", name="test")
 
-        from_ = mdg.succ['from']
-        to_= from_['too']
+        from_ = mdg.succ["from"]
+        to_ = from_["too"]
         # from_ = mdg.out_edges.get('from', None)
-
 
         out_view = mdg.out_edges()
         # get = out_view.get('from', None)

@@ -12,13 +12,12 @@ class MultiValuedEnum(enum.Enum):
         obj._value_ = value
         return obj
 
-    def __init__(self,
-                 data):
+    def __init__(self, data):
         self.data = data
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(MultiValuedEnum.ONE)
-    print(MultiValuedEnum.ONE.data['one'])
+    print(MultiValuedEnum.ONE.data["one"])
     part = LoincPart()
     print(part)
