@@ -28,7 +28,7 @@ Computable OWL Formalization of LOINC
             * [ingest](src/comp_loinc/ingest) -- ingest code
             * [mapping](src/comp_loinc/mapping) -- mapping code for extracting mappings from the loin fhir server
             * [ROBOT](src/comp_loinc/ROBOT) -- ROBOT tools for OWL Operations
-    * [tests/](tests/) - Python tests
+    * [tests/](test/) - Python tests
 
 ## Developer Documentation
 <details>
