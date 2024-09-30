@@ -13,8 +13,6 @@ def add(node: str, name: str, value: typing.Any):
     node[name] = value
 
 
-add('node1', 'name', 'some name')
+add("node1", "name", "some name")
 
-print(g.nodes(data=False, default={'1': 'one'})['node1']['1'])
-
-
+print(g.nodes(data=False, default={"1": "one"})["node1"]["1"])

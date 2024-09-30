@@ -2,20 +2,19 @@ from enum import StrEnum, Enum
 
 
 class LoincNodeType(StrEnum):
-  LoincTerm = 'LoincTerm'
-  LoincPart = 'LoincPart'
-  LoincClass = 'LoincClass'
+    LoincTerm = "LoincTerm"
+    LoincPart = "LoincPart"
+    LoincClass = "LoincClass"
 
 
 class LoincTermProps(StrEnum):
-  loinc_number = 'loinc_number'
-  long_common_name = 'long_common_name'
-  short_name = 'short_name'
-  class_ = 'class'
-  class_type = 'class_type'
-  definition_description = 'definition_description'
-  status = 'status'
-
+    loinc_number = "loinc_number"
+    long_common_name = "long_common_name"
+    short_name = "short_name"
+    class_ = "class"
+    class_type = "class_type"
+    definition_description = "definition_description"
+    status = "status"
 
 
 # 14:38 $ csvtool col 8 LoincPartLink_Primary.csv | sort | uniq -c
@@ -50,38 +49,65 @@ class LoincTermProps(StrEnum):
 # 101632 http://loinc.org/property/TIME_ASPCT
 # 1 Property
 
+
 class LoincTermPrimaryEdges(StrEnum):
-  primary_component = 'http://loinc.org/property/COMPONENT'
-  primary_property = 'http://loinc.org/property/PROPERTY'
-  primary_time_aspect = 'http://loinc.org/property/TIME_ASPCT'
-  primary_system = 'http://loinc.org/property/SYSTEM'
-  primary_scale_type = 'http://loinc.org/property/SCALE_TYP'
-  primary_method_type = 'http://loinc.org/property/METHOD_TYP'
+    primary_component = "http://loinc.org/property/COMPONENT"
+    primary_property = "http://loinc.org/property/PROPERTY"
+    primary_time_aspect = "http://loinc.org/property/TIME_ASPCT"
+    primary_system = "http://loinc.org/property/SYSTEM"
+    primary_scale_type = "http://loinc.org/property/SCALE_TYP"
+    primary_method_type = "http://loinc.org/property/METHOD_TYP"
 
-  primary_document_kind = 'http://loinc.org/property/document-kind'
-  primary_document_role = 'http://loinc.org/property/document-role'
-  primary_document_setting = 'http://loinc.org/property/document-setting'
-  primary_document_subject_matter_domain = 'http://loinc.org/property/document-subject-matter-domain'
-  primary_document_type_of_service = 'http://loinc.org/property/document-type-of-service'
+    primary_document_kind = "http://loinc.org/property/document-kind"
+    primary_document_role = "http://loinc.org/property/document-role"
+    primary_document_setting = "http://loinc.org/property/document-setting"
+    primary_document_subject_matter_domain = (
+        "http://loinc.org/property/document-subject-matter-domain"
+    )
+    primary_document_type_of_service = (
+        "http://loinc.org/property/document-type-of-service"
+    )
 
-  primary_rad_anatomic_location_imaging_focus = 'http://loinc.org/property/rad-anatomic-location-imaging-focus'
-  primary_rad_anatomic_location_laterality = 'http://loinc.org/property/rad-anatomic-location-laterality'
-  primary_rad_anatomic_location_laterality_presence = 'http://loinc.org/property/rad-anatomic-location-laterality-presence'
-  primary_rad_anatomic_location_region_imaged = 'http://loinc.org/property/rad-anatomic-location-region-imaged'
-  primary_rad_guidance_for_action = 'http://loinc.org/property/rad-guidance-for-action'
-  primary_rad_guidance_for_approach = 'http://loinc.org/property/rad-guidance-for-approach'
-  primary_rad_guidance_for_object = 'http://loinc.org/property/rad-guidance-for-object'
-  primary_rad_guidance_for_presence = 'http://loinc.org/property/rad-guidance-for-presence'
-  primary_rad_maneuver_maneuver_type = 'http://loinc.org/property/rad-maneuver-maneuver-type'
-  primary_rad_modality_subtype = 'http://loinc.org/property/rad-modality-subtype'
-  primary_rad_modality_type = 'http://loinc.org/property/rad-modality-type'
-  primary_rad_pharmaceutical_route = 'http://loinc.org/property/rad-pharmaceutical-route'
-  primary_rad_pharmaceutical_substance_given = 'http://loinc.org/property/rad-pharmaceutical-substance-given'
-  primary_rad_reason_for_exam = 'http://loinc.org/property/rad-reason-for-exam'
-  primary_rad_subject = 'http://loinc.org/property/rad-subject'
-  primary_rad_timing = 'http://loinc.org/property/rad-timing'
-  primary_rad_view_aggregation = 'http://loinc.org/property/rad-view-aggregation'
-  primary_rad_view_view_type = 'http://loinc.org/property/rad-view-view-type'
+    primary_rad_anatomic_location_imaging_focus = (
+        "http://loinc.org/property/rad-anatomic-location-imaging-focus"
+    )
+    primary_rad_anatomic_location_laterality = (
+        "http://loinc.org/property/rad-anatomic-location-laterality"
+    )
+    primary_rad_anatomic_location_laterality_presence = (
+        "http://loinc.org/property/rad-anatomic-location-laterality-presence"
+    )
+    primary_rad_anatomic_location_region_imaged = (
+        "http://loinc.org/property/rad-anatomic-location-region-imaged"
+    )
+    primary_rad_guidance_for_action = (
+        "http://loinc.org/property/rad-guidance-for-action"
+    )
+    primary_rad_guidance_for_approach = (
+        "http://loinc.org/property/rad-guidance-for-approach"
+    )
+    primary_rad_guidance_for_object = (
+        "http://loinc.org/property/rad-guidance-for-object"
+    )
+    primary_rad_guidance_for_presence = (
+        "http://loinc.org/property/rad-guidance-for-presence"
+    )
+    primary_rad_maneuver_maneuver_type = (
+        "http://loinc.org/property/rad-maneuver-maneuver-type"
+    )
+    primary_rad_modality_subtype = "http://loinc.org/property/rad-modality-subtype"
+    primary_rad_modality_type = "http://loinc.org/property/rad-modality-type"
+    primary_rad_pharmaceutical_route = (
+        "http://loinc.org/property/rad-pharmaceutical-route"
+    )
+    primary_rad_pharmaceutical_substance_given = (
+        "http://loinc.org/property/rad-pharmaceutical-substance-given"
+    )
+    primary_rad_reason_for_exam = "http://loinc.org/property/rad-reason-for-exam"
+    primary_rad_subject = "http://loinc.org/property/rad-subject"
+    primary_rad_timing = "http://loinc.org/property/rad-timing"
+    primary_rad_view_aggregation = "http://loinc.org/property/rad-view-aggregation"
+    primary_rad_view_view_type = "http://loinc.org/property/rad-view-view-type"
 
 
 # 14:38 $ csvtool col 8 LoincPartLink_Supplementary.csv | sort | uniq -c
@@ -107,45 +133,50 @@ class LoincTermPrimaryEdges(StrEnum):
 # 233 http://loinc.org/property/time-modifier
 # 1 Property
 
-class LoincTermSupplementaryEdges(StrEnum):
-  supplementary_adjustment =  'http://loinc.org/property/adjustment'
-  supplementary_analyte =  'http://loinc.org/property/analyte'
-  supplementary_analyte_core =  'http://loinc.org/property/analyte-core'
-  supplementary_analyte_divisor =  'http://loinc.org/property/analyte-divisor'
-  supplementary_analyte_divisor_suffix =  'http://loinc.org/property/analyte-divisor-suffix'
-  supplementary_analyte_gene =  'http://loinc.org/property/analyte-gene'
-  supplementary_analyte_numerator =  'http://loinc.org/property/analyte-numerator'
-  supplementary_analyte_suffix =  'http://loinc.org/property/analyte-suffix'
-  supplementary_category =  'http://loinc.org/property/category'
-  supplementary_challenge =  'http://loinc.org/property/challenge'
-  supplementary_CLASS =  'http://loinc.org/property/CLASS'
-  supplementary_count =  'http://loinc.org/property/count'
-  supplementary_METHOD_TYP =  'http://loinc.org/property/METHOD_TYP'
-  supplementary_PROPERTY =  'http://loinc.org/property/PROPERTY'
-  supplementary_SCALE_TYP =  'http://loinc.org/property/SCALE_TYP'
-  supplementary_search =  'http://loinc.org/property/search'
-  supplementary_super_system =  'http://loinc.org/property/super-system'
-  supplementary_system_core =  'http://loinc.org/property/system-core'
-  supplementary_time_core =  'http://loinc.org/property/time-core'
-  supplementary_time_modifier =  'http://loinc.org/property/time-modifier'
 
+class LoincTermSupplementaryEdges(StrEnum):
+    supplementary_adjustment = "http://loinc.org/property/adjustment"
+    supplementary_analyte = "http://loinc.org/property/analyte"
+    supplementary_analyte_core = "http://loinc.org/property/analyte-core"
+    supplementary_analyte_divisor = "http://loinc.org/property/analyte-divisor"
+    supplementary_analyte_divisor_suffix = (
+        "http://loinc.org/property/analyte-divisor-suffix"
+    )
+    supplementary_analyte_gene = "http://loinc.org/property/analyte-gene"
+    supplementary_analyte_numerator = "http://loinc.org/property/analyte-numerator"
+    supplementary_analyte_suffix = "http://loinc.org/property/analyte-suffix"
+    supplementary_category = "http://loinc.org/property/category"
+    supplementary_challenge = "http://loinc.org/property/challenge"
+    supplementary_CLASS = "http://loinc.org/property/CLASS"
+    supplementary_count = "http://loinc.org/property/count"
+    supplementary_METHOD_TYP = "http://loinc.org/property/METHOD_TYP"
+    supplementary_PROPERTY = "http://loinc.org/property/PROPERTY"
+    supplementary_SCALE_TYP = "http://loinc.org/property/SCALE_TYP"
+    supplementary_search = "http://loinc.org/property/search"
+    supplementary_super_system = "http://loinc.org/property/super-system"
+    supplementary_system_core = "http://loinc.org/property/system-core"
+    supplementary_time_core = "http://loinc.org/property/time-core"
+    supplementary_time_modifier = "http://loinc.org/property/time-modifier"
 
 
 class LoincPartProps(StrEnum):
-  part_number = 'part_number'
-  part_type_name = 'part_type_name'
-  part_name = 'part_name'
-  part_display_name = 'part_display_name'
-  status = 'status'
+    part_number = "part_number"
+    part_type_name = "part_type_name"
+    part_name = "part_name"
+    part_display_name = "part_display_name"
+    status = "status"
 
-  code_text__from_comp_hierarch = 'part_text__from_comp_hierarch'
-  code_text__from_tree = 'code_text__from_tree'
+    code_text__from_comp_hierarch = "part_text__from_comp_hierarch"
+    code_text__from_tree = "code_text__from_tree"
 
-  from_hierarchy = 'from_hierarchy'
+    from_hierarchy = "from_hierarchy"
 
 
 class LoincPartEdge(StrEnum):
-  parent_comp_by_system = 'parent_comp_by_system'  # This edge comes from ComponentHierarchyBySystem.csv
+    parent_comp_by_system = (
+        "parent_comp_by_system"  # This edge comes from ComponentHierarchyBySystem.csv
+    )
+
 
 # loinc_schema: Schema = Schema()
 #
@@ -193,9 +224,10 @@ class LoincPartEdge(StrEnum):
 
 
 class LoincClassProps(StrEnum):
-  abbreviation = 'Abbreviation'
-  title = 'title'
-  part_number = 'part_number'
+    abbreviation = "Abbreviation"
+    title = "title"
+    part_number = "part_number"
+
 
 class LoincClassEdge(StrEnum):
-  part = 'part'
+    part = "part"
