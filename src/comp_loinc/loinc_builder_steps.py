@@ -414,7 +414,6 @@ class LoincBuilderSteps:
                     continue
                 loinc_part_id = LoincPartId(part_number)
 
-                setattr(loinc_term, edge_type.name, loinc_part_id)
                 match edge_type:
                     case LoincTermPrimaryEdges.primary_component:
                         loinc_term.primary_component = loinc_part_id
