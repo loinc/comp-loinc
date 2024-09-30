@@ -1,7 +1,0 @@
----
-name: comp_loinc
-author: Timothy Putman <timothy.putman@cuanschutz.edu>
-description: Computable OWL Formalization of LOINC
-source_schema_path: src/comp_loinc/schema/comp_loinc.yaml
-google_sheet_id: 1wVoaiFg47aT9YWNeRfTZ8tYHN8s8PAuDx5i2HUcDpvQ
-google_sheet_tabs: personinfo enums
