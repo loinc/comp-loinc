@@ -1,3 +1,4 @@
+# TODO: Complete implementation: https://github.com/loinc/comp-loinc/issues/81
 ---
 site_name: "comp-loinc"
 theme:
@@ -14,8 +15,8 @@ nav:
   # - Home: home.md
   - Index: index.md
   - About: about.md
-site_url: https://putmantime.github.io/comp-loinc
-repo_url: https://github.com/putmantime/comp-loinc
+site_url: https://comploinc.github.io/comp-loinc
+repo_url: https://github.com/comploinc/comp-loinc
 
 # Uncomment this block to enable use of Google Analytics.
 # Replace the property value with your own ID.

@@ -2,10 +2,8 @@
 
 :+1: First of all: Thank you for taking the time to contribute!
 
-The following is a set of guidelines for contributing to
-comp-loinc. These guidelines are not strict rules.
-Use your best judgment, and feel free to propose changes to this document
-in a pull request.
+The following is a set of guidelines for contributing to comp-loinc. These guidelines are not strict rules.
+Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 ## Table Of Contents
 
@@ -22,8 +20,7 @@ in a pull request.
 
 ## Code of Conduct
 
-The comp-loinc team strives to create a
-welcoming environment for editors, users and other contributors.
+The comp-loinc team strives to create a  welcoming environment for editors, users and other contributors.
 Please carefully read our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 <a id="contributions"></a>
@@ -69,5 +66,5 @@ and make your changes on a [new branch][about-branches].
 [about-branches]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches
 [about-issues]: https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues
 [about-pulls]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests
-[issues]: https://github.com/putmantime/comp-loinc/issues/
-[pulls]: https://github.com/putmantime/comp-loinc/pulls/
+[issues]: https://github.com/loinc/comp-loinc/issues/
+[pulls]: https://github.com/loinc/comp-loinc/pulls/
