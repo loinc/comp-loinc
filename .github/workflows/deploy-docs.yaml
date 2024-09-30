@@ -2,8 +2,9 @@
 ---
 name: Auto-deployment of comp_loinc Documentation
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
+#  push:
+#    branches: [main]
 
 jobs:
   build-docs:
