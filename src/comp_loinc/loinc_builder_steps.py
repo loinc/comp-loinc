@@ -141,6 +141,7 @@ class LoincBuilderSteps:
             ),
         ] = False,
     ):
+        logger.info(f"Starting lp-inst-all")
         graph = self.runtime.graph
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
         loinc_loader.load_accessory_files__part_file__part_csv()
@@ -170,6 +171,7 @@ class LoincBuilderSteps:
             if self.runtime.current_module.get_entity(number, LoincPart) is None:
                 part = LoincPart(id=number)
                 self.runtime.current_module.add_entity(part)
+        logger.info(f"Finished lp-inst-all")
 
     def entity_labels(self):
         """Applies prefixes to labels.
