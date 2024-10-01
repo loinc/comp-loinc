@@ -2,38 +2,37 @@
 # https://docs.github.com/en/actions/guides/building-and-testing-python
 # https://github.com/snok/install-poetry#workflows-and-tips
 ---
-name: Build and test comp_loinc
+name: QC build and test
 
+on:
+    workflow_dispatch:
 # todo: deactivated, pending: https://github.com/loinc/comp-loinc/issues/21
-#on: [pull_request, workflow_dispatch]
-on: [workflow_dispatch]
+#    pull_request:
+#    push:
+#        branches:
+#            - main
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: ["3.11"]
-
     steps:
-
+      # Setup
       - name: Check out repository
         uses: actions/checkout@v2
-
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-
       - name: Install Poetry
         uses: snok/install-poetry@v1.3
-
-      - name: Install dependencies
-        run: poetry install --no-interaction --no-root
-
-      - name: Install project
+      - name: Install dependencies & project
         run: poetry install --no-interaction
-
+      # Build
       - name: Run test suite
-        run: make test
+        run: poetry run comploinc --fast-run build
+      # Test
+      - name: Run test suite
+        run: poetry run python -m unittest discover
