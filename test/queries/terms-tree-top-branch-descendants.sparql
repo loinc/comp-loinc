@@ -1,0 +1,13 @@
+# Get children of top branches
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?branch ?descendant
+WHERE {
+  ?branch rdfs:subClassOf <https://loinc.org/LoincTerm> .
+  OPTIONAL { ?descendant rdfs:subClassOf ?branch }
+  FILTER NOT EXISTS {
+    ?branch rdfs:subClassOf ?intermediateClass .
+    ?intermediateClass rdfs:subClassOf <https://loinc.org/LoincTerm> .
+    FILTER (?intermediateClass != ?branch)
+  }
+}

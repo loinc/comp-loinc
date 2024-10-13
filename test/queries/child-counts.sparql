@@ -1,0 +1,11 @@
+# Get direct child counts for all classes
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?class ?label (COUNT(?subclass) AS ?directSubclassCount)
+WHERE {
+  ?subclass rdfs:subClassOf ?class .
+  OPTIONAL { ?class rdfs:label ?label }
+  FILTER(?subclass != ?class)
+}
+GROUP BY ?class ?label
+ORDER BY DESC(?directSubclassCount)
