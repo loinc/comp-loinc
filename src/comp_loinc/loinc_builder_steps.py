@@ -791,7 +791,7 @@ class LoincBuilderSteps:
         if not owl_file_path.is_absolute():
             outdir = self.configuration.output
             if self.configuration.fast_run:
-                outdir = outdir / "fast_run"
+                outdir = outdir / "fast-run"
             owl_file_path = outdir / owl_file_path
 
         owl_file_path.parent.mkdir(parents=True, exist_ok=True)
