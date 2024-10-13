@@ -335,6 +335,9 @@ class EdgeType(PropertyOwnerType):
         self.from_node_type: NodeType = from_node_type
         self.to_node_type: NodeType = to_node_type
 
+    def __repr__(self):
+        return f"EdgeType(type_={self.type_!r})"
+
     def get_edge_single(self, from_node_id: str, to_node_id: str) -> t.Optional[int]:
         edges: t.List[int] = []
         for from_id, to_id, key, data in self.schema.graph.nx_graph.out_edges(
