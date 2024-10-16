@@ -1,0 +1,16 @@
+# Query all existential equivalences
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?class ?onProperty ?someValuesFrom
+WHERE {
+  ?class a owl:Class ;
+     owl:equivalentClass [
+       owl:intersectionOf/rdf:rest*/rdf:first [
+         a owl:Restriction ;
+         owl:onProperty ?onProperty ;
+         owl:someValuesFrom ?someValuesFrom
+       ]
+     ] .
+}
+ORDER BY ?class ?onProperty

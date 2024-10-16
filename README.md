@@ -74,3 +74,16 @@ Arguments:
 See: `comploinc_config.yaml`
 
 If following the setup exactly, this configuration will not need to be modified.
+
+## Tests
+<details><summary>Details</summary>
+
+### Tests: prerequisites
+1. [`robot`](https://robot.obolibrary.org/)
+2. Files in `output/build-default/fast-run/`
+  - Can populate via `comploinc --fast-run build default`
+
+### Tests: Running
+`python -m unittest discover`
+
+</details>

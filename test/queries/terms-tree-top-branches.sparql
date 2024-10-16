@@ -1,0 +1,12 @@
+# List all top term branches
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?subclass
+WHERE {
+  ?subclass rdfs:subClassOf <https://loinc.org/LoincTerm> .
+  FILTER NOT EXISTS {
+    ?subclass rdfs:subClassOf ?intermediateClass .
+    ?intermediateClass rdfs:subClassOf <https://loinc.org/LoincTerm> .
+    FILTER (?intermediateClass != ?subclass)
+  }
+}

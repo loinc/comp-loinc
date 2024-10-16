@@ -1,0 +1,7 @@
+# Check to see if LoincPart is (not) at the top of the hierarchy
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+ASK {
+  <https://loinc.org/LoincPart> rdfs:subClassOf ?superclass .
+  FILTER NOT EXISTS { ?superclass rdfs:subClassOf ?higherclass }
+}
