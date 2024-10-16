@@ -18,11 +18,11 @@ import pandas as pd
 
 try:
     # noinspection PyUnresolvedReferences pycharm_confused_by_test_root
-    from test.config import PROJECT_DIR, TEST_IN_DIR, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
+    from test.config import PROJECT_DIR, TEST_IN_DIR_FAST_RUN, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
     # noinspection PyUnresolvedReferences pycharm_confused_by_test_root
     from test.utils import sparql_ask, sparql_select
 except ModuleNotFoundError:
-    from config import PROJECT_DIR, TEST_IN_DIR, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
+    from config import PROJECT_DIR, TEST_IN_DIR_FAST_RUN, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
     from utils import sparql_ask, sparql_select
 
 

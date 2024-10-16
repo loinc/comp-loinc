@@ -8,16 +8,16 @@ from typing import Union
 import pandas as pd
 
 try:
-    from test.config import ROBOT_JAR_PATH, TEST_IN_DIR, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
+    from test.config import ROBOT_JAR_PATH, TEST_IN_DIR_FAST_RUN, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
 except ModuleNotFoundError:
-    from config import ROBOT_JAR_PATH, TEST_IN_DIR, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
+    from config import ROBOT_JAR_PATH, TEST_IN_DIR_FAST_RUN, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
 
 robot_cmd_options = ['robot', ROBOT_JAR_PATH]
 
 
 def _get_paths(onto_filename: str, sparql_filename: str) -> tuple[str, str, str]:
     """Derive paths for test from filenames of inputs"""
-    onto_path: str = TEST_IN_DIR / onto_filename
+    onto_path: str = TEST_IN_DIR_FAST_RUN / onto_filename
     sparql_path: str = TEST_SPARQL_QEURY_DIR / sparql_filename
     outname: str = os.path.splitext(os.path.basename(onto_path))[0] + '_' + \
         os.path.splitext(os.path.basename(sparql_path))[0]
