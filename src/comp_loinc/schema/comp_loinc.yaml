@@ -142,7 +142,7 @@ classes:
 
       # 3
       primary_time_aspect:
-        slot_uri: loinc_property:TIME_ASPECT
+        slot_uri: loinc_property:TIME_ASPCT
         multivalued: false
         range: LoincPart
         required: false
