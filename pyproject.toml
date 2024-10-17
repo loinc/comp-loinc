@@ -23,10 +23,27 @@ pandas = "^2.0.0"
 sssom = "^0.3.26"
 networkx = "^3.1"
 
-
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.2"
+black = "^24.3.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
