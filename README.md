@@ -4,8 +4,6 @@ Computational LOINC (in OWL).
 ## Setup
 ### Prerequisities
 1. Python 3.11
-2. Inputs: Download the latest `*-build-sources.zip` from [Google Drive](
-https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh).
 
 ### Installation
 1. Clone repo: `git clone https://github.com/loinc/comp-loinc.git`
@@ -13,6 +11,15 @@ https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh).
 3. Install [Poetry](https://python-poetry.org/): `pip install poetry`
 4. Install dependencies: `poetry install`
 5. Unzip downloaded inputs into the root directory of the repo.
+  - a. Core developers: Download latest `*-build-sources.zip` from [Google Drive](
+https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh).
+  - b. Everyone else: Download releases from each source:
+    - [LOINC](https://loinc.org/downloads/)
+    - [SNOMED](https://www.nlm.nih.gov/healthit/snomedct/us_edition.html)
+    - [LOINC-SNOMED Ontology](https://loincsnomed.org/downloads)
+    - [LOINC Tree](https://loinc.org/tree/)
+      - From this app, select from the "Hierarchy" menu at the top of the page. There are 7 options. When you select an option, select 'Export'. Extract the CSVs in each zip, and put them into a single folder, using the following names: `class.csv`, `component.csv`, `document.csv`, `method.csv`, `panel.csv`, `system.csv`, `component_by_system.csv`.
+    - General instructions: Ensure that these 4 sources are unzipped to the locations shown in [comploinc_config.yaml/](comploinc_config.yaml), or update the config to match your locations.
 
 ## Repository Structure
 * [data/](data/) - Static input files that don't need to be downloaded.
