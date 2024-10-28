@@ -158,3 +158,8 @@ test/input/*
 !test/input/.keep
 test/output/*
 !test/output/.keep
+
+# input
+input/*
+!input/owl-files/
+!input/data/
