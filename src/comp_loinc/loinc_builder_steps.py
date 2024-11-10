@@ -38,6 +38,7 @@ class LoincBuilderSteps:
     """Builder steps for LOINC."""
 
     def __init__(self, *, configuration: Configuration):
+        # logger.info(f"Running: {args}")
         self.configuration = configuration
         self.runtime: t.Optional[Runtime] = None
 
@@ -121,7 +122,7 @@ class LoincBuilderSteps:
         count = 0
         for node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
             count += 1
-            if self.configuration.fast_run and count > 10000:
+            if self.configuration.fast_run and count > 5000:
                 break
             if count % 1000 == 0:
                 logger.debug(f"Finished {count}")
@@ -796,9 +797,17 @@ class LoincBuilderSteps:
         """Save the current module to an OWL file."""
         logger.info(f"save-owl: Starting")
         owl_dumper = OWLDumper()
+
+        # TODO temp
+        ents = list(self.runtime.current_module.get_all_entities())
+        print('len entities (if over 5k, limit to that)', len(ents))
+        ents = ents[:5000]
+
         document = owl_dumper.to_ontology_document(
             schema=self.runtime.current_schema_view.schema,
-            element=list(self.runtime.current_module.get_all_entities()),
+            # TODO temp
+            # element=list(self.runtime.current_module.get_all_entities())
+            element=ents
         )
         document.ontology.iri = funowl.identifiers.IRI(
             f"https://comploinc/{self.runtime.current_module.name}"

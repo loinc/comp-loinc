@@ -47,7 +47,11 @@ class SnomedBuilderSteps:
         loader = LoincSnomedLoader(config=self.configuration, graph=self.runtime.graph)
         loader.load_part_mapping()
 
+        count = 0
         for part in self.runtime.graph.get_nodes(type_=LoincNodeType.LoincPart):
+            count = count + 1
+            if self.configuration.fast_run and count > 100:
+                break
             for edge in part.get_all_out_edges():
                 if edge.edge_type.type_ is SnomedEdges.maps_to:
                     concept_id = edge.to_node.get_property(
