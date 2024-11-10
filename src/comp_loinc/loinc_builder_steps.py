@@ -13,7 +13,6 @@ from comp_loinc.datamodel import (
     LoincPart,
     LoincPartId,
     LoincTermClass,
-    EntityId,
     LoincEntity,
 )
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
@@ -35,12 +34,14 @@ logger = logging.getLogger("LoincBuilder")
 
 
 class LoincBuilderSteps:
+    """Builder steps for LOINC."""
 
     def __init__(self, *, configuration: Configuration):
         self.configuration = configuration
         self.runtime: t.Optional[Runtime] = None
 
     def setup_builder(self, builder):
+        """Connects builder CLI commands to their methods that execute said commands."""
 
         builder.cli.command(
             "lt-inst-all", help="Instantiate all LOINC terms into current module."
@@ -111,6 +112,7 @@ class LoincBuilderSteps:
             ),
         ] = False,
     ):
+        """LOad all terms."""
         logger.info(f"Starting lt-inst-all")
         graph = self.runtime.graph
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
@@ -141,6 +143,7 @@ class LoincBuilderSteps:
             ),
         ] = False,
     ):
+        """Load all parts"""
         graph = self.runtime.graph
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
         loinc_loader.load_accessory_files__part_file__part_csv()
@@ -690,18 +693,24 @@ class LoincBuilderSteps:
 
         logger.info(f"Finished lt-class-roots")
 
-    def _normalize_type_string(self, type_string: str) -> str:
+    @staticmethod
+    def _normalize_type_string(type_string: str) -> t.Union[str, None]:
+        """Replaces spaces with underscores in type strings."""
         if type_string is None:
             return None
         return type_string.replace(" ", "_")
 
-    def _parent_class_string(self, class_string: str) -> t.Optional[str]:
+    @staticmethod
+    def _parent_class_string(class_string: str) -> t.Optional[str]:
+        """From a given period (.) delimited class path string, return the string of the final class in the path."""
         last_index = class_string.rfind(".")
         if last_index > 0:
             return class_string[:last_index]
         return None
 
+    # TODO
     def loinc_part_class_hierarchy(self):
+        """Sets up LOINC Part hierarchy."""
         pass
 
     def load_schema(
@@ -739,6 +748,7 @@ class LoincBuilderSteps:
             ),
         ] = False,
     ) -> SchemaView:
+        """Loads a LinkML schema file and sets it as the current schema."""
         typer.echo(f"Running load_linkml_schema")
         schema_view = self.runtime.load_linkml_schema(filename, schema_name, reload)
         if equivalent_term:
@@ -762,8 +772,8 @@ class LoincBuilderSteps:
             typer.Option(
                 "--file",
                 "-f",
-                help='The output file path. If relative, it will be saved under the "output" directory in the runtime directory. '
-                "If not given, it will be saved after the modul's name in the output directory.",
+                help='The output file path. If relative, it will be saved under the "output" directory in the runtime '
+                     'directory. If not given, it will be saved after the module\'s name in the output directory.',
             ),
         ] = None,
         schema_name: t.Annotated[
@@ -775,6 +785,7 @@ class LoincBuilderSteps:
             ),
         ] = None,
     ):
+        """Save the current module to an OWL file."""
         logger.info(f"Starting save-owl")
         owl_dumper = OWLDumper()
         document = owl_dumper.to_ontology_document(

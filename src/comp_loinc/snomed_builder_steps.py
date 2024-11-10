@@ -15,6 +15,7 @@ from loinclib.snomed_schema_v2 import SnomedProperties
 
 
 class SnomedBuilderSteps:
+    """SNOMED Builder Steps"""
 
     def __init__(self, *, configuration: Configuration):
         self.configuration = configuration
@@ -22,6 +23,7 @@ class SnomedBuilderSteps:
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def setup_cli_builder_steps_all(self, builder):
+        """Connects builder CLI commands to their methods that execute said commands."""
         builder.cli.command(
             "sct-loinc-part-map-instances",
             help="Add SNOMED entities for the LOINC part mappings",
