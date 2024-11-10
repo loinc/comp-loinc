@@ -77,24 +77,6 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
     --lower-terms $(CHEBI_MODULE) \
     --output $@
 
-# todo: SPARQL TSV subset: Just the classes themselves?
-# - might require a jinja SPARQL or something like it, populated by the module
-#output/analysis/chebi-terms.tsv: $(CHEBI_OWL) | output/analysis/
-#	robot query -i $< -q src/sparql/mappings.sparql $@
-
-# todo: Subset?
-# - Source: https://robot.obolibrary.org/extract
-# - The subset method extracts a sub-ontology that contains only the seed terms (that you specify with --term and
-# --term-file options) and the relations between them. This method uses the relation-graph to materialize the
-# existential relations among the seed terms. Procedurally, the subset method materializes the input ontology and adds
-# the inferred axioms to the input ontology. Then filters the ontology with the given seed terms. Finally, it reduces
-# the filtered ontology to remove redundant subClassOf axioms.
-#output/analysis/chebi-subset-subsetOnly.owl: $(CHEBI_OWL) $(CHEBI_MODULE)
-#	robot extract --method subset \
-#	--input $(CHEBI_OWL) \
-#	--term-file $(CHEBI_MODULE) \
-#	--output $@
-
 # Stats ----------------------------------------------------------------------------------------------------------------
 stats: documentation/stats.md
 
