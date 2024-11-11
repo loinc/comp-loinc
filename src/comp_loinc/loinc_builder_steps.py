@@ -124,7 +124,7 @@ class LoincBuilderSteps:
             if self.configuration.fast_run and count > 10000:
                 break
             if count % 1000 == 0:
-                logger.info(f"Finished {count}")
+                logger.debug(f"Finished {count}")
 
             status = node.get_property(LoincTermProps.status)
             if active_only and status != "ACTIVE":
@@ -619,7 +619,7 @@ class LoincBuilderSteps:
         ):
             count += 1
             if count % 1000 == 0:
-                logger.info(f"Finished {count}")
+                logger.debug(f"Finished {count}")
             loinc_term_node = self.runtime.graph.get_node_by_code(
                 type_=LoincNodeType.LoincTerm, code=loinc_term_entity.id
             )
