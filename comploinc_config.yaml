@@ -61,6 +61,10 @@ logging:
       level: INFO
       handlers: [ console ]
       propagate: False
+    'Module':
+      level: INFO
+      handlers: [ console ]
+      propagate: False
 #    cli_runtime:
 #      handlers: [console]
 #      level: INFO
