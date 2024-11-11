@@ -1,3 +1,4 @@
+"""LOINC Builder: Populate module with entity objects"""
 import logging
 import typing as t
 from pathlib import Path
@@ -112,7 +113,7 @@ class LoincBuilderSteps:
             ),
         ] = False,
     ):
-        """LOad all terms."""
+        """Load all terms."""
         logger.info(f"Starting lt-inst-all")
         graph = self.runtime.graph
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
@@ -232,7 +233,11 @@ class LoincBuilderSteps:
             loinc_part.entity_label = f"{prefix} {final_name}"
 
     def entity_annotations(self):
-        """Updates / synchronizes properties in LinkML model Entity class representations of terms with any properties that exist on the term from its node within the graph."""
+        """Entity property annotations.
+
+        Updates / synchronizes properties in LinkML model Entity class representations of terms with any properties that
+        exist on the term from its node within the graph.
+        """
         graph = self.runtime.graph
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
         loinc_loader.load_loinc_table__loinc_csv()
@@ -284,6 +289,7 @@ class LoincBuilderSteps:
             loinc_part.part_display_name = part_display
 
     def loinc_parts_root_parent(self):
+        """Make LOINC parts a child of a grouper LoincPart class."""
         loinc_part_parent = self.runtime.current_module.get_entity(
             entity_class=LoincPart, entity_id="LoincPart"
         )
@@ -343,6 +349,7 @@ class LoincBuilderSteps:
                     part.equivalent_class.append(snomed_concept.id)
 
     def loinc_part_hierarchy_all(self):
+        """Asserts part hierarchy for all parts based on component hierarchy file."""
         graph = self.runtime.graph
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
         loinc_loader.load_accessory_files__part_file__part_csv()
@@ -498,6 +505,7 @@ class LoincBuilderSteps:
                         loinc_term.primary_rad_view_view_type = loinc_part_id
 
     def loinc_term_supplementary_def(self):
+        """Populate supplementary definition slots."""
         graph = self.runtime.graph
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
         loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
@@ -571,8 +579,8 @@ class LoincBuilderSteps:
     def loinc_term_class_roots(self):
         """Sets up LOINC Term hierarchy.
 
-        Sets  LoincTerm at the top, and major class branches directly below it. Each class branch is prefixed with "LTC" for
-        "LOINC Term Class". Assigns LOINC Terms to their branches. Sets up is_a hierarchy.
+        Sets LoincTerm at the top, and major class branches directly below it. Each class branch is prefixed with "LTC"
+        for "LOINC Term Class". Assigns LOINC Terms to their branches. Sets up is_a hierarchy.
         """
         logger.info(f"Starting lt-class-roots")
         graph = self.runtime.graph
@@ -710,7 +718,7 @@ class LoincBuilderSteps:
 
     # TODO
     def loinc_part_class_hierarchy(self):
-        """Sets up LOINC Part hierarchy."""
+        """Sets up LOINC Part class hierarchy."""
         pass
 
     def load_schema(

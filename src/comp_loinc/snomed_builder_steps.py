@@ -1,3 +1,4 @@
+"""SNOMED Builder: Populate module with entity objects"""
 import logging
 import typing as t
 
