@@ -10,6 +10,7 @@ from linkml_runtime import SchemaView
 from linkml_runtime.linkml_model import ClassDefinition, SlotDefinition, Annotation
 
 from comp_loinc import Runtime
+from comp_loinc.config import FAST_RUN_N_PARTS, FAST_RUN_N_TERMS
 from comp_loinc.datamodel import (
     LoincPart,
     LoincPartId,
@@ -121,10 +122,10 @@ class LoincBuilderSteps:
         count = 0
         for node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
             count += 1
-            if self.configuration.fast_run and count > 5000:
+            if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
                 break
             if count % 1000 == 0:
-                logger.info(f"Finished {count}")
+                logger.debug(f"Finished {count}")
 
             status = node.get_property(LoincTermProps.status)
             if active_only and status != "ACTIVE":
@@ -161,8 +162,8 @@ class LoincBuilderSteps:
 
         count = 0
         for node in self.runtime.graph.get_nodes(LoincNodeType.LoincPart):
-            count = count + 1
-            if self.configuration.fast_run and count > 100:
+            count += 1
+            if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
                 break
             status = node.get_property(LoincPartProps.status)
             if active_only and status != "ACTIVE":
@@ -197,8 +198,12 @@ class LoincBuilderSteps:
         loinc_tree_loader.load_method_tree()
         loinc_tree_loader.load_document_tree()
 
+        count = 0
         loinc_term: LoincTerm
         for loinc_term in self.runtime.current_module.get_entities_of_type(LoincTerm):
+            count += 1
+            if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
+                break
             node = self.runtime.graph.get_node_by_code(
                 type_=LoincNodeType.LoincTerm, code=loinc_term.id
             )
@@ -253,8 +258,12 @@ class LoincBuilderSteps:
         loinc_tree_loader.load_method_tree()
         loinc_tree_loader.load_document_tree()
 
+        count = 0
         loinc_term: LoincTerm
         for loinc_term in self.runtime.current_module.get_entities_of_type(LoincTerm):
+            count += 1
+            if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
+                break
             node = self.runtime.graph.get_node_by_code(
                 type_=LoincNodeType.LoincTerm, code=loinc_term.id
             )
@@ -364,7 +373,11 @@ class LoincBuilderSteps:
         loinc_tree_loader.load_method_tree()
         loinc_tree_loader.load_document_tree()
 
+        count = 0
         for child_part_node in graph.get_nodes(type_=LoincNodeType.LoincPart):
+            count += 1
+            if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
+                break
             child_part_number = child_part_node.get_property(
                 type_=LoincPartProps.part_number
             )
@@ -406,10 +419,14 @@ class LoincBuilderSteps:
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
         loinc_loader.load_accessory_files__part_file__loinc_part_link_primary_csv()
 
+        count = 0
         loinc_term: LoincTerm
         for loinc_term in self.runtime.current_module.get_entities_of_type(
             entity_class=LoincTerm
         ):
+            count += 1
+            if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
+                break
             loinc_term_id = loinc_term.id
             loinc_term_node = self.runtime.graph.get_node_by_code(
                 type_=LoincNodeType.LoincTerm, code=loinc_term_id
@@ -510,10 +527,14 @@ class LoincBuilderSteps:
         loinc_loader = LoincLoader(graph=graph, configuration=self.configuration)
         loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
 
+        count = 0
         loinc_term: LoincTerm
         for loinc_term in self.runtime.current_module.get_entities_of_type(
             entity_class=LoincTerm
         ):
+            count += 1
+            if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
+                break
             loinc_term_id = loinc_term.id
             loinc_term_node = self.runtime.graph.get_node_by_code(
                 type_=LoincNodeType.LoincTerm, code=loinc_term_id
@@ -618,8 +639,10 @@ class LoincBuilderSteps:
             entity_class=LoincTerm
         ):
             count += 1
+            if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
+                break
             if count % 1000 == 0:
-                logger.info(f"Finished {count}")
+                logger.debug(f"Finished {count}")
             loinc_term_node = self.runtime.graph.get_node_by_code(
                 type_=LoincNodeType.LoincTerm, code=loinc_term_entity.id
             )

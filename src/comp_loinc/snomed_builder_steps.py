@@ -3,6 +3,7 @@ import logging
 import typing as t
 
 from comp_loinc import Runtime
+from comp_loinc.config import FAST_RUN_N_PARTS
 from comp_loinc.datamodel import SnomedConcept
 from loinclib import (
     Configuration,
@@ -50,7 +51,7 @@ class SnomedBuilderSteps:
         count = 0
         for part in self.runtime.graph.get_nodes(type_=LoincNodeType.LoincPart):
             count = count + 1
-            if self.configuration.fast_run and count > 100:
+            if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
                 break
             for edge in part.get_all_out_edges():
                 if edge.edge_type.type_ is SnomedEdges.maps_to:
