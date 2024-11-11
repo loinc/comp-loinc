@@ -786,13 +786,12 @@ class LoincBuilderSteps:
         ] = None,
     ):
         """Save the current module to an OWL file."""
-        logger.info(f"Starting save-owl")
+        logger.info(f"save-owl: Starting")
         owl_dumper = OWLDumper()
         document = owl_dumper.to_ontology_document(
             schema=self.runtime.current_schema_view.schema,
             element=list(self.runtime.current_module.get_all_entities()),
         )
-        logger.info(f"save-owl document created.")
         document.ontology.iri = funowl.identifiers.IRI(
             f"https://comploinc/{self.runtime.current_module.name}"
         )
@@ -808,6 +807,5 @@ class LoincBuilderSteps:
         owl_file_path.parent.mkdir(parents=True, exist_ok=True)
         typer.echo(f"Writing file: {owl_file_path}")
         with open(owl_file_path, "w") as f:
-            logger.info(f"save-owl writing document.")
             f.write(str(document))
-            logger.info(f"save-owl writing document finished.")
+        logger.info(f"save-owl: Done")

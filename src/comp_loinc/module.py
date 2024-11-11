@@ -1,7 +1,12 @@
+"""Module: Provided a given builder configuration, set up a module where that build will be encapsulated. """
+import logging
 import typing as t
 
 import comp_loinc.datamodel.comp_loinc as v2
 from comp_loinc.datamodel.comp_loinc import Entity
+
+
+logger = logging.getLogger("Module")
 
 
 # class Modules:
@@ -20,25 +25,25 @@ from comp_loinc.datamodel.comp_loinc import Entity
 
 
 class Module:
+    """Module"""
     from comp_loinc import Runtime
 
     def __init__(self, *, name: str, runtime: Runtime):
         from comp_loinc import Runtime
-
+        logger.info(f"Starting: {name}")
         self.name = name
         self.runtime: Runtime = runtime
-
         self.entities_by_type: t.Dict[t.Type[Entity], t.Dict[str, v2.Entity]] = dict()
-
-        # flags for what to include
-        self._include_loinc_long_common_name = None
+        self._include_loinc_long_common_name = None  # flags for what to include
 
     def get_entity(
         self, entity_id: str, entity_class: t.Type[Entity]
     ) -> t.Optional[Entity]:
+        """Get entity"""
         return self.entities_by_type.setdefault(entity_class, {}).get(entity_id, None)
 
     def getsert_entity(self, entity_id: str, entity_class: t.Type[Entity]) -> Entity:
+        """Get entity, or insert if it doesn't exist"""
         entity = self.entities_by_type.setdefault(entity_class, {}).get(entity_id, None)
         if entity is None:
             entity = entity_class(id=entity_id)
@@ -46,15 +51,18 @@ class Module:
         return entity
 
     def add_entity(self, entity: Entity, replace: bool = False):
+        """Add entity"""
         if self.get_entity(entity.id, type(entity)) is not None and not replace:
             raise ValueError(f"Replacing entity {entity} not allowed.")
         self.entities_by_type.setdefault(type(entity), {})[entity.id] = entity
 
     def get_entities_of_type(self, entity_class: t.Type[Entity]) -> t.Iterator[Entity]:
+        """Get entities of type"""
         for entity in self.entities_by_type.get(entity_class, {}).values():
             yield entity
 
     def get_all_entities(self) -> t.Iterator[Entity]:
+        """Get all entities"""
         for entity_map in self.entities_by_type.values():
             for entity in entity_map.values():
                 yield entity
