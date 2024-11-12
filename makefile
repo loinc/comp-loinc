@@ -25,6 +25,7 @@ output/build-default/merged-and-reasoned/comploinc-merged-unreasoned.owl: $(BUIL
 # Alternative hierarchies ----------------------------------------------------------------------------------------------
 # - ChEBI subsets
 PART_MAPPINGS=loinc_release/Loinc_2.78/AccessoryFiles/PartFile/PartRelatedCodeMapping.csv
+CHEBI_URI=http://purl.obolibrary.org/obo/chebi/chebi.owl.gz
 CHEBI_OWL=input/analysis/chebi.owl
 CHEBI_MODULE=output/analysis/chebi_module.txt
 CHEBI_OUT_BOT=output/analysis/chebi-subset-BOT.owl
@@ -33,7 +34,7 @@ CHEBI_OUT_MIREOT=output/analysis/chebi-subset-MIREOT.owl
 chebi-subsets: $(CHEBI_OUT_BOT) $(CHEBI_OUT_MIREOT)
 
 input/analysis/chebi.owl.gz: | input/analysis/
-	wget -O $@ ftp://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi.owl.gz
+	wget -O $@ $(CHEBI_URI)
 
 input/analysis/chebi.owl: input/analysis/chebi.owl.gz
 	gunzip -c $< > $@
