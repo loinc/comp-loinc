@@ -12,7 +12,7 @@ try:
 except ModuleNotFoundError:
     from config import ROBOT_JAR_PATH, TEST_IN_DIR, TEST_OUT_DIR, TEST_SPARQL_QEURY_DIR
 
-robot_cmd_options = ['robot', ROBOT_JAR_PATH]
+robot_cmd_options = ['robot', f'java -jar {ROBOT_JAR_PATH}']
 
 
 def _get_paths(onto_filename: str, sparql_filename: str) -> tuple[str, str, str]:

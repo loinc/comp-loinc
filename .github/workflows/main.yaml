@@ -19,19 +19,29 @@ jobs:
       matrix:
         python-version: ["3.11"]
     steps:
-      # Setup
+      # Common setup
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install Poetry
+      - name: Install package manager
         uses: snok/install-poetry@v1.3
-      - name: Install dependencies & project
+      - name: Install Python dependencies
         run: poetry install --no-interaction
+      # Download additional non-Python dependencies
+      - name: Download additional dependencies
+        run: wget https://github.com/ontodev/robot/releases/latest/download/robot.jar
+      # Download and extract build sources
+      - name: Download inputs / sources
+        run: |
+          curl -L -c cookies.txt 'https://drive.google.com/uc?export=download&id=1sXgC22eWhjbj7ueMNFFKf-jvANtAbrvE' -o confirmation.html
+          curl -L -b cookies.txt "https://drive.usercontent.google.com/download?id=1sXgC22eWhjbj7ueMNFFKf-jvANtAbrvE&export=download&confirm=t" -o build-sources.zip
+          unzip build-sources.zip
+          rm build-sources.zip cookies.txt confirmation.html
       # Build
-      - name: Run test suite
+      - name: Build
         run: poetry run comploinc --fast-run build
       # Test
       - name: Run test suite
