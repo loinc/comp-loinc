@@ -26,6 +26,10 @@ except ModuleNotFoundError:
     from utils import sparql_ask, sparql_select
 
 
+N_CLASSES_EXPECTED = 50  # arbitrary
+N_CHILDREN_EXPECTED = 10  # arbitrary
+
+
 class CompLoincTest(unittest.TestCase):
     """CompLOINC tests"""
 
@@ -45,22 +49,22 @@ class CompLoincTest(unittest.TestCase):
         prop_counts: Dict[str, int] = df.groupby('class').size().to_dict()
         return set(prop_counts.values())
     
-    def _test_n_classes(self, onto_filename: str, n=50) -> pd.DataFrame:
+    def _test_n_classes(self, onto_filename: str, n: int = N_CLASSES_EXPECTED) -> pd.DataFrame:
         """Test that n classes are present"""
         df: pd.DataFrame = sparql_select(onto_filename, 'all-classes.sparql')
-        self.assertGreater(len(df), n)
+        self.assertGreaterEqual(len(df), n)
         return df
 
     def _test_no_nulls(self, df: pd.DataFrame):
         """Ensure no NULLs in DataFrame"""
         self.assertFalse(bool(df.isna().any().any()))
 
-    def _tests_common(self, onto_filename: str):
+    def _tests_common(self, onto_filename: str, n_classes_expected: int = N_CLASSES_EXPECTED):
         """Common tests to run on all artefacts"""
-        df: pd.DataFrame = self._test_n_classes(onto_filename)
+        df: pd.DataFrame = self._test_n_classes(onto_filename, n_classes_expected)
         self._test_no_nulls(df)
 
-    def _test_child_counts(self, onto_filename: str, n=10) -> pd.DataFrame:
+    def _test_child_counts(self, onto_filename: str, n: int = N_CHILDREN_EXPECTED) -> pd.DataFrame:
         """Test variation in child counts
 
         :param n: How many children to expect. Default=10 (arbitrary)
@@ -89,8 +93,15 @@ class CompLoincTest(unittest.TestCase):
         # Test that all top level branches have (arbitrary number of) descendants
         df2: pd.DataFrame = sparql_select(onto_filename, 'terms-tree-top-branch-descendants.sparql')
         branch_desc_counts: Dict[str, int] = df2.groupby('branch').size().to_dict()
-        for v in branch_desc_counts.values():
-            self.assertGreater(v, 5)
+        # - Set based on total observed descendants using --fast-run on 2024/11/12
+        expected = {
+            'https://loinc.org/LTC___Claims_attachments': 4,
+            'https://loinc.org/LTC___Clinical': 1459,
+            'https://loinc.org/LTC___Laboratory': 3031,
+            'https://loinc.org/LTC___Surveys': 451
+        }
+        for branch, count in branch_desc_counts.items():
+            self.assertGreaterEqual(count, expected[branch])
 
         # Test variation in child counts
         self._test_child_counts(onto_filename)
@@ -162,24 +173,28 @@ class CompLoincTest(unittest.TestCase):
         self._test_no_nulls(df)
 
     def test_snomed_part_mappings(self):
-        """Tests for SNOMED part mappings"""
+        """Tests for SNOMED part mappings
+
+        todo: `n` here is quite low for several assertions. This is due to the limited output that --fast-run provides.
+         see: https://github.com/loinc/comp-loinc/issues/116
+        """
         onto_filename = 'snomed-parts.owl'
         main_branch = 'https://loinc.org/138875005'  # SCT   SNOMED CT Concept (SNOMED RT+CTV3)
-        self._tests_common(onto_filename)
+        self._tests_common(onto_filename, 15)
         df: pd.DataFrame = sparql_select(onto_filename, 'top-branches.sparql')
 
         # Test for a number of top level branches
-        self.assertGreaterEqual(len(df), 5)  # n=arbitrary
+        self.assertGreaterEqual(len(df), 1)
 
         # Test main branch exists
         self.assertIn(main_branch, df['class'].values)
 
         # Test variation in child counts
-        df2: pd.DataFrame = self._test_child_counts(onto_filename)
+        df2: pd.DataFrame = self._test_child_counts(onto_filename, 3)
 
         # Test main branch has several children
         main_branch_children: int = list(df2[df2['class'] == main_branch]['directSubclassCount'])[0]
-        self.assertGreaterEqual(main_branch_children, 5)  # n=arbitrary
+        self.assertGreaterEqual(main_branch_children, 1)
 
     def test_loinc_snomed_ontology_equivalence(self):
         """Tests for equivalence between CompLOINC and LOINC(-SNOMED) Ontology"""
