@@ -6,6 +6,6 @@ builder
     --active
   lt-class-roots
   load-schema
-      -f
-      comp_loinc.yaml
+    -f
+    comp_loinc.yaml
   save-owl

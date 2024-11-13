@@ -6,6 +6,6 @@ builder
   sct-close-isa
   sct-label
   load-schema
-      -f
-      comp_loinc.yaml
+    -f
+    comp_loinc.yaml
   save-owl

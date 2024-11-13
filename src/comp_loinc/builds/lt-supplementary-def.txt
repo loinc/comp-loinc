@@ -6,7 +6,7 @@ builder
     --active
   lt-supplementary-def
   load-schema
-      -f
-      comp_loinc.yaml
-      --equivalent-term
+    -f
+    comp_loinc.yaml
+    --equivalent-term
   save-owl

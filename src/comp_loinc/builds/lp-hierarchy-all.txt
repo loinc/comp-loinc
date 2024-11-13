@@ -7,6 +7,6 @@ builder
   lp-part-hierarchy-all
   lp-parent
   load-schema
-      -f
-      comp_loinc.yaml
+    -f
+    comp_loinc.yaml
   save-owl

@@ -32,8 +32,8 @@ builder
     comp_loinc.yaml
   save-owl
   rm-module
-      -n
-      loinc-part-hierarchy-all
+    -n
+    loinc-part-hierarchy-all
 
 
 # build all loinc terms list =====================================================
@@ -47,13 +47,13 @@ builder
   l-annotate
   lt-class-roots
   load-schema
-      --reload
-      -f
-      comp_loinc.yaml
+    --reload
+    -f
+    comp_loinc.yaml
   save-owl
   rm-module
-      -n
-      loinc-terms-list-all
+    -n
+    loinc-terms-list-all
 
 # primary def  =====================================================================
 
@@ -64,15 +64,15 @@ builder
     --active
   lt-primary-def
   load-schema
-      --reload
-      -f
-      comp_loinc.yaml
-      --equivalent-term
+    --reload
+    -f
+    comp_loinc.yaml
+    --equivalent-term
 
   save-owl
   rm-module
-        -n
-        loinc-term-primary-def
+    -n
+    loinc-term-primary-def
 
 # supplementary def  ======================================================
 
@@ -83,10 +83,10 @@ builder
     --active
   lt-supplementary-def
   load-schema
-      --reload
-      -f
-      comp_loinc.yaml
-      --equivalent-term
+    --reload
+    -f
+    comp_loinc.yaml
+    --equivalent-term
   save-owl
   rm-module
           -n
@@ -99,13 +99,13 @@ builder
     loinc-snomed-equiv
   lp-sct-equiv
   load-schema
-      --reload
-      -f
-      comp_loinc.yaml
+    --reload
+    -f
+    comp_loinc.yaml
   save-owl
   rm-module
-            -n
-            loinc-snomed-equiv
+    -n
+    loinc-snomed-equiv
 
 # snomed parts  ========================================================
 
@@ -116,11 +116,10 @@ builder
   sct-close-isa
   sct-label
   load-schema
-      --reload
-      -f
-      comp_loinc.yaml
+    --reload
+    -f
+    comp_loinc.yaml
   save-owl
   rm-module
-      -n
-      snomed-parts
-
+    -n
+    snomed-parts

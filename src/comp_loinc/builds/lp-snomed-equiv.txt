@@ -4,6 +4,6 @@ builder
     loinc-snomed-equiv
   lp-sct-equiv
   load-schema
-      -f
-      comp_loinc.yaml
+    -f
+    comp_loinc.yaml
   save-owl
