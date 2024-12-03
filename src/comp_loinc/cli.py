@@ -7,6 +7,7 @@ from pathlib import Path
 import typer
 
 from comp_loinc import Runtime
+from comp_loinc.groups.groups_builders import GroupsBuilderSteps
 from comp_loinc.loinc_builder_steps import LoincBuilderSteps
 from comp_loinc.snomed_builder_steps import SnomedBuilderSteps
 from loinclib import Configuration
@@ -69,6 +70,10 @@ class CompLoincCli:
     self.snomed_builders = SnomedBuilderSteps(configuration=self.config)
     self.snomed_builders.setup_cli_builder_steps_all(self.builder_cli)
 
+    self.groups_builders = GroupsBuilderSteps(config=self.config)
+    self.groups_builders.setup_builder(self.builder_cli)
+
+
   def callback(self, *, work_dir: t.Annotated[
     t.Optional[Path], typer.Option(help='CompLOINC work directory, defaults to current work directory.',
                                    default_factory=Path.cwd)], config_file: t.Annotated[
@@ -98,8 +103,9 @@ class CompLoincCli:
     self.runtime = Runtime(configuration=self.config, name='cli')
     self.loinc_builders.runtime = self.runtime
     self.snomed_builders.runtime = self.runtime
-
     self.builder_cli.runtime = self.runtime
+    self.groups_builders.config = self.config
+    self.groups_builders.runtime = self.runtime
 
   def build(self,
       build_name: t.Annotated[Path, typer.Argument(help='The build name or a path to a build file.')] = 'default'):
