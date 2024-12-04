@@ -14,7 +14,8 @@ class GroupsBuilderSteps:
     self.config = config
     self.runtime: cl.Runtime = t.Optional[cl.Runtime]
 
-    self.index: PropertyUse = PropertyUse(part_number="_0_", part_name="_0_", prop_type=None)
+    self.use_index: PropertyUse = PropertyUse(part_number="_0_", part_name="_0_", prop_type=None)
+
     self.parts: t.Dict[str, PartNode] = {}
     self.parts_roots_no_children: t.Dict[str, PartNode] = {}
     self.parts_roots_with_children: t.Dict[str, PartNode] = {}
@@ -22,6 +23,10 @@ class GroupsBuilderSteps:
     self.parts_roots_no_children_by_type: t.Dict[str, t.Dict[str, PartNode]] = {}
 
     self.search_parts: t.Dict[str, PartNode] = {}
+
+    self.parts_multiple_prop_names: t.Dict[str, PartNode] = {}
+
+    self.inferred_props = {}
 
   def setup_builder(self, builder):
     builder.cli.command('groups-index-props', help='Indexes the use of LOINC properties by property and part.')(
@@ -111,7 +116,7 @@ class GroupsBuilderSteps:
                     part_name=part_name,
                     prop_type=edge_type)
         key = property_use.get_key()
-        property_use = self.index.related_props_by_key.setdefault(key, property_use)
+        property_use = self.use_index.related_props_by_key.setdefault(key, property_use)
         property_use.count += 1
         keys[key] = property_use
         simple_property_name = property_use.get_simple_property_name()
@@ -121,7 +126,7 @@ class GroupsBuilderSteps:
         part_node.prop_use_by_key[key] = property_use
         part_node.prop_use_by_name_key.setdefault(simple_property_name, {})[key] = property_use
 
-        self.index.related_props_by_name_key.setdefault(simple_property_name, {})[key] = property_use
+        self.use_index.related_props_by_name_key.setdefault(simple_property_name, {})[key] = property_use
 
       for top_key, top_prop in keys.items():
         for key, prop in keys.items():
@@ -131,4 +136,37 @@ class GroupsBuilderSteps:
           top_prop.related_props_by_name_key.setdefault(prop.get_simple_property_name(), {})[key] = prop
       print('hello')
 
+    for number, part_node in self.parts.items():
+      if len(part_node.prop_use_by_name_key) > 1:
+        self.parts_multiple_prop_names[number] = part_node
+
+    for key, use in self.use_index.related_props_by_key.items():
+      if key in self.parts_roots_no_children:
+        continue
+      self.infer_prop_use(use, self.inferred_props)
+
+
     print('hello')
+
+  def infer_prop_use(self, prop_use: PropertyUse, inferred_props: t.Dict[str, PropertyUse]) -> None:
+    key = prop_use.get_key()
+    if key in inferred_props:
+      return
+
+    inferred_props[key] = prop_use
+
+    for parent_part in prop_use.part_node.parents.values():
+      parent_use = PropertyUse(part_number=parent_part.part_number, part_name=parent_part.part_name,
+                        prop_type=prop_use.prop_type )
+      parent_use_key = parent_use.get_key()
+      parent_use = parent_part.prop_use_by_key.setdefault(parent_use_key, parent_use)
+
+      parent_use.part_node = parent_part
+      parent_part.prop_use_by_key[parent_use_key] = parent_use
+
+      prop_use.parent_prop_use_by_key[parent_use_key] = parent_use
+      parent_use.child_prop_use_by_key[key] = prop_use
+
+      self.infer_prop_use(parent_use, inferred_props)
+
+
