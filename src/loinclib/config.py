@@ -71,3 +71,6 @@ class Configuration:
 
   def get_logging_configuration(self):
     return self.config['logging']
+
+  def get_prop_use_pickle(self) -> Path:
+    return self.home_path / self.config['prop_use']['pickle']

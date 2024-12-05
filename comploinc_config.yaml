@@ -34,6 +34,9 @@ loinc_snomed:
         relationship: 'loinc_snomed_release/Snapshot/Terminology/xsct2_Relationship_Snapshot_LO1010000_20231015.txt'
         part_mapping: 'loinc_snomed_release/part-mappings_0.0.3.tsv'
 
+prop_use:
+  pickle: 'tmp/prop_use_pickle.pkl'
+
 logging:
   formatters:
     default:

@@ -1,3 +1,4 @@
+import pickle
 import sys
 
 from comp_loinc import comploinc_cli
@@ -5,8 +6,8 @@ from comp_loinc import comploinc_cli
 sys.argv = ['cli_run',
             'builder',
             'groups-index-props'
-
-            # '--help'
+            # ,'--supl'
+            # ,'--help'
             ]
 
 

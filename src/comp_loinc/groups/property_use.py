@@ -33,6 +33,8 @@ class PropertyUse:
     s = str(self.prop_type)
     return f'{self.get_simple_property_name()} -- {self.part_number} -- {self.part_name} -- #{self.count}'
 
+  def __repr__(self):
+    return self.__str__()
 
 class PartNode:
   def __init__(self, part_number: str, part_name: t.Optional[str] = None, part_graph_id: t.Optional[str] = None):
