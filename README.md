@@ -75,15 +75,26 @@ See: `comploinc_config.yaml`
 
 If following the setup exactly, this configuration will not need to be modified.
 
-## Tests
+## Developer docs
 <details><summary>Details</summary>
 
-### Tests: prerequisites
+### Tests
+#### Tests: prerequisites
 1. [`robot`](https://robot.obolibrary.org/)
 2. Files in `output/build-default/fast-run/`
   - Can populate via `comploinc --fast-run build default`
 
-### Tests: Running
+#### Tests: Running
 `python -m unittest discover`
+
+### Standard operating procedures (SOPs)
+#### Setting up new/updated inputs/sources
+1. Create a new `YYYY-MM-DD_comploinc-build-sources.zip` in the [Google Drive folder](
+https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh). Ensure it has the correct structure (folder 
+names and files at the right paths).
+2. Make the link public: In the Google Drive folder, right-click the file, select "Share", and click "Share."  At the 
+bottom, under "General Access", click the left dropdown and select "Anyone with the link."  Click "Copy link".
+3. Update `DL_LINK_ID` in GitHub: Go to the [page](https://github.com/loinc/comp-loinc/settings/secrets/actions/DL_LINK_ID) 
+for updating it. Paste the link from the previous step into the box, and click "Update secret."
 
 </details>
