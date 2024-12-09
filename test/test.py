@@ -5,6 +5,9 @@ Running: python -m unittest discover
 In addition to explicit assertions, will also effectively test (via errors) that:
 - SPARQL queries return at least some results
 
+todo: CLI: Alternate sources dir
+  Consider adding option to run on alternate dir, not just TEST_IN_DIR: 'build-default fast-run'.
+  can you add params to python -m unittest discover  for this?
 todo: consider deleting SPARQL results in output/ after reading into df, as failsafe for accidental cache reads
 todo: ideally would test max depth & depth counts, but very slow (at least >5min; dk how long)
 todo: loinc-part-hierarchy-all.owl: if becomes non-flat later, could be good to add tests using child-counts.sparql and
