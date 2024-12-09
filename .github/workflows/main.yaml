@@ -6,11 +6,10 @@ name: QC build and test
 
 on:
     workflow_dispatch:
-# todo: deactivated, pending: https://github.com/loinc/comp-loinc/issues/21
-#    pull_request:
-#    push:
-#        branches:
-#            - main
+    pull_request:
+    push:
+      branches:
+        - main
 
 jobs:
   test:

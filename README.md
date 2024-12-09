@@ -1,6 +1,8 @@
 # CompLOINC
 Computational LOINC (in OWL).
 
+[![QC build and test](https://github.com/loinc/comp-loinc/actions/workflows/main.yaml/badge.svg)](https://github.com/loinc/comp-loinc/actions/workflows/main.yaml)
+
 ## Setup
 ### Prerequisities
 1. Python 3.11
