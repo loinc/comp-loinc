@@ -9,7 +9,7 @@ from linkml_runtime import SchemaView
 from linkml_runtime.linkml_model import ClassDefinition, SlotDefinition, Annotation
 
 from comp_loinc import Runtime
-from comp_loinc.datamodel import LoincPart, LoincPartId, LoincTermClass, EntityId, LoincEntity
+from comp_loinc.datamodel import LoincPart, LoincPartId, LoincTermClass, LoincEntity
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
 from loinclib import Configuration, SnomedEdges, Node, SnomedProperteis, Edge
 from loinclib import LoincLoader
@@ -83,7 +83,7 @@ class LoincBuilderSteps:
     loinc_loader.load_loinc_table__loinc_csv()
     count = 0
     for node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
-      count +=  1
+      count += 1
       if self.configuration.fast_run and count > 10000:
         break
       if count % 1000 == 0:
@@ -223,7 +223,6 @@ class LoincBuilderSteps:
       loinc_part.part_name = part_name
       loinc_part.part_type_name = part_type
       loinc_part.part_display_name = part_display
-
 
   def loinc_parts_root_parent(self):
     loinc_part_parent = self.runtime.current_module.get_entity(entity_class=LoincPart, entity_id='LoincPart')
@@ -461,17 +460,20 @@ class LoincBuilderSteps:
     loinc_term_top_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
                                                                        entity_id='LoincTerm')
 
-
-    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Laboratory')
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
+                                                                   entity_id='LTC___Laboratory')
     class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
 
-    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Clinical')
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
+                                                                   entity_id='LTC___Clinical')
     class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
 
-    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Claims_attachments')
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
+                                                                   entity_id='LTC___Claims_attachments')
     class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
 
-    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,entity_id='LTC___Surveys')
+    class_type_entity = self.runtime.current_module.getsert_entity(entity_class=LoincTermClass,
+                                                                   entity_id='LTC___Surveys')
     class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
 
     count = 0
@@ -515,7 +517,7 @@ class LoincBuilderSteps:
           class_part_number = class_node.get_property(type_=LoincClassProps.part_number)
 
         parent_entity: LoincTermClass = self.runtime.current_module.get_entity(entity_class=LoincTermClass,
-                                                                                   entity_id=class_abbreviation)
+                                                                               entity_id=class_abbreviation)
         if parent_entity is not None:
           if parent_entity.id not in child_entity.sub_class_of:
             child_entity.sub_class_of.append(parent_entity.id)
@@ -563,7 +565,9 @@ class LoincBuilderSteps:
                                              help='A previously loaded schema under the same name will be reloaded if true.')] = False,
       equivalent_term: t.Annotated[bool, typer.Option('--equivalent-term',
                                                       help='Modifies the LoincTerm OWL annotations from "ObjectSomeValuesFrom" to '
-                                                           '"EquivalentClasses, IntersectionOf"')] = False
+                                                           '"ObjectSomeValuesFrom, EquivalentClasses, IntersectionOf"')] = False,
+      single_property: t.Annotated[bool, typer.Option('--single-property',
+                                                      help='If set to true, the owl annotation is changed to "ObjectSomeValuesFrom, EquivalentClasses" leaving out the intersection because it appears that the dumper can not handle the intersection annotation if there is only one property in the entity.')] = False,
   ) -> SchemaView:
     typer.echo(f'Running load_linkml_schema')
     schema_view = self.runtime.load_linkml_schema(filename, schema_name, reload)
@@ -573,8 +577,12 @@ class LoincBuilderSteps:
       for attribute in class_def.attributes.values():
         owl_annotation: Annotation = attribute.annotations.get('owl', None)
         if owl_annotation and 'ObjectSomeValuesFrom' in owl_annotation.value:
-          attribute.annotations['owl'] = Annotation(value='ObjectSomeValuesFrom, IntersectionOf, EquivalentClasses',
+          if single_property:
+            attribute.annotations['owl'] = Annotation(value='ObjectSomeValuesFrom, EquivalentClasses',
                                                     tag='owl')
+          else:
+            attribute.annotations['owl'] = Annotation(value='ObjectSomeValuesFrom, IntersectionOf, EquivalentClasses',
+                                                      tag='owl')
 
     self.runtime.current_schema_view = schema_view
     return schema_view

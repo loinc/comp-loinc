@@ -9,9 +9,7 @@ import typer
 
 import comp_loinc as cl
 import loinclib as ll
-from comp_loinc.datamodel import LoincTerm, LoincPartId
 from comp_loinc.groups.property_use import Property, Part
-from comp_loinc.module import Module
 from loinclib.loinc_schema import LoincNodeType, LoincTermPrimaryEdges, LoincPartProps, LoincPartEdge, \
   LoincTermSupplementaryEdges
 from loinclib.loinc_tree_loader import LoincTreeLoader
@@ -33,13 +31,6 @@ class Index:
     self.parts_multiple_prop_names: t.Dict[str, Part] = {}
     self.inferred_props = {}
 
-    self.used_after_not_used: t.Dict[str, t.Dict[str, Property]] = {}
-    self.not_used_before_used: t.Dict[str, t.Dict[str, Property]] = {}
-    self.by_child_desc_count: t.Dict[str, t.Dict[str, Property]] = {}
-
-    self.component_to_systems: t.Dict[str, t.Dict[str, Property]] = {}
-    self.joint_comp_count: int
-    self.joint_sys_count: int
 
 
 class Grouper:
@@ -53,42 +44,27 @@ class Grouper:
 
     self.related_use_index: t.Dict[str, t.Dict[Property, t.Dict[str, set]]] = {}
 
-  def process_property(self, property_names: list):
 
-    for name in property_names:
-      root_props = self.index.property_roots_by_name_key[name]
-      for property_key, _property in root_props.items():
-        self._build_path(_property, list())
-        self.find_by_count_averages(_property, set())
+  def process_property(self, property_name: str):
+    root_props = self.index.property_roots_by_name_key[property_name]
 
-    # print("debug")
+    for property_key, _property in root_props.items():
+      self._build_path(_property, list())
+
 
   def _build_path(self, _property: Property, path: list[Property]):
-    print("in _build_path")
-    if _property in path:
+    if _property in path or len(_property.child_prop_use_by_key) == 0:
       self.process_path(path)
       return
     path.append(_property)
-    if len(_property.child_prop_use_by_key) == 0:
-      self.process_path(path)
-    else:
-      for child_prop in _property.child_prop_use_by_key.values():
-        self._build_path(child_prop, path)
+    for child_prop in _property.child_prop_use_by_key.values():
+      self._build_path(child_prop, path)
     del path[-1]
 
   def process_path(self, path: t.List[Property]):
-
     (used_after_not_used, not_used_before_used) = self.find_used_after_unused(path)
 
-    for p in used_after_not_used:
-      name = p.get_simple_property_name()
-      self.index.used_after_not_used.setdefault(name, {})[p.get_key()] = p
-
-    for p in not_used_before_used:
-      name = p.get_simple_property_name()
-      self.index.not_used_before_used.setdefault(name, {})[p.get_key()] = p
-
-    # print("debug")
+    print("debug")
 
   def find_used_after_unused(self, path: list[Property]) -> t.Tuple[list[Property], list[Property]]:
     used_after_not_used: list[Property] = []
@@ -98,46 +74,46 @@ class Grouper:
       if (last_property is not None and
           last_property.count == 0 and
           _property.count > 0):
-        used_after_not_used.append(_property)
-        not_used_before_used.append(last_property)
+          used_after_not_used.append(_property)
+          not_used_before_used.append(last_property)
       last_property = _property
     return (used_after_not_used, not_used_before_used)
 
-  def find_by_count_averages(self, _property: Property, seen: set):
-    if _property in seen:
-      print("CYCLE ============= in find_by_count_averages")
+
+
+  def do_use_abstract_by_name(self, index: Index):
+    part: Part
+    stack = list()
+    for part_key, part in index.parts_roots_with_children.items():
+      for use_key, use in part.property_by_key.items():
+        self._do_use_abstract_by_name(use, 0, stack)
+
+  def _do_use_abstract_by_name(self, use: Property, depth: int, stack: t.List[Property]):
+    if use in stack:
+      print(f'{"".join(self.indent * depth)}: {str(use)}')
+      print(f'{"".join(self.indent * depth)}: ++++++++++++ CYCLE  ++++++  ')
+      print(str(stack))
+      print(f'At index: {stack.index(use)}  with: {use}')
       return
-    seen.add(_property)
-    print("in find_by_count_averages")
-    descendants_count = _property.get_descendants_count(set())
-    children_count = len(_property.child_prop_use_by_key)
-    if children_count == 0:
-      return
 
-    average = descendants_count / children_count
-    for child in _property.child_prop_use_by_key.values():
-      child_desc_count = child.get_descendants_count(set())
-      if child_desc_count > average * 2:
-        name = child.get_simple_property_name()
-        self.index.by_child_desc_count.setdefault(name, {})[child.get_key()] = child
-      self.find_by_count_averages(child, seen)
+    print(f'{"".join(self.indent * depth)}: {str(use)}')
+    if use.count == 0:
+      print(f'{"".join(self.indent * depth)}: ===============  ')
+      name = use.get_simple_property_name()
+      uses = self.use_abstract_by_name.setdefault(name, {})
+      uses[use.get_key()] = use
+    if len(stack) > 0:
+      tmp = stack[-1]
+      if tmp.count == 0 and use.count > 0:
+        name = use.get_simple_property_name()
+        uses = self.use_after_abstract_by_name.setdefault(name, {})
+        uses[use.get_key()] = use
+    stack.append(use)
+    for child_use in use.child_prop_use_by_key.values():
+      self._do_use_abstract_by_name(child_use, depth + 1, stack)
+    del stack[-1]
 
-  def comp_to_systems(self):
-    components = dict(self.index.not_used_before_used["COMPONENT"])
-    components.update(self.index.by_child_desc_count["COMPONENT"])
-
-    comp_count = 0
-    sys_count = 0
-
-    for comp_key, comp in components.items():
-      comp_count += 1
-      systems_map = comp.get_comp_related_systems_up(set())
-      self.index.component_to_systems.setdefault(comp_key, {}).update(systems_map)
-
-      sys_count += len(systems_map)
-
-    self.index.joint_comp_count = comp_count
-    self.index.joint_sys_count = sys_count
+    # print(f'Finished abstract uses count with dict: ' + str(self.use_abstract_by_name))
 
 
 class GroupsBuilderSteps:
@@ -153,12 +129,36 @@ class GroupsBuilderSteps:
 
     self.start_time = time.time()
 
+  def do_groups(self):
+    grouper = Grouper(self.index)
+    grouper.process_property("COMPONENT")
+    # grouper.do_use_abstract_by_name(self.index)
+    print("debug")
+    # print(f'Doing groups' + str(grouper.use_abstract_by_name))
+
+    # self.use_index: PropertyUse = PropertyUse(part_number="_0_", part_name="_0_", prop_type=None)
+
+    # self.use_by_key: t.Dict[str, PropertyUse] = {}
+    # self.use_by_name_key: t.Dict[str, t.Dict[str, PropertyUse]] = {}
+    #
+    # self.parts: t.Dict[str, PartNode] = {}
+    # self.parts_roots_no_children: t.Dict[str, PartNode] = {}
+    # self.parts_roots_with_children: t.Dict[str, PartNode] = {}
+    #
+    # self.parts_roots_no_children_by_type: t.Dict[str, t.Dict[str, PartNode]] = {}
+    #
+    # self.search_parts: t.Dict[str, PartNode] = {}
+    #
+    # self.parts_multiple_prop_names: t.Dict[str, PartNode] = {}
+    #
+    # self.inferred_props = {}
+
   def setup_builder(self, builder):
     sys.setrecursionlimit(5000000)
     builder.cli.command('groups-index-props', help='Indexes the use of LOINC properties by property and part.')(
-        self.__main)
+        self.index_prop_use)
 
-  def __main(self,
+  def index_prop_use(self,
       supplementary: t.Annotated[bool, typer.Option('--supl', help='Use primary vs supplementary.')] = False,
       _pickle: t.Annotated[bool, typer.Option('--pickle', help='Use primary vs supplementary.')] = False
 
@@ -172,158 +172,11 @@ class GroupsBuilderSteps:
     if self.index is None:
       self.index = Index()
       self.do_index()
-      self.do_groups()
 
-    self.do_abstracts2()
-
-    if self.pickle:
+    if (self.pickle):
       self.do_pickle_write()
 
-  def do_abstracts2(self):
-
-    components = self.index.property_by_name_key.get('COMPONENT', {})
-
-    _more_than = {}
-    _more_than_components = set()
-    _more_than_systems = set()
-    _more_than_pairs: t.List[t.Tuple[Property, Property]] = []
-
-    for c in components.values():
-      for ac in c.abstract_to_more_than_count(10, set()).values():
-        _more_than_components.add(ac)
-        for s in c.related_properties_by_name_key.get('SYSTEM', {}).values():
-          for _as in s.abstract_to_more_than_count(1, set()).values():
-            _more_than.setdefault(ac, set()).add(_as)
-            _more_than_systems.add(_as)
-
-    seen = set()
-    for c in _more_than_components:
-      closure = c.parent_closure(set())
-      seen.update(closure.values())
-    _more_than_components = seen
-
-    seen = set()
-    for s in _more_than_systems:
-      closure = s.parent_closure(set())
-      seen.update(closure.values())
-    _more_than_systems = seen
-
-
-    for c, s_set in _more_than.items():
-      for s in s_set:
-        _more_than_pairs.append((c, s))
-
-    # component groups
-    cl.cli.comploinc_cli_object.builder_cli.set_current_module('group_components')
-    module: Module = self.runtime.current_module
-    for c in _more_than_components:
-      loinc_term: LoincTerm = module.getsert_entity(entity_id=f'comploinc:/group/component/{c.part_number}',
-                                         entity_class=LoincTerm)
-      loinc_term.entity_label = f'GRP_CMP {c.part_node.part_display}'
-      loinc_term.primary_component = LoincPartId(c.part_number)
-
-    cl.cli.comploinc_cli_object.loinc_builders.load_schema(filename='comp_loinc.yaml', equivalent_term=True, reload=True, single_property=True )
-    cl.cli.comploinc_cli_object.loinc_builders.save_to_owl()
-
-    # systems groups
-    cl.cli.comploinc_cli_object.builder_cli.set_current_module('group_systems')
-    module: Module = self.runtime.current_module
-    for s in _more_than_systems:
-      loinc_term: LoincTerm = module.getsert_entity(entity_id=f'comploinc:/group/system/{s.part_number}',
-                                                    entity_class=LoincTerm)
-      loinc_term.entity_label = f'GRP_SYS {s.part_node.part_display}'
-      loinc_term.primary_system = LoincPartId(s.part_number)
-
-    cl.cli.comploinc_cli_object.loinc_builders.load_schema(filename='comp_loinc.yaml', equivalent_term=True, reload=True, single_property=True  )
-    cl.cli.comploinc_cli_object.loinc_builders.save_to_owl()
-
-    # component/systems groups
-    cl.cli.comploinc_cli_object.builder_cli.set_current_module('group_components_systems')
-    module: Module = self.runtime.current_module
-    for c, s in _more_than_pairs:
-      loinc_term: LoincTerm = module.getsert_entity(entity_id=f'comploinc:/group/component-system/{c.part_number}-{s.part_number}',
-                                                    entity_class=LoincTerm)
-      loinc_term.entity_label = f'GRP_CMP_SYS {c.part_node.part_display}  ||  {s.part_node.part_display}'
-      loinc_term.primary_component = LoincPartId(c.part_number)
-      loinc_term.primary_system = LoincPartId(s.part_number)
-
-    cl.cli.comploinc_cli_object.loinc_builders.load_schema(filename='comp_loinc.yaml', equivalent_term=True, reload=True  )
-    cl.cli.comploinc_cli_object.loinc_builders.save_to_owl()
-
-    print("debug")
-
-  def do_abstracts(self):
-    components = dict(self.index.used_after_not_used["COMPONENT"])
-    components.update(self.index.by_child_desc_count["COMPONENT"])
-    components_2 = {c.get_key(): c for c in components.values() if c.count > 0}
-
-    #
-    cc: t.Optional[Property] = None
-    ac: t.Optional[Property] = None
-    cs: t.Optional[Property] = None
-    _as: t.Optional[Property] = None
-
-    # both abstract
-    abstracted: t.Dict[Property, t.Set[Property]] = {}
-    for cc in components_2.values():
-      for ac in cc.get_abstracted(2, set()).values():
-        for cs in cc.related_properties_by_name_key.get("SYSTEM", {}).values():
-          for _as in cs.get_abstracted(2, set()).values():
-            abstracted.setdefault(ac, set()).add(_as)
-
-    abstract_pairs: t.List[t.Tuple[Property, Property]] = []
-    for component, systems in abstracted.items():
-      for _system in systems:
-        abstract_pairs.append((component, _system))
-
-    # more than counts
-    _more_than_components = set()
-    _more_than_systems = set()
-    _more_than = {}
-    _more_than_pairs: t.List[t.Tuple[Property, Property]] = []
-    for cc in components_2.values():
-      for cc_more in cc.abstract_to_more_than_count(10, set()).values():
-        for cs in cc.related_properties_by_name_key.get("SYSTEM", {}).values():
-          for cs_more in cs.abstract_to_more_than_count(1, set()).values():
-            _more_than.setdefault(cc_more, set()).add(cs_more)
-
-    for c, s_set in _more_than.items():
-      _more_than_components.add(c)
-      for s in s_set:
-        _more_than_systems.add(s)
-        _more_than_pairs.append((c, s))
-
-    # component abstract, system concrete
-    c_abstracted: t.Dict[str, t.Set[Property]] = {}
-    for cc in components_2.values():
-      top_concretes = cc.get_top_concrete(3, set()).values()
-      for ac in top_concretes:
-        for cs in cc.related_properties_by_name_key.get("SYSTEM", {}).values():
-          c_abstracted.setdefault(ac.get_key(), set()).add(cs)
-
-    c_abstract_pairs: t.List[t.Tuple[Property, Property]] = []
-    for component_key, systems in c_abstracted.items():
-      for _system in systems:
-        c_abstract_pairs.append((self.index.property_by_key[component_key], _system))
-
-    # both concrete
-    concretes: t.Dict[str, t.Set[Property]] = {}
-    for cc in components_2.values():
-      for cs in cc.related_properties_by_name_key.get("SYSTEM", {}).values():
-        concretes.setdefault(cc.get_key(), set()).add(cs)
-
-    concrete_pairs: t.List[t.Tuple[Property, Property]] = []
-    for cc_key, systems in concretes.items():
-      for _system in systems:
-        concrete_pairs.append((self.index.property_by_key[cc_key], _system))
-
-    print("debug")
-
-  def do_groups(self):
-
-    grouper = Grouper(self.index)
-    grouper.process_property(["COMPONENT", "SYSTEM"])
-    grouper.comp_to_systems()
+    self.do_groups()
 
   def do_pickle_read(self):
     if self.primary:
@@ -345,7 +198,7 @@ class GroupsBuilderSteps:
     print(f'Finished pickling...')
 
   def do_index_load_graph(self):
-    print(f'loading graph: {(time.time() - self.start_time) / 60}')
+    print(f'loading graph: {(time.time() - self.start_time) / 60}' )
     loinc_loader = ll.loinc_loader.LoincLoader(graph=self.runtime.graph, configuration=self.config)
     loinc_loader.load_accessory_files__part_file__loinc_part_link_primary_csv()
     loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()  # for search tags even if doing primary
@@ -363,17 +216,17 @@ class GroupsBuilderSteps:
     loinc_tree_loader.load_document_tree()
 
   def do_index_parts_tree(self):
-    print(f'parts tree: {(time.time() - self.start_time) / 60}')
+    print(f'parts tree: {(time.time() - self.start_time) / 60}' )
     parts: t.Iterator[ll.Node] = self.runtime.graph.get_nodes(LoincNodeType.LoincPart)
     for part in parts:
       part_number = part.get_property(LoincPartProps.part_number)
-      # part_name = part.get_property(LoincPartProps.part_name)
-      part_display_name = part.get_property(LoincPartProps.part_display_name)
+      part_name = part.get_property(LoincPartProps.part_name)
       part_type_name = part.get_property(LoincPartProps.part_type_name)
       part_tree_text = part.get_property(LoincTreeProps.code_text)
 
+      part.get_property(LoincPartProps.part_name)
       child_part_node = self.index.parts.setdefault(part_number, Part(part_number=part_number))
-      child_part_node.part_display = part_display_name if part_display_name is not None else f'TREE: {part_tree_text}'
+      child_part_node.part_display = part_name if part_name is not None else f'TREE: {part_tree_text}'
       child_part_node.part_type = part_type_name
       child_part_node.part_graph_id = part.node_id
 
@@ -392,7 +245,7 @@ class GroupsBuilderSteps:
 
   def do_index_part_roots(self):
     print("parts roots")
-    print(f'parts roots: {(time.time() - self.start_time) / 60}')
+    print(f'parts roots: {(time.time() - self.start_time) / 60}' )
     for part_node in self.index.parts.values():
       if len(part_node.parents) == 0:
         if len(part_node.children) > 0:
@@ -404,7 +257,7 @@ class GroupsBuilderSteps:
 
   def do_index_property_use(self):
     print("property use")
-    print(f'property use: {(time.time() - self.start_time) / 60}')
+    print(f'property use: {(time.time() - self.start_time) / 60}' )
     term_count: int = 0
     # parse loinc term phrases
     loinc_term_nodes = self.runtime.graph.get_nodes(LoincNodeType.LoincTerm)
@@ -438,8 +291,8 @@ class GroupsBuilderSteps:
         if part_number is None:
           continue
         _property = Property(part_number=part_number,
-                             part_name=part_name,
-                             prop_type=edge_type)
+                            part_name=part_name,
+                            prop_type=edge_type)
         related_key = _property.get_key()
         _property = self.index.property_by_key.setdefault(related_key, _property)
         _property.count += 1
@@ -463,38 +316,35 @@ class GroupsBuilderSteps:
             related_key] = related_property
 
       term_count += 1
-      if term_count % 1000 == 0:
-        print(f'TC: {term_count}')
+      print(f'TC: {term_count}')
 
   def do_index_check_property_part_overloads(self):
     print("property part overloads")
-    print(f'property part overload: {(time.time() - self.start_time) / 60}')
+    print(f'property part overload: {(time.time() - self.start_time) / 60}' )
     for part_number, part in self.index.parts.items():
       if len(part.property_by_name_key) > 1:
         self.index.parts_multiple_prop_names[part_number] = part
 
   def do_index_infer_parent_properties(self):
-    d = dict(self.index.property_by_key)
-    for property_key, _property in d.items():
+    for property_key, _property in self.index.property_by_key.items():
       if property_key in self.index.parts_roots_no_children:
         continue
       self._infer_parent_properties(_property, self.index.inferred_props)
 
     for property_key, _property in self.index.property_by_key.items():
-      if len(_property.parent_prop_use_by_key) == 0 and len(_property.child_prop_use_by_key) > 0:
-        self.index.property_roots_by_name_key.setdefault(_property.get_simple_property_name(), {})[
-          property_key] = _property
+      if len(_property.parent_prop_use_by_key) == 0:
+        self.index.property_roots_by_name_key.setdefault(_property.get_simple_property_name(), {})[property_key] = _property
 
   def do_index_property_depths(self):
     print("property depths")
-    print(f'property depths: {(time.time() - self.start_time) / 60}')
+    print(f'property depths: {(time.time() - self.start_time) / 60}' )
     # first set depths
     for property_name, properties in self.index.property_roots_by_name_key.items():
       for _property in properties.values():
         self._do_property_depths(_property, 1, list())
 
     print("property depth percentage")
-    print(f'property depth percentage: {(time.time() - self.start_time) / 60}')
+    print(f'property depth percentage: {(time.time() - self.start_time) / 60}' )
     # set percentages
     for property_name, properties in self.index.property_roots_by_name_key.items():
       for _property in properties.values():
@@ -559,7 +409,6 @@ class GroupsBuilderSteps:
                                  prop_type=_property.prop_type)
       parent_property_key = parent_property.get_key()
       parent_property = parent_part.property_by_key.setdefault(parent_property_key, parent_property)
-      self.index.property_by_key[parent_property_key] = parent_property
 
       parent_property.part_node = parent_part
       # parent_part.property_by_key[parent_property_key] = parent_property

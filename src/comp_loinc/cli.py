@@ -129,7 +129,8 @@ class CompLoincCli:
     logger.info(f'Running: {args}')
     self.cli(args)
 
-comploinc_cli = CompLoincCli().cli
+comploinc_cli_object: CompLoincCli = CompLoincCli()
+comploinc_cli = comploinc_cli_object.cli
 
 def parse_build_file(build_file_path: Path):
   args = []
