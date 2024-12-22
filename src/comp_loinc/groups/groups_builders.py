@@ -17,6 +17,7 @@ from loinclib.loinc_schema import LoincNodeType, LoincTermPrimaryEdges, LoincPar
   LoincTermSupplementaryEdges
 from loinclib.loinc_tree_loader import LoincTreeLoader
 from loinclib.loinc_tree_schema import LoincTreeEdges, LoincTreeProps
+from loinclib.nlp_taxonomification import parts_to_tsv
 
 
 class Index:
@@ -179,6 +180,12 @@ class GroupsBuilderSteps:
 
     if self.pickle:
       self.do_pickle_write()
+
+    # Save dangling parts
+    dangling: t.Dict[str, Part] = self.index.parts_roots_no_children
+    parts_to_tsv(
+      list(dangling.values()),
+      self.config.home_path / 'output' / 'analysis' / 'dangling' / 'dangling.tsv')
 
   def do_abstracts2(self):
 
