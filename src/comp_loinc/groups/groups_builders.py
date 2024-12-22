@@ -1,3 +1,4 @@
+import os.path
 import pickle
 import sys
 import time
@@ -335,6 +336,9 @@ class GroupsBuilderSteps:
         self.index = pickle.load(f)
 
   def do_pickle_write(self):
+    pickle_dir = os.path.dirname(self.pickle_path)
+    if not os.path.exists(pickle_dir):
+        os.makedirs(pickle_dir)
     with open(self.pickle_path, 'wb') as f:
       try:
         # pickle.dump(self.index, f)
