@@ -6,6 +6,7 @@ import typing as t
 from pathlib import Path
 from pickle import Pickler
 
+import pandas as pd
 import typer
 
 import comp_loinc as cl
