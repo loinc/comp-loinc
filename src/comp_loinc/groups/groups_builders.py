@@ -6,6 +6,7 @@ import typing as t
 from pathlib import Path
 from pickle import Pickler
 
+import pandas as pd
 import typer
 
 import comp_loinc as cl
@@ -159,6 +160,20 @@ class GroupsBuilderSteps:
     builder.cli.command('groups-index-props', help='Indexes the use of LOINC properties by property and part.')(
         self.__main)
 
+  def parts_to_tsv(self, parts: t.List[Part]):
+    """Save list of Part objects to TSV."""
+    outdir = self.config.home_path / 'output' / 'analysis' / 'dangling'
+    outpath = outdir / 'dangling.tsv'
+    if not outdir.exists():
+      outdir.mkdir(parents=True)
+    df = pd.DataFrame([{
+        'id': p.part_number,
+        'display': p.part_display,
+        'type': p.part_type,
+        'is_search': p.is_search,
+    } for p in parts])
+    df.to_csv(outpath, sep='\t', index=False)
+
   def __main(self,
       supplementary: t.Annotated[bool, typer.Option('--supl', help='Use primary vs supplementary.')] = False,
       _pickle: t.Annotated[bool, typer.Option('--pickle', help='Use primary vs supplementary.')] = False
@@ -179,6 +194,10 @@ class GroupsBuilderSteps:
 
     if self.pickle:
       self.do_pickle_write()
+
+    # Save dangling parts
+    dangling: t.Dict[str, Part] = self.index.parts_roots_no_children
+    self.parts_to_tsv(list(dangling.values()))
 
   def do_abstracts2(self):
 

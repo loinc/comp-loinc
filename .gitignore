@@ -139,8 +139,11 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# more patterns
+*.zip
+.~*
 
-
+# Release files
 /loinc_release*
 /loinc_trees/
 /comp_loinc/
@@ -150,5 +153,8 @@ dmypy.json
 /*_release
 /*_demo*
 
-*.zip
-.~*
+# test
+test/input/*
+!test/input/.keep
+test/output/*
+!test/output/.keep
