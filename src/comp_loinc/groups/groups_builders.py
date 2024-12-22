@@ -6,7 +6,6 @@ import typing as t
 from pathlib import Path
 from pickle import Pickler
 
-import pandas as pd
 import typer
 
 import comp_loinc as cl
@@ -23,6 +22,7 @@ from loinclib.loinc_schema import (
 )
 from loinclib.loinc_tree_loader import LoincTreeLoader
 from loinclib.loinc_tree_schema import LoincTreeEdges, LoincTreeProps
+from loinclib.nlp_taxonomification import parts_to_tsv
 
 
 class Index:
