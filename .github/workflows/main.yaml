@@ -35,8 +35,8 @@ jobs:
       # Download and extract build sources
       - name: Download inputs / sources
         run: |
-          curl -L -c cookies.txt 'https://drive.google.com/uc?export=download&id=1sXgC22eWhjbj7ueMNFFKf-jvANtAbrvE' -o confirmation.html
-          curl -L -b cookies.txt "https://drive.usercontent.google.com/download?id=1sXgC22eWhjbj7ueMNFFKf-jvANtAbrvE&export=download&confirm=t" -o build-sources.zip
+          curl -L -c cookies.txt 'https://drive.google.com/uc?export=download&id=${{ secrets.DL_LINK_ID }}' -o confirmation.html
+          curl -L -b cookies.txt "https://drive.usercontent.google.com/download?id=${{ secrets.DL_LINK_ID }}&export=download&confirm=t" -o build-sources.zip
           unzip build-sources.zip
           rm build-sources.zip cookies.txt confirmation.html
       # Build
