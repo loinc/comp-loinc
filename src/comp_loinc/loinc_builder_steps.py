@@ -739,11 +739,6 @@ class LoincBuilderSteps:
             return class_string[:last_index]
         return None
 
-    # TODO
-    def loinc_part_class_hierarchy(self):
-        """Sets up LOINC Part class hierarchy."""
-        pass
-
     def load_schema(
         self,
         filename: t.Annotated[
