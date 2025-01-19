@@ -6,16 +6,19 @@ from datetime import datetime
 from pathlib import Path
 
 import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from comp_loinc.groups.property_use import Part
+from src.comp_loinc.groups.property_use import Part
 
 DANGLING_DIR = os.getcwd() / Path('output/analysis/dangling')
 DANGLING_CACHE_DIR = DANGLING_DIR / 'cache'
 # todo: ideally not hard code. Best to solve via OO, i'm not sure
 INPATH_DANGLING = DANGLING_DIR / 'dangling.tsv'
+OUTPATH_MATCHES = DANGLING_DIR / 'matches.tsv'
+OUTPATH_HIST = DANGLING_DIR / 'confidence_histogram.png'
 # todo: get this from config using standard pattern in codebase
 INPATH_ALL = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/Part.csv')
 
@@ -64,6 +67,7 @@ def get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
     if not os.path.exists(DANGLING_CACHE_DIR):
         os.makedirs(DANGLING_CACHE_DIR)
     with open(cache_path, 'wb') as f:
+        # noinspection PyTypeChecker false_positive
         pickle.dump(embeddings, f)
     return embeddings
 
@@ -106,9 +110,10 @@ def find_best_matches(
     return pd.DataFrame(best_matches)
 
 
-def semantic_similarity_hierarchy_df(use_cached_df=True, use_cached_embeddings=True) -> pd.DataFrame:
+def semantic_similarity_df(
+    use_cached_df=True, use_cached_embeddings=True, outpath: t.Union[Path, str] = OUTPATH_MATCHES
+) -> pd.DataFrame:
     """Creates a dataframe showing semantic similarity confidence between danging and non-dangling terms."""
-    outpath = DANGLING_DIR / f'matches.tsv'
     if os.path.exists(outpath) and use_cached_df:
         print(f"Using cached matches from {outpath}")
         return pd.read_csv(outpath, sep='\t')
@@ -142,26 +147,82 @@ def semantic_similarity_hierarchy_df(use_cached_df=True, use_cached_embeddings=T
     df_matches = pd.concat(dfs_matches)[['PartDisplayName_hierarchical', 'PartDisplayName_dangling', 'confidence',
         'PartTypeName', 'PartNumber_hierarchical', 'PartNumber_dangling']].sort_values('confidence', ascending=False)
     df_matches = pd.concat([df_matches] + dfs_no_matching_types)
+    df_matches['URL_hierarchical'] = df_matches['PartNumber_hierarchical'].apply(
+        lambda x: f'https://loinc.org/{x}' if x else '')
+    df_matches['URL_dangling'] = df_matches['PartNumber_dangling'].apply(lambda x: f'https://loinc.org/{x}')
     df_matches = df_matches.drop_duplicates()
     df_matches.to_csv(outpath, sep='\t', index=False, float_format='%.6f')
     return df_matches
 
 
+# noinspection PyUnusedLocal
 def semantic_similarity_hierarchy_owl(df: pd.DataFrame):
     """Create OWL hierarchy based on previously computed semantic similarity.
     TODO: Next, .owl w/ subclassing on matches"""
     print()
 
 
-def semantic_similarity_hierarchy(use_cached_df=True, use_cached_embeddings=True):
+def semantic_similarity_graphs(df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH_HIST):
+    """Create graphs based on previously computed semantic similarity."""
+    plt.rcParams.update({'font.size': 14})
+    plt.rcParams['axes.titlesize'] = 16
+
+    # Create bins for the histogram
+    bins = [-float('inf'), 0.50, 0.60, 0.70, 0.80, 0.90, 0.99, 1.0]
+    labels = ['<0.50', '0.50-0.59', '0.60-0.69', '0.70-0.79', '0.80-0.89', '0.90-0.99', '1.0']
+
+    # Create the histogram using pd.cut to bin the values
+    confidence_counts = pd.cut(df['confidence'], bins=bins, labels=labels, right=True).value_counts().sort_index()
+
+    # Create the bar plot
+    plt.figure(figsize=(12, 6))
+    bars = plt.bar(range(len(confidence_counts)), confidence_counts.values)
+    plt.xticks(range(len(confidence_counts)), confidence_counts.index, rotation=45)
+
+    # Add value labels on top of each bar with larger font
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2., height,
+                 f'{int(height)}',
+                 ha='center', va='bottom',
+                 fontsize=12)
+
+    plt.title('Distribution of Confidence Scores', pad=20)
+    plt.xlabel('Confidence Range', labelpad=10)
+    plt.ylabel('Number of Entries', labelpad=10)
+    plt.tight_layout()  # Adjust layout to prevent label cutoff
+
+    plt.savefig(outpath, dpi=300, bbox_inches='tight')
+
+
+def semantic_similarity_further_analyses(df: pd.DataFrame):
+    """Additional analyses"""
+    # 1. Prop analysis: Look at conf=1's; Can we ascertain why they have same label by looking at their other props?
+    parts_csv1 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv')
+    parts_csv2 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Primary.csv')
+    parts_df = pd.concat([pd.read_csv(parts_csv1), pd.read_csv(parts_csv2)])[['PartNumber', 'LinkTypeName', 'Property']]
+    # parts_df = parts_df[parts_df['Property'] == 'http://loinc.org/property/search']  # could be another useful field
+
+    parts_grouped = parts_df.groupby('PartNumber')['LinkTypeName'].agg(lambda x: '|'.join(sorted(set(x)))).reset_index()
+    hierarchical_merge = df.merge(parts_grouped, left_on='PartNumber_hierarchical', right_on='PartNumber', how='left')
+    df['LinkType_hierarchical'] = hierarchical_merge['LinkTypeName']
+    dangling_merge = df.merge(parts_grouped, left_on='PartNumber_dangling', right_on='PartNumber', how='left')
+    df['LinkType_dangling'] = dangling_merge['LinkTypeName']
+
+    df.to_csv(str(OUTPATH_MATCHES).replace('.tsv', '_prop_analysis.tsv'), sep='\t', index=False)
+
+
+def semantic_similarity(use_cached_df=True, use_cached_embeddings=True):
     """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity."""
-    df: pd.DataFrame = semantic_similarity_hierarchy_df(use_cached_df, use_cached_embeddings)
+    df: pd.DataFrame = semantic_similarity_df(use_cached_df, use_cached_embeddings)
+    semantic_similarity_further_analyses(df)
+    semantic_similarity_graphs(df)
     semantic_similarity_hierarchy_owl(df)
 
 
 def main(use_cached_ss_df=True, use_cached_ss_embeddings=True):
     """Run everything here. Assumes inputs already present."""
-    semantic_similarity_hierarchy(use_cached_ss_df, use_cached_ss_embeddings)
+    semantic_similarity(use_cached_ss_df, use_cached_ss_embeddings)
 
 
 if __name__ == '__main__':
