@@ -15,6 +15,7 @@ packages = [
 comploinc = 'comp_loinc.cli:comploinc_cli'
 
 [tool.poetry.dependencies]
+jinjanator = "*"
 python = "^3.11"
 linkml = "^1.5.0"
 linkml-owl = "^0.2.7"
