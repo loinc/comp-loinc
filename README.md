@@ -84,6 +84,9 @@ See: `comploinc_config.yaml`
 
 If following the setup exactly, this configuration will not need to be modified.
 
+## Statistics
+[Statistics page](documentation/stats.md)
+
 ## Developer docs
 <details><summary>Details</summary>
 

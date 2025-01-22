@@ -553,6 +553,41 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
+name = "jinjanator"
+version = "24.4.0"
+description = "Command-line interface to Jinja2 for templating in shell scripts."
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "jinjanator-24.4.0-py3-none-any.whl", hash = "sha256:9447109da974ac402dd8ee5ef586b2c24358dac67c5c00d2259f98baec4d73f8"},
+    {file = "jinjanator-24.4.0.tar.gz", hash = "sha256:83ec06cdedceed1df4b2b7f85c227b79668621037cbe6c065bbfc6e90d038b9e"},
+]
+
+[package.dependencies]
+attrs = "*"
+jinja2 = ">=2.7.2"
+jinjanator-plugins = "==24.2.*"
+python-dotenv = ">=1"
+pyyaml = "*"
+typing-extensions = "*"
+
+[[package]]
+name = "jinjanator-plugins"
+version = "24.2.0"
+description = "Package which provides the plugin API for the jinjanator tool"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "jinjanator_plugins-24.2.0-py3-none-any.whl", hash = "sha256:a0adfe5df0e8bd1a025602bc1867505b243eac5783464f8ce2b8600ac41e73ba"},
+    {file = "jinjanator_plugins-24.2.0.tar.gz", hash = "sha256:5fa8eecb6d9fbef5e7947b3820da4bd7b2ef3f102721e42382de5e71e52b409a"},
+]
+
+[package.dependencies]
+attrs = "*"
+pluggy = "*"
+typing-extensions = "*"
+
+[[package]]
 name = "json-flattener"
 version = "0.1.9"
 description = "Python library for denormalizing nested dicts or json objects to tables and back"
@@ -1378,6 +1413,20 @@ files = [
 
 [package.dependencies]
 six = ">=1.5"
+
+[[package]]
+name = "python-dotenv"
+version = "1.0.1"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python-dotenv-1.0.1.tar.gz", hash = "sha256:e324ee90a023d808f1959c46bcbc04446a10ced277783dc6ee09987c37ec10ca"},
+    {file = "python_dotenv-1.0.1-py3-none-any.whl", hash = "sha256:f7b63ef50f1b690dddf550d03497b66d609393b40b564ed0d674909a68ebf16a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
 
 [[package]]
 name = "pytrie"
@@ -2255,4 +2304,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "944f3a42445cc7121460ec6c53e5d744814435e0e5785cb926c6df737b6c3570"
+content-hash = "a8e93694afd20ba41e928984845229808659bc168a49d888dd8859645f58a22f"
