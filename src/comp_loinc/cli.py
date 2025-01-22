@@ -14,10 +14,18 @@ from loinclib import Configuration
 
 LOINC_RELEASE_DIR_NAME = "loinc_release"
 LOINC_TREES_DIR_NAME = "loinc_trees"
-
 COMPLOINC_OUT_DIR_NAME = "comploinc_out"
-
 logger = logging.getLogger("cl-cli")
+
+
+def _parse_build_file(build_file_path: Path):
+    args = []
+    with open(build_file_path, "r") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#"):
+                args.append(line)
+    return args
 
 
 class BuilderCli:
@@ -168,7 +176,7 @@ class CompLoincCli:
         args = (
             args
             + ["--out-dir", f'{self.config.output / f"build-{build_name}"}']
-            + parse_build_file(build_file_path)
+            + _parse_build_file(build_file_path)
         )
 
         logger.info(f"Running: {args}")
@@ -179,17 +187,6 @@ comploinc_cli_object: CompLoincCli = CompLoincCli()
 comploinc_cli = comploinc_cli_object.cli
 
 
-def parse_build_file(build_file_path: Path):
-    args = []
-    with open(build_file_path, "r") as f:
-        for line in f:
-            line = line.strip()
-            if line and not line.startswith("#"):
-                args.append(line)
-    return args
-
-
 if __name__ == "__main__":
     import sys
-
     comploinc_cli(sys.argv[1:])
