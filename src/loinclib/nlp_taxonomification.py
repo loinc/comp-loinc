@@ -2,6 +2,7 @@
 import os
 import pickle
 import typing as t
+from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 
@@ -20,7 +21,10 @@ INPATH_DANGLING = DANGLING_DIR / 'dangling.tsv'
 OUTPATH_MATCHES = DANGLING_DIR / 'matches.tsv'
 OUTPATH_HIST = DANGLING_DIR / 'confidence_histogram.png'
 # todo: get this from config using standard pattern in codebase
-INPATH_ALL = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/Part.csv')
+# note: as of 2025/01/22 there are 62 Document terms in IN_PARTS_ALL not in IN_PARTS_CSV1 or IN_PARTS_CSV2
+IN_PARTS_ALL = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/Part.csv')
+IN_PARTS_CSV1 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv')
+IN_PARTS_CSV2 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Primary.csv')
 
 
 # Inputs --------------------------------------------------------------------------------------------------------------
@@ -39,9 +43,9 @@ def parts_to_tsv(parts: t.List[Part], outpath: Path):
 
 
 # Utils ---------------------------------------------------------------------------------------------------------------
-def _get_display_id_map(df) -> t.Dict[str, t.List[str]]:
+def _get_display_id_map(df, label_field=['PartName', 'PartDisplayName'][0]) -> t.Dict[str, t.List[str]]:
     """Get map of all display names to part numbers. There are some duplciate display name values."""
-    display_to_ids = df.groupby('PartDisplayName')['PartNumber'].unique().to_dict()
+    display_to_ids = df.groupby(label_field)['PartNumber'].unique().to_dict()
     return {name: list(parts) for name, parts in display_to_ids.items()}
 
 
@@ -73,7 +77,8 @@ def get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
 
 
 def find_best_matches(
-    terms_dangling: t.List[str], terms_hier: t.List[str], part_type: str, use_cache=True, batch_size=30_000
+    terms_dangling: t.List[str], terms_hier: t.List[str], part_type: str,
+    label_field=['PartName', 'PartDisplayName'][0], use_cache=False, batch_size=30_000
 ) -> pd.DataFrame:
     """Find best matches between two sets of strings using embeddings.
 
@@ -83,8 +88,8 @@ def find_best_matches(
     """
     if not terms_hier:
         return pd.DataFrame([{
-            'PartDisplayName_dangling': term,
-            'PartDisplayName_hierarchical': None,
+            f'{label_field}_dangling': term,
+            f'{label_field}_hierarchical': None,
             'confidence': 0
         } for term in terms_dangling])
 
@@ -103,15 +108,17 @@ def find_best_matches(
             best_match_idx = np.argmax(similarities_i[j])
             confidence = similarities_i[j][best_match_idx]
             best_matches.append({
-                'PartDisplayName_dangling': term,
-                'PartDisplayName_hierarchical': terms_hier[best_match_idx],
+                f'{label_field}_dangling': term,
+                f'{label_field}_hierarchical': terms_hier[best_match_idx],
                 'confidence': confidence
             })
     return pd.DataFrame(best_matches)
 
 
 def semantic_similarity_df(
-    use_cached_df=True, use_cached_embeddings=True, outpath: t.Union[Path, str] = OUTPATH_MATCHES
+    label_field=['PartName', 'PartDisplayName'][0], use_cached_df=True, use_cached_embeddings=False,
+    inpath_dangling: t.Union[Path, str] = INPATH_DANGLING, inpath_all: t.Union[Path, str] = IN_PARTS_ALL,
+    outpath: t.Union[Path, str] = OUTPATH_MATCHES
 ) -> pd.DataFrame:
     """Creates a dataframe showing semantic similarity confidence between danging and non-dangling terms."""
     if os.path.exists(outpath) and use_cached_df:
@@ -119,8 +126,10 @@ def semantic_similarity_df(
         return pd.read_csv(outpath, sep='\t')
 
     # Data load & prep
-    df_dangling = pd.read_csv(INPATH_DANGLING, sep='\t')
-    df_all = pd.read_csv(INPATH_ALL)
+    df_all = pd.read_csv(inpath_all)
+    df_dangling = pd.read_csv(inpath_dangling, sep='\t').rename(columns={'PartDisplayName': 'PartDisplayName_dangling'})
+    if label_field == 'PartName':  # replace df_dangling PartDisplayName w/ lookup of PartName in df_all
+        df_dangling = df_dangling.merge(df_all[['PartNumber', 'PartName']], on='PartNumber', how='left')
     # - filter
     df_hier = df_all[~df_all['PartNumber'].isin(df_dangling['PartNumber'])]
 
@@ -129,13 +138,13 @@ def semantic_similarity_df(
     dfs_no_matching_types = []
     for part_type, df_dangling_i in df_dangling.groupby('PartTypeName'):
         df_hier_i = df_hier[df_hier['PartTypeName'] == part_type]
-        display_ids_dangling: t.Dict[str, t.List[str]] = _get_display_id_map(df_dangling_i)
-        display_ids_hier: t.Dict[str, t.List[str]] = _get_display_id_map(df_hier_i)
+        display_ids_dangling: t.Dict[str, t.List[str]] = _get_display_id_map(df_dangling_i, label_field)
+        display_ids_hier: t.Dict[str, t.List[str]] = _get_display_id_map(df_hier_i, label_field)
         df_matches_i: pd.DataFrame = find_best_matches(
-            df_dangling_i['PartDisplayName'].tolist(), df_hier_i['PartDisplayName'].tolist(), str(part_type),
-            use_cached_embeddings)
-        df_matches_i['PartNumber_dangling'] = df_matches_i['PartDisplayName_dangling'].map(display_ids_dangling)
-        df_matches_i['PartNumber_hierarchical'] = df_matches_i['PartDisplayName_hierarchical'].map(display_ids_hier)
+            df_dangling_i[label_field].tolist(), df_hier_i[label_field].tolist(), str(part_type),
+            label_field, use_cached_embeddings)
+        df_matches_i['PartNumber_dangling'] = df_matches_i[f'{label_field}_dangling'].map(display_ids_dangling)
+        df_matches_i['PartNumber_hierarchical'] = df_matches_i[f'{label_field}_hierarchical'].map(display_ids_hier)
         df_matches_i = df_matches_i.explode('PartNumber_dangling')
         df_matches_i = df_matches_i.explode('PartNumber_hierarchical')
         df_matches_i['PartTypeName'] = part_type
@@ -144,7 +153,7 @@ def semantic_similarity_df(
         else:
             dfs_matches.append(df_matches_i)
 
-    df_matches = pd.concat(dfs_matches)[['PartDisplayName_hierarchical', 'PartDisplayName_dangling', 'confidence',
+    df_matches = pd.concat(dfs_matches)[[f'{label_field}_hierarchical', f'{label_field}_dangling', 'confidence',
         'PartTypeName', 'PartNumber_hierarchical', 'PartNumber_dangling']].sort_values('confidence', ascending=False)
     df_matches = pd.concat([df_matches] + dfs_no_matching_types)
     df_matches['URL_hierarchical'] = df_matches['PartNumber_hierarchical'].apply(
@@ -198,9 +207,8 @@ def semantic_similarity_graphs(df: pd.DataFrame, outpath: t.Union[Path, str] = O
 def semantic_similarity_further_analyses(df: pd.DataFrame):
     """Additional analyses"""
     # 1. Prop analysis: Look at conf=1's; Can we ascertain why they have same label by looking at their other props?
-    parts_csv1 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv')
-    parts_csv2 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Primary.csv')
-    parts_df = pd.concat([pd.read_csv(parts_csv1), pd.read_csv(parts_csv2)])[['PartNumber', 'LinkTypeName', 'Property']]
+    parts_df = pd.concat([
+        pd.read_csv(IN_PARTS_CSV1), pd.read_csv(IN_PARTS_CSV2)])[['PartNumber', 'LinkTypeName', 'Property']]
     # parts_df = parts_df[parts_df['Property'] == 'http://loinc.org/property/search']  # could be another useful field
 
     parts_grouped = parts_df.groupby('PartNumber')['LinkTypeName'].agg(lambda x: '|'.join(sorted(set(x)))).reset_index()
@@ -212,18 +220,36 @@ def semantic_similarity_further_analyses(df: pd.DataFrame):
     df.to_csv(str(OUTPATH_MATCHES).replace('.tsv', '_prop_analysis.tsv'), sep='\t', index=False)
 
 
-def semantic_similarity(use_cached_df=True, use_cached_embeddings=True):
+def semantic_similarity(use_display_name=False, use_cached_df=False, use_cached_embeddings=False):
     """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity."""
-    df: pd.DataFrame = semantic_similarity_df(use_cached_df, use_cached_embeddings)
-    semantic_similarity_further_analyses(df)
-    semantic_similarity_graphs(df)
-    semantic_similarity_hierarchy_owl(df)
+    label_field = 'PartDisplayName' if use_display_name else 'PartName'
+    matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_df, use_cached_embeddings)
+    semantic_similarity_further_analyses(matches_df)
+    semantic_similarity_graphs(matches_df)
+    semantic_similarity_hierarchy_owl(matches_df)
 
 
-def main(use_cached_ss_df=True, use_cached_ss_embeddings=True):
+def main(use_display_name=False, use_cached_ss_df=False, use_cached_ss_embeddings=False):
     """Run everything here. Assumes inputs already present."""
-    semantic_similarity(use_cached_ss_df, use_cached_ss_embeddings)
+    semantic_similarity(use_cached_ss_df, use_cached_ss_embeddings, use_display_name)
+
+
+def cli():
+    """Command line interface."""
+    parser = ArgumentParser(
+        prog='nlp-taxonomification',
+        description='Do semantic similarity to identify subclass candidates for dangling parts.')
+    parser.add_argument(
+        '-d', '--use-display-name', required=False, action='store_true',
+        help='Use fuller label field "PartDisplayName" rather than the unique, canonical "PartName".')
+    parser.add_argument(
+        '-c', '--use-cached-ss-df',  required=False, action='store_true',
+        help='Use cached semantic similarity results dataframe?')
+    parser.add_argument(
+        '-C', '--use-cached-ss-embeddings', required=False, action='store_true',
+        help='Use cached semantic similarity embeddings for LOINC labels?')
+    main(**vars(parser.parse_args()))
 
 
 if __name__ == '__main__':
-    main(use_cached_ss_df=True)
+    cli()

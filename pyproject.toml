@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "comp-loinc"
-version = "0.1.0"
+version = "0.2.0"
 description = "Computable OWL Formalization of LOINC"
-authors = ["Tim  Putman <putmantime@users.noreply.github.com>"]
+authors = ["Shahim Essaid <shahim@essaid.com>", "Tim Putman <putmantime@users.noreply.github.com>", "Joe Flack <jflack@jhu.edu"]
 readme = "README.md"
 
 packages = [
@@ -13,12 +13,12 @@ packages = [
 [tool.poetry.scripts]
 #comp-loinc = 'comp_loinc:cli.cli'
 comploinc = 'comp_loinc.cli:comploinc_cli'
-comploinc-file = 'comp_loinc.cli:comploinc_file_cli'
 
 [tool.poetry.dependencies]
 # Languages
 python = "^3.11"
 # Python packages
+jinjanator = "*"
 linkml = "^1.5.0"
 linkml-owl = "^0.2.7"
 networkx = "^3.1"
@@ -38,9 +38,26 @@ torch = "2.1.0"
 #torch = { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1-cp311-none-macosx_11_0_arm64.whl" }
 
 [tool.poetry.group.dev.dependencies]
-# Python packages
-pytest = "^8.3.2"
+black = "^24.3.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
