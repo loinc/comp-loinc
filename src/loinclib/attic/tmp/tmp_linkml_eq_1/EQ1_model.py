@@ -11,12 +11,23 @@ import re
 from jsonasobj2 import JsonObj, as_dict
 from typing import Optional, List, Union, Dict, ClassVar, Any
 from dataclasses import dataclass
-from linkml_runtime.linkml_model.meta import EnumDefinition, PermissibleValue, PvFormulaOptions
+from linkml_runtime.linkml_model.meta import (
+    EnumDefinition,
+    PermissibleValue,
+    PvFormulaOptions,
+)
 
 from linkml_runtime.utils.slot import Slot
 from linkml_runtime.utils.metamodelcore import empty_list, empty_dict, bnode
-from linkml_runtime.utils.yamlutils import YAMLRoot, extended_str, extended_float, extended_int
-from linkml_runtime.utils.dataclass_extensions_376 import dataclasses_init_fn_with_kwargs
+from linkml_runtime.utils.yamlutils import (
+    YAMLRoot,
+    extended_str,
+    extended_float,
+    extended_int,
+)
+from linkml_runtime.utils.dataclass_extensions_376 import (
+    dataclasses_init_fn_with_kwargs,
+)
 from linkml_runtime.utils.formatutils import camelcase, underscore, sfx
 from linkml_runtime.utils.enumerations import EnumDefinitionImpl
 from rdflib import Namespace, URIRef
@@ -31,13 +42,14 @@ version = None
 dataclasses._init_fn = dataclasses_init_fn_with_kwargs
 
 # Namespaces
-EQ1 = CurieNamespace('eq1', 'http://loinclib/eq-1')
-LINKML = CurieNamespace('linkml', 'https://w3id.org/linkml/')
-RDFS = CurieNamespace('rdfs', 'http://example.org/UNKNOWN/rdfs/')
+EQ1 = CurieNamespace("eq1", "http://loinclib/eq-1")
+LINKML = CurieNamespace("linkml", "https://w3id.org/linkml/")
+RDFS = CurieNamespace("rdfs", "http://example.org/UNKNOWN/rdfs/")
 DEFAULT_ = EQ1
 
 
 # Types
+
 
 # Class references
 class ThingId(URIorCURIE):
@@ -139,29 +151,84 @@ class Something(Thing):
 class slots:
     pass
 
-slots.rel1 = Slot(uri=EQ1.rel1, name="rel1", curie=EQ1.curie('rel1'),
-                   model_uri=EQ1.rel1, domain=None, range=Optional[Union[str, ThingId]])
 
-slots.rel2 = Slot(uri=EQ1.rel1, name="rel2", curie=EQ1.curie('rel1'),
-                   model_uri=EQ1.rel2, domain=None, range=Optional[Union[str, ThingId]])
+slots.rel1 = Slot(
+    uri=EQ1.rel1,
+    name="rel1",
+    curie=EQ1.curie("rel1"),
+    model_uri=EQ1.rel1,
+    domain=None,
+    range=Optional[Union[str, ThingId]],
+)
 
-slots.rel3 = Slot(uri=EQ1.rel1, name="rel3", curie=EQ1.curie('rel1'),
-                   model_uri=EQ1.rel3, domain=None, range=Optional[Union[str, ThingId]])
+slots.rel2 = Slot(
+    uri=EQ1.rel1,
+    name="rel2",
+    curie=EQ1.curie("rel1"),
+    model_uri=EQ1.rel2,
+    domain=None,
+    range=Optional[Union[str, ThingId]],
+)
 
-slots.thing__id = Slot(uri=EQ1.id, name="thing__id", curie=EQ1.curie('id'),
-                   model_uri=EQ1.thing__id, domain=None, range=URIRef)
+slots.rel3 = Slot(
+    uri=EQ1.rel1,
+    name="rel3",
+    curie=EQ1.curie("rel1"),
+    model_uri=EQ1.rel3,
+    domain=None,
+    range=Optional[Union[str, ThingId]],
+)
 
-slots.thing__label = Slot(uri=RDFS.label, name="thing__label", curie=RDFS.curie('label'),
-                   model_uri=EQ1.thing__label, domain=None, range=Optional[str])
+slots.thing__id = Slot(
+    uri=EQ1.id,
+    name="thing__id",
+    curie=EQ1.curie("id"),
+    model_uri=EQ1.thing__id,
+    domain=None,
+    range=URIRef,
+)
 
-slots.something__name = Slot(uri=EQ1.name, name="something__name", curie=EQ1.curie('name'),
-                   model_uri=EQ1.something__name, domain=None, range=Optional[str])
+slots.thing__label = Slot(
+    uri=RDFS.label,
+    name="thing__label",
+    curie=RDFS.curie("label"),
+    model_uri=EQ1.thing__label,
+    domain=None,
+    range=Optional[str],
+)
 
-slots.EQ1Thing_rel1 = Slot(uri=EQ1.rel1, name="EQ1Thing_rel1", curie=EQ1.curie('rel1'),
-                   model_uri=EQ1.EQ1Thing_rel1, domain=EQ1Thing, range=Optional[Union[str, ThingId]])
+slots.something__name = Slot(
+    uri=EQ1.name,
+    name="something__name",
+    curie=EQ1.curie("name"),
+    model_uri=EQ1.something__name,
+    domain=None,
+    range=Optional[str],
+)
 
-slots.EQ1Thing_rel2 = Slot(uri=EQ1.rel1, name="EQ1Thing_rel2", curie=EQ1.curie('rel1'),
-                   model_uri=EQ1.EQ1Thing_rel2, domain=EQ1Thing, range=Optional[Union[str, ThingId]])
+slots.EQ1Thing_rel1 = Slot(
+    uri=EQ1.rel1,
+    name="EQ1Thing_rel1",
+    curie=EQ1.curie("rel1"),
+    model_uri=EQ1.EQ1Thing_rel1,
+    domain=EQ1Thing,
+    range=Optional[Union[str, ThingId]],
+)
 
-slots.EQ1Thing_rel3 = Slot(uri=EQ1.rel1, name="EQ1Thing_rel3", curie=EQ1.curie('rel1'),
-                   model_uri=EQ1.EQ1Thing_rel3, domain=EQ1Thing, range=Optional[Union[str, ThingId]])
+slots.EQ1Thing_rel2 = Slot(
+    uri=EQ1.rel1,
+    name="EQ1Thing_rel2",
+    curie=EQ1.curie("rel1"),
+    model_uri=EQ1.EQ1Thing_rel2,
+    domain=EQ1Thing,
+    range=Optional[Union[str, ThingId]],
+)
+
+slots.EQ1Thing_rel3 = Slot(
+    uri=EQ1.rel1,
+    name="EQ1Thing_rel3",
+    curie=EQ1.curie("rel1"),
+    model_uri=EQ1.EQ1Thing_rel3,
+    domain=EQ1Thing,
+    range=Optional[Union[str, ThingId]],
+)

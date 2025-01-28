@@ -6,8 +6,8 @@ from os.path import dirname
 
 
 PROJECT_DIR = Path(dirname(dirname(dirname(dirname(__file__)))))
-SRC_DIR = os.path.join(PROJECT_DIR, 'src')
-DATA_DIR = os.path.join(PROJECT_DIR, 'data')
+SRC_DIR = os.path.join(PROJECT_DIR, "src")
+DATA_DIR = os.path.join(PROJECT_DIR, "data")
 
 
 class LoadLoincRelease(object):
@@ -17,15 +17,25 @@ class LoadLoincRelease(object):
         self.move_files()
 
     def get_release_filename(self):
-        release_files = [x for x in os.listdir(self.filepath) if x.endswith('.zip')]
-        if len(release_files) == 1 and release_files[0].endswith('.zip'):
+        release_files = [x for x in os.listdir(self.filepath) if x.endswith(".zip")]
+        if len(release_files) == 1 and release_files[0].endswith(".zip"):
             return release_files.pop()
         else:
-            raise Exception(f'{len(release_files)} files in release directory: {self.filepath}')
+            raise Exception(
+                f"{len(release_files)} files in release directory: {self.filepath}"
+            )
 
     def unzip_loinc_release(self):
         filename = self.get_release_filename()
-        subprocess.call(['unzip', "-o", f"{self.filepath}/{filename}", '-d', f"{self.filepath}/extracted"])
+        subprocess.call(
+            [
+                "unzip",
+                "-o",
+                f"{self.filepath}/{filename}",
+                "-d",
+                f"{self.filepath}/extracted",
+            ]
+        )
 
     def move_files(self):
         filename = self.get_release_filename()

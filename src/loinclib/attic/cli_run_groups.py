@@ -3,14 +3,14 @@ import sys
 
 from comp_loinc import comploinc_cli
 
-sys.argv = ['cli_run',
-            'builder',
-            'groups-index-props',
-            '--pickle'
-            # ,'--supl'
-            # ,'--help'
-            ]
-
+sys.argv = [
+    "cli_run",
+    "builder",
+    "groups-index-props",
+    "--pickle",
+    # ,'--supl'
+    # ,'--help'
+]
 
 
 # sys.argv = ['cli_run',
