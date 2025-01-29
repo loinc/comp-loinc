@@ -7,3 +7,4 @@ class LoincSnomedEdges(StrEnum):
     """Edges for the LOINC-SNOMED ontology"""
 
     pass
+

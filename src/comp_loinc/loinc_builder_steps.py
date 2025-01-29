@@ -770,8 +770,15 @@ class LoincBuilderSteps:
             typer.Option(
                 "--equivalent-term",
                 help='Modifies the LoincTerm OWL annotations from "ObjectSomeValuesFrom" to '
-                '"EquivalentClasses, IntersectionOf"',
+                '"ObjectSomeValuesFrom, "EquivalentClasses, IntersectionOf"',
             ),
+        ] = False,
+        single_property: t.Annotated[
+          bool,
+          typer.Option(
+              "--single-property",
+              help='If set to true, the owl annotation is changed to "ObjectSomeValuesFrom, EquivalentClasses" leaving out the intersection because it appears that the dumper can not handle the intersection annotation if there is only one property in the entity.',
+          ),
         ] = False,
     ) -> SchemaView:
         """Loads a LinkML schema file and sets it as the current schema."""
@@ -783,6 +790,11 @@ class LoincBuilderSteps:
             for attribute in class_def.attributes.values():
                 owl_annotation: Annotation = attribute.annotations.get("owl", None)
                 if owl_annotation and "ObjectSomeValuesFrom" in owl_annotation.value:
+                  if single_property:
+                    attribute.annotations["owl"] = Annotation(
+                        value="ObjectSomeValuesFrom, EquivalentClasses", tag="owl"
+                    )
+                  else:
                     attribute.annotations["owl"] = Annotation(
                         value="ObjectSomeValuesFrom, IntersectionOf, EquivalentClasses",
                         tag="owl",

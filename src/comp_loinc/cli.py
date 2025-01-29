@@ -7,6 +7,7 @@ from pathlib import Path
 import typer
 
 from comp_loinc import Runtime
+from comp_loinc.groups.groups_builders import GroupsBuilderSteps
 from comp_loinc.loinc_builder_steps import LoincBuilderSteps
 from comp_loinc.snomed_builder_steps import SnomedBuilderSteps
 from loinclib import Configuration
@@ -83,6 +84,8 @@ class CompLoincCli:
 
         self.snomed_builders = SnomedBuilderSteps(configuration=self.config)
         self.snomed_builders.setup_cli_builder_steps_all(self.builder_cli)
+        self.groups_builders = GroupsBuilderSteps(config=self.config)
+        self.groups_builders.setup_builder(self.builder_cli)
 
     def callback(
         self,
@@ -132,8 +135,9 @@ class CompLoincCli:
         self.runtime = Runtime(configuration=self.config, name="cli")
         self.loinc_builders.runtime = self.runtime
         self.snomed_builders.runtime = self.runtime
-
         self.builder_cli.runtime = self.runtime
+        self.groups_builders.config = self.config
+        self.groups_builders.runtime = self.runtime
 
     def build(
         self,
@@ -171,7 +175,8 @@ class CompLoincCli:
         self.cli(args)
 
 
-comploinc_cli = CompLoincCli().cli
+comploinc_cli_object: CompLoincCli = CompLoincCli()
+comploinc_cli = comploinc_cli_object.cli
 
 
 def parse_build_file(build_file_path: Path):
