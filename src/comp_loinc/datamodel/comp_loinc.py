@@ -1,5 +1,5 @@
-# Auto generated from comp_loinc.yaml by pythongen.py version: 0.0.1
-# Generation date: 2024-09-06T14:57:46
+# Auto generated from comp_loinc.yaml by pythongen.py version: 0.9.0
+# Generation date: 2024-10-16T15:55:04
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -7,11 +7,11 @@
 # license: https://creativecommons.org/publicdomain/zero/1.0/
 
 import dataclasses
+import sys
 import re
 from jsonasobj2 import JsonObj, as_dict
 from typing import Optional, List, Union, Dict, ClassVar, Any
 from dataclasses import dataclass
-from datetime import date, datetime
 from linkml_runtime.linkml_model.meta import (
     EnumDefinition,
     PermissibleValue,
@@ -93,12 +93,12 @@ class Loinc(YAMLRoot):
     class_name: ClassVar[str] = "Loinc"
     class_model_uri: ClassVar[URIRef] = LOINC.Loinc
 
-    codes: Optional[Union[Union[str, LoincTermId], List[Union[str, LoincTermId]]]] = (
-        empty_list()
-    )
-    parts: Optional[Union[Union[str, LoincPartId], List[Union[str, LoincPartId]]]] = (
-        empty_list()
-    )
+    codes: Optional[
+        Union[Union[str, LoincTermId], List[Union[str, LoincTermId]]]
+    ] = empty_list()
+    parts: Optional[
+        Union[Union[str, LoincPartId], List[Union[str, LoincPartId]]]
+    ] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if not isinstance(self.codes, list):
@@ -128,9 +128,9 @@ class Entity(YAMLRoot):
     id: Union[str, EntityId] = None
     entity_label: Optional[str] = None
     entity_description: Optional[str] = None
-    sub_class_of: Optional[Union[Union[str, EntityId], List[Union[str, EntityId]]]] = (
-        empty_list()
-    )
+    sub_class_of: Optional[
+        Union[Union[str, EntityId], List[Union[str, EntityId]]]
+    ] = empty_list()
     equivalent_class: Optional[
         Union[Union[str, EntityId], List[Union[str, EntityId]]]
     ] = empty_list()
@@ -298,16 +298,16 @@ class LoincTerm(LoincEntity):
     supplementary_class: Optional[Union[str, LoincPartId]] = None
     supplementary_category: Optional[Union[str, LoincPartId]] = None
     supplementary_search: Optional[Union[str, LoincPartId]] = None
-    primary_rad_anatomic_location_imaging_focus: Optional[Union[str, LoincPartId]] = (
-        None
-    )
+    primary_rad_anatomic_location_imaging_focus: Optional[
+        Union[str, LoincPartId]
+    ] = None
     primary_rad_anatomic_location_laterality: Optional[Union[str, LoincPartId]] = None
     primary_rad_anatomic_location_laterality_presence: Optional[
         Union[str, LoincPartId]
     ] = None
-    primary_rad_anatomic_location_region_imaged: Optional[Union[str, LoincPartId]] = (
-        None
-    )
+    primary_rad_anatomic_location_region_imaged: Optional[
+        Union[str, LoincPartId]
+    ] = None
     primary_rad_guidance_for_action: Optional[Union[str, LoincPartId]] = None
     primary_rad_guidance_for_approach: Optional[Union[str, LoincPartId]] = None
     primary_rad_guidance_for_object: Optional[Union[str, LoincPartId]] = None
@@ -950,9 +950,9 @@ slots.loincTerm__primary_property = Slot(
 )
 
 slots.loincTerm__primary_time_aspect = Slot(
-    uri=LOINC_PROPERTY.TIME_ASPECT,
+    uri=LOINC_PROPERTY.TIME_ASPCT,
     name="loincTerm__primary_time_aspect",
-    curie=LOINC_PROPERTY.curie("TIME_ASPECT"),
+    curie=LOINC_PROPERTY.curie("TIME_ASPCT"),
     model_uri=LOINC.loincTerm__primary_time_aspect,
     domain=None,
     range=Optional[Union[str, LoincPartId]],
