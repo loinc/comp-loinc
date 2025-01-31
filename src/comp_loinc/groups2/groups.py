@@ -8,6 +8,7 @@ class Groups:
     self.initted = False
 
     self.groups: t.Dict[str, Group] = dict()
+    self.roots: t.Dict[str, Group] = {}
 
 
 

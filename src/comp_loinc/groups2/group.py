@@ -3,6 +3,7 @@ from enum import StrEnum
 
 from loinclib import Node, LoincNodeType
 from loinclib.loinc_schema import LoincPartProps
+from loinclib.loinc_tree_schema import LoincTreeProps
 
 
 class Group:
@@ -19,16 +20,37 @@ class Group:
       self.key = Group.group_key(self.properties)
     return self.key
 
-  @classmethod
-  def group_key(cls, properties):
-    key: str = None
-    for k, v in properties.items():
-      prefix = k.prefix
-      part_name = v.get_property(LoincPartProps.part_name)
-      part_number = v.get_property(LoincPartProps.part_number)
-      if key is None:
-        key = f"{prefix}:{part_number}"
-      else:
-        key = key + f"|{prefix}:{part_number}"
+  def is_abstract(self):
+    return len(self.loincs) == 0
 
-    return key
+  def is_complex(self):
+    return len(self.properties) > 1
+
+  def __repr__(self):
+    string =  f"{self.key}"
+    for type_, node in self.properties.items():
+      name = node.get_property(LoincPartProps.part_name)
+      if name is None:
+        name = f"TREE: {node.get_property(LoincTreeProps.code_text)}"
+
+      string += f" -- {type_.prefix}  {name}"
+    return string
+
+  def __str__(self):
+    return self.__repr__()
+
+
+  @classmethod
+  def group_key(cls, properties: t.Dict[StrEnum, Node]):
+    group_key: str = None
+    for prop, part_node in properties.items():
+      prefix = prop.prefix
+      part_name = part_node.get_property(LoincPartProps.part_name)
+      part_number = part_node.get_property(LoincPartProps.part_number)
+      if group_key is None:
+        group_key = f"{prefix}:{part_number}"
+      else:
+        group_key = group_key + f"|{prefix}:{part_number}"
+
+    return group_key
+

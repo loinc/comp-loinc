@@ -10,13 +10,18 @@ sys.argv = [
     "-n",
     "test",
     "group-properties",
-    "-p",
-    "http://loinc.org/property/COMPONENT",
-    "-p",
-    "TIME_ASPCt",
-    "-p",
-    "document-subject-matter-domain",
-    "group-parse-loincs"
+    "--properties",
+    "primary_component",
+    "--properties",
+    "primary_system",
+    "group-parents",
+    "--parents",
+    "parent_comp_by_system",
+    "--parents",
+    "tree_parent",
+    "group-parse-loincs",
+    "group-roots",
+    "group2-hello"
     # ,'--help'
 ]
 
