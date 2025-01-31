@@ -8,6 +8,7 @@ import typer
 
 from comp_loinc import Runtime
 from comp_loinc.groups.groups_builders import GroupsBuilderSteps
+from comp_loinc.groups2.group_builders import Groups2BuilderSteps
 from comp_loinc.loinc_builder_steps import LoincBuilderSteps
 from comp_loinc.snomed_builder_steps import SnomedBuilderSteps
 from loinclib import Configuration
@@ -95,6 +96,9 @@ class CompLoincCli:
         self.groups_builders = GroupsBuilderSteps(config=self.config)
         self.groups_builders.setup_builder(self.builder_cli)
 
+        self.groups2_builders = Groups2BuilderSteps(config=self.config)
+        self.groups2_builders.setup_builder_cli(self.builder_cli)
+
     def callback(
         self,
         *,
@@ -146,6 +150,8 @@ class CompLoincCli:
         self.builder_cli.runtime = self.runtime
         self.groups_builders.config = self.config
         self.groups_builders.runtime = self.runtime
+        self.groups2_builders.config = self.config
+        self.groups2_builders.runtime = self.runtime
 
     def build(
         self,

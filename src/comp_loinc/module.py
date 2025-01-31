@@ -40,6 +40,8 @@ class Module:
         self.runtime: Runtime = runtime
         self.entities_by_type: t.Dict[t.Type[Entity], t.Dict[str, v2.Entity]] = dict()
         self._include_loinc_long_common_name = None  # flags for what to include
+        self.runtime_objects: t.Dict[str, t.Any] = dict()
+
 
     def get_entity(
         self, entity_id: str, entity_class: t.Type[Entity]
