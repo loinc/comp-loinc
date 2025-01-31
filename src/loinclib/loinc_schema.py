@@ -1,5 +1,5 @@
 from enum import StrEnum, Enum
-from loinclib.schema_util import  get_enum_helper
+# from loinclib.schema_util import  get_enum_helper
 
 
 class LoincNodeType(StrEnum):
@@ -122,9 +122,9 @@ class LoincTermPrimaryEdges(StrEnum):
     def __repr__(self):
         return f"{self.order} -- {self.prefix} -- {self._name_} -- {self._value_}"
 
-    @classmethod
-    def get_enum(cls, string: str):
-        return get_enum_helper(string, LoincTermPrimaryEdges)
+    # @classmethod
+    # def get_enum(cls, string: str):
+    #     return get_enum_helper(string, LoincTermPrimaryEdges)
 
 
 
@@ -187,9 +187,9 @@ class LoincTermSupplementaryEdges(StrEnum):
     def __repr__(self):
         return f"{self.order} -- {self.prefix} -- {self._name_} -- {self._value_}"
 
-    @classmethod
-    def get_enum(cls, string: str):
-        return get_enum_helper(string, LoincTermSupplementaryEdges)
+    # @classmethod
+    # def get_enum(cls, string: str):
+    #     return get_enum_helper(string, LoincTermSupplementaryEdges)
 
 
 class LoincPartProps(StrEnum):
