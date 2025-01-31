@@ -1,4 +1,5 @@
 from enum import StrEnum, Enum
+from loinclib.schema_util import  get_enum_helper
 
 
 class LoincNodeType(StrEnum):
@@ -49,65 +50,82 @@ class LoincTermProps(StrEnum):
 # 101632 http://loinc.org/property/TIME_ASPCT
 # 1 Property
 
-
+# https://stackoverflow.com/questions/74884921/how-to-add-attributes-to-a-enum-strenum
 class LoincTermPrimaryEdges(StrEnum):
-    primary_component = "http://loinc.org/property/COMPONENT"
-    primary_property = "http://loinc.org/property/PROPERTY"
-    primary_time_aspect = "http://loinc.org/property/TIME_ASPCT"
-    primary_system = "http://loinc.org/property/SYSTEM"
-    primary_scale_type = "http://loinc.org/property/SCALE_TYP"
-    primary_method_type = "http://loinc.org/property/METHOD_TYP"
+    def __new__(cls, value, order , prefix ):
+        member = str.__new__(cls, value)
+        member._value_ = value
+        member.order = order
+        member.prefix = prefix
+        return member
 
-    primary_document_kind = "http://loinc.org/property/document-kind"
-    primary_document_role = "http://loinc.org/property/document-role"
-    primary_document_setting = "http://loinc.org/property/document-setting"
+    primary_component = "http://loinc.org/property/COMPONENT", 1, "C"
+    primary_property = "http://loinc.org/property/PROPERTY", 2, "P"
+    primary_time_aspect = "http://loinc.org/property/TIME_ASPCT", 3 , "TA"
+    primary_system = "http://loinc.org/property/SYSTEM", 4, "S"
+    primary_scale_type = "http://loinc.org/property/SCALE_TYP", 5, "ST"
+    primary_method_type = "http://loinc.org/property/METHOD_TYP", 6 , "MT"
+
+    # DOC
+    primary_document_kind = "http://loinc.org/property/document-kind", 10, "DOC_K"
+    primary_document_role = "http://loinc.org/property/document-role", 11 , "DOC_R"
+    primary_document_setting = "http://loinc.org/property/document-setting", 12, "DOC_S"
     primary_document_subject_matter_domain = (
-        "http://loinc.org/property/document-subject-matter-domain"
+        "http://loinc.org/property/document-subject-matter-domain", 13, "DOC_SMD"
     )
     primary_document_type_of_service = (
-        "http://loinc.org/property/document-type-of-service"
+        "http://loinc.org/property/document-type-of-service", 14, "DOC_TOS"
     )
 
+    # Rad
     primary_rad_anatomic_location_imaging_focus = (
-        "http://loinc.org/property/rad-anatomic-location-imaging-focus"
+        "http://loinc.org/property/rad-anatomic-location-imaging-focus", 20, "RAD_ALIF"
     )
     primary_rad_anatomic_location_laterality = (
-        "http://loinc.org/property/rad-anatomic-location-laterality"
+        "http://loinc.org/property/rad-anatomic-location-laterality", 21, "RAD_ALL"
     )
     primary_rad_anatomic_location_laterality_presence = (
-        "http://loinc.org/property/rad-anatomic-location-laterality-presence"
+        "http://loinc.org/property/rad-anatomic-location-laterality-presence", 22, "RAD_ALLP"
     )
     primary_rad_anatomic_location_region_imaged = (
-        "http://loinc.org/property/rad-anatomic-location-region-imaged"
+        "http://loinc.org/property/rad-anatomic-location-region-imaged", 23, "RAD_ALRI"
     )
     primary_rad_guidance_for_action = (
-        "http://loinc.org/property/rad-guidance-for-action"
+        "http://loinc.org/property/rad-guidance-for-action", 24, "RAD_GFAc"
     )
     primary_rad_guidance_for_approach = (
-        "http://loinc.org/property/rad-guidance-for-approach"
+        "http://loinc.org/property/rad-guidance-for-approach", 25, "RAD_GFAp"
     )
     primary_rad_guidance_for_object = (
-        "http://loinc.org/property/rad-guidance-for-object"
+        "http://loinc.org/property/rad-guidance-for-object", 26, "RAD_GFO"
     )
     primary_rad_guidance_for_presence = (
-        "http://loinc.org/property/rad-guidance-for-presence"
+        "http://loinc.org/property/rad-guidance-for-presence", 27, "RAD_GFP"
     )
     primary_rad_maneuver_maneuver_type = (
-        "http://loinc.org/property/rad-maneuver-maneuver-type"
+        "http://loinc.org/property/rad-maneuver-maneuver-type", 28, "RAD_MMT"
     )
-    primary_rad_modality_subtype = "http://loinc.org/property/rad-modality-subtype"
-    primary_rad_modality_type = "http://loinc.org/property/rad-modality-type"
+    primary_rad_modality_subtype = "http://loinc.org/property/rad-modality-subtype", 29, "RAD_MS"
+    primary_rad_modality_type = "http://loinc.org/property/rad-modality-type", 30, "RAD_MT"
     primary_rad_pharmaceutical_route = (
-        "http://loinc.org/property/rad-pharmaceutical-route"
+        "http://loinc.org/property/rad-pharmaceutical-route", 31, "RAD_PR"
     )
     primary_rad_pharmaceutical_substance_given = (
-        "http://loinc.org/property/rad-pharmaceutical-substance-given"
+        "http://loinc.org/property/rad-pharmaceutical-substance-given", 32, "RAD_PSG"
     )
-    primary_rad_reason_for_exam = "http://loinc.org/property/rad-reason-for-exam"
-    primary_rad_subject = "http://loinc.org/property/rad-subject"
-    primary_rad_timing = "http://loinc.org/property/rad-timing"
-    primary_rad_view_aggregation = "http://loinc.org/property/rad-view-aggregation"
-    primary_rad_view_view_type = "http://loinc.org/property/rad-view-view-type"
+    primary_rad_reason_for_exam = "http://loinc.org/property/rad-reason-for-exam", 33, "RAD_RFE"
+    primary_rad_subject = "http://loinc.org/property/rad-subject", 34, "RAD_S"
+    primary_rad_timing = "http://loinc.org/property/rad-timing", 35, "RAD_T"
+    primary_rad_view_aggregation = "http://loinc.org/property/rad-view-aggregation", 36, "RAD_VA"
+    primary_rad_view_view_type = "http://loinc.org/property/rad-view-view-type", 36, "RAD_VVT"
+
+    def __repr__(self):
+        return f"{self.order} -- {self.prefix} -- {self._name_} -- {self._value_}"
+
+    @classmethod
+    def get_enum(cls, string: str):
+        return get_enum_helper(string, LoincTermPrimaryEdges)
+
 
 
 # 14:38 $ csvtool col 8 LoincPartLink_Supplementary.csv | sort | uniq -c
@@ -135,28 +153,43 @@ class LoincTermPrimaryEdges(StrEnum):
 
 
 class LoincTermSupplementaryEdges(StrEnum):
-    supplementary_adjustment = "http://loinc.org/property/adjustment"
-    supplementary_analyte = "http://loinc.org/property/analyte"
-    supplementary_analyte_core = "http://loinc.org/property/analyte-core"
-    supplementary_analyte_divisor = "http://loinc.org/property/analyte-divisor"
+    def __new__(cls, value, order , prefix ):
+        member = str.__new__(cls, value)
+        member._value_ = value
+        member.order = order
+        member.prefix = prefix
+        return member
+
+
+    supplementary_adjustment = "http://loinc.org/property/adjustment", 100, "SUP_Ad"
+    supplementary_analyte = "http://loinc.org/property/analyte", 101, "SUP_An"
+    supplementary_analyte_core = "http://loinc.org/property/analyte-core", 102, "SUP_AC"
+    supplementary_analyte_divisor = "http://loinc.org/property/analyte-divisor", 103, "SUP_AD"
     supplementary_analyte_divisor_suffix = (
-        "http://loinc.org/property/analyte-divisor-suffix"
+        "http://loinc.org/property/analyte-divisor-suffix", 104, "SUP_ADS"
     )
-    supplementary_analyte_gene = "http://loinc.org/property/analyte-gene"
-    supplementary_analyte_numerator = "http://loinc.org/property/analyte-numerator"
-    supplementary_analyte_suffix = "http://loinc.org/property/analyte-suffix"
-    supplementary_category = "http://loinc.org/property/category"
-    supplementary_challenge = "http://loinc.org/property/challenge"
-    supplementary_CLASS = "http://loinc.org/property/CLASS"
-    supplementary_count = "http://loinc.org/property/count"
-    supplementary_METHOD_TYP = "http://loinc.org/property/METHOD_TYP"
-    supplementary_PROPERTY = "http://loinc.org/property/PROPERTY"
-    supplementary_SCALE_TYP = "http://loinc.org/property/SCALE_TYP"
-    supplementary_search = "http://loinc.org/property/search"
-    supplementary_super_system = "http://loinc.org/property/super-system"
-    supplementary_system_core = "http://loinc.org/property/system-core"
-    supplementary_time_core = "http://loinc.org/property/time-core"
-    supplementary_time_modifier = "http://loinc.org/property/time-modifier"
+    supplementary_analyte_gene = "http://loinc.org/property/analyte-gene", 105, "SUP_AG"
+    supplementary_analyte_numerator = "http://loinc.org/property/analyte-numerator", 106, "SUP_AN"
+    supplementary_analyte_suffix = "http://loinc.org/property/analyte-suffix", 107, "SUP_AS"
+    supplementary_category = "http://loinc.org/property/category", 108, "SUP_Ca"
+    supplementary_challenge = "http://loinc.org/property/challenge", 109, "SUP_Ch"
+    supplementary_CLASS = "http://loinc.org/property/CLASS", 110, "SUP_Cl"
+    supplementary_count = "http://loinc.org/property/count", 111, "SUP_C"
+    supplementary_METHOD_TYP = "http://loinc.org/property/METHOD_TYP", 112, "SUP_MT"
+    supplementary_PROPERTY = "http://loinc.org/property/PROPERTY", 113, "SUP_P"
+    supplementary_SCALE_TYP = "http://loinc.org/property/SCALE_TYP", 114, "SUP_ST"
+    supplementary_search = "http://loinc.org/property/search", 115, "SUP_S"
+    supplementary_super_system = "http://loinc.org/property/super-system", 116, "SUP_SS"
+    supplementary_system_core = "http://loinc.org/property/system-core", 117, "SUP_SC"
+    supplementary_time_core = "http://loinc.org/property/time-core", 118, "SUP_TC"
+    supplementary_time_modifier = "http://loinc.org/property/time-modifier", 119, "SUP_TM"
+
+    def __repr__(self):
+        return f"{self.order} -- {self.prefix} -- {self._name_} -- {self._value_}"
+
+    @classmethod
+    def get_enum(cls, string: str):
+        return get_enum_helper(string, LoincTermSupplementaryEdges)
 
 
 class LoincPartProps(StrEnum):
