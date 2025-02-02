@@ -22,6 +22,7 @@ from loinclib.loinc_schema import (
 )
 from loinclib.loinc_tree_loader import LoincTreeLoader
 from loinclib.loinc_tree_schema import LoincTreeEdges, LoincTreeProps
+from loinclib.nlp_taxonomification import parts_to_tsv
 
 
 class Index:
