@@ -9,10 +9,7 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 
-from src.comp_loinc.groups.property_use import Part
 
 DANGLING_DIR = os.getcwd() / Path('output/analysis/dangling')
 DANGLING_CACHE_DIR = DANGLING_DIR / 'cache'
@@ -28,7 +25,7 @@ IN_PARTS_CSV2 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/Part
 
 
 # Inputs --------------------------------------------------------------------------------------------------------------
-def parts_to_tsv(parts: t.List[Part], outpath: Path):
+def parts_to_tsv(parts: t.List, outpath: Path):
     """Save list of Part objects to TSV."""
     outdir = Path(os.path.dirname(outpath))
     if not outdir.exists():
@@ -52,6 +49,8 @@ def _get_display_id_map(df, label_field=['PartName', 'PartDisplayName'][0]) -> t
 # Semantic matching ----------------------------------------------------------------------------------------------------
 def get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
     """Get embeddings for a list of strings."""
+    from sentence_transformers import SentenceTransformer
+
     # Try to load from cache first
     cache_file = f"embeddings_{cache_name}.pkl"
     cache_path = DANGLING_CACHE_DIR / cache_file
@@ -86,6 +85,8 @@ def find_best_matches(
     batch_size 30k is about equal to the total number of dangling terms. This could become useful if we start to match
     terms against each other even when they have not been classified as in the same part_type.
     """
+    from sklearn.metrics.pairwise import cosine_similarity
+
     if not terms_hier:
         return pd.DataFrame([{
             f'{label_field}_dangling': term,

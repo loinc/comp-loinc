@@ -21,22 +21,22 @@ python = "^3.11"
 jinjanator = "*"
 linkml = "^1.5.0"
 linkml-owl = "^0.2.7"
+matplotlib = "*"
 networkx = "^3.1"
 numpy = "~1.24.3"  # Last 1.x version that's stable
-matplotlib = "*"
 pandas = "~2.0.3"  # Compatible with numpy 1.x
+sentence_transformers = "*"
 sssom = "^0.3.26"
+torch = [
+    # Had difficulty / impossibility installing latest version of torch on Apple silicon. Used simpler version.
+    # todo: try 2.5 for best stability? will that work on mac?
+    {version = "2.1.0", markers = "platform_machine == 'arm64'"},
+    #torch = { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1-cp311-none-macosx_11_0_arm64.whl" }
+    # Also tried to do this to solve ubuntu error, but didn't work: https://github.com/loinc/comp-loinc/actions/runs/13103295874/job/36554230943?pr=121
+#    {version = "*", markers = "platform_machine != 'arm64'", extras = ["cpu"]}
+]
 typer = "^0.9.0"
 
-# TODO: get commented out packages to work if still need for semantic similarity work
-# todo: organize this list alphabetically
-#plotly = "*"
-sentence_transformers = "*"
-#sklearn = "*"
-#spacy = "*"
-# Had difficulty / impossibility installing latest version of torch on Apple silicon. Used simpler version.
-torch = "2.1.0"
-#torch = { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1-cp311-none-macosx_11_0_arm64.whl" }
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.3.0"
