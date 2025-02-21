@@ -84,6 +84,10 @@ See: `comploinc_config.yaml`
 
 If following the setup exactly, this configuration will not need to be modified.
 
+## Troubleshooting
+If there are errors related to `torch` while running CompLOINC or `nlp_taxonomification.py` specifically, try changing 
+the `torch` version to 2.1.0 in `pyproject.toml`. 
+
 ## Statistics
 [Statistics page](documentation/stats.md)
 
