@@ -35,6 +35,7 @@ torch = [
     # Also tried to do this to solve ubuntu error, but didn't work: https://github.com/loinc/comp-loinc/actions/runs/13103295874/job/36554230943?pr=121
 #    {version = "*", markers = "platform_machine != 'arm64'", extras = ["cpu"]}
 ]
+transformers = ">=4.48.0"  # includes security update
 typer = "^0.9.0"
 
 
