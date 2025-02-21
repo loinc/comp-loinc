@@ -30,7 +30,7 @@ sssom = "^0.3.26"
 torch = [
     # Had difficulty / impossibility installing latest version of torch on Apple silicon. Used simpler version.
     # todo: try 2.5 for best stability? will that work on mac?
-    {version = "2.1.0", markers = "platform_machine == 'arm64'"},
+    {version = "2.2.0", markers = "platform_machine == 'arm64'"},
     #torch = { url = "https://download.pytorch.org/whl/cpu/torch-2.5.1-cp311-none-macosx_11_0_arm64.whl" }
     # Also tried to do this to solve ubuntu error, but didn't work: https://github.com/loinc/comp-loinc/actions/runs/13103295874/job/36554230943?pr=121
 #    {version = "*", markers = "platform_machine != 'arm64'", extras = ["cpu"]}
