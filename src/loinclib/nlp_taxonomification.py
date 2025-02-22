@@ -25,7 +25,7 @@ IN_PARTS_CSV2 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/Part
 
 
 # Inputs --------------------------------------------------------------------------------------------------------------
-def parts_to_tsv(parts: t.List, outpath: Path):
+def parts_to_tsv(parts: t.List, outpath: Path = INPATH_DANGLING):
     """Save list of Part objects to TSV."""
     outdir = Path(os.path.dirname(outpath))
     if not outdir.exists():
