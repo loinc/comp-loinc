@@ -196,6 +196,10 @@ class GroupsBuilderSteps:
             self.do_index()
             self.do_groups()
 
+        # Save dangling parts for NLP semantic similarity pipeline
+        dangling: t.List[Part] = list(self.index.parts_roots_no_children.values())
+        parts_to_tsv(dangling)
+
         self.do_abstracts2()
 
         if self.pickle:
