@@ -88,6 +88,24 @@ If following the setup exactly, this configuration will not need to be modified.
 If there are errors related to `torch` while running CompLOINC or `nlp_taxonomification.py` specifically, try changing 
 the `torch` version to 2.1.0 in `pyproject.toml`. 
 
+## Curation
+CompLOINC has some functionality to configure provide curator feedback on some of the inputs, which can be used to 
+inform what content will or will not be included in the ontology.
+
+**NLP on dangling parts: `matches.sssom.tsv`**
+This file is the result of the semantic similarity process which matches dangling part terms (no parent or child)  
+against those in the hierarchy to try and identify a good parent for them. For each dangling part, only the top match is
+included. Confidence is shown in the `similarity_score` column.
+
+This file adheres to the [SSSOM standard](https://mapping-commons.github.io/sssom/). There are columns `subject_id`, 
+`subject_label`, `object_id`, and `object_label`. The subjects are the dangling part terms, and the objects are the 
+non-dangling part terms already in the hierarchy.
+
+So where does curator input come into play for this file? There is a `curator_approved` column. If the value of this is 
+set to True for a given row, the match will be included in the ontology. If it is set to False, the match will not be 
+included. If it is empty, then the setting for inclusion based on confidence threshold will be used. The default for 
+this is 0.5, and can be configured using the CLI.
+
 ## Statistics
 [Statistics page](documentation/stats.md)
 
