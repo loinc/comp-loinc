@@ -9,13 +9,14 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-
+from sssom.util import MappingSetDataFrame
+from sssom.writers import write_table
 
 DANGLING_DIR = os.getcwd() / Path('output/analysis/dangling')
 DANGLING_CACHE_DIR = DANGLING_DIR / 'cache'
 # todo: ideally not hard code. Best to solve via OO, i'm not sure
 INPATH_DANGLING = DANGLING_DIR / 'dangling.tsv'
-OUTPATH_MATCHES = DANGLING_DIR / 'matches.tsv'
+OUTPATH_MATCHES = DANGLING_DIR / 'matches.sssom.tsv'
 OUTPATH_HIST = DANGLING_DIR / 'confidence_histogram.png'
 # todo: get this from config using standard pattern in codebase
 # note: as of 2025/01/22 there are 62 Document terms in IN_PARTS_ALL not in IN_PARTS_CSV1 or IN_PARTS_CSV2
@@ -56,7 +57,7 @@ def get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
     cache_path = DANGLING_CACHE_DIR / cache_file
     if os.path.exists(cache_path) and use_cache:
         # print(f"Loading embeddings from cache: {cache_file}")
-        with open(cache_file, 'rb') as f:
+        with open(cache_path, 'rb') as f:
             return pickle.load(f)
 
     # If not in cache, generate embeddings
@@ -117,15 +118,10 @@ def find_best_matches(
 
 
 def semantic_similarity_df(
-    label_field=['PartName', 'PartDisplayName'][0], use_cached_df=True, use_cached_embeddings=False,
-    inpath_dangling: t.Union[Path, str] = INPATH_DANGLING, inpath_all: t.Union[Path, str] = IN_PARTS_ALL,
-    outpath: t.Union[Path, str] = OUTPATH_MATCHES
+    label_field=['PartName', 'PartDisplayName'][0], use_cached_embeddings=False,
+    inpath_dangling: t.Union[Path, str] = INPATH_DANGLING, inpath_all: t.Union[Path, str] = IN_PARTS_ALL
 ) -> pd.DataFrame:
     """Creates a dataframe showing semantic similarity confidence between danging and non-dangling terms."""
-    if os.path.exists(outpath) and use_cached_df:
-        print(f"Using cached matches from {outpath}")
-        return pd.read_csv(outpath, sep='\t')
-
     # Data load & prep
     df_all = pd.read_csv(inpath_all)
     df_dangling = pd.read_csv(inpath_dangling, sep='\t').rename(columns={'PartDisplayName': 'PartDisplayName_dangling'})
@@ -160,8 +156,20 @@ def semantic_similarity_df(
     df_matches['URL_hierarchical'] = df_matches['PartNumber_hierarchical'].apply(
         lambda x: f'https://loinc.org/{x}' if x else '')
     df_matches['URL_dangling'] = df_matches['PartNumber_dangling'].apply(lambda x: f'https://loinc.org/{x}')
-    df_matches = df_matches.drop_duplicates()
-    df_matches.to_csv(outpath, sep='\t', index=False, float_format='%.6f')
+
+    # Convert to SSSOM
+    # - Commenetd out alternative to undefined slot PartTypeName, which is now preferred
+    # df_matches['other'] = df_matches['PartTypeName'].apply(lambda x: f'PartTypeName={x}')
+    df_matches['predicate_id'] = 'rdfs:subClassOf'
+    df_matches['curator_approved'] = ''
+    df_matches = df_matches.drop_duplicates().rename(columns={
+        'URL_dangling': 'subject_id',
+        'URL_hierarchical': 'object_id',
+        'PartName_dangling': 'subject_label',
+        'PartName_hierarchical': 'object_label',
+        'confidence': 'similarity_score'
+    })[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName', 'similarity_score',
+        'curator_approved']]
     return df_matches
 
 
@@ -221,10 +229,43 @@ def semantic_similarity_further_analyses(df: pd.DataFrame):
     df.to_csv(str(OUTPATH_MATCHES).replace('.tsv', '_prop_analysis.tsv'), sep='\t', index=False)
 
 
-def semantic_similarity(use_display_name=False, use_cached_df=False, use_cached_embeddings=False):
+def _save_sssom(df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH_MATCHES):
+    """Save matches to SSSOM"""
+    # todo: consider saving the metadata as a separate yaml file
+
+    # Fix mapping precision
+    #  Otheriwse, some show up with precision >1. Digits >5 causes issue.
+    #  Can't do this with SSSOM, so convert col: matches_df.to_csv(outpath, sep='\t', index=False, float_format='%.5f')
+    df['similarity_score'] = df['similarity_score'].round(5).astype(str)
+
+    # Set metadata
+    msdf = MappingSetDataFrame(df, metadata={
+        'mapping_tool': 'https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2',
+        # todo: Getting dynamically would be great, but not easy. This version number was true by looking at poetry.lock
+        #  on 2025/02/22, but won't always be true.
+        'mapping_tool_version': '3.4.1',
+        # todo: make this a defined slot https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
+        'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
+        # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
+        # Todo: Bug in sssom-py. Work around? Curie map shows up empty, as: `# curie_map: {}`
+        'curie_map': {
+            'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+        },
+    })
+
+    with open(outpath, 'w') as f:
+        write_table(msdf, f)
+
+
+def semantic_similarity(
+    use_display_name=False, use_cached_df=False, use_cached_embeddings=False,
+    outpath: t.Union[Path, str] = OUTPATH_MATCHES
+):
     """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity."""
     label_field = 'PartDisplayName' if use_display_name else 'PartName'
-    matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_df, use_cached_embeddings)
+    matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_embeddings) \
+        if not (os.path.exists(outpath) and use_cached_df) else pd.read_csv(outpath, sep='\t')
+    _save_sssom(matches_df, outpath)
     semantic_similarity_further_analyses(matches_df)
     semantic_similarity_graphs(matches_df)
     semantic_similarity_hierarchy_owl(matches_df)
@@ -232,7 +273,7 @@ def semantic_similarity(use_display_name=False, use_cached_df=False, use_cached_
 
 def main(use_display_name=False, use_cached_ss_df=False, use_cached_ss_embeddings=False):
     """Run everything here. Assumes inputs already present."""
-    semantic_similarity(use_cached_ss_df, use_cached_ss_embeddings, use_display_name)
+    semantic_similarity(use_display_name, use_cached_ss_df, use_cached_ss_embeddings)
 
 
 def cli():
