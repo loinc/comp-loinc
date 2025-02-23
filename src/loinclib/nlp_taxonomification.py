@@ -173,13 +173,6 @@ def semantic_similarity_df(
     return df_matches
 
 
-# noinspection PyUnusedLocal
-def semantic_similarity_hierarchy_owl(df: pd.DataFrame):
-    """Create OWL hierarchy based on previously computed semantic similarity.
-    TODO: Next, .owl w/ subclassing on matches"""
-    print()
-
-
 def semantic_similarity_graphs(df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH_HIST):
     """Create graphs based on previously computed semantic similarity."""
     plt.rcParams.update({'font.size': 14})
@@ -190,7 +183,8 @@ def semantic_similarity_graphs(df: pd.DataFrame, outpath: t.Union[Path, str] = O
     labels = ['<0.50', '0.50-0.59', '0.60-0.69', '0.70-0.79', '0.80-0.89', '0.90-0.99', '1.0']
 
     # Create the histogram using pd.cut to bin the values
-    confidence_counts = pd.cut(df['confidence'], bins=bins, labels=labels, right=True).value_counts().sort_index()
+    df['similarity_score'] = df['similarity_score'].astype(float)
+    confidence_counts = pd.cut(df['similarity_score'], bins=bins, labels=labels, right=True).value_counts().sort_index()
 
     # Create the bar plot
     plt.figure(figsize=(12, 6))
@@ -200,10 +194,7 @@ def semantic_similarity_graphs(df: pd.DataFrame, outpath: t.Union[Path, str] = O
     # Add value labels on top of each bar with larger font
     for bar in bars:
         height = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width() / 2., height,
-                 f'{int(height)}',
-                 ha='center', va='bottom',
-                 fontsize=12)
+        plt.text(bar.get_x() + bar.get_width() / 2., height, f'{int(height)}', ha='center', va='bottom', fontsize=12)
 
     plt.title('Distribution of Confidence Scores', pad=20)
     plt.xlabel('Confidence Range', labelpad=10)
@@ -215,11 +206,15 @@ def semantic_similarity_graphs(df: pd.DataFrame, outpath: t.Union[Path, str] = O
 
 def semantic_similarity_further_analyses(df: pd.DataFrame):
     """Additional analyses"""
-    # 1. Prop analysis: Look at conf=1's; Can we ascertain why they have same label by looking at their other props?
+    df['PartNumber_hierarchical'] = df['object_id'].str.extract(r'loinc.org/(\w+)')
+    df['PartNumber_dangling'] = df['subject_id'].str.extract(r'loinc.org/(\w+)')
+
+    # Prop analysis: Look at conf=1's; Can we ascertain why they have same label by looking at their other props?
     parts_df = pd.concat([
         pd.read_csv(IN_PARTS_CSV1), pd.read_csv(IN_PARTS_CSV2)])[['PartNumber', 'LinkTypeName', 'Property']]
     # parts_df = parts_df[parts_df['Property'] == 'http://loinc.org/property/search']  # could be another useful field
 
+    # Merge
     parts_grouped = parts_df.groupby('PartNumber')['LinkTypeName'].agg(lambda x: '|'.join(sorted(set(x)))).reset_index()
     hierarchical_merge = df.merge(parts_grouped, left_on='PartNumber_hierarchical', right_on='PartNumber', how='left')
     df['LinkType_hierarchical'] = hierarchical_merge['LinkTypeName']
@@ -268,7 +263,6 @@ def semantic_similarity(
     _save_sssom(matches_df, outpath)
     semantic_similarity_further_analyses(matches_df)
     semantic_similarity_graphs(matches_df)
-    semantic_similarity_hierarchy_owl(matches_df)
 
 
 def main(use_display_name=False, use_cached_ss_df=False, use_cached_ss_embeddings=False):
