@@ -5,7 +5,7 @@ from pandas import DataFrame
 
 from loinclib import LoinclibGraph
 from loinclib.loinc_schema import LoincNodeType, LoincPartProps
-from loinclib.loinc_tree_schema import LoincTreeEdges, LoincTreeProps
+from loinclib.loinc_tree_schema import LoincDanglingNlpEdges, LoincTreeEdges, LoincTreeProps
 
 
 class LoincTreeSource(StrEnum):
@@ -16,6 +16,7 @@ class LoincTreeSource(StrEnum):
     method_tree = "method.csv"
     panel_tree = "panel.csv"
     system_tree = "system.csv"
+    nlp_tree = "nlp-matches.sssom.csv"
 
 
 class LoincTreeLoader:
@@ -44,6 +45,21 @@ class LoincTreeLoader:
     def load_system_tree(self):
         self._load_tree(LoincTreeSource.system_tree)
 
+    def load_nlp_tree(self):
+        """Load tree data from our internal NLP process to add dangling parts to the hierarchy."""
+        # TODO: Before this
+        #  - save the NLP file in same folder as tree files
+        # TODO: create the NLP tree file
+        #  1. read it from it's original location
+        #    self.config.get_loinc_trees_path()  <--- like this
+        #     - should i also use this config in the nlp file?
+        #  2. transform to same format as other trees, e.g. component.csv
+        #  3. use curator_approved (true/false) and threshold val
+        #    - ensure nlp threshold exposed all the way up to the CLI/config
+        #      should be in the 'config'
+        #      if I can't add it to CLI and can only get it from yaml config, need to update docs to say taht
+        self._load_tree(LoincTreeSource.nlp_tree, True)
+
     def load_all_trees(self):
         self.load_class_tree()
         self.load_component_tree()
@@ -52,8 +68,10 @@ class LoincTreeLoader:
         self.load_method_tree()
         self.load_panel_tree()
         self.load_system_tree()
+        self.load_nlp_tree()
 
-    def _load_tree(self, source: LoincTreeSource):
+    def _load_tree(self, source: LoincTreeSource, from_nlp_source=False):
+        edge_type: StrEnum = LoincTreeEdges.tree_parent if not from_nlp_source else LoincDanglingNlpEdges.nlp_parent
         if source in self.graph.loaded_sources:
             return
 
@@ -116,7 +134,7 @@ class LoincTreeLoader:
                 )
 
                 part_node.add_edge_single(
-                    type_=LoincTreeEdges.tree_parent, to_node=parent_node
+                    type_=edge_type, to_node=parent_node
                 )
 
         self.graph.loaded_sources[source] = {}
