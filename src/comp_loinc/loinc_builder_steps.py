@@ -30,7 +30,7 @@ from loinclib.loinc_schema import (
 )
 from loinclib.loinc_snomed_loader import LoincSnomedLoader
 from loinclib.loinc_tree_loader import LoincTreeLoader
-from loinclib.loinc_tree_schema import LoincTreeProps
+from loinclib.loinc_tree_schema import LoincDanglingNlpEdges, LoincTreeProps
 
 logger = logging.getLogger("LoincBuilder")
 
@@ -339,6 +339,22 @@ class LoincBuilderSteps:
 
                     part.equivalent_class.append(snomed_concept.id)
 
+    def _edge_to_subclassof(self, child_part: LoincPart, edge: Edge):
+        parent_part_node = edge.to_node
+        parent_part_number = parent_part_node.get_property(
+            type_=LoincPartProps.part_number
+        )
+
+        parent_part = self.runtime.current_module.get_entity(
+            entity_id=parent_part_number, entity_class=LoincPart
+        )
+        if parent_part is None:
+            parent_part = LoincPart(id=parent_part_number)
+            self.runtime.current_module.add_entity(parent_part)
+
+        if parent_part.id not in child_part.sub_class_of:
+            child_part.sub_class_of.append(parent_part.id)
+
     def loinc_part_hierarchy_all(self):
         """Asserts part hierarchy for all parts based on component hierarchy file."""
         graph = self.runtime.graph
@@ -366,22 +382,10 @@ class LoincBuilderSteps:
                 self.runtime.current_module.add_entity(child_part)
 
             edge: Edge
+            subclassable_edges = [LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent]
             for edge in child_part_node.get_all_out_edges():
-                if edge.edge_type.type_ is LoincPartEdge.parent_comp_by_system:
-                    parent_part_node = edge.to_node
-                    parent_part_number = parent_part_node.get_property(
-                        type_=LoincPartProps.part_number
-                    )
-
-                    parent_part = self.runtime.current_module.get_entity(
-                        entity_id=parent_part_number, entity_class=LoincPart
-                    )
-                    if parent_part is None:
-                        parent_part = LoincPart(id=parent_part_number)
-                        self.runtime.current_module.add_entity(parent_part)
-
-                    if parent_part.id not in child_part.sub_class_of:
-                        child_part.sub_class_of.append(parent_part.id)
+                if edge.edge_type.type_ in subclassable_edges:
+                    self._edge_to_subclassof(child_part, edge)
 
     # def part_tree_hierarchy_all(self):
     #   pass
