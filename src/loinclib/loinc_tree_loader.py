@@ -44,6 +44,15 @@ class LoincTreeLoader:
     def load_system_tree(self):
         self._load_tree(LoincTreeSource.system_tree)
 
+    def load_all_trees(self):
+        self.load_class_tree()
+        self.load_component_tree()
+        self.load_component_by_system_tree()
+        self.load_document_tree()
+        self.load_method_tree()
+        self.load_panel_tree()
+        self.load_system_tree()
+
     def _load_tree(self, source: LoincTreeSource):
         if source in self.graph.loaded_sources:
             return

@@ -152,13 +152,7 @@ class LoincBuilderSteps:
         loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
         loinc_tree_loader = LoincTreeLoader(config=self.configuration, graph=graph)
-        loinc_tree_loader.load_class_tree()
-        loinc_tree_loader.load_component_tree()
-        loinc_tree_loader.load_component_by_system_tree()
-        loinc_tree_loader.load_panel_tree()
-        loinc_tree_loader.load_system_tree()
-        loinc_tree_loader.load_method_tree()
-        loinc_tree_loader.load_document_tree()
+        loinc_tree_loader.load_all_trees()
 
         count = 0
         for node in self.runtime.graph.get_nodes(LoincNodeType.LoincPart):
@@ -190,13 +184,7 @@ class LoincBuilderSteps:
         loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
         loinc_tree_loader = LoincTreeLoader(config=self.configuration, graph=graph)
-        loinc_tree_loader.load_class_tree()
-        loinc_tree_loader.load_component_tree()
-        loinc_tree_loader.load_component_by_system_tree()
-        loinc_tree_loader.load_panel_tree()
-        loinc_tree_loader.load_system_tree()
-        loinc_tree_loader.load_method_tree()
-        loinc_tree_loader.load_document_tree()
+        loinc_tree_loader.load_all_trees()
 
         count = 0
         loinc_term: LoincTerm
@@ -250,13 +238,7 @@ class LoincBuilderSteps:
         loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
         loinc_tree_loader = LoincTreeLoader(config=self.configuration, graph=graph)
-        loinc_tree_loader.load_class_tree()
-        loinc_tree_loader.load_component_tree()
-        loinc_tree_loader.load_component_by_system_tree()
-        loinc_tree_loader.load_panel_tree()
-        loinc_tree_loader.load_system_tree()
-        loinc_tree_loader.load_method_tree()
-        loinc_tree_loader.load_document_tree()
+        loinc_tree_loader.load_all_trees()
 
         count = 0
         loinc_term: LoincTerm
@@ -365,13 +347,7 @@ class LoincBuilderSteps:
         loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
         loinc_tree_loader = LoincTreeLoader(config=self.configuration, graph=graph)
-        loinc_tree_loader.load_class_tree()
-        loinc_tree_loader.load_component_tree()
-        loinc_tree_loader.load_component_by_system_tree()
-        loinc_tree_loader.load_panel_tree()
-        loinc_tree_loader.load_system_tree()
-        loinc_tree_loader.load_method_tree()
-        loinc_tree_loader.load_document_tree()
+        loinc_tree_loader.load_all_trees()
 
         count = 0
         for child_part_node in graph.get_nodes(type_=LoincNodeType.LoincPart):

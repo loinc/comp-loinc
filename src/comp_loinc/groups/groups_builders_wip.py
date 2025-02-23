@@ -226,13 +226,7 @@ class GroupsBuilderSteps:
         loinc_tree_loader = LoincTreeLoader(
             config=self.config, graph=self.runtime.graph
         )
-        loinc_tree_loader.load_class_tree()
-        loinc_tree_loader.load_component_tree()
-        loinc_tree_loader.load_component_by_system_tree()
-        loinc_tree_loader.load_panel_tree()
-        loinc_tree_loader.load_system_tree()
-        loinc_tree_loader.load_method_tree()
-        loinc_tree_loader.load_document_tree()
+        loinc_tree_loader.load_all_trees()
 
     def do_index_parts_tree(self):
         print(f"parts tree: {(time.time() - self.start_time) / 60}")
