@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sssom.util import MappingSetDataFrame
+from sssom.util import MappingSetDataFrame, parse
 from sssom.writers import write_table
 
 DANGLING_DIR = os.getcwd() / Path('output/analysis/dangling')
@@ -259,7 +259,7 @@ def semantic_similarity(
     """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity."""
     label_field = 'PartDisplayName' if use_display_name else 'PartName'
     matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_embeddings) \
-        if not (os.path.exists(outpath) and use_cached_df) else pd.read_csv(outpath, sep='\t')
+        if not (os.path.exists(outpath) and use_cached_df) else parse(outpath)
     _save_sssom(matches_df, outpath)
     semantic_similarity_further_analyses(matches_df)
     semantic_similarity_graphs(matches_df)
