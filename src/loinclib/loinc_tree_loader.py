@@ -103,6 +103,7 @@ class LoincTreeLoader:
                 child_code_text,
                 parent_code_text,
                 part_type_name,
+                mapping_justification,
                 confidence,
                 curator_approved
             ) = tpl

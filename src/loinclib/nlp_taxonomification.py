@@ -9,7 +9,8 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sssom.util import MappingSetDataFrame, parse
+from sssom.parsers import from_sssom_dataframe
+from sssom.util import MappingSetDataFrame
 from sssom.writers import write_table
 
 from loinclib import Configuration
@@ -160,7 +161,7 @@ def semantic_similarity_df(
             dfs_matches.append(df_matches_i)
 
     df_matches = pd.concat(dfs_matches)[[f'{label_field}_hierarchical', f'{label_field}_dangling', 'confidence',
-        'PartTypeName', 'PartNumber_hierarchical', 'PartNumber_dangling']].sort_values('confidence', ascending=False)
+        'PartTypeName', 'PartNumber_hierarchical', 'PartNumber_dangling']]
     df_matches = pd.concat([df_matches] + dfs_no_matching_types)
     df_matches['URL_hierarchical'] = df_matches['PartNumber_hierarchical'].apply(
         lambda x: f'https://loinc.org/{x}' if x else '')
@@ -169,16 +170,18 @@ def semantic_similarity_df(
     # Convert to SSSOM
     # - Commenetd out alternative to undefined slot PartTypeName, which is now preferred
     # df_matches['other'] = df_matches['PartTypeName'].apply(lambda x: f'PartTypeName={x}')
-    df_matches['predicate_id'] = 'rdfs:subClassOf'
     df_matches['curator_approved'] = ''
+    df_matches['predicate_id'] = 'rdfs:subClassOf'
+    df_matches['mapping_justification'] = 'semapv:SemanticSimilarityThresholdMatching'
     df_matches = df_matches.drop_duplicates().rename(columns={
         'URL_dangling': 'subject_id',
         'URL_hierarchical': 'object_id',
         'PartName_dangling': 'subject_label',
         'PartName_hierarchical': 'object_label',
         'confidence': 'similarity_score'
-    })[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName', 'similarity_score',
-        'curator_approved']]
+    })[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
+        'mapping_justification', 'similarity_score', 'curator_approved']].sort_values(
+        ['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
     return df_matches
 
 
@@ -248,7 +251,9 @@ def _save_sssom(
     df['similarity_score'] = df['similarity_score'].round(5).astype(str)
 
     # Set metadata
-    msdf = MappingSetDataFrame(df, metadata={
+    msdf: MappingSetDataFrame = from_sssom_dataframe(df, prefix_map={
+        'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+    }, meta={
         'mapping_tool': 'https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2',
         # todo: Getting dynamically would be great, but not easy. This version number was true by looking at poetry.lock
         #  on 2025/02/22, but won't always be true.
@@ -256,11 +261,16 @@ def _save_sssom(
         # todo: make this a defined slot https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
         'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
         # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
-        # Todo: Bug in sssom-py. Work around? Curie map shows up empty, as: `# curie_map: {}`
-        'curie_map': {
-            'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
-        },
     })
+    # Add back sorting
+    msdf.df = msdf.df.sort_values(['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
+    # Add back undefined cols
+    msdf.df['curator_approved'] = ''
+    # todo: I think this will be correct, as the sorting should be the same, but it would be good to check, or add a
+    #  more robust way here to ensure that the PartTypeName is correct.
+    msdf.df['PartTypeName'] = df['PartTypeName'].values
+    msdf.df = msdf.df[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
+        'mapping_justification', 'similarity_score', 'curator_approved']]
 
     # Save
     with open(outpath_analysis, 'w') as f:
@@ -281,7 +291,8 @@ def semantic_similarity(
     the top of the file."""
     label_field = 'PartDisplayName' if use_display_name else 'PartName'
     matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_embeddings) \
-        if not (os.path.exists(outpath_analysis) and use_cached_df) else parse(outpath_analysis)
+        if not (os.path.exists(outpath_analysis) and use_cached_df) \
+        else pd.read_csv(outpath_analysis, sep="\t", comment="#")
     _save_sssom(matches_df, outpath_tree, outpath_analysis)
     semantic_similarity_further_analyses(matches_df)
     semantic_similarity_graphs(matches_df)
