@@ -18,7 +18,7 @@ from loinclib.loinc_schema import (
     LoincTermSupplementaryEdges,
 )
 from loinclib.loinc_tree_loader import LoincTreeLoader
-from loinclib.loinc_tree_schema import LoincTreeEdges, LoincTreeProps
+from loinclib.loinc_tree_schema import LoincDanglingNlpEdges, LoincTreeEdges, LoincTreeProps
 
 
 class Index:
@@ -260,6 +260,9 @@ class GroupsBuilderSteps:
                 )
                 match edge.edge_type.type_:
                     case LoincTreeEdges.tree_parent:
+                        child_part_node.parents[parent_part_number] = parent_part_node
+                        parent_part_node.children[part_number] = child_part_node
+                    case LoincDanglingNlpEdges.nlp_parent:
                         child_part_node.parents[parent_part_number] = parent_part_node
                         parent_part_node.children[part_number] = child_part_node
                     case LoincPartEdge.parent_comp_by_system:
