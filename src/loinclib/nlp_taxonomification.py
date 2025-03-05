@@ -9,21 +9,31 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sssom.util import MappingSetDataFrame, parse
+from sssom.parsers import from_sssom_dataframe
+from sssom.util import MappingSetDataFrame
 from sssom.writers import write_table
 
-DANGLING_DIR = os.getcwd() / Path('output/analysis/dangling')
+from loinclib import Configuration
+
+THIS_FILE_PATH = Path(os.path.abspath(__file__))
+LOINCLIB_DIR = THIS_FILE_PATH.parent
+SRC_DIR = LOINCLIB_DIR.parent
+PROJECT_DIR = SRC_DIR.parent
+# PROJECT_DIR = os.getcwd()
+DANGLING_DIR = PROJECT_DIR / 'output/analysis/dangling'
 DANGLING_CACHE_DIR = DANGLING_DIR / 'cache'
 # todo: ideally not hard code. Best to solve via OO, i'm not sure
 INPATH_DANGLING = DANGLING_DIR / 'dangling.tsv'
-OUTPATH_MATCHES = DANGLING_DIR / 'matches.sssom.tsv'
+OUT_FILENAME = 'nlp-matches.sssom.tsv'
+# todo: not DRY. This is also defined in LoincTreeSource.nlp_tree
+OUTPATH_ANALYSIS_MATCHES = DANGLING_DIR / OUT_FILENAME
 OUTPATH_HIST = DANGLING_DIR / 'confidence_histogram.png'
 # todo: get this from config using standard pattern in codebase
 # note: as of 2025/01/22 there are 62 Document terms in IN_PARTS_ALL not in IN_PARTS_CSV1 or IN_PARTS_CSV2
-IN_PARTS_ALL = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/Part.csv')
-IN_PARTS_CSV1 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv')
-IN_PARTS_CSV2 = os.getcwd() / Path('loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Primary.csv')
-
+IN_PARTS_ALL = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/Part.csv'
+IN_PARTS_CSV1 = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv'
+IN_PARTS_CSV2 = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Primary.csv'
+DEFAULT_CONFIG_PATH = PROJECT_DIR / 'comploinc_config.yaml'
 
 # Inputs --------------------------------------------------------------------------------------------------------------
 def parts_to_tsv(parts: t.List, outpath: Path = INPATH_DANGLING):
@@ -151,7 +161,7 @@ def semantic_similarity_df(
             dfs_matches.append(df_matches_i)
 
     df_matches = pd.concat(dfs_matches)[[f'{label_field}_hierarchical', f'{label_field}_dangling', 'confidence',
-        'PartTypeName', 'PartNumber_hierarchical', 'PartNumber_dangling']].sort_values('confidence', ascending=False)
+        'PartTypeName', 'PartNumber_hierarchical', 'PartNumber_dangling']]
     df_matches = pd.concat([df_matches] + dfs_no_matching_types)
     df_matches['URL_hierarchical'] = df_matches['PartNumber_hierarchical'].apply(
         lambda x: f'https://loinc.org/{x}' if x else '')
@@ -160,16 +170,18 @@ def semantic_similarity_df(
     # Convert to SSSOM
     # - Commenetd out alternative to undefined slot PartTypeName, which is now preferred
     # df_matches['other'] = df_matches['PartTypeName'].apply(lambda x: f'PartTypeName={x}')
-    df_matches['predicate_id'] = 'rdfs:subClassOf'
     df_matches['curator_approved'] = ''
+    df_matches['predicate_id'] = 'rdfs:subClassOf'
+    df_matches['mapping_justification'] = 'semapv:SemanticSimilarityThresholdMatching'
     df_matches = df_matches.drop_duplicates().rename(columns={
         'URL_dangling': 'subject_id',
         'URL_hierarchical': 'object_id',
         'PartName_dangling': 'subject_label',
         'PartName_hierarchical': 'object_label',
         'confidence': 'similarity_score'
-    })[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName', 'similarity_score',
-        'curator_approved']]
+    })[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
+        'mapping_justification', 'similarity_score', 'curator_approved']].sort_values(
+        ['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
     return df_matches
 
 
@@ -221,20 +233,27 @@ def semantic_similarity_further_analyses(df: pd.DataFrame):
     dangling_merge = df.merge(parts_grouped, left_on='PartNumber_dangling', right_on='PartNumber', how='left')
     df['LinkType_dangling'] = dangling_merge['LinkTypeName']
 
-    df.to_csv(str(OUTPATH_MATCHES).replace('.tsv', '_prop_analysis.tsv'), sep='\t', index=False)
+    df.to_csv(str(OUTPATH_ANALYSIS_MATCHES).replace('.tsv', '_prop_analysis.tsv'), sep='\t', index=False)
 
 
-def _save_sssom(df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH_MATCHES):
-    """Save matches to SSSOM"""
-    # todo: consider saving the metadata as a separate yaml file
+def _save_sssom(
+    df: pd.DataFrame, outpath_tree: t.Union[Path, str] = OUTPATH_ANALYSIS_MATCHES,
+    outpath_analysis: t.Union[Path, str] = OUTPATH_ANALYSIS_MATCHES
+):
+    """Save matches to SSSOM
 
+    Params outpath and outpath2 differences are explained in semantic_similarity().
+    todo: consider saving the metadata as a separate yaml file
+    """
     # Fix mapping precision
     #  Otheriwse, some show up with precision >1. Digits >5 causes issue.
     #  Can't do this with SSSOM, so convert col: matches_df.to_csv(outpath, sep='\t', index=False, float_format='%.5f')
     df['similarity_score'] = df['similarity_score'].round(5).astype(str)
 
     # Set metadata
-    msdf = MappingSetDataFrame(df, metadata={
+    msdf: MappingSetDataFrame = from_sssom_dataframe(df, prefix_map={
+        'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+    }, meta={
         'mapping_tool': 'https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2',
         # todo: Getting dynamically would be great, but not easy. This version number was true by looking at poetry.lock
         #  on 2025/02/22, but won't always be true.
@@ -242,32 +261,51 @@ def _save_sssom(df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH_MATCHES)
         # todo: make this a defined slot https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
         'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
         # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
-        # Todo: Bug in sssom-py. Work around? Curie map shows up empty, as: `# curie_map: {}`
-        'curie_map': {
-            'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
-        },
     })
+    # Add back sorting
+    msdf.df = msdf.df.sort_values(['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
+    # Add back undefined cols
+    msdf.df['curator_approved'] = ''
+    # todo: I think this will be correct, as the sorting should be the same, but it would be good to check, or add a
+    #  more robust way here to ensure that the PartTypeName is correct.
+    msdf.df['PartTypeName'] = df['PartTypeName'].values
+    msdf.df = msdf.df[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
+        'mapping_justification', 'similarity_score', 'curator_approved']]
 
-    with open(outpath, 'w') as f:
+    # Save
+    with open(outpath_analysis, 'w') as f:
+        write_table(msdf, f)
+    with open(outpath_tree, 'w') as f:
         write_table(msdf, f)
 
 
 def semantic_similarity(
-    use_display_name=False, use_cached_df=False, use_cached_embeddings=False,
-    outpath: t.Union[Path, str] = OUTPATH_MATCHES
+    outpath_tree: t.Union[Path, str], use_display_name=False, use_cached_df=False, use_cached_embeddings=False,
+    outpath_analysis: t.Union[Path, str] = OUTPATH_ANALYSIS_MATCHES,
 ):
-    """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity."""
+    """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity.
+
+    :param outpath_tree: This is to place the resulting matches file in the tree browser files dir for easier loading.
+    :param outpath_analysis: This is a mostly redundant path, used to save the dangling matches with the other related
+    analytical files, for easy access.
+    the top of the file."""
     label_field = 'PartDisplayName' if use_display_name else 'PartName'
     matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_embeddings) \
-        if not (os.path.exists(outpath) and use_cached_df) else parse(outpath)
-    _save_sssom(matches_df, outpath)
+        if not (os.path.exists(outpath_analysis) and use_cached_df) \
+        else pd.read_csv(outpath_analysis, sep="\t", comment="#")
+    _save_sssom(matches_df, outpath_tree, outpath_analysis)
     semantic_similarity_further_analyses(matches_df)
     semantic_similarity_graphs(matches_df)
 
 
-def main(use_display_name=False, use_cached_ss_df=False, use_cached_ss_embeddings=False):
+def main(
+    use_display_name=False, use_cached_ss_df=False, use_cached_ss_embeddings=False,
+    config_path: t.Union[Path, str] = DEFAULT_CONFIG_PATH
+):
     """Run everything here. Assumes inputs already present."""
-    semantic_similarity(use_display_name, use_cached_ss_df, use_cached_ss_embeddings)
+    config = Configuration(Path(os.path.dirname(str(config_path))), Path(os.path.basename(config_path)))
+    outpath_tree_format = config.get_loinc_trees_path() / OUT_FILENAME
+    semantic_similarity(outpath_tree_format, use_display_name, use_cached_ss_df, use_cached_ss_embeddings)
 
 
 def cli():
@@ -284,6 +322,8 @@ def cli():
     parser.add_argument(
         '-C', '--use-cached-ss-embeddings', required=False, action='store_true',
         help='Use cached semantic similarity embeddings for LOINC labels?')
+    parser.add_argument(
+        '-f', '--config-path', required=False, default=DEFAULT_CONFIG_PATH, help='Path to CompLOINC config.')
     main(**vars(parser.parse_args()))
 
 

@@ -102,9 +102,10 @@ This file adheres to the [SSSOM standard](https://mapping-commons.github.io/ssso
 non-dangling part terms already in the hierarchy.
 
 So where does curator input come into play for this file? There is a `curator_approved` column. If the value of this is 
-set to True for a given row, the match will be included in the ontology. If it is set to False, the match will not be 
-included. If it is empty, then the setting for inclusion based on confidence threshold will be used. The default for 
-this is 0.5, and can be configured using the CLI.
+set to True (case insensitive) for a given row, the match will be included in the ontology. If it is set to False (case 
+insensitive), the match will not be included. If it is empty, or some value other than true/valse is present, then that 
+column will be ignored and the setting for inclusion based on confidence threshold will be used. The default for this is
+0.5, and can be configured in `comploinc_config.yaml`.
 
 ## Statistics
 [Statistics page](documentation/stats.md)

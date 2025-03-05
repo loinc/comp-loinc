@@ -15,6 +15,8 @@ loinc_tree:
     '2.78':
       tree_path: 'loinc_trees/2024-08-31'
 
+loinc_nlp_tree:
+  similarity_threshold: 0.5
 
 snomed:
   release:
