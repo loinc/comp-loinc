@@ -186,7 +186,7 @@ class LoincTreeLoader:
         self.graph.loaded_sources[source] = {}
 
     def read_nlp_source(self, source: LoincTreeSource) -> DataFrame:
-        path = self.config.get_loinc_trees_path() / source.value
+        path = self.config.get_curation_dir_path() / source.value
         return pd.read_csv(path, sep="\t", comment="#")
 
     def read_source(self, source: LoincTreeSource) -> DataFrame:

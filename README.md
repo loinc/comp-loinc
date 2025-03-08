@@ -92,23 +92,48 @@ the `torch` version to 2.1.0 in `pyproject.toml`.
 CompLOINC has some functionality to configure provide curator feedback on some of the inputs, which can be used to 
 inform what content will or will not be included in the ontology.
 
-**NLP on dangling parts: `matches.sssom.tsv`**
+**NLP on dangling parts: `nlp-matches.sssom.tsv`**
 This file is the result of the semantic similarity process which matches dangling part terms (no parent or child)  
 against those in the hierarchy to try and identify a good parent for them. For each dangling part, only the top match is
 included. Confidence is shown in the `similarity_score` column.
 
+File location & related files
+- `/curation/nlp-matches.sssom.tsv`: Committed. To be used by curators and will be re-read during build time.
+- `/output/analysis/dangling/`: Not committed. Has several files related to `/curation/nlp-matches.sssom.tsv`.
+
 This file adheres to the [SSSOM standard](https://mapping-commons.github.io/sssom/). There are columns `subject_id`, 
-`subject_label`, `object_id`, and `object_label`. The subjects are the dangling part terms, and the objects are the 
+`subject_label`, `object_id`, and `object_label`. The subjects are the dangling part t
+erms, and the objects are the 
 non-dangling part terms already in the hierarchy.
 
-So where does curator input come into play for this file? There is a `curator_approved` column. If the value of this is 
+So where does curator input come into play? There is a `curator_approved` column. If the value of this is 
 set to True (case insensitive) for a given row, the match will be included in the ontology. If it is set to False (case 
-insensitive), the match will not be included. If it is empty, or some value other than true/valse is present, then that 
+insensitive), the match will not be included. If it is empty, or some value other than true/false is present, then that 
 column will be ignored and the setting for inclusion based on confidence threshold will be used. The default for this is
 0.5, and can be configured in `comploinc_config.yaml`.
 
-## Statistics
-[Statistics page](documentation/stats.md)
+There are several columsn in `nlp-matches.sssom.tsv` that are not part of the SSSOM specification. `curator_approved` is
+one of these, but there is also `PartTypeName`, representing the LOINC part type, and `subject_dangling` and 
+`object_dangling`, which are boolean columns that indicate which of the subject or object for a given row is the 
+dangling part and which is the part that is currently connected within the hierarchy.
+
+## Statistics & analysis
+### [Statistics page](documentation/stats.md)
+
+### Analysis directory
+This is created during when the pipeline is run, and contains the following:
+```
+/output/analysis
+├── chebi-subsets/  # Various intermediary files which were used to create the ChEBI-inspired hierarchy.
+└── dangling
+    ├── cache/  # Cached word embeddings for dangling parts and hierarchical terms.
+    ├── confidence_histogram.png
+    ├── dangling.tsv  # The input file that generates nlp-matches.sssom.tsv. Shows all dangling part terms. 
+    └── nlp-matches.sssom_prop_analysis.tsv  # nlp-matches.sssom.tsv but w/ more columns. Attempt to look at the confidence=1 cases and try to ascertain why they have same label by looking at their other properties 
+```
+
+This directory is not committed. `/output/analysis/dangling/` has several files related to `/curation/nlp-matches.sssom.tsv`. 
+
 
 ## Developer docs
 <details><summary>Details</summary>
