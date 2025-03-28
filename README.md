@@ -20,13 +20,22 @@ https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh).
     - [SNOMED](https://www.nlm.nih.gov/healthit/snomedct/us_edition.html)
     - [LOINC-SNOMED Ontology](https://loincsnomed.org/downloads)
     - [LOINC Tree](https://loinc.org/tree/)
-      - From this app, select from the "Hierarchy" menu at the top of the page. There are 7 options. When you select an option, select 'Export'. Extract the CSVs in each zip, and put them into a single folder, using the following names: `class.csv`, `component.csv`, `document.csv`, `method.csv`, `panel.csv`, `system.csv`, `component_by_system.csv`.
-    - General instructions: Ensure that these 4 sources are unzipped to the locations shown in [comploinc_config.yaml/](comploinc_config.yaml), or update the config to match your locations.
+      - From this app, select from the "Hierarchy" menu at the top of the page. There are 7 options. When you select an 
+      option, select 'Export'. Extract the CSVs in each zip, and put them into a single folder, using the following 
+      names: `class.csv`, `component.csv`, `document.csv`, `method.csv`, `panel.csv`, `system.csv`, 
+      `component_by_system.csv`.
+    - General instructions: Ensure that these 4 sources are unzipped to the locations shown in 
+    [comploinc_config.yaml/](comploinc_config.yaml), or update the config to match your locations.
+
+**Contingencies**
+Apple Silicon users may need to run `export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` before running 
+`poetry install`.
 
 ## Repository Structure
 * [data/](data/) - Static input files that don't need to be downloaded.
 * [logs/](logs/output) - Logs
-* [owl-files/](owl-files/) - Place the default build output files in this directory and then open the comploinc.owl file in Protege to get what is considered to be the default content of CompLOINC (still WIP).
+* [owl-files/](owl-files/) - Place the default build output files in this directory and then open the `comploinc.owl` 
+ file in Protégé to get what is considered to be the default content of CompLOINC (still WIP).
 * [src/comp_loinc/](src/comp_loinc) - Uses a loinclib `networkx` graph to generate ontological outputs.
   * [builds/](src/comp_loinc/builds) -- LinkML schema
   * [datamodel/](src/comp_loinc/datamodel) - generated Python LinkML datamodel
@@ -102,20 +111,24 @@ File location & related files
 - `/output/analysis/dangling/`: Not committed. Has several files related to `/curation/nlp-matches.sssom.tsv`.
 
 This file adheres to the [SSSOM standard](https://mapping-commons.github.io/sssom/). There are columns `subject_id`, 
-`subject_label`, `object_id`, and `object_label`. The subjects are the dangling part t
-erms, and the objects are the 
+`subject_label`, `object_id`, and `object_label`. The subjects are the dangling part terms, and the objects are the 
 non-dangling part terms already in the hierarchy.
 
 So where does curator input come into play? There is a `curator_approved` column. If the value of this is 
 set to True (case insensitive) for a given row, the match will be included in the ontology. If it is set to False (case 
 insensitive), the match will not be included. If it is empty, or some value other than true/false is present, then that 
 column will be ignored and the setting for inclusion based on confidence threshold will be used. The default for this is
-0.5, and can be configured in `comploinc_config.yaml`.
+0.5, and can be configured in `comploinc_config.yaml`. If the curator makes any judgements / edits to any rows, they 
+should change the default `mapping_justification` from `semapv:SemanticSimilarityThresholdMatching` to 
+`semapv:ManualMappingCuration`.
 
-There are several columsn in `nlp-matches.sssom.tsv` that are not part of the SSSOM specification. `curator_approved` is
+
+There are several columns in `nlp-matches.sssom.tsv` that are not part of the SSSOM specification. `curator_approved` is
 one of these, but there is also `PartTypeName`, representing the LOINC part type, and `subject_dangling` and 
 `object_dangling`, which are boolean columns that indicate which of the subject or object for a given row is the 
 dangling part and which is the part that is currently connected within the hierarchy.
+
+
 
 ## Statistics & analysis
 ### [Statistics page](documentation/stats.md)
@@ -132,7 +145,8 @@ This is created during when the pipeline is run, and contains the following:
     └── nlp-matches.sssom_prop_analysis.tsv  # nlp-matches.sssom.tsv but w/ more columns. Attempt to look at the confidence=1 cases and try to ascertain why they have same label by looking at their other properties 
 ```
 
-This directory is not committed. `/output/analysis/dangling/` has several files related to `/curation/nlp-matches.sssom.tsv`. 
+This directory is not committed. `/output/analysis/dangling/` has several files related to 
+`/curation/nlp-matches.sssom.tsv`. 
 
 
 ## Developer docs

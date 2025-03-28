@@ -139,14 +139,14 @@ def semantic_similarity_df(
     # Data load & prep
     df_all = pd.read_csv(inpath_all)
     df_dangling = pd.read_csv(inpath_dangling, sep='\t').rename(columns={'PartDisplayName': 'PartDisplayName_dangling'})
-
-    # TODO: filter status = DEPRECATED
-    #  - for dangling and non-dangling
-
-
-    if label_field == 'PartName':  # replace df_dangling PartDisplayName w/ lookup of PartName in df_all
+    # - filter deprecated
+    if filter_deprecated:
+        deprecated: t.Set[str] = set(df_all[df_all['Status'] == 'DEPRECATED']['PartNumber'])
+        df_all = df_all[~df_all['PartNumber'].isin(deprecated)]
+        df_dangling = df_dangling[~df_dangling['PartNumber'].isin(deprecated)]
+    # - replace df_dangling PartDisplayName w/ lookup of PartName in df_all
+    if label_field == 'PartName':
         df_dangling = df_dangling.merge(df_all[['PartNumber', 'PartName']], on='PartNumber', how='left')
-    # - filter
     df_hier = df_all[~df_all['PartNumber'].isin(df_dangling['PartNumber'])]
 
     # Iterate matching, by type
