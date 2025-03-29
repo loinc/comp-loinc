@@ -1,6 +1,6 @@
 loinc:
   release:
-    default: '2.78'
+    default: '2.80'
     '2.67':
       version: '2.67'
       path: 'loinc_release/2.67' # runtime home directory-relative path
@@ -8,12 +8,18 @@ loinc:
       version:  '2.78'
       path: 'loinc_release/Loinc_2.78'
       classes: 'data/loinc_classes.csv'
+    '2.80':
+      version:  '2.80'
+      path: 'loinc_release/Loinc_2.80'
+      classes: 'data/loinc_classes.csv'
 
 loinc_tree:
   release:
-    default: '2.78'
+    default: '2.80'
     '2.78':
-      tree_path: 'loinc_trees/2024-08-31'
+      tree_path: 'loinc_trees/2.78'
+    '2.80':
+      tree_path: 'loinc_trees/2.80'
 
 loinc_nlp_tree:
   similarity_threshold: 0.5
@@ -29,12 +35,18 @@ snomed:
 
 loinc_snomed:
   release:
-    default: '20231015'
+    default: '1.0'
     '20231015':
       files:
-        description: 'loinc_snomed_release/Snapshot/Terminology/xsct2_Description_Snapshot-en_LO1010000_20231015.txt'
-        identifier: 'loinc_snomed_release/Snapshot/Terminology/xsct2_Identifier_Snapshot_LO1010000_20231015.txt'
-        relationship: 'loinc_snomed_release/Snapshot/Terminology/xsct2_Relationship_Snapshot_LO1010000_20231015.txt'
+        description: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Description_Snapshot-en_LO1010000_20231015.txt'
+        identifier: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Identifier_Snapshot_LO1010000_20231015.txt'
+        relationship: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Relationship_Snapshot_LO1010000_20231015.txt'
+        part_mapping: 'loinc_snomed_release/part-mappings_0.0.3.tsv'
+    '1.0':
+      files:
+        description: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_LO1010000_20250321.txt'
+        identifier: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Identifier_Snapshot_LO1010000_20250321.txt'
+        relationship: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_LO1010000_20250321.txt'
         part_mapping: 'loinc_snomed_release/part-mappings_0.0.3.tsv'
 
 prop_use:

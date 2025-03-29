@@ -1,5 +1,7 @@
 /.idea/
 /docs/
+/documentation/stats-main.md
+/documentation/stats-dangling.md
 /project/docs/
 /tmp/
 /out*

@@ -13,19 +13,29 @@ Computational LOINC (in OWL).
 3. Install [Poetry](https://python-poetry.org/): `pip install poetry`
 4. Install dependencies: `poetry install`
 5. Unzip downloaded inputs into the root directory of the repo.
-  - a. Core developers: Download latest `*-build-sources.zip` from [Google Drive](
-https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh).
+  - a. Core developers: Download latest `*_comploinc-build-sources.zip` from [Google Drive](
+https://drive.google.com/drive/folders/1wguwYdsasYmKL_hSOqW0yeN7ICw4LgLV), where `*` is a date `YYYY-MM-DD`.
   - b. Everyone else: Download releases from each source:
-    - [LOINC](https://loinc.org/downloads/)
-    - [SNOMED](https://www.nlm.nih.gov/healthit/snomedct/us_edition.html)
-    - [LOINC-SNOMED Ontology](https://loincsnomed.org/downloads)
-    - [LOINC Tree](https://loinc.org/tree/)
-      - From this app, select from the "Hierarchy" menu at the top of the page. There are 7 options. When you select an 
-      option, select 'Export'. Extract the CSVs in each zip, and put them into a single folder, using the following 
-      names: `class.csv`, `component.csv`, `document.csv`, `method.csv`, `panel.csv`, `system.csv`, 
-      `component_by_system.csv`.
-    - General instructions: Ensure that these 4 sources are unzipped to the locations shown in 
-    [comploinc_config.yaml/](comploinc_config.yaml), or update the config to match your locations.
+    - Ensure that [comploinc_config.yaml/](comploinc_config.yaml) is updated to point to default to the 
+    versions of your choosing, and ensure the paths are correct. The config is customizable to whatever directory 
+    structure / folder names you choose, but below are some suggestions / conventions for each source.
+    - [LOINC](https://loinc.org/downloads/): Unzip and place the folder (named `Loinc_2.80` or 
+    similar) into a `loinc_release` folder in the root directory of the repo.
+    - [LOINC Tree](https://loinc.org/tree/): From this app, select from the "Hierarchy" menu at the top of the page. There are 7 options. 
+    When you select an option, select 'Export'. Extract the CSVs in each zip, and put them into a single folder, using 
+    the following names: `class.csv`, `component.csv`, `document.csv`, `method.csv`, `panel.csv`, `system.csv`, 
+    `component_by_system.csv`. The name of this folder should reflect the current version number of LOINC as it shows on
+    the [LOINC download page](https://loinc.org/downloads/). For example, if it says "2.80", on that page, the folder 
+    name should be "2.80". Place this folder into a `loinc_trees` folder in the root directory of the repo.
+    - [LOINC-SNOMED Ontology](https://loincsnomed.org/downloads): Go to the website and fill out a form. You will get an
+    email with a download link. Unzip this, and place the unzipped folder into another folder with the version number 
+    declared on that download page. Then place that folder into a `loinc_snomed_release` folder in the root directory 
+    of the repo.
+    - LOINC-SNOMED mappings: There is a mapping TSV file, e.g. `part-mappings_0.0.3.tsv`, which should be placed in the 
+    `loinc_snomed_release` directory at the root of the repo. However, this file is not downloadable online. To request 
+    it, find the contact email address in `pyproject.toml`, and email us with a request. 
+    - [SNOMED](https://www.nlm.nih.gov/healthit/snomedct/us_edition.html): Unzip and place the folder (named `SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z` or 
+    similar) into a `snomed_release` folder in the root directory of the repo.
 
 **Contingencies**
 Apple Silicon users may need to run `export PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring` before running 
@@ -34,8 +44,7 @@ Apple Silicon users may need to run `export PYTHON_KEYRING_BACKEND=keyring.backe
 ## Repository Structure
 * [data/](data/) - Static input files that don't need to be downloaded.
 * [logs/](logs/output) - Logs
-* [owl-files/](owl-files/) - Place the default build output files in this directory and then open the `comploinc.owl` 
- file in Protégé to get what is considered to be the default content of CompLOINC (still WIP).
+* [owl-files/](owl-files/) - Contains some files to be merged together with build outputs.
 * [src/comp_loinc/](src/comp_loinc) - Uses a loinclib `networkx` graph to generate ontological outputs.
   * [builds/](src/comp_loinc/builds) -- LinkML schema
   * [datamodel/](src/comp_loinc/datamodel) - generated Python LinkML datamodel
@@ -163,12 +172,20 @@ This directory is not committed. `/output/analysis/dangling/` has several files 
 
 ### Standard operating procedures (SOPs)
 #### Setting up new/updated inputs/sources
-1. Create a new `YYYY-MM-DD_comploinc-build-sources.zip` in the [Google Drive folder](
+When any of the sources (e.g. LOINC release, LOINC tree web app, LOINC-SNOMED ontology, SNOMED release) are updated, we 
+need to follow this procedure. 
+
+1. Download and unzip the source files into the desired / appropriate directories.
+2. Update the config to point to these new paths.
+3. Create a new `YYYY-MM-DD_comploinc-build-sources.zip` in the [Google Drive folder](
 https://drive.google.com/drive/folders/1Ae5NX959S_CV60nbf9N_37Ao-wJzM0fh). Ensure it has the correct structure (folder 
 names and files at the right paths).
-2. Make the link public: In the Google Drive folder, right-click the file, select "Share", and click "Share."  At the 
+4. Make the link public: In the Google Drive folder, right-click the file, select "Share", and click "Share."  At the 
 bottom, under "General Access", click the left dropdown and select "Anyone with the link."  Click "Copy link".
-3. Update `DL_LINK_ID` in GitHub: Go to the [page](https://github.com/loinc/comp-loinc/settings/secrets/actions/DL_LINK_ID) 
-for updating it. Paste the link from the previous step into the box, and click "Update secret."
+5. Update `DL_LINK_ID` in GitHub: Go to the [page](https://github.com/loinc/comp-loinc/settings/secrets/actions/DL_LINK_ID) 
+for updating it. Paste the link from the previous step into the box, and click "Update secret." The value of this should
+ be set to the ID found within the URL from step (4). E.g. if the link is "
+6. https://drive.google.com/file/d/1i9Ym1zJhC_l6P8egAMcj4Q1QtTGk7aST/view?usp=drive_link," the ID would be  
+`1i9Ym1zJhC_l6P8egAMcj4Q1QtTGk7aST`. 
 
 </details>

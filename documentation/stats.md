@@ -9,10 +9,10 @@
 | Metric | Value |
 | ------ | ----- |
 | Annotation properties | 13 |
-| Axioms | 2274506 |
-| Logical axioms | 1072609 |
-| Classes | 241520 |
-| Object properties | 56 |
+| Axioms | 2171244 |
+| Logical axioms | 965973 |
+| Classes | 241874 |
+| Object properties | 57 |
 | Data properties | 0 |
 | Individuals | 0 |
 
@@ -32,33 +32,33 @@
 
 | Metric | Value |
 | ------ | ----- |
-| AnnotationAssertion | 960310 |
-| EquivalentClasses | 217226 |
+| AnnotationAssertion | 963329 |
+| EquivalentClasses | 218286 |
 | SubObjectPropertyOf | 55 |
-| Declaration | 241587 |
-| SubClassOf | 855328 |
+| Declaration | 241942 |
+| SubClassOf | 747632 |
 
 
 #### Entity namespaces: axiom counts by namespace
 
 | Metric | Value |
 | ------ | ----- |
-| prefix_unknown | 59 |
+| prefix_unknown | 58 |
 | owl | 1 |
 | rdf | 1 |
 | LOINC_PART_GRP_CMP | 2462 |
 | LOINC_PART_GRP_SYS | 1697 |
 | rdfs | 1 |
-| LOINC_PART | 116360 |
+| LOINC_PART | 116185 |
 | LOINC_PART_GRP_CMP_SYS | 18116 |
-| LOINC_TERM | 102893 |
+| LOINC_TERM | 103424 |
 
 
 #### Class expressions used
 
 | Metric | Value |
 | ------ | ----- |
-| Class | 3558892 |
-| ObjectSomeValuesFrom | 1475564 |
-| ObjectIntersectionOf | 206980 |
+| Class | 3383067 |
+| ObjectSomeValuesFrom | 1515211 |
+| ObjectIntersectionOf | 208040 |
 

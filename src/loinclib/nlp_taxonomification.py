@@ -20,22 +20,24 @@ LOINCLIB_DIR = THIS_FILE_PATH.parent
 SRC_DIR = LOINCLIB_DIR.parent
 PROJECT_DIR = SRC_DIR.parent
 # PROJECT_DIR = os.getcwd()
-DEFAULT_CURATION_DIR = PROJECT_DIR / 'curation'
 DANGLING_ANALYSIS_DIR = PROJECT_DIR / 'output/analysis/dangling'
 DANGLING_CACHE_DIR = DANGLING_ANALYSIS_DIR / 'cache'
 # todo: ideally not hard code. Best to solve via OO, i'm not sure
 INPATH_DANGLING = DANGLING_ANALYSIS_DIR / 'dangling.tsv'
 OUT_FILENAME = 'nlp-matches.sssom.tsv'
-# todo: not DRY. This is also defined in LoincTreeSource.nlp_tree
-DEFAULT_OUTPATH_MATCHES = DEFAULT_CURATION_DIR / OUT_FILENAME
 PROPERTY_ANALYSIS_OUTPATH = DANGLING_ANALYSIS_DIR / OUT_FILENAME.replace('.tsv', '_prop_analysis.tsv')
 OUTPATH_HIST = DANGLING_ANALYSIS_DIR / 'confidence_histogram.png'
 # todo: get this from config using standard pattern in codebase
 # note: as of 2025/01/22 there are 62 Document terms in IN_PARTS_ALL not in IN_PARTS_CSV1 or IN_PARTS_CSV2
-IN_PARTS_ALL = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/Part.csv'
-IN_PARTS_CSV1 = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv'
-IN_PARTS_CSV2 = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Primary.csv'
 DEFAULT_CONFIG_PATH = PROJECT_DIR / 'comploinc_config.yaml'
+CONFIG = Configuration(Path(os.path.dirname(str(DEFAULT_CONFIG_PATH))), Path(os.path.basename(DEFAULT_CONFIG_PATH)))
+OUTDIR_CURATION = CONFIG.get_curation_dir_path()
+OUTPATH = Path(OUTDIR_CURATION) / OUT_FILENAME
+LOINC_RELEASE_DIR = CONFIG.get_loinc_release_path()
+IN_PARTS_ALL = LOINC_RELEASE_DIR / 'AccessoryFiles' / 'PartFile' / 'Part.csv'
+IN_PARTS_CSV1 = LOINC_RELEASE_DIR / 'AccessoryFiles' / 'PartFile' / 'LoincPartLink_Supplementary.csv'
+IN_PARTS_CSV2 = LOINC_RELEASE_DIR / 'AccessoryFiles' / 'PartFile' / 'LoincPartLink_Primary.csv'
+OUTPATH_STATS_DOCS = PROJECT_DIR / 'documentation' / 'stats-dangling.md'
 
 
 # Inputs --------------------------------------------------------------------------------------------------------------
@@ -61,6 +63,24 @@ def _get_display_id_map(df, label_field=['PartName', 'PartDisplayName'][0]) -> t
 
 
 # Semantic matching ----------------------------------------------------------------------------------------------------
+def gen_stats(outpath: t.Union[Path, str] = OUTPATH_STATS_DOCS):
+    """Generate statistics about dangling part terms"""
+    # TODO: how to not overwrite curation changes
+    #  - let's say if it is within a multiplicative of 1.2 (e.g. 70%-->84% confidence), then keep the curator judgement.
+    #    else, reset it, and append to the comment field something about it.
+    #  - this requires that i already have a 'comment' field (check the spec to see if it's called that)
+    # TODO: Finally, undo the TODO's about this in the makefile
+    df_all = pd.read_csv(IN_PARTS_ALL)
+    df_dangling = pd.read_csv(IN_PARTS_ALL, sep='\t').rename(columns={'PartDisplayName': 'PartDisplayName_dangling'})
+    # TODO: Create a df
+    # TODO: save to markdown
+    #  - look at how mondo-ingest uses. some package i think
+    #  print(df_dangling.to_markdown(), file=f)  # <-- or could use this for the stats table?
+    out_md = ''
+    with open(outpath, 'w') as f:
+        f.write(out_md)
+    print()
+
 def get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
     """Get embeddings for a list of strings."""
     from sentence_transformers import SentenceTransformer
@@ -137,8 +157,9 @@ def semantic_similarity_df(
 ) -> pd.DataFrame:
     """Creates a dataframe showing semantic similarity confidence between danging and non-dangling terms."""
     # Data load & prep
-    df_all = pd.read_csv(inpath_all)
-    df_dangling = pd.read_csv(inpath_dangling, sep='\t').rename(columns={'PartDisplayName': 'PartDisplayName_dangling'})
+    df_all = pd.read_csv(inpath_all).fillna('')
+    df_dangling = pd.read_csv(inpath_dangling, sep='\t')\
+        .rename(columns={'PartDisplayName': 'PartDisplayName_dangling'}).fillna('')
     # - filter deprecated
     if filter_deprecated:
         deprecated: t.Set[str] = set(df_all[df_all['Status'] == 'DEPRECATED']['PartNumber'])
@@ -153,7 +174,10 @@ def semantic_similarity_df(
     dfs_matches = []
     dfs_no_matching_types = []
     for part_type, df_dangling_i in df_dangling.groupby('PartTypeName'):
+        # todo: .fillna('') should not be necessary here, I would think, as it is done above.
+        #  Why  getting nan if I don't do this?
         df_hier_i = df_hier[df_hier['PartTypeName'] == part_type]
+        df_dangling_i, df_hier_i = df_dangling_i.fillna(''), df_hier_i.fillna('')
         display_ids_dangling: t.Dict[str, t.List[str]] = _get_display_id_map(df_dangling_i, label_field)
         display_ids_hier: t.Dict[str, t.List[str]] = _get_display_id_map(df_hier_i, label_field)
         df_matches_i: pd.DataFrame = find_best_matches(
@@ -262,7 +286,7 @@ def semantic_similarity_further_analyses(df: pd.DataFrame):
 
 
 def _save_sssom(
-    df: pd.DataFrame, outpath: t.Union[Path, str] = DEFAULT_OUTPATH_MATCHES
+    df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH
 ):
     """Save matches to SSSOM
 
@@ -320,8 +344,8 @@ def _save_sssom(
 
 
 def semantic_similarity(
-    outpath: t.Union[Path, str] = DEFAULT_OUTPATH_MATCHES, use_display_name=False, use_cached_df=False,
-    use_cached_embeddings=False,
+    use_display_name=False, use_cached_df=False, use_cached_embeddings=False,
+    outpath: t.Union[Path, str] = OUTPATH,
 ):
     """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity."""
     label_field = 'PartDisplayName' if use_display_name else 'PartName'
@@ -333,15 +357,9 @@ def semantic_similarity(
     semantic_similarity_graphs(matches_df)
 
 
-def main(
-    use_display_name=False, use_cached_ss_df=False, use_cached_ss_embeddings=False,
-    config_path: t.Union[Path, str] = DEFAULT_CONFIG_PATH
-):
+def main(use_display_name=False, use_cached_ss_df=False, use_cached_ss_embeddings=False):
     """Run everything here. Assumes inputs already present."""
-    config = Configuration(Path(os.path.dirname(str(config_path))), Path(os.path.basename(config_path)))
-    outpath_curation_dir = config.get_curation_dir_path()
-    outpath_curation = Path(outpath_curation_dir) / OUT_FILENAME if outpath_curation_dir else DEFAULT_OUTPATH_MATCHES
-    semantic_similarity(outpath_curation, use_display_name, use_cached_ss_df, use_cached_ss_embeddings)
+    semantic_similarity(use_display_name, use_cached_ss_df, use_cached_ss_embeddings)
 
 
 def cli():
@@ -359,8 +377,14 @@ def cli():
         '-C', '--use-cached-ss-embeddings', required=False, action='store_true',
         help='Use cached semantic similarity embeddings for LOINC labels?')
     parser.add_argument(
-        '-f', '--config-path', required=False, default=DEFAULT_CONFIG_PATH, help='Path to CompLOINC config.')
-    main(**vars(parser.parse_args()))
+        '-s', '--stats-only', required=False, action='store_true',
+        help='If this flag is present, will create a markdown file with statistics about dangling parts. If not '
+             'present, no such statistics will be generated.')
+    args: t.Dict = vars(parser.parse_args())
+    if args['stats_only']:
+        return gen_stats()
+    del args['stats_only']
+    main(**args)
 
 
 if __name__ == '__main__':
