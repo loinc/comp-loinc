@@ -34,9 +34,15 @@ jobs:
         run: wget https://github.com/ontodev/robot/releases/latest/download/robot.jar
       # Download and extract build sources
       - name: Download inputs / sources
+        # TODO temp
+#        run: |
+#          curl -L -c cookies.txt 'https://drive.google.com/uc?export=download&id=${{ secrets.DL_LINK_ID }}' -o confirmation.html
+#          curl -L -b cookies.txt "https://drive.usercontent.google.com/download?id=${{ secrets.DL_LINK_ID }}&export=download&confirm=t" -o build-sources.zip
+#          unzip build-sources.zip
+#          rm build-sources.zip cookies.txt confirmation.html
         run: |
-          curl -L -c cookies.txt 'https://drive.google.com/uc?export=download&id=${{ secrets.DL_LINK_ID }}' -o confirmation.html
-          curl -L -b cookies.txt "https://drive.usercontent.google.com/download?id=${{ secrets.DL_LINK_ID }}&export=download&confirm=t" -o build-sources.zip
+          curl -L -c cookies.txt 'https://drive.google.com/uc?export=download&id=19Rhz-iIe0au-EcdQiLzzPZH-8Ch0pF7Z' -o confirmation.html
+          curl -L -b cookies.txt "https://drive.usercontent.google.com/download?id=19Rhz-iIe0au-EcdQiLzzPZH-8Ch0pF7Z&export=download&confirm=t" -o build-sources.zip
           unzip build-sources.zip
           rm build-sources.zip cookies.txt confirmation.html
       # Build

@@ -52,14 +52,13 @@ class LoincTreeLoader:
 
     def load_all_trees(self):
         """Load all tree files"""
-        # TODO temp
-        # self.load_class_tree()
-        # self.load_component_tree()
-        # self.load_component_by_system_tree()
-        # self.load_document_tree()
-        # self.load_method_tree()
-        # self.load_panel_tree()
-        # self.load_system_tree()
+        self.load_class_tree()
+        self.load_component_tree()
+        self.load_component_by_system_tree()
+        self.load_document_tree()
+        self.load_method_tree()
+        self.load_panel_tree()
+        self.load_system_tree()
         self.load_nlp_tree()
 
     def _getsert_node(self, code: str, code_text: str):
@@ -92,7 +91,7 @@ class LoincTreeLoader:
             df[col] = df[col].str.replace("https://loinc.org/", "")  # URI to code
 
         # Add to hierarchy
-        similarity_threshold: float = self.config.config['loinc_nlp_tree'].get(
+        similarity_threshold: float = self.config.CONFIG['loinc_nlp_tree'].get(
             "similarity_threshold", default_similarity_threshold)
         for tpl in df.itertuples():
             # @formatter:off
