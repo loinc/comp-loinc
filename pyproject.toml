@@ -18,6 +18,7 @@ comploinc = 'comp_loinc.cli:comploinc_cli'
 # Languages
 python = "^3.11"
 # Python packages
+jinja2 = ">=3.1.6"
 jinjanator = "*"
 linkml = "^1.5.0"
 linkml-owl = "^0.2.7"
