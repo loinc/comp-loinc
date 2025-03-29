@@ -20,20 +20,23 @@ LOINCLIB_DIR = THIS_FILE_PATH.parent
 SRC_DIR = LOINCLIB_DIR.parent
 PROJECT_DIR = SRC_DIR.parent
 # PROJECT_DIR = os.getcwd()
-DANGLING_DIR = PROJECT_DIR / 'output/analysis/dangling'
-DANGLING_CACHE_DIR = DANGLING_DIR / 'cache'
+DEFAULT_CURATION_DIR = PROJECT_DIR / 'curation'
+DANGLING_ANALYSIS_DIR = PROJECT_DIR / 'output/analysis/dangling'
+DANGLING_CACHE_DIR = DANGLING_ANALYSIS_DIR / 'cache'
 # todo: ideally not hard code. Best to solve via OO, i'm not sure
-INPATH_DANGLING = DANGLING_DIR / 'dangling.tsv'
+INPATH_DANGLING = DANGLING_ANALYSIS_DIR / 'dangling.tsv'
 OUT_FILENAME = 'nlp-matches.sssom.tsv'
 # todo: not DRY. This is also defined in LoincTreeSource.nlp_tree
-OUTPATH_ANALYSIS_MATCHES = DANGLING_DIR / OUT_FILENAME
-OUTPATH_HIST = DANGLING_DIR / 'confidence_histogram.png'
+DEFAULT_OUTPATH_MATCHES = DEFAULT_CURATION_DIR / OUT_FILENAME
+PROPERTY_ANALYSIS_OUTPATH = DANGLING_ANALYSIS_DIR / OUT_FILENAME.replace('.tsv', '_prop_analysis.tsv')
+OUTPATH_HIST = DANGLING_ANALYSIS_DIR / 'confidence_histogram.png'
 # todo: get this from config using standard pattern in codebase
 # note: as of 2025/01/22 there are 62 Document terms in IN_PARTS_ALL not in IN_PARTS_CSV1 or IN_PARTS_CSV2
 IN_PARTS_ALL = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/Part.csv'
 IN_PARTS_CSV1 = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv'
 IN_PARTS_CSV2 = PROJECT_DIR / 'loinc_release/Loinc_2.78/AccessoryFiles/PartFile/LoincPartLink_Primary.csv'
 DEFAULT_CONFIG_PATH = PROJECT_DIR / 'comploinc_config.yaml'
+
 
 # Inputs --------------------------------------------------------------------------------------------------------------
 def parts_to_tsv(parts: t.List, outpath: Path = INPATH_DANGLING):
@@ -129,18 +132,24 @@ def find_best_matches(
 
 def semantic_similarity_df(
     label_field=['PartName', 'PartDisplayName'][0], use_cached_embeddings=False,
-    inpath_dangling: t.Union[Path, str] = INPATH_DANGLING, inpath_all: t.Union[Path, str] = IN_PARTS_ALL
+    inpath_dangling: t.Union[Path, str] = INPATH_DANGLING, inpath_all: t.Union[Path, str] = IN_PARTS_ALL,
+    filter_deprecated=True
 ) -> pd.DataFrame:
     """Creates a dataframe showing semantic similarity confidence between danging and non-dangling terms."""
     # Data load & prep
     df_all = pd.read_csv(inpath_all)
     df_dangling = pd.read_csv(inpath_dangling, sep='\t').rename(columns={'PartDisplayName': 'PartDisplayName_dangling'})
-    if label_field == 'PartName':  # replace df_dangling PartDisplayName w/ lookup of PartName in df_all
+    # - filter deprecated
+    if filter_deprecated:
+        deprecated: t.Set[str] = set(df_all[df_all['Status'] == 'DEPRECATED']['PartNumber'])
+        df_all = df_all[~df_all['PartNumber'].isin(deprecated)]
+        df_dangling = df_dangling[~df_dangling['PartNumber'].isin(deprecated)]
+    # - replace df_dangling PartDisplayName w/ lookup of PartName in df_all
+    if label_field == 'PartName':
         df_dangling = df_dangling.merge(df_all[['PartNumber', 'PartName']], on='PartNumber', how='left')
-    # - filter
     df_hier = df_all[~df_all['PartNumber'].isin(df_dangling['PartNumber'])]
 
-    # Iter, by type
+    # Iterate matching, by type
     dfs_matches = []
     dfs_no_matching_types = []
     for part_type, df_dangling_i in df_dangling.groupby('PartTypeName'):
@@ -167,21 +176,38 @@ def semantic_similarity_df(
         lambda x: f'https://loinc.org/{x}' if x else '')
     df_matches['URL_dangling'] = df_matches['PartNumber_dangling'].apply(lambda x: f'https://loinc.org/{x}')
 
+    # Determine sublcass direction by string length
+    df_matches = df_matches.rename(columns={
+        'URL_dangling': 'subject_id',
+        'URL_hierarchical': 'object_id',
+        'PartName_dangling': 'subject_label',
+        'PartName_hierarchical': 'object_label',
+    })
+    df_matches['subject_dangling'] = True
+    df_matches['object_dangling'] = False
+    mask = df_matches['subject_label'].str.len() < df_matches['object_label'].str.len()
+    # noinspection PyUnresolvedReferences false_positive_thinks_mask_is_bool
+    if mask.any():
+        # For rows that need swapping, create a view with the swapped values
+        swapped_rows = df_matches.loc[mask].copy()
+        # Swap the columns in one go
+        swapped_rows[['subject_label', 'object_label']] = swapped_rows[['object_label', 'subject_label']].values
+        swapped_rows[['subject_id', 'object_id']] = swapped_rows[['object_id', 'subject_id']].values
+        swapped_rows[['subject_dangling', 'object_dangling']] = swapped_rows[
+            ['object_dangling', 'subject_dangling']].values
+        # Update the original dataframe with the swapped values
+        df_matches.loc[mask] = swapped_rows
+
     # Convert to SSSOM
     # - Commenetd out alternative to undefined slot PartTypeName, which is now preferred
     # df_matches['other'] = df_matches['PartTypeName'].apply(lambda x: f'PartTypeName={x}')
     df_matches['curator_approved'] = ''
     df_matches['predicate_id'] = 'rdfs:subClassOf'
     df_matches['mapping_justification'] = 'semapv:SemanticSimilarityThresholdMatching'
-    df_matches = df_matches.drop_duplicates().rename(columns={
-        'URL_dangling': 'subject_id',
-        'URL_hierarchical': 'object_id',
-        'PartName_dangling': 'subject_label',
-        'PartName_hierarchical': 'object_label',
-        'confidence': 'similarity_score'
-    })[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
-        'mapping_justification', 'similarity_score', 'curator_approved']].sort_values(
-        ['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
+    df_matches = df_matches.drop_duplicates().rename(columns={'confidence': 'similarity_score'})[
+        ['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
+        'mapping_justification', 'similarity_score', 'subject_dangling', 'object_dangling', 'curator_approved']]\
+        .sort_values(['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
     return df_matches
 
 
@@ -232,17 +258,14 @@ def semantic_similarity_further_analyses(df: pd.DataFrame):
     df['LinkType_hierarchical'] = hierarchical_merge['LinkTypeName']
     dangling_merge = df.merge(parts_grouped, left_on='PartNumber_dangling', right_on='PartNumber', how='left')
     df['LinkType_dangling'] = dangling_merge['LinkTypeName']
-
-    df.to_csv(str(OUTPATH_ANALYSIS_MATCHES).replace('.tsv', '_prop_analysis.tsv'), sep='\t', index=False)
+    df.to_csv(PROPERTY_ANALYSIS_OUTPATH, sep='\t', index=False)
 
 
 def _save_sssom(
-    df: pd.DataFrame, outpath_tree: t.Union[Path, str] = OUTPATH_ANALYSIS_MATCHES,
-    outpath_analysis: t.Union[Path, str] = OUTPATH_ANALYSIS_MATCHES
+    df: pd.DataFrame, outpath: t.Union[Path, str] = DEFAULT_OUTPATH_MATCHES
 ):
     """Save matches to SSSOM
 
-    Params outpath and outpath2 differences are explained in semantic_similarity().
     todo: consider saving the metadata as a separate yaml file
     """
     # Fix mapping precision
@@ -262,38 +285,50 @@ def _save_sssom(
         'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
         # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
     })
-    # Add back sorting
-    msdf.df = msdf.df.sort_values(['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
-    # Add back undefined cols
-    msdf.df['curator_approved'] = ''
+
+    # Post-SSSOM initialization updates
+    df2 = msdf.df
+    # - Add back undefined cols
+    df2['curator_approved'] = ''
     # todo: I think this will be correct, as the sorting should be the same, but it would be good to check, or add a
     #  more robust way here to ensure that the PartTypeName is correct.
-    msdf.df['PartTypeName'] = df['PartTypeName'].values
-    msdf.df = msdf.df[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
-        'mapping_justification', 'similarity_score', 'curator_approved']]
+    for col in ['PartTypeName', 'subject_dangling', 'object_dangling']:
+        df2[col] = df[col].values
+    df2 = df2[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
+        'mapping_justification', 'similarity_score', 'subject_dangling', 'object_dangling', 'curator_approved']]
+    # - Update non-match rows
+    # - Update to make it clearer that these rows are not bugged, but represent non-matches. Note that this is
+    #   technically not valid SSSOM.
+    mask = df2['object_label'] == ''
+    df2_matches = df2[~mask].copy()
+    df2_na = df2[mask].copy()
+    df2_na['non_match'] = True
+    df2_matches['non_match'] = False
+    cols = ['predicate_id', 'object_id', 'object_label', 'mapping_justification', 'similarity_score', 'object_dangling']
+    for col in cols:
+        df2_na[col] = ''
+    df2_na['curator_approved'] = False
+    # - Add back sorting
+    df3 = pd.concat([df2_matches, df2_na]).sort_values(
+        ['non_match', 'similarity_score', 'subject_id', 'object_id'], ascending=[True, False, True, True])
+    del df3['non_match']
 
     # Save
-    with open(outpath_analysis, 'w') as f:
-        write_table(msdf, f)
-    with open(outpath_tree, 'w') as f:
+    msdf.df = df3
+    with open(outpath, 'w') as f:
         write_table(msdf, f)
 
 
 def semantic_similarity(
-    outpath_tree: t.Union[Path, str], use_display_name=False, use_cached_df=False, use_cached_embeddings=False,
-    outpath_analysis: t.Union[Path, str] = OUTPATH_ANALYSIS_MATCHES,
+    outpath: t.Union[Path, str] = DEFAULT_OUTPATH_MATCHES, use_display_name=False, use_cached_df=False,
+    use_cached_embeddings=False,
 ):
-    """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity.
-
-    :param outpath_tree: This is to place the resulting matches file in the tree browser files dir for easier loading.
-    :param outpath_analysis: This is a mostly redundant path, used to save the dangling matches with the other related
-    analytical files, for easy access.
-    the top of the file."""
+    """Creates an .owl where dangling terms are inserted under most likely parents based on semantic similarity."""
     label_field = 'PartDisplayName' if use_display_name else 'PartName'
     matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_embeddings) \
-        if not (os.path.exists(outpath_analysis) and use_cached_df) \
-        else pd.read_csv(outpath_analysis, sep="\t", comment="#")
-    _save_sssom(matches_df, outpath_tree, outpath_analysis)
+        if not (os.path.exists(outpath) and use_cached_df) \
+        else pd.read_csv(outpath, sep="\t", comment="#")
+    _save_sssom(matches_df, outpath)
     semantic_similarity_further_analyses(matches_df)
     semantic_similarity_graphs(matches_df)
 
@@ -304,8 +339,9 @@ def main(
 ):
     """Run everything here. Assumes inputs already present."""
     config = Configuration(Path(os.path.dirname(str(config_path))), Path(os.path.basename(config_path)))
-    outpath_tree_format = config.get_loinc_trees_path() / OUT_FILENAME
-    semantic_similarity(outpath_tree_format, use_display_name, use_cached_ss_df, use_cached_ss_embeddings)
+    outpath_curation_dir = config.get_curation_dir_path()
+    outpath_curation = Path(outpath_curation_dir) / OUT_FILENAME if outpath_curation_dir else DEFAULT_OUTPATH_MATCHES
+    semantic_similarity(outpath_curation, use_display_name, use_cached_ss_df, use_cached_ss_embeddings)
 
 
 def cli():

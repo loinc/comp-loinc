@@ -52,13 +52,14 @@ class LoincTreeLoader:
 
     def load_all_trees(self):
         """Load all tree files"""
-        self.load_class_tree()
-        self.load_component_tree()
-        self.load_component_by_system_tree()
-        self.load_document_tree()
-        self.load_method_tree()
-        self.load_panel_tree()
-        self.load_system_tree()
+        # TODO temp
+        # self.load_class_tree()
+        # self.load_component_tree()
+        # self.load_component_by_system_tree()
+        # self.load_document_tree()
+        # self.load_method_tree()
+        # self.load_panel_tree()
+        # self.load_system_tree()
         self.load_nlp_tree()
 
     def _getsert_node(self, code: str, code_text: str):
@@ -105,11 +106,13 @@ class LoincTreeLoader:
                 part_type_name,
                 mapping_justification,
                 confidence,
-                curator_approved
+                subject_dangling_tf,
+                object_dangling_tf,
+                curator_approved_tf
             ) = tpl
             # @formatter:on
             # if curator_approved is an invalid or null value, revert to confidence over threshold
-            if curator_approved == False or (curator_approved != True and confidence < similarity_threshold):
+            if curator_approved_tf == False or (curator_approved_tf != True and confidence < similarity_threshold):
                 continue
             child_node = self._getsert_node(child_code, child_code_text)
             parent_node = self._getsert_node(parent_code, parent_code_text)
@@ -186,8 +189,11 @@ class LoincTreeLoader:
         self.graph.loaded_sources[source] = {}
 
     def read_nlp_source(self, source: LoincTreeSource) -> DataFrame:
-        path = self.config.get_loinc_trees_path() / source.value
-        return pd.read_csv(path, sep="\t", comment="#")
+        path = self.config.get_curation_dir_path() / source.value
+        df = pd.read_csv(path, sep="\t", comment="#").fillna('')
+        # - filter non-match rows
+        df = df[df['object_id'] != '']
+        return df
 
     def read_source(self, source: LoincTreeSource) -> DataFrame:
         path = self.config.get_loinc_trees_path() / source.value

@@ -17,6 +17,7 @@ loinc_tree:
 
 loinc_nlp_tree:
   similarity_threshold: 0.5
+  curation_dir_path: 'curation/'
 
 snomed:
   release:

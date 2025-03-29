@@ -6,9 +6,9 @@ import yaml
 
 class Configuration:
     def __init__(
+        # todo: Joe, @Shahim: I'm not sure I like .cwd() over Path(os.path.abspath(__file__)).parent.parent.parent
         self, home_path: Path = Path.cwd(), config_file: Path = "comploinc_config.yaml"
     ):
-
         self.home_path = home_path
         self.config_path = home_path / config_file
 
@@ -72,6 +72,12 @@ class Configuration:
         default = self.config["loinc_snomed"]["release"]["default"]
         path = self.config["loinc_snomed"]["release"][default]["files"]["part_mapping"]
         return self.home_path / path
+
+    def get_curation_dir_path(self):
+        try:
+            return self.home_path / self.config["loinc_nlp_tree"]["curation_dir_path"]
+        except KeyError:
+            return None
 
     def get_logging_configuration(self):
         return self.config["logging"]
