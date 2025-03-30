@@ -117,7 +117,6 @@ class CompLoincTest(unittest.TestCase):
 
         todo: In cases where n props is 5 and not 6, check to ensure missing prop is as expected? If is always same
         todo: Consider test for rad- and document- model props
-        todo: If rename to TIME_ASPECT was unintentional and we undo, update here.
         """
         onto_filename = 'loinc-term-primary-def.owl'
         core_props = {
@@ -126,9 +125,7 @@ class CompLoincTest(unittest.TestCase):
             'http://loinc.org/property/SYSTEM',
             'http://loinc.org/property/SCALE_TYP',
             'http://loinc.org/property/METHOD_TYP',
-            # TIME_ASP(E)CT: 2024/10 w/out 'E' is how it is spelled in release. But we rename it.
             'http://loinc.org/property/TIME_ASPCT',
-            'http://loinc.org/property/TIME_ASPECT',
         }
         self._tests_common(onto_filename)
 
