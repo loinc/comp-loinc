@@ -1,10 +1,98 @@
-# todo: catalog-v001.xml needs to be moved from owl-files into output before merged. and perhaps more from there?
-.PHONY=all stats chebi-subsets
+.PHONY=all build modules grouping dangling merge-reason merge reason stats additional-outputs alternative-hierarchies \
+	chebi-subsets
+DEFAULT_BUILD_DIR=output/build-default
+DANGLING_DIR=output/analysis/dangling
 
 # All ------------------------------------------------------------------------------------------------------------------
-all: stats chebi-subsets
+all: build additional-outputs
 
-# Analysis -------------------------------------------------------------------------------------------------------------
+build: grouping dangling modules merge-reason stats
+
+additional-outputs: alternative-hierarchies
+
+# Core modules ---------------------------------------------------------------------------------------------------------
+MODULE_FILES = \
+	$(DEFAULT_BUILD_DIR)/loinc-snomed-equiv.owl \
+	$(DEFAULT_BUILD_DIR)/loinc-term-primary-def.owl \
+	$(DEFAULT_BUILD_DIR)/loinc-term-supplementary-def.owl \
+	$(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl \
+	$(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl \
+	$(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl \
+	$(DEFAULT_BUILD_DIR)/snomed-parts.owl
+
+modules: $(MODULE_FILES)
+
+$(MODULE_FILES): curation/nlp-matches.sssom.tsv
+	comploinc build
+
+# Grouping classes -----------------------------------------------------------------------------------------------------
+# todo: eventually, grouping classes will be part of `comploinc build`, and this separate part of the makefile will no longer be necessary
+# todo: group_components_systems.owl will probably be removed. When that is done, update this goal.
+GROUPING_FILES = \
+	$(DEFAULT_BUILD_DIR)/group_components.owl \
+	$(DEFAULT_BUILD_DIR)/group_systems.owl \
+	$(DEFAULT_BUILD_DIR)/group_components_systems.owl \
+	$(DANGLING_DIR)/dangling.tsv
+
+grouping: $(GROUPING_FILES)
+
+# todo: when the grouping classes put into the correct dir, can remove these mv steps
+$(GROUPING_FILES):
+	python src/loinclib/attic/cli_run_groups.py
+	mv -f output/group_components.owl $(DEFAULT_BUILD_DIR)/group_components.owl
+	mv -f output/group_systems.owl $(DEFAULT_BUILD_DIR)/group_systems.owl
+	mv -f output/group_components_systems.owl $(DEFAULT_BUILD_DIR)/group_components_systems.owl
+
+# Dangling part terms --------------------------------------------------------------------------------------------------
+DANGLING_FILES = \
+	curation/nlp-matches.sssom.tsv \
+	$(DANGLING_DIR)/nlp-matches.sssom_prop_analysis.tsv \
+	$(DANGLING_DIR)/confidence_histogram.png
+
+$(DANGLING_FILES): $(DANGLING_DIR)/dangling.tsv
+	python src/loinclib/nlp_taxonomification.py
+
+dangling: $(DANGLING_FILES)
+
+# Merging & reasoning --------------------------------------------------------------------------------------------------
+STATIC_DIR = owl-files/comploinc-default
+STATIC_MERGE_FILES = \
+	$(DEFAULT_BUILD_DIR)/catalog-v001.xml \
+	$(DEFAULT_BUILD_DIR)/comploinc.owl \
+	$(DEFAULT_BUILD_DIR)/comploinc-axioms.owl
+
+$(DEFAULT_BUILD_DIR)/catalog-v001.xml: $(STATIC_DIR)/catalog-v001.xml
+	cp $< $@
+
+$(DEFAULT_BUILD_DIR)/comploinc.owl: $(STATIC_DIR)/comploinc.owl
+	cp $< $@
+
+$(DEFAULT_BUILD_DIR)/comploinc-axioms.owl: $(STATIC_DIR)/comploinc-axioms.owl
+	cp $< $@
+
+static-merge-files: $(STATIC_MERGE_FILES)
+
+merge: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl
+
+# todo: Delete this file after the reasoned one has been created?
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl: $(STATIC_MERGE_FILES) $(MODULE_FILES) $(GROUPING_FILES)
+	robot merge $(patsubst %, --input %, $(wildcard $(DEFAULT_BUILD_DIR)/*.owl)) --output $@
+
+reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
+
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl
+	robot reason --input $< --output $@
+
+merge-reason: static-merge-files merge reason
+
+# Analysis / Stats  ----------------------------------------------------------------------------------------------------
+SOURCE_METRICS_TEMPLATE=src/comp_loinc/analysis/stats.md.j2
+PREFIXES_METRICS=--prefix 'LOINC_PART: https://loinc.org/LP' \
+	--prefix 'LOINC_TERM: https://loinc.org/' \
+	--prefix 'LOINC_PART_GRP_CMP: http://comploinc//group/component/LP' \
+	--prefix 'LOINC_PART_GRP_SYS: http://comploinc//group/system/LP' \
+	--prefix 'LOINC_PART_GRP_CMP_SYS: http://comploinc//group/component-system/LP' \
+
 input/analysis/:
 	mkdir -p $@
 
@@ -14,15 +102,23 @@ output/analysis/:
 output/tmp/:
 	mkdir -p $@
 
-# Merging & reasoning --------------------------------------------------------------------------------------------------
-output/build-default/merged-and-reasoned/comploinc-merged-reasoned.owl: output/build-default/merged-and-reasoned/comploinc-merged-unreasoned.owl
-	robot reason --input $< --output $@
+output/tmp/stats.json: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl | output/tmp/
+	robot measure $(PREFIXES_METRICS) -i $< --format json --metrics extended --output $@
+.PRECIOUS: output/tmp/stats.json
 
-BUILD_DEFAULT_PATHS := $(wildcard output/build-default/*.owl)
-output/build-default/merged-and-reasoned/comploinc-merged-unreasoned.owl: $(BUILD_DEFAULT_PATHS)
-	robot merge $(patsubst %, --input %, $(BUILD_DEFAULT_PATHS)) --output $@
+documentation/stats-main.md: output/tmp/stats.json
+	jinjanate "$(SOURCE_METRICS_TEMPLATE)" $< > $@
 
-# Alternative hierarchies ----------------------------------------------------------------------------------------------
+documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
+	python src/loinclib/nlp_taxonomification.py --stats-only
+
+documentation/stats.md: documentation/stats-main.md documentation/stats-dangling.md
+	cat documentation/stats-main.md documentation/stats-dangling.md > $@
+
+stats: documentation/stats.md
+
+# Additional outputs ---------------------------------------------------------------------------------------------------
+# - Alternative hierarchies --------------------------------------------------------------------------------------------
 # - ChEBI subsets
 PART_MAPPINGS=loinc_release/Loinc_2.78/AccessoryFiles/PartFile/PartRelatedCodeMapping.csv
 CHEBI_URI=http://purl.obolibrary.org/obo/chebi/chebi.owl.gz
@@ -45,12 +141,12 @@ $(CHEBI_MODULE): $(PART_MAPPINGS) | output/analysis/
 	awk -F'",' '/ebi\.ac\.uk\/chebi/ { \
 		split($$0, parts, "\""); \
 		for (i=1; i<=NF; i++) { \
-			if (parts[i] ~ /CHEBI:/) { \
-				id = parts[i]; \
-				gsub(".*CHEBI:", "http://purl.obolibrary.org/obo/CHEBI_", id); \
-				gsub(",.*", "", id); \
-				print id " # " parts[i+1] \
-			} \
+		if (parts[i] ~ /CHEBI:/) { \
+			id = parts[i]; \
+			gsub(".*CHEBI:", "http://purl.obolibrary.org/obo/CHEBI_", id); \
+			gsub(",.*", "", id); \
+			print id " # " parts[i+1] \
+		} \
 		} \
 	}' $< > $@
 
@@ -62,9 +158,9 @@ $(CHEBI_MODULE): $(PART_MAPPINGS) | output/analysis/
 # include all super-classes in the module. This is the most widely used module type - when in doubt, use this one.
 $(CHEBI_OUT_BOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 	robot extract --method BOT \
-    --input $(CHEBI_OWL) \
-    --term-file $(CHEBI_MODULE) \
-    --output $@
+	--input $(CHEBI_OWL) \
+	--term-file $(CHEBI_MODULE) \
+	--output $@
 
 # MIREOT: Minimum Information to Reference an External Ontology Term
 # - Source: https://robot.obolibrary.org/extract
@@ -74,23 +170,8 @@ $(CHEBI_OUT_BOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 # will be included in the result.
 $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 	robot extract --method MIREOT \
-    --input $(CHEBI_OWL) \
-    --lower-terms $(CHEBI_MODULE) \
-    --output $@
+	--input $(CHEBI_OWL) \
+	--lower-terms $(CHEBI_MODULE) \
+	--output $@
 
-# Stats ----------------------------------------------------------------------------------------------------------------
-stats: documentation/stats.md
-
-SOURCE_METRICS_TEMPLATE=src/comp_loinc/analysis/stats.md.j2
-PREFIXES_METRICS=--prefix 'LOINC_PART: https://loinc.org/LP' \
-	--prefix 'LOINC_TERM: https://loinc.org/' \
-	--prefix 'LOINC_PART_GRP_CMP: http://comploinc//group/component/LP' \
-	--prefix 'LOINC_PART_GRP_SYS: http://comploinc//group/system/LP' \
-	--prefix 'LOINC_PART_GRP_CMP_SYS: http://comploinc//group/component-system/LP' \
-
-output/tmp/stats.json: output/build-default/merged-and-reasoned/comploinc-merged-reasoned.owl | output/tmp/
-	robot measure $(PREFIXES_METRICS) -i $< --format json --metrics extended --output $@
-.PRECIOUS: output/tmp/stats.json
-
-documentation/stats.md: output/tmp/stats.json
-	jinjanate "$(SOURCE_METRICS_TEMPLATE)" $< > $@
+alternative-hierarchies: chebi-subsets

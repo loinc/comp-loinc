@@ -100,7 +100,7 @@ class CompLoincTest(unittest.TestCase):
         expected = {
             'https://loinc.org/LTC___Claims_attachments': 4,
             'https://loinc.org/LTC___Clinical': 1459,
-            'https://loinc.org/LTC___Laboratory': 3031,
+            'https://loinc.org/LTC___Laboratory': 3017,
             'https://loinc.org/LTC___Surveys': 451
         }
         for branch, count in branch_desc_counts.items():

@@ -91,7 +91,7 @@ class LoincTreeLoader:
             df[col] = df[col].str.replace("https://loinc.org/", "")  # URI to code
 
         # Add to hierarchy
-        similarity_threshold: float = self.config.config['loinc_nlp_tree'].get(
+        similarity_threshold: float = self.config.config["loinc_nlp_tree"].get(
             "similarity_threshold", default_similarity_threshold)
         for tpl in df.itertuples():
             # @formatter:off
