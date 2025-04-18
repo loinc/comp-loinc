@@ -39,19 +39,37 @@
 | SubClassOf | 747632 |
 
 
-#### Entity namespaces: axiom counts by namespace
+#### Entity namespaces counts
 
 | Metric | Value |
 | ------ | ----- |
-| prefix_unknown | 58 |
 | owl | 1 |
 | rdf | 1 |
 | LOINC_PART_GRP_CMP | 2462 |
 | LOINC_PART_GRP_SYS | 1697 |
+| SNOMED | 1 |
 | rdfs | 1 |
 | LOINC_PART | 116185 |
+| LOINC_PROP | 48 |
 | LOINC_PART_GRP_CMP_SYS | 18116 |
 | LOINC_TERM | 103424 |
+| COMPLOINC_AXIOM | 9 |
+
+
+#### Axiom namespaces counts
+
+| Metric | Value |
+| ------ | ----- |
+| owl | 1020 |
+| LOINC_PART_GRP_CMP | 24720 |
+| LOINC_PART_GRP_SYS | 38643 |
+| rdfs | 241867 |
+| SNOMED | 5890 |
+| LOINC_PROP | 1440019 |
+| LOINC_PART | 1808312 |
+| LOINC_PART_GRP_CMP_SYS | 335370 |
+| LOINC_TERM | 1890586 |
+| COMPLOINC_AXIOM | 72 |
 
 
 #### Class expressions used
