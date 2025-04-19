@@ -74,7 +74,7 @@ static-merge-files: $(STATIC_MERGE_FILES)
 
 merge: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl
 
-# todo: Delete this file after the reasoned one has been created?
+# todo: Delete this file after the reasoned one has been created? or move it to tmp/?
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl: $(STATIC_MERGE_FILES) $(MODULE_FILES) $(GROUPING_FILES)
 	robot merge $(patsubst %, --input %, $(wildcard $(DEFAULT_BUILD_DIR)/*.owl)) --output $@
 
@@ -87,11 +87,15 @@ merge-reason: static-merge-files merge reason
 
 # Analysis / Stats  ----------------------------------------------------------------------------------------------------
 SOURCE_METRICS_TEMPLATE=src/comp_loinc/analysis/stats.md.j2
-PREFIXES_METRICS=--prefix 'LOINC_PART: https://loinc.org/LP' \
+PREFIXES_METRICS=\
+	--prefix 'LOINC_PART: https://loinc.org/LP' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
 	--prefix 'LOINC_PART_GRP_CMP: http://comploinc//group/component/LP' \
 	--prefix 'LOINC_PART_GRP_SYS: http://comploinc//group/system/LP' \
 	--prefix 'LOINC_PART_GRP_CMP_SYS: http://comploinc//group/component-system/LP' \
+	--prefix 'LOINC_PROP: http://loinc.org/property/' \
+	--prefix 'COMPLOINC_AXIOM: https://comploinc-axioms\#' \
+	--prefix 'SNOMED: http://snomed.info/'
 
 input/analysis/:
 	mkdir -p $@

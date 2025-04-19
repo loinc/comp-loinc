@@ -36,11 +36,18 @@
 {% for key, value in metrics.axiom_type_count_incl.items() %}| {{ key }} | {{ value }} |
 {% endfor %}
 
-#### Entity namespaces: axiom counts by namespace
+#### Entity namespaces counts
 
 | Metric | Value |
 | ------ | ----- |
 {% for key, value in metrics.namespace_entity_count.items() %}| {{ key }} | {{ value }} |
+{% endfor %}
+
+#### Axiom namespaces counts
+
+| Metric | Value |
+| ------ | ----- |
+{% for key, value in metrics.namespace_axiom_count.items() %}| {{ key }} | {{ value }} |
 {% endfor %}
 
 #### Class expressions used
