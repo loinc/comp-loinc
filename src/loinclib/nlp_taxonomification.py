@@ -6,6 +6,7 @@ from argparse import ArgumentParser
 from datetime import datetime
 from pathlib import Path
 
+import jinja2
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -64,22 +65,54 @@ def _get_display_id_map(df, label_field=['PartName', 'PartDisplayName'][0]) -> t
 
 # Semantic matching ----------------------------------------------------------------------------------------------------
 def gen_stats(outpath: t.Union[Path, str] = OUTPATH_STATS_DOCS):
-    """Generate statistics about dangling part terms"""
-    # TODO: how to not overwrite curation changes
-    #  - let's say if it is within a multiplicative of 1.2 (e.g. 70%-->84% confidence), then keep the curator judgement.
-    #    else, reset it, and append to the comment field something about it.
-    #  - this requires that i already have a 'comment' field (check the spec to see if it's called that)
-    # TODO: Finally, undo the TODO's about this in the makefile
+    """Generate statistics about dangling part terms
+
+    todo: show additional stats?
+     n/pct deprecated? (dangling & non)
+     totals for which match determined to be subclass? (dangling or non-dangling)
+     n curator_approved = True, False, or nan?
+     disaggregate by PartTypeName?
+     n/pct dangling not >= threshold?
+    """
+    template_string = """
+### Dangling part terms
+These are parts that do not fall in the hierarchy in LOINC, but for which CompLOINC attempts to incorporate.
+
+Similarity threshold: {{ similarity_threshold }}
+
+| Part | n | Percentage |
+|----------|-------|------------|
+| All parts | {{ n_all }} | 100% |
+| Non-dangling | {{ n_non_dangling }} | {{ pct_non_dangling }}% |
+| Dangling | {{ n_dangling }} | {{ pct_dangling }}% |
+| (Dangling >= threshold) / dangling | {{ n_over_threshold }} | {{ pct_over_threshold_over_dangling }}% |
+| (Dangling >= threshold) / all | {{ n_over_threshold }} | {{ pct_over_threshold_over_all }}% |
+    """
+    # Read data
     df_all = pd.read_csv(IN_PARTS_ALL)
-    df_dangling = pd.read_csv(IN_PARTS_ALL, sep='\t').rename(columns={'PartDisplayName': 'PartDisplayName_dangling'})
-    # TODO: Create a df
-    # TODO: save to markdown
-    #  - look at how mondo-ingest uses. some package i think
-    #  print(df_dangling.to_markdown(), file=f)  # <-- or could use this for the stats table?
-    out_md = ''
-    with open(outpath, 'w') as f:
-        f.write(out_md)
-    print()
+    df_dangling_in = pd.read_csv(INPATH_DANGLING, sep='\t')
+    df_dangling_out = pd.read_csv(OUTPATH, sep='\t', comment='#')
+    # Calculations & rendering
+    similarity_threshold: float = CONFIG.config['loinc_nlp_tree']['similarity_threshold']
+    n_all = len(df_all)
+    n_dangling = len(df_dangling_in)
+    n_non_dangling = n_all - n_dangling
+    n_over_threshold = len(df_dangling_out[df_dangling_out['similarity_score'] >= similarity_threshold])
+    template = jinja2.Template(template_string)
+    output = template.render(
+        similarity_threshold=similarity_threshold,
+        n_all=n_all,
+        n_dangling=n_dangling,
+        n_non_dangling=n_non_dangling,
+        n_over_threshold=n_over_threshold,
+        pct_dangling=f'{n_dangling / n_all * 100:.1f}',
+        pct_non_dangling=f'{n_non_dangling / n_all * 100:.1f}',
+        pct_over_threshold_over_dangling=f'{n_over_threshold / n_dangling * 100:.1f}',
+        pct_over_threshold_over_all=f'{n_over_threshold / n_all * 100:.1f}')
+    # Save
+    with open(outpath, "w") as f:
+        f.write(output)
+
 
 def get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
     """Get embeddings for a list of strings."""

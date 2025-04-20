@@ -28,7 +28,7 @@
 | OWL2 QL | False |
 | OWL2 RL | False |
 
-#### Axiom types
+### Axiom types
 
 | Metric | Value |
 | ------ | ----- |
@@ -39,7 +39,7 @@
 | SubClassOf | 747632 |
 
 
-#### Entity namespaces counts
+### Entity namespaces: counts by namespace
 
 | Metric | Value |
 | ------ | ----- |
@@ -56,7 +56,7 @@
 | COMPLOINC_AXIOM | 9 |
 
 
-#### Axiom namespaces counts
+### Axiom namespaces: counts by namespace
 
 | Metric | Value |
 | ------ | ----- |
@@ -72,7 +72,7 @@
 | COMPLOINC_AXIOM | 72 |
 
 
-#### Class expressions used
+### Class expressions used
 
 | Metric | Value |
 | ------ | ----- |
@@ -80,3 +80,16 @@
 | ObjectSomeValuesFrom | 1515211 |
 | ObjectIntersectionOf | 208040 |
 
+
+### Dangling part terms
+These are parts that do not fall in the hierarchy in LOINC, but for which CompLOINC attempts to incorporate.
+
+Similarity threshold: 0.5
+
+| Part | n | Percentage |
+|----------|-------|------------|
+| All parts | 72740 | 100% |
+| Non-dangling | 38951 | 53.5% |
+| Dangling | 33789 | 46.5% |
+| (Dangling >= threshold) / dangling | 17955 | 53.1% |
+| (Dangling >= threshold) / all | 17955 | 24.7% |
