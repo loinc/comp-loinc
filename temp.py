@@ -15,6 +15,9 @@ queried_parts = set(queried_df['part'].unique())
 print(f"n parts in LOINC release (Part.csv): {len(all_parts)}")
 print(f"n parts in CL (CompLOINC): {len(queried_parts)}")
 
+print()
+print('n parts in CL not in LOINC release: ', len(queried_parts - all_parts))
+
 queried_not_in_all = queried_parts - all_parts  # n=43,445
 # all_not_in_queried = all_parts - queried_parts  # n=0
 
@@ -22,16 +25,22 @@ queried_not_in_all = queried_parts - all_parts  # n=43,445
 #  - query the tree
 #  - ask them on slack why tree parts not in release
 queried_not_in_trees = queried_not_in_all
+all_tree_browser_parts = set()
+print()
 print('n CL parts found in LOINC tree browser: ')
 for file in os.listdir(TREE_DIR_PATH):
     if file.endswith(".csv"):
         df = pd.read_csv(TREE_DIR_PATH / file)
-        tree_parts = set(df['Code'].unique())
-        interesection = queried_not_in_all.intersection(tree_parts)
+        parts_i = set(df['Code'].unique())
+        all_tree_browser_parts = all_tree_browser_parts.union(parts_i)
+        interesection = queried_not_in_all.intersection(parts_i)
         print(f" - {file}: {len(interesection)}")
-        still_missing = queried_not_in_all - tree_parts
+        still_missing = queried_not_in_trees - parts_i
         queried_not_in_trees = queried_not_in_trees - still_missing
 
-print('n parts still unaccounted for: ', queried_not_in_trees)
+print()
+print('n parts in tree browser: ', len(all_tree_browser_parts))
+print('n CL parts still unaccounted for: ', len(queried_not_in_trees))
+print('n parts in tree browser not in release: ', len(all_tree_browser_parts - all_parts))
 
 print()
