@@ -74,7 +74,7 @@ static-merge-files: $(STATIC_MERGE_FILES)
 
 merge: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl
 
-# todo: Delete this file after the reasoned one has been created? or move it to tmp/?
+# todo: delete this file after the reasoned one has been created? or move it to tmp/?
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl: $(STATIC_MERGE_FILES) $(MODULE_FILES) $(GROUPING_FILES)
 	robot merge $(patsubst %, --input %, $(wildcard $(DEFAULT_BUILD_DIR)/*.owl)) --output $@
 

@@ -29,28 +29,28 @@
 | OWL2 QL | {{ metrics.owl2_ql|default("NA") }} |
 | OWL2 RL | {{ metrics.owl2_rl|default("NA") }} |
 
-#### Axiom types
+### Axiom types
 
 | Metric | Value |
 | ------ | ----- |
 {% for key, value in metrics.axiom_type_count_incl.items() %}| {{ key }} | {{ value }} |
 {% endfor %}
 
-#### Entity namespaces counts
+### Entity namespaces counts
 
 | Metric | Value |
 | ------ | ----- |
 {% for key, value in metrics.namespace_entity_count.items() %}| {{ key }} | {{ value }} |
 {% endfor %}
 
-#### Axiom namespaces counts
+### Axiom namespaces counts
 
 | Metric | Value |
 | ------ | ----- |
 {% for key, value in metrics.namespace_axiom_count.items() %}| {{ key }} | {{ value }} |
 {% endfor %}
 
-#### Class expressions used
+### Class expressions used
 
 | Metric | Value |
 | ------ | ----- |
