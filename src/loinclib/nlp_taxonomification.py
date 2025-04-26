@@ -107,17 +107,18 @@ def _update_curation_file__big_conf_diff_warn(new_df: pd.DataFrame, outpath: t.U
     old_df. the warnings column should be JSON. You should read that JSON and look for a key
     similarity_score_threshold_change, which contains an array. append some data to that array. if there is nothing
     there, you can insert some new json. The entry to add to the array is an object with the following keys:
-    old_confidence, new_confidence, old_mapping_set_id, new_mapping_set_id, old_mapping_set_date, new_mapping_set_date}
+    old_confidence, new_confidence, old_mapping_set_id, new_mapping_set_id, old_publication_date, new_publication_date}
     """
     # Incorporate curated data with new data
     with open(outpath, "r") as file:
         file_content = file.read()
     stream = io.StringIO(file_content)
     old_df, metadata = _read_pandas_and_metadata(stream, "\t")
-    mapping_set_date_old = metadata['mapping_set_date'].strftime('%Y-%m-%d') if \
-        isinstance(metadata['mapping_set_date'], datetime) or isinstance(metadata['mapping_set_date'], date) \
-        else metadata['mapping_set_date']
-    mapping_set_date_new = datetime.now().strftime('%Y-%m-%d')
+    publication_date_old = metadata.get('publication_date', '')
+    publication_date_old = publication_date_old.strftime('%Y-%m-%d') if \
+        isinstance(publication_date_old, datetime) or isinstance(publication_date_old, date) \
+        else publication_date_old
+    publication_date_new = datetime.now().strftime('%Y-%m-%d')
     old_df = old_df.fillna('')
 
     # Create efficient merge key for lookups
@@ -143,6 +144,9 @@ def _update_curation_file__big_conf_diff_warn(new_df: pd.DataFrame, outpath: t.U
             row_data['warnings'] = ''
 
         # Check if this record also exists in new data
+        # TODO temp. though should order be flipped if bool cols flip?
+        a1 = new_df = new_df[(new_df['subject_id'] == 'https://loinc.org/LP434027-1')
+            & (new_df['object_id'] == 'https://loinc.org/LP34631-9')]  # 1
         if key in new_records:
             new_row = new_records[key]
 
@@ -168,8 +172,8 @@ def _update_curation_file__big_conf_diff_warn(new_df: pd.DataFrame, outpath: t.U
                     "old_confidence": str(old_score),
                     "new_confidence": str(new_score),
                     "old_mapping_set_id": metadata['mapping_set_id'],
-                    "old_mapping_set_date": mapping_set_date_old,
-                    "new_mapping_set_date": mapping_set_date_new,
+                    "old_publication_date": publication_date_old,
+                    "new_publication_date": publication_date_new,
                 })
 
                 row_data['warnings'] = json.dumps(warnings_dict)
@@ -195,12 +199,40 @@ def _update_curation_file__big_conf_diff_warn(new_df: pd.DataFrame, outpath: t.U
     result_df = pd.DataFrame(result_data)
     result_df = result_df.drop(columns=['merge_key'])
 
+    # TODO temp
+    a2 = result_df[result_df['warnings'] != '']
+    a3 = result_df.sort_values(
+        ['similarity_score', 'subject_id', 'object_id'], ascending=[False, True, True])
+    a3 = a3[a3['object_id'] != '']
+
+    # todo: why sub/obj dang keys swapped? https://loinc.org/LP434027-1 , https://loinc.org/LP34631-9
+    a4 = result_df[(result_df['subject_id'] == 'https://loinc.org/LP434027-1') &
+        (result_df['object_id'] == 'https://loinc.org/LP34631-9')]
+    a4['sub_lab_len'] = a4['subject_id'].str.len()
+    a4['obj_lab_len'] = a4['object_id'].str.len()
+
+    keyz = ['https://loinc.org/LP34631-9', 'https://loinc.org/LP434027-1']
+    a5 = result_df[(result_df['subject_id'].isin(keyz)) & (result_df['object_id'].isin(keyz))]
+
+    # todo find all (21,900 / 45,845)
+    dupes = result_df.copy()
+    dupes['subject_id'] = dupes['subject_id'].str.replace('https://loinc.org/', '')
+    dupes['object_id'] = dupes['object_id'].str.replace('https://loinc.org/', '')
+    dupes = result_df[result_df.duplicated(subset=['subject_id', 'object_id'], keep=False)]
+    dupes['sub_lab_len'] = dupes['subject_id'].str.len()
+    dupes['obj_lab_len'] = dupes['object_id'].str.len()
+    del dupes['predicate_id']
+    del dupes['PartTypeName']
+    del dupes['mapping_justification']
+    del dupes['warnings']
+    del dupes['curator_approved']
+
     _save_sssom(result_df, outpath)
 
 
 # noinspection DuplicatedCode
 def semantic_similarity_update_curation_file(
-    new_df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH, warn_big_conf_diff=True
+    new_df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH, warn_big_conf_diff=True, overwrite=False
 ):
     """Update curation file with new data while preserving existing records.
 
@@ -212,7 +244,7 @@ def semantic_similarity_update_curation_file(
     3. Updates existing records with new data
     """
     # Save & return if this is the first time creating this file
-    if not os.path.exists(outpath):
+    if not os.path.exists(outpath) or overwrite:
         _save_sssom(new_df, outpath)
         return
 
@@ -311,35 +343,67 @@ def _save_sssom(
     # Fix mapping precision
     #  Otheriwse, some show up with precision >1. Digits >5 causes issue.
     #  Can't do this with SSSOM, so convert col: matches_df.to_csv(outpath, sep='\t', index=False, float_format='%.5f')
+    df['similarity_score'] = pd.to_numeric(df['similarity_score'], errors='coerce')
     df['similarity_score'] = df['similarity_score'].round(5).astype(str)
+    if 'curator_approved' not in df.columns:
+        df['curator_approved'] = ''
 
     # Set metadata
     msdf: MappingSetDataFrame = from_sssom_dataframe(df, prefix_map={
         'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+        'COMPLOINC_PROP': 'https://comploinc-props#',
     }, meta={
         'mapping_tool': 'https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2',
         # todo: Getting dynamically would be great, but not easy. This version number was true by looking at poetry.lock
         #  on 2025/02/22, but won't always be true.
         'mapping_tool_version': '3.4.1',
-        # todo: make this a defined slot https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
         'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
-        # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
-        'mapping_set_date': datetime.now().strftime('%Y-%m-%d'),  # custom field
+        'publication_date': datetime.now().strftime('%Y-%m-%d'),  # custom field
+        'extension_definitions': [  # https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
+            {
+                'slot_name': 'publication_date',
+                'property': 'COMPLOINC_PROP:publication_date',
+                # 'type_hint': 'xsd:date',  # http://www.w3.org/2001/XMLSchema#date
+                'type_hint': 'http://www.w3.org/2001/XMLSchema#date',
+            },
+            {
+                'slot_name': 'PartTypeName',
+                'property': 'COMPLOINC_PROP:PartTypeName',
+                'type_hint': 'http://www.w3.org/2001/XMLSchema#string',
+            },
+            {
+                'slot_name': 'curator_approved',
+                'property': 'COMPLOINC_PROP:curator_approved',
+                'type_hint': 'http://www.w3.org/2001/XMLSchema#bool',
+            },
+            {
+                'slot_name': 'subject_dangling',
+                'property': 'COMPLOINC_PROP:subject_dangling',
+                'type_hint': 'http://www.w3.org/2001/XMLSchema#bool',
+            },
+            {
+                'slot_name': 'object_dangling',
+                'property': 'COMPLOINC_PROP:object_dangling',
+                'type_hint': 'http://www.w3.org/2001/XMLSchema#bool',
+            },
+        ],
     })
 
     # Post-SSSOM initialization updates
     df2 = msdf.df
-    # - Add back undefined cols
-    df2['curator_approved'] = ''
+    # - Add back extension slots (not sure why these are getting removed)
+    # todo: Support for non-standard slots (“extensions”) #583 (https://github.com/mapping-commons/sssom-py/issues/583)
+    #  - when addressed, this section no longer needed
     # todo: I think this will be correct, as the sorting should be the same, but it would be good to check, or add a
     #  more robust way here to ensure that the PartTypeName is correct.
-    for col in ['PartTypeName', 'subject_dangling', 'object_dangling']:
+    for col in ['PartTypeName', 'subject_dangling', 'object_dangling', 'curator_approved']:
         df2[col] = df[col].values
     df2 = df2[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
         'mapping_justification', 'similarity_score', 'subject_dangling', 'object_dangling', 'curator_approved']]
     # - Update non-match rows
-    # - Update to make it clearer that these rows are not bugged, but represent non-matches. Note that this is
+    #   Update to make it clearer that these rows are not bugged, but represent non-matches. Note that this is
     #   technically not valid SSSOM.
+    # todo: should I move this logic above, before the SSSOM is created?
     mask = df2['object_label'] == ''
     df2_matches = df2[~mask].copy()
     df2_na = df2[mask].copy()
@@ -470,17 +534,29 @@ def semantic_similarity_df(
     df_matches['subject_dangling'] = True
     df_matches['object_dangling'] = False
     mask = df_matches['subject_label'].str.len() < df_matches['object_label'].str.len()
-    # noinspection PyUnresolvedReferences false_positive_thinks_mask_is_bool
-    if mask.any():
-        # For rows that need swapping, create a view with the swapped values
-        swapped_rows = df_matches.loc[mask].copy()
-        # Swap the columns in one go
-        swapped_rows[['subject_label', 'object_label']] = swapped_rows[['object_label', 'subject_label']].values
-        swapped_rows[['subject_id', 'object_id']] = swapped_rows[['object_id', 'subject_id']].values
-        swapped_rows[['subject_dangling', 'object_dangling']] = swapped_rows[
-            ['object_dangling', 'subject_dangling']].values
-        # Update the original dataframe with the swapped values
-        df_matches.loc[mask] = swapped_rows
+    df_matches_no_swap = df_matches[mask]
+    df_matches_swap = df_matches[~mask]
+    # todo: refactor this block; somewhat inefficient and confusing
+    if len(df_matches_swap) > 0:
+        # Swap col vals
+        df_matches_swap[['subject_label', 'object_label']] = df_matches_swap[['object_label', 'subject_label']].values
+        df_matches_swap[['subject_id', 'object_id']] = df_matches_swap[['object_id', 'subject_id']].values
+        df_matches_swap[['subject_dangling', 'object_dangling']] = df_matches_swap[
+            ['object_dangling', 'subject_dangling']].values  # same as sub_dangling=False, obj_dangling=True
+        # Disallow cases where swapping would result in multiple (dangling) parents for non-dangling
+        # - Filter single parent
+        sub_counts = df_matches_swap['subject_id'].value_counts()
+        df_matches_swap_true = df_matches_swap[df_matches_swap['subject_id'].map(sub_counts) == 1]
+        if len(df_matches_swap_true) > 0:
+            # - Revert changs made to the multiparent swap rows
+            df_matches_no_swap2 = df_matches_swap[df_matches_swap['subject_id'].map(sub_counts) > 1]
+            df_matches_no_swap2[['subject_label', 'object_label']] = (
+                df_matches_no_swap2[['object_label', 'subject_label']].values)
+            df_matches_no_swap2[['subject_id', 'object_id']] = df_matches_no_swap2[['object_id', 'subject_id']].values
+            df_matches_no_swap2[['subject_dangling', 'object_dangling']] = df_matches_no_swap2[
+                ['object_dangling', 'subject_dangling']].values  # same as sub_dangling=False, obj_dangling=True
+            # Update the original dataframe with the swapped values
+            df_matches = pd.concat([df_matches_no_swap, df_matches_no_swap2, df_matches_swap_true])
 
     # Convert to SSSOM
     # - Commenetd out alternative to undefined slot PartTypeName, which is now preferred
