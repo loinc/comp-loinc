@@ -1,16 +1,19 @@
 """All things dealing with taxonomies based on NLP approaches."""
+import io
+import json
 import os
 import pickle
 import typing as t
 from argparse import ArgumentParser
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 import jinja2
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sssom.parsers import from_sssom_dataframe
+# noinspection PyProtectedMember
+from sssom.parsers import _read_pandas_and_metadata, from_sssom_dataframe
 from sssom.util import MappingSetDataFrame
 from sssom.writers import write_table
 
@@ -39,6 +42,7 @@ IN_PARTS_ALL = LOINC_RELEASE_DIR / 'AccessoryFiles' / 'PartFile' / 'Part.csv'
 IN_PARTS_CSV1 = LOINC_RELEASE_DIR / 'AccessoryFiles' / 'PartFile' / 'LoincPartLink_Supplementary.csv'
 IN_PARTS_CSV2 = LOINC_RELEASE_DIR / 'AccessoryFiles' / 'PartFile' / 'LoincPartLink_Primary.csv'
 OUTPATH_STATS_DOCS = PROJECT_DIR / 'documentation' / 'stats-dangling.md'
+PK = ['subject_id', 'object_id', 'subject_dangling', 'object_dangling']
 
 
 # Inputs --------------------------------------------------------------------------------------------------------------
@@ -90,6 +94,170 @@ def _get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
         # noinspection PyTypeChecker false_positive
         pickle.dump(embeddings, f)
     return embeddings
+
+
+# noinspection DuplicatedCode
+def _update_curation_file__big_conf_diff_warn(new_df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH):
+    """Update curation file with new data while preserving curated records and tracking significant changes.
+
+    But also:
+    For a given record, if the similarity_score has significantly changed (which means that the confidence has changed
+    by a relative + or - 20% between the two values; e.g. a 70% score in old_df changing to 84% in new_df would be 20%
+    since 84/70 = 1.2), add a warnings column if it does not exist. Else, update what was there for that record in the
+    old_df. the warnings column should be JSON. You should read that JSON and look for a key
+    similarity_score_threshold_change, which contains an array. append some data to that array. if there is nothing
+    there, you can insert some new json. The entry to add to the array is an object with the following keys:
+    old_confidence, new_confidence, old_mapping_set_id, new_mapping_set_id, old_mapping_set_date, new_mapping_set_date}
+    """
+    # Incorporate curated data with new data
+    with open(outpath, "r") as file:
+        file_content = file.read()
+    stream = io.StringIO(file_content)
+    old_df, metadata = _read_pandas_and_metadata(stream, "\t")
+    mapping_set_date_old = metadata['mapping_set_date'].strftime('%Y-%m-%d') if \
+        isinstance(metadata['mapping_set_date'], datetime) or isinstance(metadata['mapping_set_date'], date) \
+        else metadata['mapping_set_date']
+    mapping_set_date_new = datetime.now().strftime('%Y-%m-%d')
+    old_df = old_df.fillna('')
+
+    # Create efficient merge key for lookups
+    old_df['merge_key'] = old_df[PK].astype(str).agg('_'.join, axis=1)
+    new_df['merge_key'] = new_df[PK].astype(str).agg('_'.join, axis=1)
+
+    # Create dictionaries for fast lookups
+    old_records = {row['merge_key']: row for _, row in old_df.iterrows()}
+    new_records = {row['merge_key']: row for _, row in new_df.iterrows()}
+
+    # Prepare result dataframe with proper columns
+    all_columns = list(old_df.columns)
+    if 'warnings' not in all_columns:
+        all_columns.append('warnings')
+    result_data = []
+
+    # Process all old records
+    for key, old_row in old_records.items():
+        row_data = old_row.copy()
+
+        # Set default warnings if not present
+        if 'warnings' not in row_data or pd.isna(row_data['warnings']) or row_data['warnings'] == '':
+            row_data['warnings'] = ''
+
+        # Check if this record also exists in new data
+        if key in new_records:
+            new_row = new_records[key]
+
+            # Check for significant similarity score change
+            old_score = float(old_row['similarity_score']) if old_row['similarity_score'] != '' else 0
+            new_score = float(new_row['similarity_score']) if new_row['similarity_score'] != '' else 0
+
+            if old_score > 0 and abs(new_score / old_score - 1) >= 0.2:
+                # Handle warnings for significant change
+                warnings_str = row_data['warnings']
+                if warnings_str and warnings_str.strip():
+                    try:
+                        warnings_dict = json.loads(warnings_str)
+                    except json.JSONDecodeError:
+                        warnings_dict = {}
+                else:
+                    warnings_dict = {}
+
+                if 'similarity_score_threshold_change' not in warnings_dict:
+                    warnings_dict['similarity_score_threshold_change'] = []
+
+                warnings_dict['similarity_score_threshold_change'].append({
+                    "old_confidence": str(old_score),
+                    "new_confidence": str(new_score),
+                    "old_mapping_set_id": metadata['mapping_set_id'],
+                    "old_mapping_set_date": mapping_set_date_old,
+                    "new_mapping_set_date": mapping_set_date_new,
+                })
+
+                row_data['warnings'] = json.dumps(warnings_dict)
+
+            # Update other fields from new data
+            for col in new_df.columns:
+                if col not in PK and col != 'warnings' and col != 'merge_key':
+                    row_data[col] = new_row[col]
+
+            # Mark this record as processed
+            new_records.pop(key)
+
+        result_data.append(row_data)
+
+    # Add remaining new records
+    for key, new_row in new_records.items():
+        row_data = new_row.copy()
+        if 'warnings' not in row_data or pd.isna(row_data['warnings']):
+            row_data['warnings'] = ''
+        result_data.append(row_data)
+
+    # Convert to DataFrame and drop the temporary merge key
+    result_df = pd.DataFrame(result_data)
+    result_df = result_df.drop(columns=['merge_key'])
+
+    _save_sssom(result_df, outpath)
+
+
+# noinspection DuplicatedCode
+def semantic_similarity_update_curation_file(
+    new_df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH, warn_big_conf_diff=True
+):
+    """Update curation file with new data while preserving existing records.
+
+    If warn_big_conf_diff=True, routes to _update_curation_file__big_conf_diff_warn() instead.
+
+    This simplified version:
+    1. Keeps all records from old_df
+    2. Adds new records from new_df
+    3. Updates existing records with new data
+    """
+    # Save & return if this is the first time creating this file
+    if not os.path.exists(outpath):
+        _save_sssom(new_df, outpath)
+        return
+
+    # Else, incorporate curated data with new data
+    if warn_big_conf_diff:
+        return _update_curation_file__big_conf_diff_warn(new_df, outpath)
+
+    old_df = pd.read_csv(outpath, sep='\t', comment='#').fillna('')
+
+    # Create efficient merge key for lookups
+    old_df['merge_key'] = old_df[PK].astype(str).agg('_'.join, axis=1)
+    new_df['merge_key'] = new_df[PK].astype(str).agg('_'.join, axis=1)
+
+    # Create dictionaries for fast lookups
+    old_records = {row['merge_key']: row for _, row in old_df.iterrows()}
+    new_records = {row['merge_key']: row for _, row in new_df.iterrows()}
+
+    # Process all old records
+    result_data = []
+    for key, old_row in old_records.items():
+        row_data = old_row.copy()
+
+        # Check if this record also exists in new data
+        if key in new_records:
+            new_row = new_records[key]
+
+            # Update fields from new data
+            for col in new_df.columns:
+                if col not in ['merge_key']:
+                    row_data[col] = new_row[col]
+
+            # Mark this record as processed
+            new_records.pop(key)
+
+        result_data.append(row_data)
+
+    # Add remaining new records
+    for key, new_row in new_records.items():
+        result_data.append(new_row)
+
+    # Convert to DataFrame and drop the temporary merge key
+    result_df = pd.DataFrame(result_data)
+    result_df = result_df.drop(columns=['merge_key'])
+
+    _save_sssom(result_df, outpath)
 
 
 def _find_best_matches(
@@ -156,6 +324,7 @@ def _save_sssom(
         # todo: make this a defined slot https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
         'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
         # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
+        'mapping_set_date': datetime.now().strftime('%Y-%m-%d'),  # custom field
     })
 
     # Post-SSSOM initialization updates
@@ -385,7 +554,7 @@ def semantic_similarity(
     matches_df: pd.DataFrame = semantic_similarity_df(label_field, use_cached_embeddings) \
         if not (os.path.exists(outpath) and use_cached_df) \
         else pd.read_csv(outpath, sep="\t", comment="#")
-    _save_sssom(matches_df, outpath)
+    semantic_similarity_update_curation_file(matches_df, outpath)
     semantic_similarity_further_analyses(matches_df)
     semantic_similarity_graphs(matches_df)
 
