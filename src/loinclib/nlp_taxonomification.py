@@ -64,7 +64,134 @@ def _get_display_id_map(df, label_field=['PartName', 'PartDisplayName'][0]) -> t
 
 
 # Semantic matching ----------------------------------------------------------------------------------------------------
-def gen_stats(outpath: t.Union[Path, str] = OUTPATH_STATS_DOCS):
+def _get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
+    """Get embeddings for a list of strings."""
+    from sentence_transformers import SentenceTransformer
+
+    # Try to load from cache first
+    cache_file = f"embeddings_{cache_name}.pkl"
+    cache_path = DANGLING_CACHE_DIR / cache_file
+    if os.path.exists(cache_path) and use_cache:
+        # print(f"Loading embeddings from cache: {cache_file}")
+        with open(cache_path, 'rb') as f:
+            return pickle.load(f)
+
+    # If not in cache, generate embeddings
+    print(f"Generating new embeddings ({cache_name}) for {len(text_list)} items...")
+    t0 = datetime.now()
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    embeddings: np.ndarray = model.encode(text_list)
+    print(f"- completed in {datetime.now() - t0}")
+
+    # Save to cache
+    if not os.path.exists(DANGLING_CACHE_DIR):
+        os.makedirs(DANGLING_CACHE_DIR)
+    with open(cache_path, 'wb') as f:
+        # noinspection PyTypeChecker false_positive
+        pickle.dump(embeddings, f)
+    return embeddings
+
+
+def _find_best_matches(
+    terms_dangling: t.List[str], terms_hier: t.List[str], part_type: str,
+    label_field=['PartName', 'PartDisplayName'][0], use_cache=False, batch_size=30_000
+) -> pd.DataFrame:
+    """Find best matches between two sets of strings using embeddings.
+
+    FYI: Introduced batch size for fear of high memory usage. But not an issue, especially when splitting by part_type.
+    batch_size 30k is about equal to the total number of dangling terms. This could become useful if we start to match
+    terms against each other even when they have not been classified as in the same part_type.
+    """
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    if not terms_hier:
+        return pd.DataFrame([{
+            f'{label_field}_dangling': term,
+            f'{label_field}_hierarchical': None,
+            'confidence': 0
+        } for term in terms_dangling])
+
+    # Embed hierarchical terms
+    embeds_hier = _get_embeddings(terms_hier, f'{part_type}_hierarchical', use_cache)
+
+    # Process matches in chunks
+    best_matches = []
+    for i in range(0, len(terms_dangling), batch_size):
+        terms_dangling_i = terms_dangling[i:i + batch_size]
+        embeds_dangling_i = _get_embeddings(terms_dangling_i, f'{part_type}_dangling_{i}', use_cache)
+        # - Calculate all similarities
+        similarities_i = cosine_similarity(embeds_dangling_i, embeds_hier)
+        # - Find best matches
+        for j, term in enumerate(terms_dangling_i):
+            best_match_idx = np.argmax(similarities_i[j])
+            confidence = similarities_i[j][best_match_idx]
+            best_matches.append({
+                f'{label_field}_dangling': term,
+                f'{label_field}_hierarchical': terms_hier[best_match_idx],
+                'confidence': confidence
+            })
+    return pd.DataFrame(best_matches)
+
+
+def _save_sssom(
+    df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH
+):
+    """Save matches to SSSOM
+
+    todo: consider saving the metadata as a separate yaml file
+    """
+    # Fix mapping precision
+    #  Otheriwse, some show up with precision >1. Digits >5 causes issue.
+    #  Can't do this with SSSOM, so convert col: matches_df.to_csv(outpath, sep='\t', index=False, float_format='%.5f')
+    df['similarity_score'] = df['similarity_score'].round(5).astype(str)
+
+    # Set metadata
+    msdf: MappingSetDataFrame = from_sssom_dataframe(df, prefix_map={
+        'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+    }, meta={
+        'mapping_tool': 'https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2',
+        # todo: Getting dynamically would be great, but not easy. This version number was true by looking at poetry.lock
+        #  on 2025/02/22, but won't always be true.
+        'mapping_tool_version': '3.4.1',
+        # todo: make this a defined slot https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
+        'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
+        # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
+    })
+
+    # Post-SSSOM initialization updates
+    df2 = msdf.df
+    # - Add back undefined cols
+    df2['curator_approved'] = ''
+    # todo: I think this will be correct, as the sorting should be the same, but it would be good to check, or add a
+    #  more robust way here to ensure that the PartTypeName is correct.
+    for col in ['PartTypeName', 'subject_dangling', 'object_dangling']:
+        df2[col] = df[col].values
+    df2 = df2[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
+        'mapping_justification', 'similarity_score', 'subject_dangling', 'object_dangling', 'curator_approved']]
+    # - Update non-match rows
+    # - Update to make it clearer that these rows are not bugged, but represent non-matches. Note that this is
+    #   technically not valid SSSOM.
+    mask = df2['object_label'] == ''
+    df2_matches = df2[~mask].copy()
+    df2_na = df2[mask].copy()
+    df2_na['non_match'] = True
+    df2_matches['non_match'] = False
+    cols = ['predicate_id', 'object_id', 'object_label', 'mapping_justification', 'similarity_score', 'object_dangling']
+    for col in cols:
+        df2_na[col] = ''
+    df2_na['curator_approved'] = False
+    # - Add back sorting
+    df3 = pd.concat([df2_matches, df2_na]).sort_values(
+        ['non_match', 'similarity_score', 'subject_id', 'object_id'], ascending=[True, False, True, True])
+    del df3['non_match']
+
+    # Save
+    msdf.df = df3
+    with open(outpath, 'w') as f:
+        write_table(msdf, f)
+
+
+def semantic_similarity_gen_stats(outpath: t.Union[Path, str] = OUTPATH_STATS_DOCS):
     """Generate statistics about dangling part terms
 
     todo: show additional stats?
@@ -114,75 +241,6 @@ Similarity threshold: {{ similarity_threshold }}
         f.write(output)
 
 
-def get_embeddings(text_list: t.List[str], cache_name: str, use_cache=True):
-    """Get embeddings for a list of strings."""
-    from sentence_transformers import SentenceTransformer
-
-    # Try to load from cache first
-    cache_file = f"embeddings_{cache_name}.pkl"
-    cache_path = DANGLING_CACHE_DIR / cache_file
-    if os.path.exists(cache_path) and use_cache:
-        # print(f"Loading embeddings from cache: {cache_file}")
-        with open(cache_path, 'rb') as f:
-            return pickle.load(f)
-
-    # If not in cache, generate embeddings
-    print(f"Generating new embeddings ({cache_name}) for {len(text_list)} items...")
-    t0 = datetime.now()
-    model = SentenceTransformer('all-MiniLM-L6-v2')
-    embeddings: np.ndarray = model.encode(text_list)
-    print(f"- completed in {datetime.now() - t0}")
-
-    # Save to cache
-    if not os.path.exists(DANGLING_CACHE_DIR):
-        os.makedirs(DANGLING_CACHE_DIR)
-    with open(cache_path, 'wb') as f:
-        # noinspection PyTypeChecker false_positive
-        pickle.dump(embeddings, f)
-    return embeddings
-
-
-def find_best_matches(
-    terms_dangling: t.List[str], terms_hier: t.List[str], part_type: str,
-    label_field=['PartName', 'PartDisplayName'][0], use_cache=False, batch_size=30_000
-) -> pd.DataFrame:
-    """Find best matches between two sets of strings using embeddings.
-
-    FYI: Introduced batch size for fear of high memory usage. But not an issue, especially when splitting by part_type.
-    batch_size 30k is about equal to the total number of dangling terms. This could become useful if we start to match
-    terms against each other even when they have not been classified as in the same part_type.
-    """
-    from sklearn.metrics.pairwise import cosine_similarity
-
-    if not terms_hier:
-        return pd.DataFrame([{
-            f'{label_field}_dangling': term,
-            f'{label_field}_hierarchical': None,
-            'confidence': 0
-        } for term in terms_dangling])
-
-    # Embed hierarchical terms
-    embeds_hier = get_embeddings(terms_hier, f'{part_type}_hierarchical', use_cache)
-
-    # Process matches in chunks
-    best_matches = []
-    for i in range(0, len(terms_dangling), batch_size):
-        terms_dangling_i = terms_dangling[i:i + batch_size]
-        embeds_dangling_i = get_embeddings(terms_dangling_i, f'{part_type}_dangling_{i}', use_cache)
-        # - Calculate all similarities
-        similarities_i = cosine_similarity(embeds_dangling_i, embeds_hier)
-        # - Find best matches
-        for j, term in enumerate(terms_dangling_i):
-            best_match_idx = np.argmax(similarities_i[j])
-            confidence = similarities_i[j][best_match_idx]
-            best_matches.append({
-                f'{label_field}_dangling': term,
-                f'{label_field}_hierarchical': terms_hier[best_match_idx],
-                'confidence': confidence
-            })
-    return pd.DataFrame(best_matches)
-
-
 def semantic_similarity_df(
     label_field=['PartName', 'PartDisplayName'][0], use_cached_embeddings=False,
     inpath_dangling: t.Union[Path, str] = INPATH_DANGLING, inpath_all: t.Union[Path, str] = IN_PARTS_ALL,
@@ -213,7 +271,7 @@ def semantic_similarity_df(
         df_dangling_i, df_hier_i = df_dangling_i.fillna(''), df_hier_i.fillna('')
         display_ids_dangling: t.Dict[str, t.List[str]] = _get_display_id_map(df_dangling_i, label_field)
         display_ids_hier: t.Dict[str, t.List[str]] = _get_display_id_map(df_hier_i, label_field)
-        df_matches_i: pd.DataFrame = find_best_matches(
+        df_matches_i: pd.DataFrame = _find_best_matches(
             df_dangling_i[label_field].tolist(), df_hier_i[label_field].tolist(), str(part_type),
             label_field, use_cached_embeddings)
         df_matches_i['PartNumber_dangling'] = df_matches_i[f'{label_field}_dangling'].map(display_ids_dangling)
@@ -318,64 +376,6 @@ def semantic_similarity_further_analyses(df: pd.DataFrame):
     df.to_csv(PROPERTY_ANALYSIS_OUTPATH, sep='\t', index=False)
 
 
-def _save_sssom(
-    df: pd.DataFrame, outpath: t.Union[Path, str] = OUTPATH
-):
-    """Save matches to SSSOM
-
-    todo: consider saving the metadata as a separate yaml file
-    """
-    # Fix mapping precision
-    #  Otheriwse, some show up with precision >1. Digits >5 causes issue.
-    #  Can't do this with SSSOM, so convert col: matches_df.to_csv(outpath, sep='\t', index=False, float_format='%.5f')
-    df['similarity_score'] = df['similarity_score'].round(5).astype(str)
-
-    # Set metadata
-    msdf: MappingSetDataFrame = from_sssom_dataframe(df, prefix_map={
-        'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
-    }, meta={
-        'mapping_tool': 'https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2',
-        # todo: Getting dynamically would be great, but not easy. This version number was true by looking at poetry.lock
-        #  on 2025/02/22, but won't always be true.
-        'mapping_tool_version': '3.4.1',
-        # todo: make this a defined slot https://mapping-commons.github.io/sssom/spec-model/#non-standard-slots
-        'similarity_measure': 'https://www.wikidata.org/wiki/Q1784941',
-        # todo: Ideally, the 'curator_approved' and 'PartTypeName' columns would also have a defined extension
-    })
-
-    # Post-SSSOM initialization updates
-    df2 = msdf.df
-    # - Add back undefined cols
-    df2['curator_approved'] = ''
-    # todo: I think this will be correct, as the sorting should be the same, but it would be good to check, or add a
-    #  more robust way here to ensure that the PartTypeName is correct.
-    for col in ['PartTypeName', 'subject_dangling', 'object_dangling']:
-        df2[col] = df[col].values
-    df2 = df2[['subject_id', 'predicate_id', 'object_id', 'subject_label', 'object_label', 'PartTypeName',
-        'mapping_justification', 'similarity_score', 'subject_dangling', 'object_dangling', 'curator_approved']]
-    # - Update non-match rows
-    # - Update to make it clearer that these rows are not bugged, but represent non-matches. Note that this is
-    #   technically not valid SSSOM.
-    mask = df2['object_label'] == ''
-    df2_matches = df2[~mask].copy()
-    df2_na = df2[mask].copy()
-    df2_na['non_match'] = True
-    df2_matches['non_match'] = False
-    cols = ['predicate_id', 'object_id', 'object_label', 'mapping_justification', 'similarity_score', 'object_dangling']
-    for col in cols:
-        df2_na[col] = ''
-    df2_na['curator_approved'] = False
-    # - Add back sorting
-    df3 = pd.concat([df2_matches, df2_na]).sort_values(
-        ['non_match', 'similarity_score', 'subject_id', 'object_id'], ascending=[True, False, True, True])
-    del df3['non_match']
-
-    # Save
-    msdf.df = df3
-    with open(outpath, 'w') as f:
-        write_table(msdf, f)
-
-
 def semantic_similarity(
     use_display_name=False, use_cached_df=False, use_cached_embeddings=False,
     outpath: t.Union[Path, str] = OUTPATH,
@@ -415,7 +415,7 @@ def cli():
              'present, no such statistics will be generated.')
     args: t.Dict = vars(parser.parse_args())
     if args['stats_only']:
-        return gen_stats()
+        return semantic_similarity_gen_stats()
     del args['stats_only']
     main(**args)
 
