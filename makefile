@@ -237,3 +237,7 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 	--output $@
 
 alternative-hierarchies: chebi-subsets
+
+# temp -----------------------------------------------------------------------------------------------------------------
+cl-parts.tsv:
+	robot query --input $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl --query cl-parts.sparql $@
