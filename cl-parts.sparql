@@ -1,0 +1,7 @@
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT ?term
+WHERE {
+  ?term a owl:Class .
+  FILTER(STRSTARTS(STR(?term), "https://loinc.org/LP"))
+}
