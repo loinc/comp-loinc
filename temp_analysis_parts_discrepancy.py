@@ -13,15 +13,29 @@ CL_QUERIED_PATH = PROJ_DIR / 'cl-parts.tsv'
 DANGLING_PATH = PROJ_DIR / 'output' / 'analysis' / 'dangling' / 'dangling.tsv'
 
 
-def get_tree_parts() -> Set:
+def get_tree_parts(keep_only_component_and_sys=False) -> Set:
     """Get all tree browser parts"""
     tree_all = set()
+    comp_and_sys = ('component.csv, system.csv', 'component_by_system.csv')
     for file in os.listdir(TREE_DIR_PATH):
         if file.endswith(".csv"):
+            if keep_only_component_and_sys and file not in comp_and_sys:
+                continue
             df_i = pd.read_csv(TREE_DIR_PATH / file)
             parts_i = set(df_i['Code'].unique())
             tree_all = tree_all.union(parts_i)
     return tree_all
+
+
+def check_exclusion_from_tree_browser(check_inclusion: Set, verbose=True) -> Tuple[Set, Set]:
+    """Checks to see what parts not in tree browser"""
+    for file in os.listdir(TREE_DIR_PATH):
+        if file.endswith(".csv"):
+            df_i = pd.read_csv(TREE_DIR_PATH / file)
+            parts_i = set(df_i['Code'].unique())
+            missing_i = parts_i - check_inclusion
+            if verbose:
+                print(f" - {file}: {len(missing_i)}")
 
 
 def check_inclusion_in_tree_browser(check_inclusion: Set, verbose=True) -> Tuple[Set, Set]:
@@ -63,6 +77,11 @@ cl_in_trees, cl_not_in_trees = check_inclusion_in_tree_browser(cl_not_in_release
 print('n parts in CL not in LOINC release:', len(cl_not_in_release))
 print('n parts in CL not in tree browser:', len(cl_not_in_trees))
 
+tree_not_in_cl = tree_parts - cl_parts
+print('n parts in tree browser not in CL:', len(tree_not_in_cl))
+print('- by tree:')
+check_exclusion_from_tree_browser(cl_parts)
+
 print()
 print('n CL parts in each tree browser tree: ')
 check_inclusion_in_tree_browser(cl_not_in_release)
@@ -79,6 +98,17 @@ print('2. Cross-checking dangling --------------------')
 # todo: also: see how many of these are from component by system
 dang_df = pd.read_csv(DANGLING_PATH, sep="\t", comment="#").fillna('')
 dang_parts = set(dang_df['PartNumber'])
+# todo: it would be better to finish this code using curation TSV, because it is persistent, unlike dangling TSV
+#  which only shows things that exist in current release. Obsolete if we implement:
+#  https://github.com/loinc/comp-loinc/issues/181
+# dang_df = dang_df['']
+# for col in ['subject_id', 'object_id']:
+#     dang_df[col] = dang_df[col].str.replace('https://loinc.org/', '')
+#
+# dang_parts1 = set(dang_df[dang_df['subject_dangling'] == True]['subject_id'].unique())
+# dang_parts2 = set(dang_df[dang_df['object_dangling'] == True]['object_id'].unique())
+# dang_parts = dang_parts1.union(dang_parts2)
+# dang_parts.remove('')
 print('n dangling parts: ', len(dang_parts))
 dangling_in_trees, dangling_not_in_trees = check_inclusion_in_tree_browser(dang_parts, verbose=False)
 dangling_not_in_release = dang_parts - release_parts
@@ -88,23 +118,11 @@ print('n dangling parts not in release:', len(dangling_not_in_release))
 dangling_not_in_either = dangling_not_in_release.intersection(dangling_not_in_trees)
 print('- of these, which are also not in tree browser:', len(dangling_not_in_either))
 if dangling_not_in_either:
-    print('  - I guess these are from older version of release?')
-# # this part only useful for curation tsv
-# dang_df = dang_df['']
-# for col in ['subject_id', 'object_id']:
-#     dang_df[col] = dang_df[col].str.replace('https://loinc.org/', '')
-#
-# dang_parts1 = set(dang_df[dang_df['subject_dangling'] == True]['subject_id'].unique())
-# dang_parts2 = set(dang_df[dang_df['object_dangling'] == True]['object_id'].unique())
-# dang_parts = dang_parts1.union(dang_parts2)
-# dang_parts.remove('')
+    print('  - I guess these are from older version of release? They are probably not being added to CompLOINC because '
+          'they probably have low confidence. But not sure. See: https://github.com/loinc/comp-loinc/issues/181')
 
 print()
 print('n dangling parts in each tree browser tree: ')
-check_inclusion_in_tree_browser(dang_parts)  # TODO nums dont make sense? do they now after fixing?
+check_inclusion_in_tree_browser(dang_parts)
 
 print()
-# TODO: do something similar that I did above. see workflowy
-# TODO: how many dangling parts NOT in tree browser parts
-# TODO: how many dangling in release VS not
-#  - how many do we lose if we get rid of tee browser
