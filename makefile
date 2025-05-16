@@ -1,5 +1,5 @@
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
-	chebi-subsets
+	chebi-subsets relationship-overlap
 DEFAULT_BUILD_DIR=output/build-default
 DANGLING_DIR=output/analysis/dangling
 # STRICT:
@@ -113,8 +113,17 @@ documentation/stats-main.md: output/tmp/stats.json
 documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
-documentation/stats.md: documentation/stats-main.md documentation/stats-dangling.md
-	cat documentation/stats-main.md documentation/stats-dangling.md > $@
+SELECT ?child ?parent
+WHERE {
+  ?child rdfs:subClassOf ?parent .
+  FILTER (?child != ?parent)  # Avoid reflexive relationships
+  FILTER (!isBlank(?child) && !isBlank(?parent))  # Optional: skip blank nodes
+}
+
+documentation/subclass-analysis.md:
+
+documentation/stats.md: documentation/stats-main.md documentation/stats-dangling.md documentation/subclass-analysis.md
+	cat documentation/stats-main.md documentation/stats-dangling.md documentation/subclass-analysis.md > $@
 
 stats: documentation/stats.md
 
@@ -176,3 +185,6 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 	--output $@
 
 alternative-hierarchies: chebi-subsets
+
+relationship-overlap:
+	python3 scripts/generate_relationship_overlap.py
