@@ -3,11 +3,12 @@ from pathlib import Path
 
 import yaml
 
+LOINCLIB_DIR = Path(__file__).parent
+PROJECT_DIR = LOINCLIB_DIR.parent.parent
 
 class Configuration:
     def __init__(
-        # todo: Joe, @Shahim: I'm not sure I like .cwd() over Path(os.path.abspath(__file__)).parent.parent.parent
-        self, home_path: Path = Path.cwd(), config_file: Path = "comploinc_config.yaml"
+        self, home_path: Path = PROJECT_DIR, config_file: Path = "comploinc_config.yaml"
     ):
         self.home_path = home_path
         self.config_path = home_path / config_file
