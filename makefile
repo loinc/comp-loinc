@@ -1,5 +1,5 @@
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
-	chebi-subsets relationship-overlap
+	chebi-subsets
 DEFAULT_BUILD_DIR=output/build-default
 DANGLING_DIR=output/analysis/dangling
 # STRICT:
@@ -113,14 +113,31 @@ documentation/stats-main.md: output/tmp/stats.json
 documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
-SELECT ?child ?parent
-WHERE {
-  ?child rdfs:subClassOf ?parent .
-  FILTER (?child != ?parent)  # Avoid reflexive relationships
-  FILTER (!isBlank(?child) && !isBlank(?parent))  # Optional: skip blank nodes
-}
+# TODO
+output/tmp/subclass-rels-loinc.tsv:
+	echo TODO networkx/?
 
-documentation/subclass-analysis.md:
+# TODO do I use snomed-parts or query the ontology as a whole?
+#  - how to get as a whole?
+# TODO: check afterwards how many subclass and compare to what's in the file
+# TODO temp uncomment out after and delete the currently uncommented goal, for these 2 goal sets below: loinc-snomed and comploinc
+#output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/snomed-parts.owl
+#	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+output/tmp/subclass-rels-loinc-snomed.tsv:
+	robot query -i $(DEFAULT_BUILD_DIR)/snomed-parts.owl --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+#output/tmp/subclass-comploinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comp_loinc-merged-reasoned.owl
+#	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+output/tmp/subclass-comploinc.tsv:
+	robot query -i $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+# TODO: stick w/ the individual TSVs and then use that jinja table plugin? (look at mondo-ingest reqs)
+# TODO: give this a CLI w/ params, mondo-ingest style? Or make it dumb / omniscient?
+documentation/subclass-analysis.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-comploinc.tsv
+	python src/comp_loinc/analysis/subclass_rels.py --output $@
+
+# TODO temp: to test the pipeline when done
+xxx: documentation/subclass-analysis.md
 
 documentation/stats.md: documentation/stats-main.md documentation/stats-dangling.md documentation/subclass-analysis.md
 	cat documentation/stats-main.md documentation/stats-dangling.md documentation/subclass-analysis.md > $@
@@ -185,6 +202,3 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 	--output $@
 
 alternative-hierarchies: chebi-subsets
-
-relationship-overlap:
-	python3 scripts/generate_relationship_overlap.py
