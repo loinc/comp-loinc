@@ -1,7 +1,12 @@
-.PHONY=all build modules grouping dangling merge-reason merge reason stats additional-outputs alternative-hierarchies \
+.PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
 	chebi-subsets
 DEFAULT_BUILD_DIR=output/build-default
 DANGLING_DIR=output/analysis/dangling
+# STRICT:
+#  - if true, sets '--equivalent-classes-allowed none' when reasoning.
+#  - Usage: `make STRICT=true merge-reason`
+# todo: STRICT: consider changing the goal where this is used to do '--equivalent-classes-allowed asserted-only' instead
+STRICT ?= false
 
 # All ------------------------------------------------------------------------------------------------------------------
 all: build additional-outputs
@@ -70,20 +75,12 @@ $(DEFAULT_BUILD_DIR)/comploinc.owl: $(STATIC_DIR)/comploinc.owl
 $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl: $(STATIC_DIR)/comploinc-axioms.owl
 	cp $< $@
 
-static-merge-files: $(STATIC_MERGE_FILES)
+# todo: consider: '--equivalent-classes-allowed asserted-only' instead
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl: $(STATIC_MERGE_FILES) $(MODULE_FILES) $(GROUPING_FILES)
+	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed none,))
+	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc.owl reason $(EQUIV_FLAG) --output $@
 
-merge: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl
-
-# todo: delete this file after the reasoned one has been created? or move it to tmp/?
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl: $(STATIC_MERGE_FILES) $(MODULE_FILES) $(GROUPING_FILES)
-	robot merge $(patsubst %, --input %, $(wildcard $(DEFAULT_BUILD_DIR)/*.owl)) --output $@
-
-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
-
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-unreasoned.owl
-	robot reason --input $< --output $@
-
-merge-reason: static-merge-files merge reason
+merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
 
 # Analysis / Stats  ----------------------------------------------------------------------------------------------------
 SOURCE_METRICS_TEMPLATE=src/comp_loinc/analysis/stats.md.j2
