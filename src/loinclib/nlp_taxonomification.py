@@ -202,7 +202,7 @@ def semantic_similarity_gen_stats(outpath: t.Union[Path, str] = OUTPATH_STATS_DO
      n/pct dangling not >= threshold?
     """
     template_string = """
-### Dangling part terms
+# Dangling part terms
 These are parts that do not fall in the hierarchy in LOINC, but for which CompLOINC attempts to incorporate.
 
 Similarity threshold: {{ similarity_threshold }}
@@ -214,7 +214,8 @@ Similarity threshold: {{ similarity_threshold }}
 | Dangling | {{ n_dangling }} | {{ pct_dangling }}% |
 | (Dangling >= threshold) / dangling | {{ n_over_threshold }} | {{ pct_over_threshold_over_dangling }}% |
 | (Dangling >= threshold) / all | {{ n_over_threshold }} | {{ pct_over_threshold_over_all }}% |
-    """
+
+"""
     # Read data
     df_all = pd.read_csv(IN_PARTS_ALL)
     df_dangling_in = pd.read_csv(INPATH_DANGLING, sep='\t')
