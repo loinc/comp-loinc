@@ -1,14 +1,41 @@
-/.idea/
-/docs/
+# Misc
 /documentation/stats-main.md
 /documentation/stats-dangling.md
-/project/docs/
+/documentation/subclass-analysis.md
+secrets.yaml
+
+# Release files
+/loinc_release*
+/loinc_trees/
+/comp_loinc/
+/comploinc_out/
+/build-files*
+/*_release
+/*_demo*
+
+# test
+test/input/*
+!test/input/.keep
+test/output/*
+!test/output/.keep
+
+# io
+input/*
+!input/owl-files/
+!input/data/
 /tmp/
 /out*
 
-.DS_Store
+# LinkML
+/docs/
+/project/docs/
 
-secrets.yaml
+# IDE
+/.idea/
+
+
+# OS
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -144,24 +171,3 @@ dmypy.json
 # more patterns
 *.zip
 .~*
-
-# Release files
-/loinc_release*
-/loinc_trees/
-/comp_loinc/
-/comploinc_out/
-/build-files*
-
-/*_release
-/*_demo*
-
-# test
-test/input/*
-!test/input/.keep
-test/output/*
-!test/output/.keep
-
-# input
-input/*
-!input/owl-files/
-!input/data/
