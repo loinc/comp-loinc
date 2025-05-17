@@ -197,15 +197,3 @@ class LoincTreeLoader:
     def read_source(self, source: LoincTreeSource) -> DataFrame:
         path = self.config.get_loinc_trees_path() / source.value
         return pd.read_csv(path, dtype=str, na_filter=False)
-
-
-# TODO temp
-if __name__ == "__main__":
-    from loinclib import LoinclibGraph
-    from loinclib.config import Configuration
-
-    graph = LoinclibGraph()
-    loader = LoincTreeLoader(Configuration(), graph)
-    loader.load_all_trees()
-    # TODO: inspect graph
-    print()
