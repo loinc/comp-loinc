@@ -108,7 +108,7 @@ output/tmp/stats.json: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged
 	robot measure $(PREFIXES_METRICS) -i $< --format json --metrics extended --output $@
 .PRECIOUS: output/tmp/stats.json
 
-documentation/stats-axioms-entities.md: output/tmp/stats.json
+documentation/stats-main-axioms-entities.md: output/tmp/stats.json
 	jinjanate "$(SOURCE_METRICS_TEMPLATE)" $< > $@
 
 documentation/stats-misc.md: output/tmp/stats.json
@@ -129,8 +129,8 @@ output/tmp/subclass-rels-comploinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned
 documentation/subclass-analysis.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc.tsv
 	python src/comp_loinc/analysis/subclass_rels.py --indir output/tmp/ --outpath $@
 
-documentation/stats.md: documentation/stats-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/stats-misc.md
-	cat documentation/stats-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@
+documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/stats-misc.md
+	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@
 
 stats: documentation/stats.md
 

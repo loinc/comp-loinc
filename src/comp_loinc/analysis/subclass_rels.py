@@ -2,6 +2,9 @@
 
 Refs:
 - https://claude.ai/chat/db6bb6d5-2ab5-4bc1-99cc-cffc9428fccd
+
+todo's:
+ - consider writing tables to TSV in addition to markdown. for easy ref / copying
 """
 import os
 from argparse import ArgumentParser
@@ -58,7 +61,7 @@ Meaning of table headers:
 {% endfor %}
 """
 
-# TODO: side effects: also write individual TSVs?
+
 def subclass_rel_analysis(indir: Union[Path, str], outpath: Union[Path, str]):
     """Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."""
     outpath = PROJECT_ROOT / outpath

@@ -1,6 +1,6 @@
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?child ?parent
+SELECT DISTINCT ?child ?parent
 WHERE {
   ?child rdfs:subClassOf ?parent .
   FILTER (?child != ?parent)  # Avoid reflexive relationships
