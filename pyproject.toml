@@ -29,6 +29,7 @@ pandas = "~2.0.3"  # Compatible with numpy 1.x
 sentence_transformers = "*"
 setuptools = "*"  # depednency for sssom
 sssom = "^0.3.26"
+tabulate = "*"
 torch = [
     # Had difficulty / impossibility installing latest version of torch on Apple silicon. Used simpler version.
     # todo: try 2.5 for best stability? will that work on mac?

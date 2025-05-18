@@ -83,7 +83,8 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl: $(STATIC
 merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
 
 # Analysis / Stats  ----------------------------------------------------------------------------------------------------
-SOURCE_METRICS_TEMPLATE=src/comp_loinc/analysis/stats.md.j2
+TEMPLATE_AXIOMS_ENTITIES=src/comp_loinc/analysis/stats-main-axioms-entities.md.j2
+TEMPLATE_MISC=src/comp_loinc/analysis/stats-misc.md.j2
 PREFIXES_METRICS=\
 	--prefix 'LOINC_PART: https://loinc.org/LP' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
@@ -107,14 +108,29 @@ output/tmp/stats.json: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged
 	robot measure $(PREFIXES_METRICS) -i $< --format json --metrics extended --output $@
 .PRECIOUS: output/tmp/stats.json
 
-documentation/stats-main.md: output/tmp/stats.json
+documentation/stats-main-axioms-entities.md: output/tmp/stats.json
+	jinjanate "$(SOURCE_METRICS_TEMPLATE)" $< > $@
+
+documentation/stats-misc.md: output/tmp/stats.json
 	jinjanate "$(SOURCE_METRICS_TEMPLATE)" $< > $@
 
 documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
-documentation/stats.md: documentation/stats-main.md documentation/stats-dangling.md
-	cat documentation/stats-main.md documentation/stats-dangling.md > $@
+output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/snomed-parts.owl
+	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+output/tmp/subclass-rels-loinc.tsv: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl
+	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+output/tmp/subclass-rels-comploinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
+	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+documentation/subclass-analysis.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc.tsv
+	python src/comp_loinc/analysis/subclass_rels.py --indir output/tmp/ --outpath $@
+
+documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/stats-misc.md
+	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@
 
 stats: documentation/stats.md
 

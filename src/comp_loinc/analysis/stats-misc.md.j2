@@ -1,0 +1,17 @@
+
+# Misc
+## Expressivity
+| Metric | Value |
+| ------ | ----- |
+| Expressivity | {{ metrics.expressivity|default("NA") }} |
+| OWL2 | {{ metrics.owl2|default("NA") }} |
+| OWL2 DL | {{ metrics.owl2_dl|default("NA") }} |
+| OWL2 EL | {{ metrics.owl2_el|default("NA") }} |
+| OWL2 QL | {{ metrics.owl2_ql|default("NA") }} |
+| OWL2 RL | {{ metrics.owl2_rl|default("NA") }} |
+
+## Class expressions used
+| Metric | Value |
+| ------ | ----- |
+{% for key, value in metrics.class_expression_count.items() %}| {{ key }} | {{ value }} |
+{% endfor %}
