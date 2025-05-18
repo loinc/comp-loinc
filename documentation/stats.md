@@ -157,7 +157,7 @@ Similarity threshold: 0.5
 | (Dangling >= threshold) / dangling | 17955 | 53.1% |
 | (Dangling >= threshold) / all | 17955 | 24.7% |
 
-# Misc
+# Additional statistics
 ## Expressivity
 | Metric | Value |
 | ------ | ----- |
