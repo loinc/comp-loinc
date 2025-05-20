@@ -3109,6 +3109,23 @@ files = [
 ]
 
 [[package]]
+name = "upsetplot"
+version = "0.9.0"
+description = "Draw Lex et al.'s UpSet plots with Pandas and Matplotlib"
+optional = false
+python-versions = "*"
+files = [
+    {file = "UpSetPlot-0.9.0.tar.gz", hash = "sha256:95b76ac38c624c9dfb1eca1de1a37e30e07e83678b1c57839c943184247b8592"},
+]
+
+[package.dependencies]
+matplotlib = ">=2.0"
+pandas = ">=0.23"
+
+[package.extras]
+testing = ["pytest (>=2.7)", "pytest-cov (<2.6)"]
+
+[[package]]
 name = "uri-template"
 version = "1.3.0"
 description = "RFC 6570 URI Template Processor"
@@ -3316,4 +3333,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "e0f8edf3ad5ebd48d68897471e172cc0056c52e9e2ebec663f3c1754df17fb79"
+content-hash = "9d425e5eecfaea8f7bfff1e529c2cd02ad42aa3c535d83610a64bbe3d2ce6860"

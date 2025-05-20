@@ -5,22 +5,26 @@ Refs:
 
 todo's:
  - consider writing tables to TSV in addition to markdown. for easy ref / copying
+TODO: #1 Do I actually want a_minus_b or intersection? I thought I found that they were the same for my purposes, but
+ now I'm not so sure.
 """
 import os
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Dict, Set, Tuple, Union
 
+import matplotlib.pyplot as plt
 import pandas as pd
 from jinja2 import Template
 from tabulate import tabulate
+from upsetplot import from_contents, UpSet
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
 ONTO_DIR = PROJECT_ROOT / 'src' / 'ontology'
+MISSING_AXIOMS_PATH = PROJECT_ROOT / 'output' / 'tmp' / 'missing_comploinc_axioms.tsv'
 DESC = 'Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED.'
 ONTOLOGIES = ('LOINC', 'LOINC-SNOMED', 'CompLOINC')
-# """
 md_template = """
 # Subclass axiom analysis
 This analysis shows set totals, intersections, and differences for direct subclass axioms in LOINC, CompLOINC, and 
@@ -30,8 +34,18 @@ ancestor relationship.
 ## Total subclass axioms
 {{ tot_table }}
 
-## Merged comparison table
-Cell formatting: (%intersection/a) / (n intersection) / (%intersection/b)  
+## Comparison: Upset plot
+![Upset plot](upset.png)
+
+In this upset plot, we observe both CompLOINC's large count of subclass axioms, and its nearly full inclusion of 
+subclass axioms from sources. In the upset plot, horizontal bars represent the proportion of each terminology's subclass
+axioms relative to the total number of unique subclass axioms across all three resources. Vertical bars represent the 
+proportion of subclass axioms belonging to specific combinations of terminology resources, with each column showing a 
+distinct intersection pattern as indicated by the connected dots below.
+
+## Comparison: Merged table
+Cell formatting: (%intersection/a) / (n intersection) / (%intersection/b)
+
 Where 'a' is the ontology represented by the row, and 'b' is the ontology represented by the column. 'n intersection' is 
 the total number of subclass axioms in the intersection of the two ontologies. '%intersection/' is the percentage of 
 subclass axioms in the intersection of the two ontologies, relative to the total number of subclass axioms in the 
@@ -39,7 +53,7 @@ ontology.
 
 {{ overlap_direct_merged_table }}
 
-## Individual comparison tables
+## Comparison: Individual tables
 Meaning of table headers:  
 "a vs b": 'a' is the ontology on the left side of the comparison, and 'b' is the one on the right side.
 - **tot a**: Total number of subclass axioms for ontology on left side of the comparison.
@@ -62,9 +76,8 @@ Meaning of table headers:
 """
 
 
-def subclass_rel_analysis(indir: Union[Path, str], outpath: Union[Path, str]):
-    """Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."""
-    outpath = PROJECT_ROOT / outpath
+def _read(indir: Union[Path, str]) -> Tuple[pd.DataFrame, Dict[str, Set[Tuple[str, str]]]]:
+    """Read & return transformed inputs"""
     ont_paths = {k: PROJECT_ROOT / indir / f'subclass-rels-{k.lower()}.tsv' for k in ONTOLOGIES}
     ont_sets: Dict[str, Set[Tuple[str, str]]] = {}
     ont_dfs = {}
@@ -77,7 +90,11 @@ def subclass_rel_analysis(indir: Union[Path, str], outpath: Union[Path, str]):
         tots_rows.append({'': ont, 'n': f'{len(df):,}'})
         ont_sets[ont] = set(zip(df["?child"], df["?parent"]))
     tots_df = pd.DataFrame(tots_rows)
+    return tots_df, ont_sets
 
+
+def _make_tables(tots_df: pd.DataFrame, ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
+    """Calculate and save tables"""
     # Overlap/comparison: merged table
     overlap_direct_merged_rows = []
     for row_ont in ONTOLOGIES:
@@ -111,7 +128,7 @@ def subclass_rel_analysis(indir: Union[Path, str], outpath: Union[Path, str]):
             b_minus_a = set_b.difference(set_a)
             # noinspection DuplicatedCode
             intersection = set_a.intersection(set_b)
-            # TODO: Do I actually want a_minus_b or intersection? I thought I found that they were the same for my
+            # TODO: #1 Do I actually want a_minus_b or intersection? I thought I found that they were the same for my
             #  purposes, but now I'm not so sure.
             # Calculate percentages
             pct_a_minus_b = len(a_minus_b) / len(set_a) * 100 if len(set_a) > 0 else 0
@@ -146,6 +163,98 @@ def subclass_rel_analysis(indir: Union[Path, str], outpath: Union[Path, str]):
         f.write(markdown_output)
 
 
+def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
+    """Analyze and save information about missing axioms in each data source.
+
+    Args:
+        ont_sets: Dictionary mapping ontology names to sets of subclass axioms
+    """
+    print("Interrogating non-inclusion of axioms in CompLOINC and its sources.")
+    all_elements = set()
+    for s in ont_sets.values():
+        all_elements.update(s)
+    print(f"- Total unique elements across all sets: {len(all_elements)}")
+
+    # Find elements not in CompLOINC
+    if "CompLOINC" in ont_sets:
+        missing_from_comploinc = all_elements - ont_sets["CompLOINC"]
+        print(
+            f"- Elements missing from CompLOINC: "
+            f"{len(missing_from_comploinc)} ({len(missing_from_comploinc) / len(all_elements) * 100:.2f}%)")
+
+        # Find where these missing elements exist
+        missing_elements_source = {}
+        for missing in missing_from_comploinc:
+            sources = []
+            for ont_name, elements in ont_sets.items():
+                if missing in elements:
+                    sources.append(ont_name)
+            missing_elements_source[missing] = sources
+
+        # Count by source combinations
+        source_combinations = {}
+        for sources in missing_elements_source.values():
+            key = tuple(sorted(sources))
+            source_combinations[key] = source_combinations.get(key, 0) + 1
+
+        print("\n- Missing elements by source combinations:")
+        for sources, count in sorted(source_combinations.items(), key=lambda x: x[1], reverse=True):
+            print(f" - {', '.join(sources)}: {count} elements")
+
+        rows = []
+        for axiom, sources in missing_elements_source.items():
+            rows.append({
+                'child': axiom[0], 'parent': axiom[1], 'in_loinc': 'LOINC' in sources,
+                'in_loinc-snomed': 'LOINC-SNOMED' in sources})
+        missing_df = pd.DataFrame(rows)
+        try:
+            missing_df.to_csv(MISSING_AXIOMS_PATH, index=False, sep='\t')
+        except FileNotFoundError:
+            print('Could not save missing axioms to tmp directory; doesn\'t exist.')
+
+
+def _make_upset_plot(ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
+    """Make upset plot showing relationships between ontology subclass axioms.
+
+    Args:
+        ont_sets: Dictionary mapping ontology names to sets of subclass axioms
+        outpath: Path to save the resulting plot
+    """
+    # Convert sets to a dictionary format for upsetplot
+    data = {}
+    for ont_name, axiom_set in ont_sets.items():
+        # Convert tuples to strings for easier handling
+        data[ont_name] = {f"{parent}>{child}" for parent, child in axiom_set}
+
+    # Generate the upset data structure
+    upset_data = from_contents(data)
+
+    # Create the plot
+    fig = plt.figure(figsize=(12, 8))
+    # fig = plt.figure(figsize=(12, 8), constrained_layout=True)  # alternative layout; doesn't seem any different
+    upset = UpSet(upset_data, sort_by='cardinality', show_percentages=True)
+    upset.plot(fig=fig)
+    # Add title and adjust layout
+    # plt.suptitle("Ontology Subclass Axiom Overlap", fontsize=16)
+    # plt.tight_layout()  # alternative to .subplots_adjust(). looked bad and gave warning: This figure includes Axes
+    # that are not compatible with tight_layout, so results might be incorrect.
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
+
+    # Save
+    plt.savefig(outpath, dpi=300, bbox_inches='tight')
+    plt.close()
+
+
+def subclass_rel_analysis(indir: Union[Path, str], outpath_md: Union[Path, str], outpath_upset_plot: Union[Path, str]):
+    """Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."""
+    outpath_md = PROJECT_ROOT / outpath_md
+    outpath_upset_plot = PROJECT_ROOT / outpath_upset_plot
+    tots_df, ont_sets = _read(indir)
+    _make_tables(tots_df, ont_sets, outpath_md)
+    _make_upset_plot(ont_sets, outpath_upset_plot)
+    _interrogate_missing_axioms(ont_sets)
+
+
 def cli():
     """Command line interface."""
     parser = ArgumentParser(prog='Subclass axiom analysis.', description=DESC)
@@ -154,7 +263,9 @@ def cli():
         help='Path to directory containing expected inputs: subclass-rels-*.tsv, where * are: '
              + ', '.join([x.lower() for x in ONTOLOGIES]))
     parser.add_argument(
-        '-o', '--outpath', required=True, type=str, help='Outpath for markdown file containing results.')
+        '-m', '--outpath-md', required=True, type=str, help='Outpath for markdown file containing results.')
+    parser.add_argument(
+        '-u', '--outpath-upset-plot', required=True, type=str, help='Outpath for upset plot.')
     d: Dict = vars(parser.parse_args())
     return subclass_rel_analysis(**d)
 

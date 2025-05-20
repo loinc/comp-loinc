@@ -64,12 +64,22 @@ ancestor relationship.
 ## Total subclass axioms
 |              | n       |
 |:-------------|:--------|
-| LOINC        | 120,449 |
-| LOINC-SNOMED | 11,376  |
+| LOINC        | 120,334 |
+| LOINC-SNOMED | 11,385  |
 | CompLOINC    | 747,632 |
 
-## Merged comparison table
-Cell formatting: (%intersection/a) / (n intersection) / (%intersection/b)  
+## Comparison: Upset plot
+![Upset plot](upset.png)
+
+In this upset plot, we observe both CompLOINC's large count of subclass axioms, and its nearly full inclusion of 
+subclass axioms from sources. In the upset plot, horizontal bars represent the proportion of each terminology's subclass
+axioms relative to the total number of unique subclass axioms across all three resources. Vertical bars represent the 
+proportion of subclass axioms belonging to specific combinations of terminology resources, with each column showing a 
+distinct intersection pattern as indicated by the connected dots below.
+
+## Comparison: Merged table
+Cell formatting: (%intersection/a) / (n intersection) / (%intersection/b)
+
 Where 'a' is the ontology represented by the row, and 'b' is the ontology represented by the column. 'n intersection' is 
 the total number of subclass axioms in the intersection of the two ontologies. '%intersection/' is the percentage of 
 subclass axioms in the intersection of the two ontologies, relative to the total number of subclass axioms in the 
@@ -77,11 +87,11 @@ ontology.
 
 |              | LOINC                   | LOINC-SNOMED          | CompLOINC               |
 |:-------------|:------------------------|:----------------------|:------------------------|
-| LOINC        | -                       | 0.0% / 0 / 0.0%       | 99.1% / 119,409 / 16.0% |
-| LOINC-SNOMED | 0.0% / 0 / 0.0%         | -                     | 96.1% / 10,936 / 1.5%   |
-| CompLOINC    | 16.0% / 119,409 / 99.1% | 1.5% / 10,936 / 96.1% | -                       |
+| LOINC        | -                       | 0.0% / 0 / 0.0%       | 99.2% / 119,410 / 16.0% |
+| LOINC-SNOMED | 0.0% / 0 / 0.0%         | -                     | 96.1% / 10,937 / 1.5%   |
+| CompLOINC    | 16.0% / 119,410 / 99.2% | 1.5% / 10,937 / 96.1% | -                       |
 
-## Individual comparison tables
+## Comparison: Individual tables
 Meaning of table headers:  
 "a vs b": 'a' is the ontology on the left side of the comparison, and 'b' is the one on the right side.
 - **tot a**: Total number of subclass axioms for ontology on left side of the comparison.
@@ -99,14 +109,14 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 100.0%    |    120449 |  120449 |              0 |   11376 |     11376 | 100.0%    |
+| 100.0%    |    120334 |  120334 |              0 |   11385 |     11385 | 100.0%    |
 
 
 #### vs CompLOINC
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 0.9%      |      1040 |  120449 |         119409 |  747632 |    628223 | 84.0%     |
+| 0.8%      |       924 |  120334 |         119410 |  747632 |    628222 | 84.0%     |
 
 
 
@@ -116,14 +126,14 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 100.0%    |     11376 |   11376 |              0 |  120449 |    120449 | 100.0%    |
+| 100.0%    |     11385 |   11385 |              0 |  120334 |    120334 | 100.0%    |
 
 
 #### vs CompLOINC
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 3.9%      |       440 |   11376 |          10936 |  747632 |    736696 | 98.5%     |
+| 3.9%      |       448 |   11385 |          10937 |  747632 |    736695 | 98.5%     |
 
 
 
@@ -133,14 +143,14 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 84.0%     |    628223 |  747632 |         119409 |  120449 |      1040 | 0.9%      |
+| 84.0%     |    628222 |  747632 |         119410 |  120334 |       924 | 0.8%      |
 
 
 #### vs LOINC-SNOMED
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 98.5%     |    736696 |  747632 |          10936 |   11376 |       440 | 3.9%      |
+| 98.5%     |    736695 |  747632 |          10937 |   11385 |       448 | 3.9%      |
 
 
 
@@ -157,7 +167,7 @@ Similarity threshold: 0.5
 | (Dangling >= threshold) / dangling | 17955 | 53.1% |
 | (Dangling >= threshold) / all | 17955 | 24.7% |
 
-# Misc
+# Additional statistics
 ## Expressivity
 | Metric | Value |
 | ------ | ----- |
