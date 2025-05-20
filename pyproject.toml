@@ -40,7 +40,7 @@ torch = [
 ]
 transformers = ">=4.48.0"  # includes security update
 typer = "^0.9.0"
-upsetplot = "*"
+upsetplot = "^1.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
