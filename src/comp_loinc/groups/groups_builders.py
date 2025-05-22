@@ -61,7 +61,6 @@ class Grouper:
         self.related_use_index: t.Dict[str, t.Dict[Property, t.Dict[str, set]]] = {}
 
     def process_property(self, property_names: list):
-
         for name in property_names:
             root_props = self.index.property_roots_by_name_key[name]
             for property_key, _property in root_props.items():
@@ -84,7 +83,6 @@ class Grouper:
         del path[-1]
 
     def process_path(self, path: t.List[Property]):
-
         (used_after_not_used, not_used_before_used) = self.find_used_after_unused(path)
 
         for p in used_after_not_used:
@@ -116,7 +114,7 @@ class Grouper:
 
     def find_by_count_averages(self, _property: Property, seen: set):
         if _property in seen:
-            print("CYCLE ============= in find_by_count_averages")
+            print(f"find_by_count_averages(): {_property.part_number}")  # TODO: cycle-breaking analysis
             return
         seen.add(_property)
         print("in find_by_count_averages")
@@ -593,6 +591,7 @@ class GroupsBuilderSteps:
         self, _property: Property, depth: int, path: t.List[Property]
     ):
         if _property in path:
+            print(f"_do_property_depths(): {path}")  # TODO: cycle-breaking analysis
             return
         path.append(_property)
         if _property.depth is None:
@@ -608,6 +607,7 @@ class GroupsBuilderSteps:
         self, _property: Property, path: t.List[Property]
     ):
         if _property in path:
+            print(f"_do_property_depths_percentage(): {path}")  # TODO: cycle-breaking analysis
             return
         path.append(_property)
         if len(_property.child_prop_use_by_key) == 0:
@@ -629,7 +629,6 @@ class GroupsBuilderSteps:
                     _property.depth_percentage = percentage
 
     def do_index(self):
-
         self.do_index_load_graph()
         self.do_index_parts_tree()
         self.do_index_part_roots()
@@ -637,7 +636,6 @@ class GroupsBuilderSteps:
         self.do_index_infer_parent_properties()
         self.do_index_check_property_part_overloads()
         self.do_index_property_depths()
-
         print("Done indexing")
 
     def _infer_parent_properties(
