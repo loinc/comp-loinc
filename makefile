@@ -152,17 +152,19 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
 # - Comparisons: SNOMED-LOINC
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/snomed-parts-reasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
+# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-snomed-reasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
 	robot reason --input $< --output $@
 
-output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/snomed-parts-reasoned.owl
+output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-snomed-reasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: LOINC
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-part-hierarchy-all-reasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
+# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/193
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-reasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
 	robot reason --input $< --output $@
 
-output/tmp/subclass-rels-loinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-part-hierarchy-all-reasoned.owl
+output/tmp/subclass-rels-loinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-reasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: CompLOINC
@@ -174,7 +176,11 @@ documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_co
 	python src/comp_loinc/analysis/subclass_rels.py --indir output/tmp/ --outpath-md documentation/subclass-analysis.md --outpath-upset-plot documentation/upset.png
 
 # - Build final outputs & main command
-documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/stats-misc.md
+# TODO: update prereqs: should be same as above
+documentation/depth.md documentation/depth-histogram.png documentation/depth-histogram-percents.png:
+	python src/comp_loinc/analysis/depth.py --indir output/tmp/ --outpath-md documentation/depth.md --outpath-plot-n documentation/depth-histogram.png --outpath-plot-n documentation/depth-histogram-percents.png
+
+documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/depth.md documentation/stats-misc.md
 	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@
 
 stats: documentation/stats.md

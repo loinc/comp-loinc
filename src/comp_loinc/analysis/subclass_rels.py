@@ -19,12 +19,13 @@ from jinja2 import Template
 from tabulate import tabulate
 from upsetplot import from_contents, UpSet
 
+from comp_loinc.analysis.utils import ONTOLOGIES, _subclass_axioms_and_totals
+
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
 ONTO_DIR = PROJECT_ROOT / 'src' / 'ontology'
 MISSING_AXIOMS_PATH = PROJECT_ROOT / 'output' / 'tmp' / 'missing_comploinc_axioms.tsv'
 DESC = 'Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED.'
-ONTOLOGIES = ('LOINC', 'LOINC-SNOMED', 'CompLOINC')
 md_template = """
 # Subclass axiom analysis
 This analysis shows set totals, intersections, and differences for direct subclass axioms in LOINC, CompLOINC, and 
@@ -74,23 +75,6 @@ Meaning of table headers:
 {% endfor %}
 {% endfor %}
 """
-
-
-def _read(indir: Union[Path, str]) -> Tuple[pd.DataFrame, Dict[str, Set[Tuple[str, str]]]]:
-    """Read & return transformed inputs"""
-    ont_paths = {k: PROJECT_ROOT / indir / f'subclass-rels-{k.lower()}.tsv' for k in ONTOLOGIES}
-    ont_sets: Dict[str, Set[Tuple[str, str]]] = {}
-    ont_dfs = {}
-
-    # Totals
-    tots_rows = []
-    for ont, path in ont_paths.items():
-        df = pd.read_csv(path, sep='\t')
-        ont_dfs[ont] = df
-        tots_rows.append({'': ont, 'n': f'{len(df):,}'})
-        ont_sets[ont] = set(zip(df["?child"], df["?parent"]))
-    tots_df = pd.DataFrame(tots_rows)
-    return tots_df, ont_sets
 
 
 def _make_tables(tots_df: pd.DataFrame, ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
@@ -249,7 +233,7 @@ def subclass_rel_analysis(indir: Union[Path, str], outpath_md: Union[Path, str],
     """Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."""
     outpath_md = PROJECT_ROOT / outpath_md
     outpath_upset_plot = PROJECT_ROOT / outpath_upset_plot
-    tots_df, ont_sets = _read(indir)
+    tots_df, ont_sets = _subclass_axioms_and_totals(indir)
     _make_tables(tots_df, ont_sets, outpath_md)
     _make_upset_plot(ont_sets, outpath_upset_plot)
     _interrogate_missing_axioms(ont_sets)
