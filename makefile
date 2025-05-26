@@ -142,6 +142,10 @@ output/tmp/stats.json: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/complo
 	robot measure $(PREFIXES_METRICS) -i $< --format json --metrics extended --output $@
 .PRECIOUS: output/tmp/stats.json
 
+# TODO temp
+all-stats.json:
+	robot measure $(PREFIXES_METRICS) -i $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl --format json --metrics all --output $@
+
 documentation/stats-main-axioms-entities.md: output/tmp/stats.json
 	jinjanate src/comp_loinc/analysis/stats-main-axioms-entities.md.j2 $< > $@
 
