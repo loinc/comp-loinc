@@ -152,7 +152,7 @@ documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_co
 # - Build final outputs & main command
 # TODO: update prereqs: should be same as above
 documentation/depth.md documentation/depth-histogram.png documentation/depth-histogram-percents.png:
-	python src/comp_loinc/analysis/depth.py --indir output/tmp/ --outpath-md documentation/depth.md --outpath-plot-n documentation/depth-histogram.png --outpath-plot-n documentation/depth-histogram-percents.png
+	python src/comp_loinc/analysis/depth.py --indir output/tmp/ --outpath-md documentation/depth.md --outpath-plot-n documentation/depth-histogram.png --outpath-plot-pct documentation/depth-histogram-percents.png
 
 documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/depth.md documentation/stats-misc.md
 	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@

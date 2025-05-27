@@ -23,7 +23,6 @@ from comp_loinc.analysis.utils import ONTOLOGIES, _subclass_axioms_and_totals
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-ONTO_DIR = PROJECT_ROOT / 'src' / 'ontology'
 MISSING_AXIOMS_PATH = PROJECT_ROOT / 'output' / 'tmp' / 'missing_comploinc_axioms.tsv'
 DESC = 'Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED.'
 md_template = """
