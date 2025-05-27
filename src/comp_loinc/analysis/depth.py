@@ -1,4 +1,9 @@
 """TODO
+
+todo's
+ disaggregate groups by type? e.g.:
+  http://comploinc//group/component/LP...
+  http://comploinc//group/system/LP...
 """
 import os
 from argparse import ArgumentParser
@@ -10,33 +15,35 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 # TODO
-# import matplotlib.pyplot as plt
-# import pandas as pd
 # from jinja2 import Template
 # from tabulate import tabulate
-# from upsetplot import from_contents, UpSet
 
-from comp_loinc.analysis.utils import _subclass_axioms_and_totals
+from comp_loinc.analysis.utils import CLASS_TYPES, _filter_classes, _subclass_axioms_and_totals
 
-# TODO: cull vars i don't need
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-ONTO_DIR = PROJECT_ROOT / 'src' / 'ontology'
-MISSING_AXIOMS_PATH = PROJECT_ROOT / 'output' / 'tmp' / 'missing_comploinc_axioms.tsv'
-# TODO
-DESC = ''
+DESC = ''  # TODO
 ONTOLOGIES = ('LOINC', 'LOINC-SNOMED', 'CompLOINC')
 # TODO: Narrative, etc. i guess just show the histogram? no table? render a link
+# TODO: links below
+# If need smaller, cand o: ![Title]({{ outpath }}){: width="600px"}
 md_template = """
 # Classifcation depth analysis 
 narrative
 
-{{ path }}
+![TODO: Title]({{ outpath_plot_n }})
+
+![TODO: Title]({{ outpath_plot_pct }})
 """
 
 
-def _depth_counts(subclass_pairs: Set[Tuple[str, str]]) -> pd.DataFrame:
-    """TODO"""
+def _depth_counts(subclass_pairs: Set[Tuple[str, str]], _filter: List[str] = None) -> pd.DataFrame:
+    """TODO
+
+    :param _filter: List of class types to filter by. If None, no filtering is applied.
+    """
+    if _filter and any([x not in CLASS_TYPES for x in _filter]):
+        raise ValueError(f'Filter must be one of {CLASS_TYPES}')
     # Build parent-child relationships
     children = defaultdict(set)
     parents = defaultdict(set)
@@ -50,7 +57,7 @@ def _depth_counts(subclass_pairs: Set[Tuple[str, str]]) -> pd.DataFrame:
     roots = all_classes - set(parents.keys())
 
     # Calculate depth using BFS
-    depths = {}
+    depths: Dict[str, int] = {}
     queue = deque([(root, 1) for root in roots])
 
     while queue:
@@ -60,8 +67,11 @@ def _depth_counts(subclass_pairs: Set[Tuple[str, str]]) -> pd.DataFrame:
             for child in children[cls]:
                 queue.append((child, depth + 1))
 
+    if _filter:
+        filtered_classes = _filter_classes(all_classes, _filter)
+        depths = {cls: depth for cls, depth in depths.items() if cls in filtered_classes}
+
     # Count classes at each depth
-    # TODO: what is the resulting data type?
     depth_counts = defaultdict(int)
     for depth in depths.values():
         depth_counts[depth] += 1
@@ -79,17 +89,9 @@ def _counts_to_pcts(ont_depth_tables: Dict[str, pd.DataFrame]) -> Dict[str, pd.D
     return ont_pct_tables
 
 
-def _save_markdown(outpath_md: Union[Path, str], outpath_plot: Union[Path, str]):
-    """TODO"""
-    # TODO: use outpath_plot as-is; it's currently a rel path
-    # TODO: convert md path to absolute
-    outpath_md = PROJECT_ROOT / outpath_md
-    print()
-
-
 # TODO: convert path to absolute
 # TODO: update title to include, ", {y_lab}"
-def _save_plot(ont_depth_tables: Dict[str, pd.DataFrame], outpath_plot: Union[Path, str], y_lab='Number of Classes'):
+def _save_plot(ont_depth_tables: Dict[str, pd.DataFrame], outpath_plot_n: Union[Path, str], y_lab='Number of Classes'):
     """Create a stacked histogram of class depths across multiple ontologies.
 
     Args:
@@ -118,20 +120,38 @@ def _save_plot(ont_depth_tables: Dict[str, pd.DataFrame], outpath_plot: Union[Pa
     ax.legend(title='Terminology')
 
     plt.tight_layout()
-    plt.savefig(PROJECT_ROOT / outpath_plot, dpi=300, bbox_inches='tight')
+    plt.savefig(PROJECT_ROOT / outpath_plot_n, dpi=300, bbox_inches='tight')
 
 
-def analyze_class_depth(indir: Union[Path, str], outpath_md: Union[Path, str], outpath_plot: Union[Path, str]):
+def _save_markdown(outpath_md: Union[Path, str], outpath_plot_n: Union[Path, str], outpath_plot_pct: Union[Path, str]):
+    """TODO"""
+    # TODO: use outpath_plots as-is; it's currently a rel path
+    # TODO: convert md path to absolute
+    outpath_md = PROJECT_ROOT / outpath_md
+    print()
+
+
+def analyze_class_depth(
+    indir: Union[Path, str], outpath_md: Union[Path, str], outpath_plot_n: Union[Path, str],
+    outpath_plot_pct: Union[Path, str]
+):
     """TODO"""
     tots_df, ont_sets = _subclass_axioms_and_totals(indir)
-    ont_depth_tables: Dict[str, pd.DataFrame] = {}
-    for ont_name, axioms in ont_sets.items():
-        ont_depth_tables[ont_name] = _depth_counts(axioms)
-    ont_pct_tables: Dict[str, pd.DataFrame] = _counts_to_pcts(ont_depth_tables)
-    _save_plot(ont_depth_tables, outpath_plot)
-    # todo: better to parameterize this outpath
-    _save_plot(ont_pct_tables, outpath_plot.replace('.png', '-percents.png'), '% of Classes')
-    _save_markdown(outpath_md, outpath_plot)
+
+    # TODO: modify the plot labels by which filter
+    # TODO: modify file names by which filter
+    #  - then update makefile/cli to include all variations, or just remove the png's, put a note about that in
+    #  makefile, and add new cli param in both for just --outdir-plots
+    for _filter in (['terms'], None):
+        ont_depth_tables: Dict[str, pd.DataFrame] = {}
+        for ont_name, axioms in ont_sets.items():
+            print('processing ontology:', ont_name, 'with filter:', _filter)
+
+            ont_depth_tables[ont_name] = _depth_counts(axioms, _filter)
+        ont_pct_tables: Dict[str, pd.DataFrame] = _counts_to_pcts(ont_depth_tables)
+        _save_plot(ont_depth_tables, outpath_plot_n)
+        _save_plot(ont_pct_tables, outpath_plot_pct, '% of Classes')
+        _save_markdown(outpath_md, outpath_plot_n, outpath_plot_pct)
 
 
 def cli():
@@ -144,7 +164,9 @@ def cli():
     parser.add_argument(
         '-m', '--outpath-md', required=True, type=str, help='Outpath for markdown file containing results.')
     parser.add_argument(
-        '-u', '--outpath-plot', required=True, type=str, help='Outpath for plot.')
+        '-p', '--outpath-plot-n', required=True, type=str, help='Outpath for plot of number of classes.')
+    parser.add_argument(
+        '-P', '--outpath-plot-pct', required=True, type=str, help='Outpath for plot of class percents.')
     d: Dict = vars(parser.parse_args())
     return analyze_class_depth(**d)
 
