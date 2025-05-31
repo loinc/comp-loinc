@@ -49,6 +49,13 @@ class Configuration:
         ]
         return (self.home_path / relationship_path).absolute()
 
+    def get_snomed_owl_path(self) -> Path:
+        release_version = self.config["snomed"]["release"]["default"]
+        relationship_path = self.config["snomed"]["release"][release_version]["files"][
+            "owl"
+        ]
+        return (self.home_path / relationship_path).absolute()
+
     def get_snomed_description_path(self) -> Path:
         default = self.config["snomed"]["release"]["default"]
         path = self.config["snomed"]["release"][default]["files"]["description"]

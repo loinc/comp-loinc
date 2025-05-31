@@ -32,6 +32,7 @@ snomed:
       files:
         description: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_INT_20240801.txt'
         relationship: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_INT_20240801.txt'
+        owl: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_sRefset_OWLExpressionSnapshot_INT_20240801.txt'
 
 loinc_snomed:
   release:
