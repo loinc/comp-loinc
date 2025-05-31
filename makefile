@@ -102,6 +102,12 @@ input/analysis/:
 output/analysis/:
 	mkdir -p $@
 
+output/analysis/snomed/:
+	mkdir -p $@
+
+output/analysis/loinc/:
+	mkdir -p $@
+
 output/tmp/:
 	mkdir -p $@
 
@@ -126,6 +132,15 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
 # - Comparisons: SNOMED-LOINC
+# TODO: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset
+# TODO: Connect this to the pipeline
+output/analysis/snomed/snomed-unreasoned.ofn: | output/analysis/snomed/
+	python src/comp_loinc/analysis/snomed.py --outpath $@
+
+# FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
+output/analysis/snomed/snomed.ofn: output/analysis/snomed/snomed-unreasoned.ofn
+	robot reason --input $< --output $@
+
 # Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-snomed-reasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
 	robot reason --input $< --output $@
@@ -134,6 +149,14 @@ output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reaso
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: LOINC
+# TODO: Change LOINC representation
+# TODO: Connect this to the pipeline
+output/analysis/loinc/loinc-unreasoned.owl: | output/analysis/loinc/
+	echo 1
+
+output/analysis/loinc/loinc.owl: output/analysis/loinc/loinc-unreasoned.owl
+	robot reason --input $< --output $@
+
 # Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/193
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-reasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
 	robot reason --input $< --output $@
