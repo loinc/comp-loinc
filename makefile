@@ -83,6 +83,7 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl: $(STATIC
 merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
 
 # Analysis / Stats  ----------------------------------------------------------------------------------------------------
+# - defs & dirs
 TEMPLATE_AXIOMS_ENTITIES=src/comp_loinc/analysis/stats-main-axioms-entities.md.j2
 TEMPLATE_MISC=src/comp_loinc/analysis/stats-misc.md.j2
 PREFIXES_METRICS=\
@@ -110,37 +111,43 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/:
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/:
 	mkdir -p $@
 
+# - robot stats & markdown files
 output/tmp/stats.json: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl | output/tmp/
 	robot measure $(PREFIXES_METRICS) -i $< --format json --metrics extended --output $@
 .PRECIOUS: output/tmp/stats.json
 
 documentation/stats-main-axioms-entities.md: output/tmp/stats.json
-	jinjanate "$(SOURCE_METRICS_TEMPLATE)" $< > $@
+	jinjanate src/comp_loinc/analysis/stats-main-axioms-entities.md.j2 $< > $@
 
 documentation/stats-misc.md: output/tmp/stats.json
-	jinjanate "$(SOURCE_METRICS_TEMPLATE)" $< > $@
+	jinjanate src/comp_loinc/analysis/stats-misc.md.j2 $< > $@
 
 documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
+# - Comparisons: SNOMED-LOINC
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/snomed-parts-reasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
 	robot reason --input $< --output $@
 
 output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/snomed-parts-reasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
+# - Comparisons: LOINC
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-part-hierarchy-all-reasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
 	robot reason --input $< --output $@
 
 output/tmp/subclass-rels-loinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-part-hierarchy-all-reasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
+# - Comparisons: CompLOINC
 output/tmp/subclass-rels-comploinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
+# - Comparisons: all
 documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc.tsv
 	python src/comp_loinc/analysis/subclass_rels.py --indir output/tmp/ --outpath-md documentation/subclass-analysis.md --outpath-upset-plot documentation/upset.png
 
+# - Build final outputs & main command
 documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/stats-misc.md
 	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@
 
