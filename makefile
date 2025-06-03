@@ -196,31 +196,66 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 
 # - Comparisons: LOINC-SNOMED Ontology
 # -- SNOMED representation
-# Todo: Connect this to the pipeline(s). which ones? (i) class depth, (ii) subclass axioms, (iii) other(s)?
 $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
-	python src/comp_loinc/analysis/snomed.py --outpath $@
+	python src/comp_loinc/analysis/snomed_rf2_parser.py --outpath $@
 
+# todo: consider if there is value in using this to extract in place of -unreasoned for building LOINC-SNOMED Ontology
 # FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
-$(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
-	$(call robot_reason,$<,$@)
+#$(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
+#	$(call robot_reason,$<,$@)
+
+# Extract ancestors: See https://robot.obolibrary.org/extract (ChEBI goal in this makefile also has more info)
+$(LOINC_SNOMED_OWL_DIR)/related-snomed-ancestor-closure.owl: $(LOINC_SNOMED_OWL_DIR)/snomed-with-loinc-snomed-full-unreasoned.owl $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module-classes-and-props.txt
+	robot extract --method BOT \
+	--input $(LOINC_SNOMED_OWL_DIR)/snomed-with-loinc-snomed-full-unreasoned.owl \
+	--term-file $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module-classes-and-props.txt --output $@
 
 # -- LOINC-SNOMED representation
-# Todo: if needed temporarily to make subclass rels / labels until this is ready, use instead as source: output/analysis/snomed/bak/snomed-parts-reasoned.owl instead of loinc-snomed-reasoned.owl
-# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
-# Todo: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
-# Todo: - how subset those mappings? involves mapped parts and terms. check notes
-# Todo: robot merge? What other inputs does this need?
-$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(LOINC_SNOMED_OWL_DIR)
-	robot merge --input $(DEFAULT_BUILD_DIR)/snomed-parts.owl --output $@
+# Intermediate file: We don't actually care about full SNOMED enhanced by LOINC-SNOMED Ontology. This is just a temporary step to be used in `robot extract`
+# todo: warning: error could occur in the future, because I don't know what caused this to resolve in the first place. very strange; this error occurred the very first time I ran it. It ran as a prereq to make output/tmp/subclass-rels-loinc-snomed.tsv. Could not replicate. Next try succeeded without changing any input files. The only thing I did was added -vvv to the end, but this should only print debugging info.
+#make output/tmp/subclass-rels-loinc-snomed.tsv
+#
+#robot merge --input output/analysis/snomed/snomed-unreasoned.ofn --input output/analysis/loinc-snomed/loinc-snomed-module.ofn --output output/analysis/loinc-snomed/snomed-with-loinc-snomed-full-unreasoned.owl
+#INVALID ELEMENT ERROR "http://snomed.info/id/1295447006
+#http://snomed.info/id/1295449009
+#http://snomed.info/id/1295448001" contains invalid characters
+#For details see: http://robot.obolibrary.org/errors#invalid-element-error
+#Use the -vvv option to show the stack trace.
+#Use the --help option to see usage information.
+#make: *** [output/analysis/loinc-snomed/snomed-with-loinc-snomed-full-unreasoned.owl] Error 1
+#
+#
+#make output/tmp/subclass-rels-loinc-snomed.tsv
+#
+#robot query ...
+$(LOINC_SNOMED_OWL_DIR)/snomed-with-loinc-snomed-full-unreasoned.owl: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn
+	robot merge --input $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn --input $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn --output $@
+
+# Representation of LOINC-SNOMED Ontology module (lacks ancestors from SNOMED)
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn: | $(LOINC_SNOMED_OWL_DIR)
+	python src/comp_loinc/analysis/snomed_rf2_parser.py --outpath $@
+
+# TODO temp
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module-classes-and-props.txt: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn
+	$(call robot_query,$<,src/comp_loinc/analysis/classes-and-props.sparql,$@.tmp)
+	grep '^http' $@.tmp | sort > $@
+	rm -f $@.tmp
+
+# Full representation of LOINC-SNOMED Ontology: combines the LOINC-SNOMED module with ancestor classes from SNOMED proper
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl: $(LOINC_SNOMED_OWL_DIR)/related-snomed-ancestor-closure.owl $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn
+	robot merge --input $(LOINC_SNOMED_OWL_DIR)/related-snomed-ancestor-closure.owl --input $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn --output $@
 
 $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl | $(LOINC_SNOMED_OWL_DIR)
 	$(call robot_reason,$<,$@)
 
+# uses `subsumption.sparql` instead of `subclass-rels.sparql` SNOMED uses data property hierarchies, not just subClassOf as is the case with our constructed LOINC representation of the part hierarchy obtained from the tree browser (and improted into CompLOINC)
+# todo: do we really want to use the reasoned version?
 output/tmp/subclass-rels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
-	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/subsumption.sparql,$@)
 
+# querying unreasoned also fine
 output/tmp/labels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: LOINC
 $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)
@@ -253,7 +288,7 @@ output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: CompLOINC
 output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
@@ -269,10 +304,10 @@ output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv: $(DEFAUL
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 output/tmp/labels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: all
 output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv

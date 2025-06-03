@@ -84,6 +84,13 @@ class Configuration:
         path = self.config["loinc_snomed"]["release"][default]["files"]["part_mapping"]
         return self.home_path / path
 
+    def get_loinc_snomed_owl_path(self) -> Path:
+        release_version = self.config["loinc_snomed"]["release"]["default"]
+        relationship_path = self.config["loinc_snomed"]["release"][release_version]["files"][
+            "owl"
+        ]
+        return (self.home_path / relationship_path).absolute()
+
     def get_curation_dir_path(self):
         try:
             return self.home_path / self.config["loinc_nlp_tree"]["curation_dir_path"]
