@@ -42,12 +42,14 @@ loinc_snomed:
         description: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Description_Snapshot-en_LO1010000_20231015.txt'
         identifier: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Identifier_Snapshot_LO1010000_20231015.txt'
         relationship: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Relationship_Snapshot_LO1010000_20231015.txt'
+        owl: 'loinc_snomed_release/20231015/Snapshot/Terminology/sct2_sRefset_OWLExpressionSnapshot_LO1010000_20250321.txt'
         part_mapping: 'loinc_snomed_release/part-mappings_0.0.3.tsv'
     '1.0':
       files:
         description: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_LO1010000_20250321.txt'
         identifier: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Identifier_Snapshot_LO1010000_20250321.txt'
         relationship: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_LO1010000_20250321.txt'
+        owl: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_sRefset_OWLExpressionSnapshot_LO1010000_20250321.txt'
         part_mapping: 'loinc_snomed_release/part-mappings_0.0.3.tsv'
 
 prop_use:
