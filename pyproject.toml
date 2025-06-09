@@ -41,6 +41,7 @@ torch = [
 transformers = ">=4.48.0"  # includes security update
 typer = "^0.9.0"
 upsetplot = "^0.9.0"
+openpyxl = "*"
 
 
 [tool.poetry.group.dev.dependencies]

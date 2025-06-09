@@ -2,8 +2,6 @@ import re
 import pandas as pd
 from pathlib import Path
 
-# Pattern for lines with an equivalence statement. Capture both URLs
-# and later extract the terminating code segment from each.
 EQ_PATTERN = re.compile(r"ERROR Equivalence: <([^>]+)> == <([^>]+)>")
 
 ROOT = Path(__file__).resolve().parent
