@@ -229,3 +229,7 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 	--output $@
 
 alternative-hierarchies: chebi-subsets
+
+# equivalent classes analysis
+labels.tsv:
+	robot query -i $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl --query src/comp_loinc/analysis/labels.sparql $@
