@@ -8,10 +8,10 @@
 | Metric | Value |
 | ------ | ----- |
 | Annotation properties | 13 |
-| Axioms | 2171244 |
-| Logical axioms | 965973 |
+| Axioms | 1689913 |
+| Logical axioms | 484643 |
 | Classes | 241874 |
-| Object properties | 57 |
+| Object properties | 56 |
 | Data properties | 0 |
 | Individuals | 0 |
 
@@ -19,10 +19,10 @@
 | Metric | Value |
 | ------ | ----- |
 | AnnotationAssertion | 963329 |
-| EquivalentClasses | 218286 |
+| EquivalentClasses | 123324 |
 | SubObjectPropertyOf | 55 |
-| Declaration | 241942 |
-| SubClassOf | 747632 |
+| Declaration | 241941 |
+| SubClassOf | 361264 |
 
 
 ## Entity namespaces counts
@@ -35,7 +35,7 @@
 | SNOMED | 1 |
 | rdfs | 1 |
 | LOINC_PART | 116185 |
-| LOINC_PROP | 48 |
+| LOINC_PROP | 47 |
 | LOINC_PART_GRP_CMP_SYS | 18116 |
 | LOINC_TERM | 103424 |
 | COMPLOINC_AXIOM | 9 |
@@ -45,14 +45,14 @@
 | Metric | Value |
 | ------ | ----- |
 | owl | 1020 |
-| LOINC_PART_GRP_CMP | 24720 |
-| LOINC_PART_GRP_SYS | 38643 |
+| LOINC_PART_GRP_CMP | 20345 |
+| LOINC_PART_GRP_SYS | 13868 |
 | rdfs | 241867 |
 | SNOMED | 5890 |
-| LOINC_PROP | 1440019 |
-| LOINC_PART | 1808312 |
-| LOINC_PART_GRP_CMP_SYS | 335370 |
-| LOINC_TERM | 1890586 |
+| LOINC_PART | 1227021 |
+| LOINC_PROP | 858727 |
+| LOINC_PART_GRP_CMP_SYS | 104012 |
+| LOINC_TERM | 1283396 |
 | COMPLOINC_AXIOM | 72 |
 
 
@@ -66,7 +66,7 @@ ancestor relationship.
 |:-------------|:--------|
 | LOINC        | 120,334 |
 | LOINC-SNOMED | 11,385  |
-| CompLOINC    | 747,632 |
+| CompLOINC    | 361,264 |
 
 ## Comparison: Upset plot
 ![Upset plot](upset.png)
@@ -87,9 +87,9 @@ ontology.
 
 |              | LOINC                   | LOINC-SNOMED          | CompLOINC               |
 |:-------------|:------------------------|:----------------------|:------------------------|
-| LOINC        | -                       | 0.0% / 0 / 0.0%       | 99.2% / 119,410 / 16.0% |
-| LOINC-SNOMED | 0.0% / 0 / 0.0%         | -                     | 96.1% / 10,937 / 1.5%   |
-| CompLOINC    | 16.0% / 119,410 / 99.2% | 1.5% / 10,937 / 96.1% | -                       |
+| LOINC        | -                       | 0.0% / 0 / 0.0%       | 99.2% / 119,410 / 33.1% |
+| LOINC-SNOMED | 0.0% / 0 / 0.0%         | -                     | 96.1% / 10,937 / 3.0%   |
+| CompLOINC    | 33.1% / 119,410 / 99.2% | 3.0% / 10,937 / 96.1% | -                       |
 
 ## Comparison: Individual tables
 Meaning of table headers:  
@@ -116,7 +116,7 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 0.8%      |       924 |  120334 |         119410 |  747632 |    628222 | 84.0%     |
+| 0.8%      |       924 |  120334 |         119410 |  361264 |    241854 | 66.9%     |
 
 
 
@@ -133,7 +133,7 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 3.9%      |       448 |   11385 |          10937 |  747632 |    736695 | 98.5%     |
+| 3.9%      |       448 |   11385 |          10937 |  361264 |    350327 | 97.0%     |
 
 
 
@@ -143,14 +143,14 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 84.0%     |    628222 |  747632 |         119410 |  120334 |       924 | 0.8%      |
+| 66.9%     |    241854 |  361264 |         119410 |  120334 |       924 | 0.8%      |
 
 
 #### vs LOINC-SNOMED
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 98.5%     |    736695 |  747632 |          10937 |   11385 |       448 | 3.9%      |
+| 97.0%     |    350327 |  361264 |          10937 |   11385 |       448 | 3.9%      |
 
 
 
@@ -181,7 +181,7 @@ Similarity threshold: 0.5
 ## Class expressions used
 | Metric | Value |
 | ------ | ----- |
-| Class | 3383067 |
-| ObjectSomeValuesFrom | 1515211 |
-| ObjectIntersectionOf | 208040 |
+| Class | 1934078 |
+| ObjectSomeValuesFrom | 933920 |
+| ObjectIntersectionOf | 113078 |
 
