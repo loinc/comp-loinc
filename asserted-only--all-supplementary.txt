@@ -1,0 +1,1 @@
+robot --catalog output/build-default/catalog-v001-all-supplementary.xml merge -i output/build-default/comploinc-all-supplementary.owl reason --equivalent-classes-allowed asserted-only --output output/build-default/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl

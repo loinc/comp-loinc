@@ -8,8 +8,9 @@ DANGLING_DIR=output/analysis/dangling
 # STRICT:
 #  - if true, sets '--equivalent-classes-allowed none' when reasoning.
 #  - Usage: `make STRICT=true merge-reason`
+# TODO temp change back to false
 # todo: STRICT: consider changing the goal where this is used to do '--equivalent-classes-allowed asserted-only' instead
-STRICT ?= false
+STRICT ?= true
 
 # All ------------------------------------------------------------------------------------------------------------------
 # todo: remove 'all' and 'build' as is and replace with: 'all: documentation/stats.md'. Should be same result.
@@ -89,8 +90,9 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all
 	cp $< $@
 
 # todo: consider: '--equivalent-classes-allowed asserted-only' instead
+# TODO temp: change asserted-only back to none
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/
-	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed none,))
+	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed asserted-only,))
 	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --output $@
 
 merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-$(flavor).owl)
