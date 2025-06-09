@@ -13,8 +13,7 @@ import re
 import pandas as pd
 from pathlib import Path
 
-# Pattern for lines with equivalence between two LOINC classes
-EQ_PATTERN = re.compile(r"ERROR Equivalence: <https://loinc\.org/([^>]+)> == <https://loinc\.org/([^>]+)>")
+EQ_PATTERN = re.compile(r"ERROR Equivalence: <([^>]+)> == <([^>]+)>")
 
 ROOT = Path(__file__).resolve().parent
 
@@ -43,7 +42,9 @@ for log_path in log_files:
         for line in f:
             m = EQ_PATTERN.search(line)
             if m:
-                cls1, cls2 = m.groups()
+                url1, url2 = m.groups()
+                cls1 = url1.rsplit("/", 1)[-1]
+                cls2 = url2.rsplit("/", 1)[-1]
                 rows.append({
                     "cls1": cls1,
                     "cls2": cls2,
