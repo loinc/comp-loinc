@@ -22,8 +22,9 @@ labels_path = ROOT / "labels.tsv"
 if labels_path.exists():
     labels_df = pd.read_csv(labels_path, sep="\t")
 else:
-    labels_df = pd.DataFrame(columns=["cls", "label"])
-labels_map = dict(zip(labels_df["cls"], labels_df["label"]))
+    labels_df = pd.DataFrame(columns=["?cls", "?label"])
+labels_df["?cls"] = labels_df["?cls"].str.split('/').str[-1].str.rstrip('>')
+labels_map = dict(zip(labels_df["?cls"], labels_df["?label"]))
 
 # Gather log files
 log_files = sorted(p for p in ROOT.glob("*--*.txt") if p.is_file())
