@@ -1,3 +1,14 @@
+"""Equivalent classes analysis
+
+todo's:
+ - improve performance. takes 2-3 minutes to run.
+ - transform cls1, cls1_lab, etc, to cliques/groups of equivalencies when more than 2? e.g.:
+    1 123 my123lab
+    1 345 my345lab
+    2 999 my999lab
+    2 777 my777lab
+    2 656 my656lab
+"""
 import re
 import pandas as pd
 from pathlib import Path
