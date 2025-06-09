@@ -172,3 +172,4 @@ dmypy.json
 # more patterns
 *.zip
 .~*
+equivalence_analysis.xlsx

@@ -1,0 +1,13 @@
+mode	flavor	count
+asserted-only	LOINC-primary	2
+asserted-only	LOINC-supplementary	110271
+asserted-only	LOINCSNOMED-primary	239
+asserted-only	LOINCSNOMED-supplementary	110504
+asserted-only	all-primary	365
+asserted-only	all-supplementary	0
+none	all-primary	6452
+none	all-suppl	116705
+none	loinc-primary	2
+none	loinc-suppl	110271
+none	loincsnomed-primary	6326
+none	loincsnomed-suppl	116591
