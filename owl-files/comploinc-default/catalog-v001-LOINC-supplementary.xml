@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+
+    <uri id="Imports Wizard Entry" name="https://comploinc-axioms" uri="comploinc-axioms.owl"/>
+    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-part-hierarchy-all" uri="loinc-part-hierarchy-all.owl"/>
+    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-part-list-all" uri="loinc-part-list-all.owl"/>
+    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-terms-list-all" uri="loinc-terms-list-all.owl"/>
+<!--    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-term-primary-def" uri="loinc-term-primary-def.owl"/>-->
+    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-term-supplementary-def" uri="loinc-term-supplementary-def.owl"/>
+<!--    <uri id="Imports Wizard Entry" name="https://comploinc/snomed-parts" uri="snomed-parts.owl"/>-->
+<!--    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-snomed-equiv" uri="loinc-snomed-equiv.owl"/>-->
+    <uri id="Imports Wizard Entry" name="https://comploinc/group_components" uri="group_components.owl"/>
+    <uri id="Imports Wizard Entry" name="https://comploinc/group_systems" uri="group_systems.owl"/>
+    <uri id="Imports Wizard Entry" name="https://comploinc/group_components_systems" uri="group_components_systems.owl"/>
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base=""/>
+</catalog>

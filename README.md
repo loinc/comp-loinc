@@ -69,12 +69,23 @@ Apple Silicon users may need to run `export PYTHON_KEYRING_BACKEND=keyring.backe
 * [comploinc_config.yaml/](comploinc_config.yaml) - Configuration (discussed further below)
 
 ## Usage
-If you just want to run a build of default artefacts / options, use the command `comploinc build`.
+### Default build
+If you just want to run a build of default artefacts / options, run: `make all -B`.
 
-### Command reference
-`comploinc --help`:
+### Custom builds
+The main part of the `make all` pipeline involves the building of modules (see "outputs" section below). These are 
+created through the `comploinc build` command.
 
-Options:
+#### Through build files: `comploinc build`
+Usage: `comploinc build [OPTIONS] [BUILD_NAME]`
+
+Performs a build from a build file as opposed to the "builder" command which takes build steps.
+
+Positional arguments:
+* `[BUILD_NAME]`  The build name or a path to a build file. The "default" build will build all outputs. 
+`[default: default]`
+
+Named arguments:
 
 | Arg usage            | Description                                                                                    |
 |----------------------|------------------------------------------------------------------------------------------------|
@@ -84,23 +95,34 @@ Options:
 | --install-completion | Install completion for the current shell.                                                      |
 | --show-completion    | Show completion for the current shell, to copy it or customize the installation.               |
 
-Commands:
-* `build`: Performs a build from a build file as opposed to the "builder"...
-* `builder` ...
+#### Full flexibility: `comploinc builder`
+You can put together "builder" commands which are lower level steps that which formulate the sub-commands of each 
+`build` option, including what content is combined into the module, as well as IO, etc.
 
-### `build` 
-Usage: `comploinc build [OPTIONS] [BUILD_NAME]`
-
-Performs a build from a build file as opposed to the "builder" command which takes build steps.
-
-Arguments:
-* `[BUILD_NAME]`  The build name or a path to a build file. The "default" build will build all outputs. 
-`[default: default]`
+Documentation on this sub-command is pending. For now, it is best to reference the build files to see how builder 
+commands are put together: `src/comp_loinc/builds/`
 
 ## Configuration
 See: `comploinc_config.yaml`
 
 If following the setup exactly, this configuration will not need to be modified.
+
+## Outputs
+### Modules:
+- `group_components_systems.owl`
+- `group_components.owl`
+- `group_systems.owl`
+- `loinc-part-hierarchy-all.owl`
+- `loinc-part-list-all.owl`
+- `loinc-snomed-equiv.owl`
+- `loinc-term-primary-def.owl`
+- `loinc-term-supplementary-def.owl`
+- `loinc-terms-list-all.owl`
+- `snomed-parts.owl`
+
+### Merged & reasoned:
+There are a number if different ways in which these modules are merged in our analytical pipeline. See: [more](owl-files/comploinc-default/README.md)
+
 
 ## Troubleshooting
 If there are errors related to `torch` while running CompLOINC or `nlp_taxonomification.py` specifically, try changing 

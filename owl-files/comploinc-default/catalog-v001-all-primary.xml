@@ -6,7 +6,7 @@
     <uri id="Imports Wizard Entry" name="https://comploinc/loinc-part-list-all" uri="loinc-part-list-all.owl"/>
     <uri id="Imports Wizard Entry" name="https://comploinc/loinc-terms-list-all" uri="loinc-terms-list-all.owl"/>
     <uri id="Imports Wizard Entry" name="https://comploinc/loinc-term-primary-def" uri="loinc-term-primary-def.owl"/>
-    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-term-supplementary-def" uri="loinc-term-supplementary-def.owl"/>
+<!--    <uri id="Imports Wizard Entry" name="https://comploinc/loinc-term-supplementary-def" uri="loinc-term-supplementary-def.owl"/>-->
     <uri id="Imports Wizard Entry" name="https://comploinc/snomed-parts" uri="snomed-parts.owl"/>
     <uri id="Imports Wizard Entry" name="https://comploinc/loinc-snomed-equiv" uri="loinc-snomed-equiv.owl"/>
     <uri id="Imports Wizard Entry" name="https://comploinc/group_components" uri="group_components.owl"/>
