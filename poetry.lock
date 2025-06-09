@@ -1956,6 +1956,7 @@ description = "A pure Python implementation of the trie data structure."
 optional = false
 python-versions = "*"
 files = [
+    {file = "PyTrie-0.4.0-py3-none-any.whl", hash = "sha256:f687c224ee8c66cda8e8628a903011b692635ffbb08d4b39c5f92b18eb78c950"},
     {file = "PyTrie-0.4.0.tar.gz", hash = "sha256:8f4488f402d3465993fb6b6efa09866849ed8cda7903b50647b7d0342b805379"},
 ]
 
@@ -3333,4 +3334,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "9d425e5eecfaea8f7bfff1e529c2cd02ad42aa3c535d83610a64bbe3d2ce6860"
+content-hash = "9664b137d12ba80dc87b46be373ffa7290c398ae4761add2e81c647c7f57d80c"
