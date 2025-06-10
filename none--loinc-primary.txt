@@ -1,6 +1,0 @@
-robot --catalog output/build-default/catalog-v001-LOINC-primary.xml merge -i output/build-default/comploinc-LOINC-primary.owl reason --equivalent-classes-allowed none --output output/build-default/merged-and-reasoned/comploinc-merged-reasoned-LOINC-primary.owl
-ERROR No equivalent class axioms are allowed
-ERROR Equivalence: <https://loinc.org/106935-0> == <https://loinc.org/93217-8>
-ERROR Equivalence: <https://loinc.org/105176-2> == <https://loinc.org/85951-2>
-make: *** [output/build-default/merged-and-reasoned/comploinc-merged-reasoned-LOINC-primary.owl] Error 1
-rm output/build-default/catalog-v001-LOINC-primary.xml
