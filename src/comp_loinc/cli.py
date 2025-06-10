@@ -15,8 +15,6 @@ from loinclib import Configuration
 LOINC_RELEASE_DIR_NAME = "loinc_release"
 LOINC_TREES_DIR_NAME = "loinc_trees"
 COMPLOINC_OUT_DIR_NAME = "comploinc_out"
-COMPLOINC_DIR = Path(__file__).parent
-PROJECT_DIR = COMPLOINC_DIR.parent.parent
 logger = logging.getLogger("cl-cli")
 
 
@@ -104,7 +102,7 @@ class CompLoincCli:
             t.Optional[Path],
             typer.Option(
                 help="CompLOINC work directory, defaults to current work directory.",
-                default_factory=lambda: PROJECT_DIR,
+                default_factory=Path.cwd,
             ),
         ],
         config_file: t.Annotated[
