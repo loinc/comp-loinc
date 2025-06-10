@@ -8,7 +8,7 @@ PROJECT_DIR = LOINCLIB_DIR.parent.parent
 
 class Configuration:
     def __init__(
-        self, home_path: Path = PROJECT_DIR, config_file: Path = "comploinc_config.yaml"
+        self, home_path: Path = PROJECT_DIR, config_file: Path = PROJECT_DIR / "comploinc_config.yaml"
     ):
         self.home_path = home_path
         self.config_path = home_path / config_file
