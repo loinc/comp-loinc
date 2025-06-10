@@ -26,6 +26,7 @@ matplotlib = "*"
 networkx = "^3.1"
 numpy = "~1.24.3"  # Last 1.x version that's stable
 pandas = "~2.0.3"  # Compatible with numpy 1.x
+py-horned-owl = "^1.2.0"
 sentence_transformers = "*"
 setuptools = "*"  # depednency for sssom
 sssom = "^0.3.26"
