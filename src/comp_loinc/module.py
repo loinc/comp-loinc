@@ -2,6 +2,8 @@
 import logging
 import typing as t
 
+from linkml_runtime.linkml_model import SchemaDefinition
+
 import comp_loinc.datamodel.comp_loinc as v2
 from comp_loinc.datamodel.comp_loinc import Entity
 

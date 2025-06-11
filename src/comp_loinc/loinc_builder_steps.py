@@ -18,6 +18,7 @@ from comp_loinc.datamodel import (
     LoincEntity,
 )
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
+from comp_loinc.serializers import OwlSerializer
 from loinclib import Configuration, SnomedEdges, Node, SnomedProperties, Edge
 from loinclib import LoincLoader
 from loinclib import LoincNodeType, LoincTermProps
@@ -805,14 +806,6 @@ class LoincBuilderSteps:
     ):
         """Save the current module to an OWL file."""
         logger.info(f"save-owl: Starting")
-        owl_dumper = OWLDumper()
-        document = owl_dumper.to_ontology_document(
-            schema=self.runtime.current_schema_view.schema,
-            element=list(self.runtime.current_module.get_all_entities()),
-        )
-        document.ontology.iri = funowl.identifiers.IRI(
-            f"https://comploinc/{self.runtime.current_module.name}"
-        )
         owl_file_path = file_path
         if owl_file_path is None:
             owl_file_path = Path(self.runtime.current_module.name + ".owl")
@@ -820,10 +813,25 @@ class LoincBuilderSteps:
             outdir = self.configuration.output
             if self.configuration.fast_run:
                 outdir = outdir / "fast-run"
-            owl_file_path = outdir / owl_file_path
+        owl_file_path = outdir / owl_file_path
 
         owl_file_path.parent.mkdir(parents=True, exist_ok=True)
         typer.echo(f"Writing file: {owl_file_path}")
-        with open(owl_file_path, "w") as f:
-            f.write(str(document))
-        logger.info(f"save-owl: Done")
+
+
+        owl_serializer = OwlSerializer(self.runtime, owl_file_path)
+        owl_serializer.as_tbox_equivalent_axioms()
+        return
+
+        # owl_dumper = OWLDumper()
+        # document = owl_dumper.to_ontology_document(
+        #     schema=self.runtime.current_schema_view.schema,
+        #     element=list(self.runtime.current_module.get_all_entities()),
+        # )
+        # document.ontology.iri = funowl.identifiers.IRI(
+        #     f"https://comploinc/{self.runtime.current_module.name}"
+        # )
+        #
+        # with open(owl_file_path, "w") as f:
+        #     f.write(str(document))
+        # logger.info(f"save-owl: Done")

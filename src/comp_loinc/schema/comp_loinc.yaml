@@ -8,6 +8,7 @@ prefixes:
   rdfs: http://www.w3.org/2000/01/rdf-schema#
   sct: http://snomed.info/sct
   comploinc: http://comploinc/
+  xsd: http://www.w3.org/2001/XMLSchema#
 default_prefix: loinc
 default_range: string
 imports:
@@ -16,18 +17,18 @@ imports:
 
 classes:
 
-  Loinc:
-    description: A container of Loinc term and part instances.
-    attributes:
-      codes:
-        description: Holds a list of LOINC term instances.
-        multivalued: true
-        range: LoincTerm
-      parts:
-        description: Holds a list of LOINC part instances.
-        multivalued: true
-        range: LoincPart
-    class_uri: owl:Class
+#  Loinc:
+#    description: A container of Loinc term and part instances.
+#    attributes:
+#      codes:
+#        description: Holds a list of LOINC term instances.
+#        multivalued: true
+#        range: LoincTerm
+#      parts:
+#        description: Holds a list of LOINC part instances.
+#        multivalued: true
+#        range: LoincPart
+#    class_uri: owl:Class
 
   Entity:
     attributes:
@@ -78,7 +79,6 @@ classes:
         slot_uri: loinc:class_title
         annotations:
           owl: AnnotationAssertion
-
       class_abbreviation:
         slot_uri: loinc:class_abbreviation
         annotations:
@@ -138,8 +138,6 @@ classes:
         required: false
         annotations:
           owl: ObjectSomeValuesFrom
-
-
 
       # 3
       primary_time_aspect:
