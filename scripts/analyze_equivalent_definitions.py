@@ -1,13 +1,22 @@
+"""todo"""
 import argparse
+# noinspection PyPep8Naming
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from pathlib import Path
 from typing import Dict, List, Tuple
+
 
 OWL = '{http://www.w3.org/2002/07/owl#}'
 RDF = '{http://www.w3.org/1999/02/22-rdf-syntax-ns#}'
+THIS_FILE = Path(__file__)
+PROJ_DIR = THIS_FILE.parent.parent
+INPATH = PROJ_DIR / 'output/build-default/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl'
+OUTPATH = PROJ_DIR / 'equivalent_groups.tsv'
 
 
 def extract_pairs(intersection: ET.Element) -> List[Tuple[str, str]]:
+    """todo"""
     pairs = []
     for restriction in intersection.findall(f'{OWL}Restriction'):
         prop_elem = restriction.find(f'{OWL}onProperty')
@@ -25,6 +34,7 @@ def extract_pairs(intersection: ET.Element) -> List[Tuple[str, str]]:
 
 
 def parse_file(path: str) -> Dict[Tuple[Tuple[str, str], ...], List[str]]:
+    """todo"""
     tree = ET.parse(path)
     root = tree.getroot()
     groups: Dict[Tuple[Tuple[str, str], ...], List[str]] = defaultdict(list)
@@ -51,6 +61,7 @@ def parse_file(path: str) -> Dict[Tuple[Tuple[str, str], ...], List[str]]:
 
 
 def generate_rows(groups: Dict[Tuple[Tuple[str, str], ...], List[str]]):
+    """todo"""
     rows = []
     group_num = 0
     for key, terms in groups.items():
@@ -64,15 +75,17 @@ def generate_rows(groups: Dict[Tuple[Tuple[str, str], ...], List[str]]):
 
 
 def main():
+    """todo"""
     parser = argparse.ArgumentParser(description='Group LOINC terms by equivalent class definitions.')
-    parser.add_argument('owl_file', help='Path to comploinc-merged-reasoned-all-supplementary.owl')
-    parser.add_argument('-o', '--output', default='equivalent_groups.tsv', help='Output TSV file')
+    parser.add_argument(
+        '-i', '--inpath', help='Path to comploinc-merged-reasoned-all-supplementary.owl', default=INPATH)
+    parser.add_argument('-o', '--outpath', default=OUTPATH, help='Output TSV file')
     args = parser.parse_args()
 
-    groups = parse_file(args.owl_file)
+    groups = parse_file(args.inpath)
     rows = generate_rows(groups)
 
-    with open(args.output, 'w', encoding='utf-8') as f:
+    with open(args.outpath, 'w', encoding='utf-8') as f:
         f.write('group_num\tproperty\tvalue\tterms\n')
         for g, p, v, t in rows:
             f.write(f"{g}\t{p}\t{v}\t{t}\n")
