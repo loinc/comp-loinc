@@ -151,6 +151,13 @@ This 2nd file, you can call 'labels.tsv'. It will have the following fields:
 - term: Deconstructs the | delimited list from the `terms` column in the first file. So if the first file had 2 terms
 for a given group_num, this file should have 2 rows for the given group_num
 - label: The rdfs:label for that term.
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+I'd like to update the script analyze_equivalent_definitions.py. I'd like to modify `equivalent_groups_defs.tsv`. It
+should have a `label` column now. This should be for the rdfs:label for the class shown in the `property` column.
 """
 import argparse
 # noinspection PyPep8Naming
