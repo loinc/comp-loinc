@@ -176,6 +176,9 @@ PROJ_DIR = THIS_FILE.parent.parent
 INPATH = PROJ_DIR / 'output/build-default/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl'
 OUTPATH = PROJ_DIR / 'equivalent_groups_defs.tsv'
 LABELS_OUTPATH = PROJ_DIR / 'equivalent_groups_labels.tsv'
+# INPATH = PROJ_DIR / 'output/build-default/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl'
+# OUTPATH = PROJ_DIR / 'equivalent_groups_defs_primary.tsv'
+# LABELS_OUTPATH = PROJ_DIR / 'equivalent_groups_labels_primary.tsv'
 
 
 def extract_pairs(intersection: ET.Element) -> List[Tuple[str, str]]:
