@@ -166,8 +166,8 @@ RDFS = '{http://www.w3.org/2000/01/rdf-schema#}'
 THIS_FILE = Path(__file__)
 PROJ_DIR = THIS_FILE.parent.parent
 INPATH = PROJ_DIR / 'output/build-default/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl'
-OUTPATH = PROJ_DIR / 'equivalent_groups.tsv'
-LABELS_OUTPATH = PROJ_DIR / 'labels.tsv'
+OUTPATH = PROJ_DIR / 'equivalent_groups_defs.tsv'
+LABELS_OUTPATH = PROJ_DIR / 'equivalent_groups_labels.tsv'
 
 
 def extract_pairs(intersection: ET.Element) -> List[Tuple[str, str]]:
