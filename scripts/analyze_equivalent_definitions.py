@@ -3,11 +3,12 @@
 This script groups terms that share identical OWL equivalence definitions.  It
 produces two TSV files:
 
-1. ``equivalent_groups.tsv`` – a row for each property/value pair in a group of
-   terms that share the same definition.  This file replicates the previous
-   behaviour of the script.
-2. ``labels.tsv`` – a simple mapping of ``group_num`` to the labels of the terms
-   in that group.
+1. ``equivalent_groups_defs.tsv`` – a row for each property/value pair in a
+   group of terms that share the same definition.  This file now includes a
+   ``label`` column which contains the ``rdfs:label`` for the class in the
+   ``value`` column.
+2. ``equivalent_groups_labels.tsv`` – a simple mapping of ``group_num`` to the
+   labels of the terms in that group.
 
 https://chatgpt.com/codex/tasks/task_e_68508c866ff8832cb2646ccad9b71308
 
@@ -226,13 +227,23 @@ def parse_file(path: str) -> Tuple[Dict[Tuple[Tuple[str, str], ...], List[str]],
         key = tuple(sorted(pairs))
         groups[key].append(term)
 
+    # capture labels for properties as well
+    for prop_elem in root.findall(f'.//{OWL}ObjectProperty') + root.findall(f'.//{OWL}DatatypeProperty') + root.findall(f'.//{OWL}AnnotationProperty'):
+        uri = prop_elem.get(f'{RDF}about') or prop_elem.get(f'{RDF}ID')
+        if not uri:
+            continue
+        prop_id = uri.rsplit('/', 1)[-1]
+        label_elem = prop_elem.find(f'{RDFS}label')
+        if label_elem is not None and label_elem.text:
+            labels[prop_id] = label_elem.text.strip()
+
     return groups, labels
 
 
-def generate_rows(groups: Dict[Tuple[Tuple[str, str], ...], List[str]]):
+def generate_rows(groups: Dict[Tuple[Tuple[str, str], ...], List[str]], labels: Dict[str, str]):
     """Generate rows for the TSV outputs.
 
-    Returns a list of rows for ``equivalent_groups.tsv`` and a mapping from
+    Returns a list of rows for ``equivalent_groups_defs.tsv`` and a mapping from
     ``group_num`` to the list of terms in that group for use when writing the
     labels file.
     """
@@ -248,7 +259,8 @@ def generate_rows(groups: Dict[Tuple[Tuple[str, str], ...], List[str]]):
         sorted_terms = sorted(terms)
         term_str = '|'.join(sorted_terms)
         for prop, val in key:
-            rows.append((group_num, prop, val, term_str))
+            label = labels.get(val, '')
+            rows.append((group_num, prop, val, label, term_str))
         group_terms[group_num] = sorted_terms
 
     return rows, group_terms
@@ -275,12 +287,12 @@ def main():
     args = parser.parse_args()
 
     groups, labels = parse_file(args.inpath)
-    rows, group_terms = generate_rows(groups)
+    rows, group_terms = generate_rows(groups, labels)
 
     with open(args.outpath, 'w', encoding='utf-8') as f:
-        f.write('group_num\tproperty\tvalue\tterms\n')
-        for g, p, v, t in rows:
-            f.write(f"{g}\t{p}\t{v}\t{t}\n")
+        f.write('group_num\tproperty\tvalue\tlabel\tterms\n')
+        for g, p, v, lbl, t in rows:
+            f.write(f"{g}\t{p}\t{v}\t{lbl}\t{t}\n")
 
     with open(args.labels_out, 'w', encoding='utf-8') as f:
         f.write('group_num\tterm\tlabel\n')
