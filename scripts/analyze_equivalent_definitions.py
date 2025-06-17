@@ -196,6 +196,11 @@ def extract_pairs(intersection: ET.Element) -> List[Tuple[str, str]]:
     return pairs
 
 
+def _get(cls):
+    """todo"""
+    return cls.get(f'{RDF}about') or cls.get(f'{RDF}ID')
+
+
 def parse_file(path: str) -> Tuple[Dict[Tuple[Tuple[str, str], ...], List[str]], Dict[str, str]]:
     """Parse the OWL file and group terms by their equivalence definitions.
 
@@ -210,7 +215,8 @@ def parse_file(path: str) -> Tuple[Dict[Tuple[Tuple[str, str], ...], List[str]],
     labels: Dict[str, str] = {}
 
     for cls in root.findall(f'.//{OWL}Class'):
-        term_uri = cls.get(f'{RDF}about') or cls.get(f'{RDF}ID')
+        # noinspection DuplicatedCode
+        term_uri = _get(cls)
         if not term_uri:
             continue
         term = term_uri.rsplit('/', 1)[-1]
@@ -235,11 +241,14 @@ def parse_file(path: str) -> Tuple[Dict[Tuple[Tuple[str, str], ...], List[str]],
         groups[key].append(term)
 
     # capture labels for properties as well
-    for prop_elem in root.findall(f'.//{OWL}ObjectProperty') + root.findall(f'.//{OWL}DatatypeProperty') + root.findall(f'.//{OWL}AnnotationProperty'):
-        uri = prop_elem.get(f'{RDF}about') or prop_elem.get(f'{RDF}ID')
+    for prop_elem in (root.findall(f'.//{OWL}ObjectProperty') + root.findall(f'.//{OWL}DatatypeProperty') +
+                      root.findall(f'.//{OWL}AnnotationProperty')):
+        # noinspection DuplicatedCode
+        uri = _get(prop_elem)
         if not uri:
             continue
         prop_id = uri.rsplit('/', 1)[-1]
+
         label_elem = prop_elem.find(f'{RDFS}label')
         if label_elem is not None and label_elem.text:
             labels[prop_id] = label_elem.text.strip()
