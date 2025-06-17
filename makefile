@@ -1,4 +1,3 @@
-
 # Default build, run: `make all -B`
 # todo: Ideally would change pipeline to use `make all` instead of `make all -B`. Leaving -B out is preferred whenever possible, because it will theoretically only update targets and their prereqs that are outdated. But if the codebase changes, these files will be outdated but they will not appear so to make, which means we must execute using -B.
 
