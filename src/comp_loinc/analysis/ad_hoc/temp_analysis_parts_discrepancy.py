@@ -50,10 +50,10 @@ def check_inclusion_in_tree_browser(check_inclusion: Set, verbose=True) -> Tuple
         if file.endswith(".csv"):
             df_i = pd.read_csv(TREE_DIR_PATH / file)
             parts_i = set(df_i['Code'].unique())
-            interesection = check_inclusion.intersection(parts_i)
-            included = included.union(interesection)
+            intersection = check_inclusion.intersection(parts_i)
+            included = included.union(intersection)
             if verbose:
-                print(f" - {file}: {len(interesection)}")
+                print(f" - {file}: {len(intersection)}")
             missing = missing - parts_i
     return included, missing
 
