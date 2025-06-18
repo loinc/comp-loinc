@@ -20,7 +20,7 @@ DANGLING_PATH = PROJ_DIR / 'output' / 'analysis' / 'dangling' / 'dangling.tsv'
 def get_tree_parts(keep_only_component_and_sys=False) -> Set:
     """Get all tree browser parts"""
     tree_all = set()
-    comp_and_sys = ('component.csv, system.csv', 'component_by_system.csv')
+    comp_and_sys = ('component.csv', 'system.csv', 'component_by_system.csv')
     for file in os.listdir(TREE_DIR_PATH):
         if file.endswith(".csv"):
             if keep_only_component_and_sys and file not in comp_and_sys:
