@@ -85,15 +85,22 @@ $(DEFAULT_BUILD_DIR)/comploinc-%.owl: $(STATIC_DIR)/comploinc-%.owl
 $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl: $(STATIC_DIR)/comploinc-axioms.owl
 	cp $< $@
 
+# canonical build
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/
 	cp $< $@
 
+# build flavors
 # todo: consider: '--equivalent-classes-allowed asserted-only' instead
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/
 	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed none,))
 	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --output $@
 
-merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-$(flavor).owl)
+# build flavors: including inferred subclass axioms
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/
+	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed asserted-only,))
+	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --include-indirect true --output $@
+
+merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-$(flavor).owl) $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-$(flavor).owl)
 
 # Analysis / Stats  ----------------------------------------------------------------------------------------------------
 # - defs & dirs
@@ -125,6 +132,9 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/:
 	mkdir -p $@
 
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/:
+	mkdir -p $@
+
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/:
 	mkdir -p $@
 
 # - robot stats & markdown files
