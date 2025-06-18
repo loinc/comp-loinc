@@ -1,4 +1,8 @@
-"""address part count discrepancies"""
+"""Analyze part count discrepancies between the release and the tree browser
+
+Prerequisites:
+- Needs `output/tmp/cl-parts.tsv`, which you can get by running `make output/tmp/cl-parts.tsv`.
+"""
 import os
 from pathlib import Path
 from typing import Set, Tuple
@@ -143,9 +147,13 @@ print('3. Look into part/term linking --------------------')
 df_p = pd.read_csv(LINKS_PRIMARY_PATH, sep=",", low_memory=False)
 df_s = pd.read_csv(LINKS_SUPPL_PATH, sep=",", low_memory=False)
 release_parts_linked_p = set(df_p['PartNumber'].unique())  # 60,656
+print('n parts in release linked to primary: ', len(release_parts_linked_p))
 release_parts_linked_s = set(df_s['PartNumber'].unique())  # 64,431
+print('n parts in release linked to supplementary: ', len(release_parts_linked_s))
 tree_parts_with_p_links = tree_parts.intersection(release_parts_linked_p)  # 30,637
+print('tree parts with primary links: ', len(tree_parts_with_p_links))
 tree_parts_with_s_links = tree_parts.intersection(release_parts_linked_s)  # 35,951
+print('tree parts with supplementary links: ', len(tree_parts_with_s_links))
 # todo: Where I left off: look at he 'n' in comments above. can follow up to print this, but it might be more intersting
 #  to see which file has which links.
 
