@@ -1,5 +1,10 @@
 """Analyze equivalent definitions in CompLOINC.
 
+FYI: This script does an analysis of variations with and without included inferred subclass axioms, just to be safe. As
+expected, though, this variation had no effect on the results.
+
+------------------------------------------------------------------------------------------------------------------------
+
 This script groups terms that share identical OWL equivalence definitions.  It
 produces two TSV files:
 
@@ -9,6 +14,10 @@ produces two TSV files:
    ``value`` column.
 2. ``equivalent_groups_labels.tsv`` – a simple mapping of ``group_num`` to the
    labels of the terms in that group.
+
+------------------------------------------------------------------------------------------------------------------------
+PROMPTS
+------------------------------------------------------------------------------------------------------------------------
 
 https://chatgpt.com/codex/tasks/task_e_68508c866ff8832cb2646ccad9b71308
 
@@ -160,29 +169,38 @@ for a given group_num, this file should have 2 rows for the given group_num
 I'd like to update the script analyze_equivalent_definitions.py. I'd like to modify `equivalent_groups_defs.tsv`. It
 should have a `label` column now. This should be for the rdfs:label for the class shown in the `property` column.
 """
-import argparse
+import os
 # noinspection PyPep8Naming
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Tuple
-
+from typing import Dict, List, Tuple, Union
 
 OWL = '{http://www.w3.org/2002/07/owl#}'
 RDF = '{http://www.w3.org/1999/02/22-rdf-syntax-ns#}'
 RDFS = '{http://www.w3.org/2000/01/rdf-schema#}'
 THIS_FILE = Path(__file__)
-PROJ_DIR = THIS_FILE.parent.parent
-INPATH = PROJ_DIR / 'output/build-default/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl'
-OUTPATH = PROJ_DIR / 'equivalent_groups_defs.tsv'
-LABELS_OUTPATH = PROJ_DIR / 'equivalent_groups_labels.tsv'
-# INPATH = PROJ_DIR / 'output/build-default/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl'
-# OUTPATH = PROJ_DIR / 'equivalent_groups_defs_primary.tsv'
-# LABELS_OUTPATH = PROJ_DIR / 'equivalent_groups_labels_primary.tsv'
+PROJ_DIR = THIS_FILE.parent.parent.parent.parent.parent
+OUTDIR = PROJ_DIR / 'output' / 'analysis' / 'equivalent_def_collisions'
+PART_MODELS = ('primary', 'supplementary')
+CONFIGS = {  # part model goes into {}
+    'inferred_included': {
+        'indir': PROJ_DIR / 'output/build-default/merged-and-reasoned/inferred-sc-axioms-included/',
+        'outpath_defs_pattern': OUTDIR / '{}-inferred_included--defs.tsv',
+        'outpath_labels_pattern': OUTDIR / '{}-inferred_included--labels.tsv',
+    },
+    'inferred_excluded': {
+        'indir': PROJ_DIR / 'output/build-default/merged-and-reasoned/',
+        'outpath_defs_pattern': '{}-inferred_excluded--defs.tsv',
+        'outpath_labels_pattern': '{}-inferred_excluded--labels.tsv',
+    },
+}
+if not os.path.exists(OUTDIR):
+    os.mkdir(OUTDIR)
 
 
 def extract_pairs(intersection: ET.Element) -> List[Tuple[str, str]]:
-    """todo"""
+    """Extract key value pairs for definitions"""
     pairs = []
     for restriction in intersection.findall(f'{OWL}Restriction'):
         prop_elem = restriction.find(f'{OWL}onProperty')
@@ -200,11 +218,11 @@ def extract_pairs(intersection: ET.Element) -> List[Tuple[str, str]]:
 
 
 def _get(cls):
-    """todo"""
+    """Get class ID"""
     return cls.get(f'{RDF}about') or cls.get(f'{RDF}ID')
 
 
-def parse_file(path: str) -> Tuple[Dict[Tuple[Tuple[str, str], ...], List[str]], Dict[str, str]]:
+def parse_rdf_xml_owl(path: Union[Path, str]) -> Tuple[Dict[Tuple[Tuple[str, str], ...], List[str]], Dict[str, str]]:
     """Parse the OWL file and group terms by their equivalence definitions.
 
     Returns a mapping of property/value pairs to a list of terms (``groups``) and
@@ -287,37 +305,25 @@ def generate_rows(groups: Dict[Tuple[Tuple[str, str], ...], List[str]], labels: 
 
 def main():
     """CLI entry point."""
+    for paths in CONFIGS.values():
+        for mdl in PART_MODELS:
+            inpath = paths['indir'] / f'comploinc-merged-reasoned-all-{mdl}.owl'
+            outpath_defs = str(paths['outpath_defs_pattern']).format(mdl)
+            outpath_labels = str(paths['outpath_labels_pattern']).format(mdl)
 
-    parser = argparse.ArgumentParser(
-        description='Group LOINC terms by equivalent class definitions.'
-    )
-    parser.add_argument(
-        '-i', '--inpath',
-        help='Path to comploinc-merged-reasoned-all-supplementary.owl',
-        default=INPATH,
-    )
-    parser.add_argument('-o', '--outpath', default=OUTPATH, help='Output TSV file')
-    parser.add_argument(
-        '-l', '--labels',
-        dest='labels_out',
-        default=LABELS_OUTPATH,
-        help='Output TSV file containing labels for each term',
-    )
-    args = parser.parse_args()
+            groups, labels = parse_rdf_xml_owl(inpath)
+            rows, group_terms = generate_rows(groups, labels)
 
-    groups, labels = parse_file(args.inpath)
-    rows, group_terms = generate_rows(groups, labels)
+            with open(outpath_defs, 'w', encoding='utf-8') as f:
+                f.write('group_num\tproperty\tvalue\tlabel\tterms\n')
+                for g, p, v, lbl, t in rows:
+                    f.write(f"{g}\t{p}\t{v}\t{lbl}\t{t}\n")
 
-    with open(args.outpath, 'w', encoding='utf-8') as f:
-        f.write('group_num\tproperty\tvalue\tlabel\tterms\n')
-        for g, p, v, lbl, t in rows:
-            f.write(f"{g}\t{p}\t{v}\t{lbl}\t{t}\n")
-
-    with open(args.labels_out, 'w', encoding='utf-8') as f:
-        f.write('group_num\tterm\tlabel\n')
-        for g, terms in group_terms.items():
-            for term in terms:
-                f.write(f"{g}\t{term}\t{labels.get(term, '')}\n")
+            with open(outpath_labels, 'w', encoding='utf-8') as f:
+                f.write('group_num\tterm\tlabel\n')
+                for g, terms in group_terms.items():
+                    for term in terms:
+                        f.write(f"{g}\t{term}\t{labels.get(term, '')}\n")
 
 
 if __name__ == '__main__':
