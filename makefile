@@ -238,6 +238,6 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 
 alternative-hierarchies: chebi-subsets
 
-# temp -----------------------------------------------------------------------------------------------------------------
+# Ad hoc analyses: not connected to the main pipeline
 output/tmp/cl-parts.tsv:
 	robot query --input $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl --query src/comp_loinc/analysis/ad_hoccl-parts.sparql $@
