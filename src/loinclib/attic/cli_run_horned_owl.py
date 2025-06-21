@@ -1,17 +1,46 @@
-import pickle
 import sys
 
 from comp_loinc import comploinc_cli
+
+# sys.argv = [
+#     "cli_run",
+#     "--fast-run",
+#     "build",
+#     "lt-list-all",
+#     # "--pickle",
+#     # ,'--supl'
+#     # ,'--help'
+# ]
+
+# sys.argv = [
+#     "cli_run",
+#     # "--fast-run",
+#     "build",
+#     "lt-primary-def",
+#     # "--pickle",
+#     # ,'--supl'
+#     # ,'--help'
+# ]
 
 sys.argv = [
     "cli_run",
     "--fast-run",
     "build",
-    "lt-list-all",
+    "lt-supplementary-def",
     # "--pickle",
     # ,'--supl'
     # ,'--help'
 ]
+
+# sys.argv = [
+#     "cli_run",
+#     "--fast-run",
+#     "build",
+#     "default",
+#     # "--pickle",
+#     # ,'--supl'
+#     # ,'--help'
+# ]
 
 
 # sys.argv = ['cli_run',

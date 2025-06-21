@@ -1,4 +1,5 @@
 """LOINC Builder: Populate module with entity objects"""
+
 import logging
 import typing as t
 from pathlib import Path
@@ -19,6 +20,7 @@ from comp_loinc.datamodel import (
 )
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
 from comp_loinc.serializers import OwlSerializer
+from comploinc_schame import ComploincNodeType
 from loinclib import Configuration, SnomedEdges, Node, SnomedProperties, Edge
 from loinclib import LoincLoader
 from loinclib import LoincNodeType, LoincTermProps
@@ -133,7 +135,7 @@ class LoincBuilderSteps:
                 continue
 
             loinc_number = node.get_property(LoincTermProps.loinc_number)
-            self.runtime.current_module.getsert_entity(loinc_number, LoincTerm)
+            self.runtime.current_module.getsert_entity(entity_id=f"{LoincNodeType.LoincTerm.value.id_prefix}:{loinc_number}", entity_class=LoincTerm)
 
         logger.info(f"Finished lt-inst-all")
 
@@ -164,11 +166,9 @@ class LoincBuilderSteps:
             if active_only and status != "ACTIVE":
                 continue
 
-            number = node.get_property(LoincPartProps.part_number)
-
             # add if not already instantiated, to not override an existing one
-            if self.runtime.current_module.get_entity(number, LoincPart) is None:
-                part = LoincPart(id=number)
+            if self.runtime.current_module.get_entity(node.node_id, LoincPart) is None:
+                part = LoincPart(id=node.node_id)
                 self.runtime.current_module.add_entity(part)
 
     def entity_labels(self):
@@ -193,8 +193,8 @@ class LoincBuilderSteps:
             count += 1
             if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
                 break
-            node = self.runtime.graph.get_node_by_code(
-                type_=LoincNodeType.LoincTerm, code=loinc_term.id
+            node = self.runtime.graph.get_node_by_id(
+                node_id=loinc_term.id
             )
             if node is None:
                 continue
@@ -247,8 +247,8 @@ class LoincBuilderSteps:
             count += 1
             if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
                 break
-            node = self.runtime.graph.get_node_by_code(
-                type_=LoincNodeType.LoincTerm, code=loinc_term.id
+            node = self.runtime.graph.get_node_by_id(
+                node_id=loinc_term.id
             )
             if node is None:
                 continue
@@ -264,8 +264,8 @@ class LoincBuilderSteps:
 
         loinc_part: LoincPart
         for loinc_part in self.runtime.current_module.get_entities_of_type(LoincPart):
-            node = self.runtime.graph.get_node_by_code(
-                type_=LoincNodeType.LoincPart, code=loinc_part.id
+            node = self.runtime.graph.get_node_by_id(
+                node_id=loinc_part.id
             )
             if node is None:
                 continue
@@ -283,15 +283,11 @@ class LoincBuilderSteps:
     def loinc_parts_root_parent(self):
         """Make LOINC parts a child of a grouper LoincPart class."""
         loinc_part_parent = self.runtime.current_module.get_entity(
-            entity_class=LoincPart, entity_id="LoincPart"
+            entity_class=LoincPart, entity_id=f"{ComploincNodeType.root_node.value.id_prefix}:LoincPart"
         )
         if loinc_part_parent is None:
-            loinc_part_parent = LoincPart(id="LoincPart")
+            loinc_part_parent = LoincPart(id=f"{ComploincNodeType.root_node.value.id_prefix}:LoincPart")
             self.runtime.current_module.add_entity(loinc_part_parent)
-
-        example = self.runtime.current_module.get_entity(
-            entity_class=LoincPart, entity_id="LP20608-3"
-        )
 
         part: LoincPart
         for part in self.runtime.current_module.get_entities_of_type(
@@ -316,41 +312,34 @@ class LoincBuilderSteps:
 
         for part_node in graph.get_nodes(type_=LoincNodeType.LoincPart):
             for edge in part_node.get_all_out_edges():
-                if edge.edge_type.type_ is SnomedEdges.maps_to:
+                if edge.handler.type_ is SnomedEdges.maps_to:
                     snomed_node: Node = edge.to_node
 
-                    part_id = part_node.get_property(type_=LoincPartProps.part_number)
-                    snomed_id = snomed_node.get_property(
-                        type_=SnomedProperties.concept_id
-                    )
 
                     part = self.runtime.current_module.get_entity(
-                        entity_class=LoincPart, entity_id=part_id
+                        entity_class=LoincPart, entity_id=part_node.node_id
                     )
                     if part is None:
-                        part = LoincPart(id=part_id)
+                        part = LoincPart(id=part_node.node_id)
                         self.runtime.current_module.add_entity(part)
 
                     snomed_concept = self.runtime.current_module.get_entity(
-                        entity_class=SnomedConcept, entity_id=snomed_id
+                        entity_class=SnomedConcept, entity_id=snomed_node.node_id
                     )
                     if snomed_concept is None:
-                        snomed_concept = SnomedConcept(id=snomed_id)
+                        snomed_concept = SnomedConcept(id=snomed_node.node_id)
                         self.runtime.current_module.add_entity(snomed_concept)
 
                     part.equivalent_class.append(snomed_concept.id)
 
     def _edge_to_subclassof(self, child_part: LoincPart, edge: Edge):
         parent_part_node = edge.to_node
-        parent_part_number = parent_part_node.get_property(
-            type_=LoincPartProps.part_number
-        )
 
         parent_part = self.runtime.current_module.get_entity(
-            entity_id=parent_part_number, entity_class=LoincPart
+            entity_id=parent_part_node.node_id, entity_class=LoincPart
         )
         if parent_part is None:
-            parent_part = LoincPart(id=parent_part_number)
+            parent_part = LoincPart(id=parent_part_node.node_id)
             self.runtime.current_module.add_entity(parent_part)
 
         if parent_part.id not in child_part.sub_class_of:
@@ -371,21 +360,21 @@ class LoincBuilderSteps:
             count += 1
             if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
                 break
-            child_part_number = child_part_node.get_property(
-                type_=LoincPartProps.part_number
-            )
 
             child_part = self.runtime.current_module.get_entity(
-                entity_id=child_part_number, entity_class=LoincPart
+                entity_id=child_part_node.node_id, entity_class=LoincPart
             )
             if child_part is None:
-                child_part = LoincPart(id=child_part_number)
+                child_part = LoincPart(id=child_part_node.node_id)
                 self.runtime.current_module.add_entity(child_part)
 
             edge: Edge
-            subclassable_edges = [LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent]
+            subclassable_edges = [
+                LoincPartEdge.parent_comp_by_system,
+                LoincDanglingNlpEdges.nlp_parent,
+            ]
             for edge in child_part_node.get_all_out_edges():
-                if edge.edge_type.type_ in subclassable_edges:
+                if edge.handler.type_ in subclassable_edges:
                     self._edge_to_subclassof(child_part, edge)
 
     # def part_tree_hierarchy_all(self):
@@ -409,18 +398,17 @@ class LoincBuilderSteps:
             if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
                 break
             loinc_term_id = loinc_term.id
-            loinc_term_node = self.runtime.graph.get_node_by_code(
-                type_=LoincNodeType.LoincTerm, code=loinc_term_id
+            loinc_term_node = self.runtime.graph.get_node_by_id( node_id=loinc_term_id
             )
             edge: Edge
             for edge in loinc_term_node.get_all_out_edges():
-                edge_type = edge.edge_type.type_
+                edge_type = edge.handler.type_
                 part_number = edge.to_node.get_property(
                     type_=LoincPartProps.part_number
                 )
                 if part_number is None:
                     continue
-                loinc_part_id = LoincPartId(part_number)
+                loinc_part_id = LoincPartId(f"{LoincNodeType.LoincPart.value.id_prefix}:{part_number}")
 
                 match edge_type:
                     case LoincTermPrimaryEdges.primary_component:
@@ -517,18 +505,18 @@ class LoincBuilderSteps:
             if self.configuration.fast_run and count > FAST_RUN_N_TERMS:
                 break
             loinc_term_id = loinc_term.id
-            loinc_term_node = self.runtime.graph.get_node_by_code(
-                type_=LoincNodeType.LoincTerm, code=loinc_term_id
+            loinc_term_node = self.runtime.graph.get_node_by_id(
+                node_id=loinc_term_id
             )
             edge: Edge
             for edge in loinc_term_node.get_all_out_edges():
-                edge_type = edge.edge_type.type_
+                edge_type = edge.handler.type_
                 part_number = edge.to_node.get_property(
                     type_=LoincPartProps.part_number
                 )
                 if part_number is None:
                     continue
-                loinc_part_id = LoincPartId(part_number)
+                loinc_part_id = LoincPartId(edge.to_node.node_id)
 
                 match edge_type:
                     case LoincTermSupplementaryEdges.supplementary_adjustment:
@@ -591,26 +579,26 @@ class LoincBuilderSteps:
         loinc_loader.load_loinc_classes()
 
         loinc_term_top_entity = self.runtime.current_module.getsert_entity(
-            entity_class=LoincTermClass, entity_id="LoincTerm"
+            entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LoincTerm"
         )
 
         class_type_entity = self.runtime.current_module.getsert_entity(
-            entity_class=LoincTermClass, entity_id="LTC___Laboratory"
-        )
-        class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
-
-        class_type_entity = self.runtime.current_module.getsert_entity(
-            entity_class=LoincTermClass, entity_id="LTC___Clinical"
+            entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Laboratory"
         )
         class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
 
         class_type_entity = self.runtime.current_module.getsert_entity(
-            entity_class=LoincTermClass, entity_id="LTC___Claims_attachments"
+            entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Clinical"
         )
         class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
 
         class_type_entity = self.runtime.current_module.getsert_entity(
-            entity_class=LoincTermClass, entity_id="LTC___Surveys"
+            entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Claims_attachments"
+        )
+        class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
+
+        class_type_entity = self.runtime.current_module.getsert_entity(
+            entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Surveys"
         )
         class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
 
@@ -624,8 +612,8 @@ class LoincBuilderSteps:
                 break
             if count % 1000 == 0:
                 logger.debug(f"Finished {count}")
-            loinc_term_node = self.runtime.graph.get_node_by_code(
-                type_=LoincNodeType.LoincTerm, code=loinc_term_entity.id
+            loinc_term_node = self.runtime.graph.get_node_by_id(
+                node_id=loinc_term_entity.id
             )
 
             if loinc_term_node is None:
@@ -650,7 +638,7 @@ class LoincBuilderSteps:
                     class_type = "LTC___Surveys"
 
             class_type_entity = self.runtime.current_module.getsert_entity(
-                entity_class=LoincTermClass, entity_id=class_type
+                entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:{class_type}"
             )
 
             child_entity: LoincEntity = loinc_term_entity
@@ -683,7 +671,7 @@ class LoincBuilderSteps:
                 parent_entity: LoincTermClass = (
                     self.runtime.current_module.getsert_entity(
                         entity_class=LoincTermClass,  # instantiate parent "class" term if doesn't exist
-                        entity_id=class_abbreviation,
+                        entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:{class_abbreviation}",
                     )
                 )
                 parent_entity.class_title = class_title
@@ -755,11 +743,11 @@ class LoincBuilderSteps:
             ),
         ] = False,
         single_property: t.Annotated[
-          bool,
-          typer.Option(
-              "--single-property",
-              help='If set to true, the owl annotation is changed to "ObjectSomeValuesFrom, EquivalentClasses" leaving out the intersection because it appears that the dumper can not handle the intersection annotation if there is only one property in the entity.',
-          ),
+            bool,
+            typer.Option(
+                "--single-property",
+                help='If set to true, the owl annotation is changed to "ObjectSomeValuesFrom, EquivalentClasses" leaving out the intersection because it appears that the dumper can not handle the intersection annotation if there is only one property in the entity.',
+            ),
         ] = False,
     ) -> SchemaView:
         """Loads a LinkML schema file and sets it as the current schema."""
@@ -771,15 +759,15 @@ class LoincBuilderSteps:
             for attribute in class_def.attributes.values():
                 owl_annotation: Annotation = attribute.annotations.get("owl", None)
                 if owl_annotation and "ObjectSomeValuesFrom" in owl_annotation.value:
-                  if single_property:
-                    attribute.annotations["owl"] = Annotation(
-                        value="ObjectSomeValuesFrom, EquivalentClasses", tag="owl"
-                    )
-                  else:
-                    attribute.annotations["owl"] = Annotation(
-                        value="ObjectSomeValuesFrom, IntersectionOf, EquivalentClasses",
-                        tag="owl",
-                    )
+                    if single_property:
+                        attribute.annotations["owl"] = Annotation(
+                            value="ObjectSomeValuesFrom, EquivalentClasses", tag="owl"
+                        )
+                    else:
+                        attribute.annotations["owl"] = Annotation(
+                            value="ObjectSomeValuesFrom, IntersectionOf, EquivalentClasses",
+                            tag="owl",
+                        )
 
         self.runtime.current_schema_view = schema_view
         return schema_view
@@ -792,7 +780,7 @@ class LoincBuilderSteps:
                 "--file",
                 "-f",
                 help='The output file path. If relative, it will be saved under the "output" directory in the runtime '
-                     'directory. If not given, it will be saved after the module\'s name in the output directory.',
+                "directory. If not given, it will be saved after the module's name in the output directory.",
             ),
         ] = None,
         schema_name: t.Annotated[
@@ -818,10 +806,8 @@ class LoincBuilderSteps:
         owl_file_path.parent.mkdir(parents=True, exist_ok=True)
         typer.echo(f"Writing file: {owl_file_path}")
 
-
         owl_serializer = OwlSerializer(self.runtime, owl_file_path)
-        owl_serializer.as_tbox_equivalent_axioms()
-        return
+        owl_serializer.as_tbox()
 
         # owl_dumper = OWLDumper()
         # document = owl_dumper.to_ontology_document(

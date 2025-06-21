@@ -1,10 +1,16 @@
 """LOINC-SNOMED Ontology schema"""
 
-from enum import StrEnum
+from dataclasses import dataclass
 
+from loinclib import EdgeType, EdgeTypeArgs
 
-class LoincSnomedEdges(StrEnum):
-    """Edges for the LOINC-SNOMED ontology"""
-
+@dataclass(kw_only=True)
+class LoincSnomedEdgesArgs(EdgeTypeArgs):
     pass
+
+
+class LoincSnomedEdges(EdgeType):
+    """Edges for the LOINC-SNOMED ontology"""
+    pass
+
 
