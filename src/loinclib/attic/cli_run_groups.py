@@ -7,7 +7,7 @@ sys.argv = [
     "cli_run",
     "builder",
     "groups-index-props",
-    "--pickle",
+    # "--pickle",
     # ,'--supl'
     # ,'--help'
 ]

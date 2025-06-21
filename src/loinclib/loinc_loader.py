@@ -1,11 +1,12 @@
 from enum import StrEnum
+import typing as t
 
 import pandas as pd
 
 import loinclib.loinc_schema as LS
 from loinclib.config import Configuration
 from loinclib.graph import Node, LoinclibGraph
-from loinclib.loinc_schema import LoincPartEdge, LoincPartProps, LoincClassEdge
+from loinclib.loinc_schema import LoincPartEdge, LoincPartProps, LoincClassEdges
 
 
 class LoincSources(StrEnum):
@@ -141,6 +142,12 @@ class LoincLoader:
 
         self.graph.loaded_sources[LoincSources.AccessoryFiles__PartFile__PartCsv] = {}
 
+    def __get_loinc_term_primary_edge_type(self, property_name: str) -> t.Optional[LS.LoincTermPrimaryEdges]:
+      for edge in LS.LoincTermPrimaryEdges:
+        if edge.value.name == property_name:
+          return edge
+      return None
+
     def load_accessory_files__part_file__loinc_part_link_primary_csv(self) -> None:
         """Populates graph part nodes with properties from the primary part model."""
         if (
@@ -181,12 +188,20 @@ class LoincLoader:
             part_node.set_property(type_=LoincPartProps.part_number, value=part_number)
 
             loinc_node.add_edge_single(
-                LS.LoincTermPrimaryEdges(property_), part_node, False
+                self.__get_loinc_term_primary_edge_type(property_), part_node, False
             )
 
         self.graph.loaded_sources[
             LoincSources.AccessoryFiles__PartFile__LoincPartLink_PrimaryCsv
         ] = {}
+
+
+    def __get_loinc_term_supplimentary_edge_type(self, property_name: str) -> t.Optional[LS.LoincTermSupplementaryEdges]:
+      for edge in LS.LoincTermSupplementaryEdges:
+        if edge.value.name == property_name:
+          return edge
+      return None
+
 
     def load_accessory_files__part_file__loinc_part_link_supplementary_csv(
         self,
@@ -232,7 +247,8 @@ class LoincLoader:
             )
 
             loinc_node.add_edge_single(
-                LS.LoincTermSupplementaryEdges(property_), part_node
+                self.__get_loinc_term_supplimentary_edge_type(property_),
+                 part_node
             )
 
         self.graph.loaded_sources[
@@ -321,7 +337,7 @@ class LoincLoader:
                 type_=LS.LoincNodeType.LoincPart, code=part_number
             )
 
-            class_node.add_edge_single(type_=LoincClassEdge.part, to_node=part_node)
+            class_node.add_edge_single(type_=LoincClassEdges.part, to_node=part_node)
 
         self.graph.loaded_sources[LoincSources.Classes] = {}
 

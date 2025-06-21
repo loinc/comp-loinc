@@ -1,4 +1,5 @@
 """SNOMED Builder: Populate module with entity objects"""
+
 import logging
 import typing as t
 
@@ -54,15 +55,12 @@ class SnomedBuilderSteps:
             if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
                 break
             for edge in part.get_all_out_edges():
-                if edge.edge_type.type_ is SnomedEdges.maps_to:
-                    concept_id = edge.to_node.get_property(
-                        type_=SnomedProperties.concept_id
-                    )
+                if edge.handler.type_ is SnomedEdges.maps_to:
                     concept: SnomedConcept = self.runtime.current_module.get_entity(
-                        entity_id=concept_id, entity_class=SnomedConcept
+                        entity_id=edge.to_node.node_id, entity_class=SnomedConcept
                     )
                     if concept is None:
-                        concept = SnomedConcept(id=concept_id)
+                        concept = SnomedConcept(id=edge.to_node.node_id)
                         concept.fully_specified_name = edge.to_node.get_property(
                             type_=SnomedProperties.fully_specified_name
                         )
@@ -71,7 +69,7 @@ class SnomedBuilderSteps:
     def close_is_a(self):
         """Populates LinkML entities with is-a relationships."""
         loader = SnomedLoader(config=self.configuration, graph=self.runtime.graph)
-        loader.load_selected_relations(SnomedEdges.is_a)
+        loader.load_selected_relations(SnomedEdges.is_a.value.name)
 
         seen_set = set()
         current_set = set()
@@ -84,13 +82,13 @@ class SnomedBuilderSteps:
 
         while len(current_set) > 0:
             for child_id in current_set:
-                child_node = self.runtime.graph.get_node_by_code(
-                    type_=SnomedNodeType.Concept, code=child_id
+                child_node = self.runtime.graph.get_node_by_id(
+                    node_id=child_id
                 )
 
                 for edge in child_node.get_all_out_edges():
 
-                    if edge.edge_type.type_ is SnomedEdges.is_a:
+                    if edge.handler.type_ is SnomedEdges.is_a:
                         parent_node = edge.to_node
                         parent_id = parent_node.get_property(
                             type_=SnomedProperties.concept_id
@@ -147,8 +145,8 @@ class SnomedBuilderSteps:
         for concept in self.runtime.current_module.get_entities_of_type(
             entity_class=SnomedConcept
         ):
-            concept_node = self.runtime.graph.get_node_by_code(
-                type_=SnomedNodeType.Concept, code=concept.id
+            concept_node = self.runtime.graph.get_node_by_id(
+               node_id=concept.id
             )
             fsn = concept_node.get_property(type_=SnomedProperties.fully_specified_name)
             if fsn is None:

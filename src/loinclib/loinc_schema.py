@@ -1,20 +1,32 @@
-from enum import StrEnum, Enum
+from dataclasses import dataclass
+
+from loinclib import NodeType, EdgeType, PropertyType, NodeTypeArgs, PropertyTypeArgs, EdgeTypeArgs
 
 
-class LoincNodeType(StrEnum):
-    LoincTerm = "LoincTerm"
-    LoincPart = "LoincPart"
-    LoincClass = "LoincClass"
+@dataclass(kw_only=True)
+class LoincNodeTypeArgs(NodeTypeArgs):
+  pass
 
 
-class LoincTermProps(StrEnum):
-    loinc_number = "loinc_number"
-    long_common_name = "long_common_name"
-    short_name = "short_name"
-    class_ = "class"
-    class_type = "class_type"
-    definition_description = "definition_description"
-    status = "status"
+class LoincNodeType(NodeType):
+  LoincTerm = LoincNodeTypeArgs(name="LoincTerm", id_prefix="loinc")
+  LoincPart = LoincNodeTypeArgs(name="LoincPart", id_prefix="loinc")
+  LoincClass = LoincNodeTypeArgs(name="LoincClass", id_prefix="loinc")
+
+
+@dataclass(kw_only=True)
+class LoincTermPropsArgs(PropertyTypeArgs):
+  pass
+
+
+class LoincTermProps(PropertyType):
+  loinc_number = LoincTermPropsArgs(name="loinc_number")
+  long_common_name = LoincTermPropsArgs(name="long_common_name")
+  short_name = LoincTermPropsArgs(name="short_name")
+  class_ = LoincTermPropsArgs(name="class")
+  class_type = LoincTermPropsArgs(name="class_type")
+  definition_description = LoincTermPropsArgs(name="definition_description")
+  status = LoincTermPropsArgs(name="status")
 
 
 # 14:38 $ csvtool col 8 LoincPartLink_Primary.csv | sort | uniq -c
@@ -49,65 +61,81 @@ class LoincTermProps(StrEnum):
 # 101632 http://loinc.org/property/TIME_ASPCT
 # 1 Property
 
+@dataclass(kw_only=True)
+class LoincTermPrimaryEdgesArgs(EdgeTypeArgs):
+  pass
 
-class LoincTermPrimaryEdges(StrEnum):
-    primary_component = "http://loinc.org/property/COMPONENT"
-    primary_property = "http://loinc.org/property/PROPERTY"
-    primary_time_aspect = "http://loinc.org/property/TIME_ASPCT"
-    primary_system = "http://loinc.org/property/SYSTEM"
-    primary_scale_type = "http://loinc.org/property/SCALE_TYP"
-    primary_method_type = "http://loinc.org/property/METHOD_TYP"
+class LoincTermPrimaryEdges(EdgeType):
 
-    primary_document_kind = "http://loinc.org/property/document-kind"
-    primary_document_role = "http://loinc.org/property/document-role"
-    primary_document_setting = "http://loinc.org/property/document-setting"
-    primary_document_subject_matter_domain = (
-        "http://loinc.org/property/document-subject-matter-domain"
-    )
-    primary_document_type_of_service = (
-        "http://loinc.org/property/document-type-of-service"
-    )
+  primary_component = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/COMPONENT")
+  primary_property = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/PROPERTY")
+  primary_time_aspect = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/TIME_ASPCT")
+  primary_system = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/SYSTEM")
+  primary_scale_type = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/SCALE_TYP")
+  primary_method_type = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/METHOD_TYP")
 
-    primary_rad_anatomic_location_imaging_focus = (
-        "http://loinc.org/property/rad-anatomic-location-imaging-focus"
-    )
-    primary_rad_anatomic_location_laterality = (
-        "http://loinc.org/property/rad-anatomic-location-laterality"
-    )
-    primary_rad_anatomic_location_laterality_presence = (
-        "http://loinc.org/property/rad-anatomic-location-laterality-presence"
-    )
-    primary_rad_anatomic_location_region_imaged = (
-        "http://loinc.org/property/rad-anatomic-location-region-imaged"
-    )
-    primary_rad_guidance_for_action = (
-        "http://loinc.org/property/rad-guidance-for-action"
-    )
-    primary_rad_guidance_for_approach = (
-        "http://loinc.org/property/rad-guidance-for-approach"
-    )
-    primary_rad_guidance_for_object = (
-        "http://loinc.org/property/rad-guidance-for-object"
-    )
-    primary_rad_guidance_for_presence = (
-        "http://loinc.org/property/rad-guidance-for-presence"
-    )
-    primary_rad_maneuver_maneuver_type = (
-        "http://loinc.org/property/rad-maneuver-maneuver-type"
-    )
-    primary_rad_modality_subtype = "http://loinc.org/property/rad-modality-subtype"
-    primary_rad_modality_type = "http://loinc.org/property/rad-modality-type"
-    primary_rad_pharmaceutical_route = (
-        "http://loinc.org/property/rad-pharmaceutical-route"
-    )
-    primary_rad_pharmaceutical_substance_given = (
-        "http://loinc.org/property/rad-pharmaceutical-substance-given"
-    )
-    primary_rad_reason_for_exam = "http://loinc.org/property/rad-reason-for-exam"
-    primary_rad_subject = "http://loinc.org/property/rad-subject"
-    primary_rad_timing = "http://loinc.org/property/rad-timing"
-    primary_rad_view_aggregation = "http://loinc.org/property/rad-view-aggregation"
-    primary_rad_view_view_type = "http://loinc.org/property/rad-view-view-type"
+  primary_document_kind = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/document-kind")
+  primary_document_role = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/document-role")
+  primary_document_setting = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/document-setting")
+  primary_document_subject_matter_domain = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/document-subject-matter-domain"
+  )
+  primary_document_type_of_service = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/document-type-of-service"
+  )
+
+  primary_rad_anatomic_location_imaging_focus = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-anatomic-location-imaging-focus"
+  )
+  primary_rad_anatomic_location_laterality = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-anatomic-location-laterality"
+  )
+  primary_rad_anatomic_location_laterality_presence = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-anatomic-location-laterality-presence"
+  )
+  primary_rad_anatomic_location_region_imaged = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-anatomic-location-region-imaged"
+  )
+  primary_rad_guidance_for_action = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-guidance-for-action"
+  )
+  primary_rad_guidance_for_approach = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-guidance-for-approach"
+  )
+  primary_rad_guidance_for_object = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-guidance-for-object"
+  )
+  primary_rad_guidance_for_presence = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-guidance-for-presence"
+  )
+  primary_rad_maneuver_maneuver_type = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-maneuver-maneuver-type"
+  )
+  primary_rad_modality_subtype = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-modality-subtype"
+  )
+  primary_rad_modality_type = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/rad-modality-type")
+  primary_rad_pharmaceutical_route = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-pharmaceutical-route"
+  )
+  primary_rad_pharmaceutical_substance_given = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-pharmaceutical-substance-given"
+  )
+  primary_rad_reason_for_exam = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-reason-for-exam"
+  )
+  primary_rad_subject = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/rad-subject")
+  primary_rad_timing = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/rad-timing")
+  primary_rad_view_aggregation = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-view-aggregation"
+  )
+  primary_rad_view_view_type = LoincTermPrimaryEdgesArgs(
+      name="http://loinc.org/property/rad-view-view-type"
+  )
+
+def get_by_name(cls, name: str) -> LoincTermPrimaryEdges:
+  pass
+
 
 
 # 14:38 $ csvtool col 8 LoincPartLink_Supplementary.csv | sort | uniq -c
@@ -133,49 +161,66 @@ class LoincTermPrimaryEdges(StrEnum):
 # 233 http://loinc.org/property/time-modifier
 # 1 Property
 
-
-class LoincTermSupplementaryEdges(StrEnum):
-    supplementary_adjustment = "http://loinc.org/property/adjustment"
-    supplementary_analyte = "http://loinc.org/property/analyte"
-    supplementary_analyte_core = "http://loinc.org/property/analyte-core"
-    supplementary_analyte_divisor = "http://loinc.org/property/analyte-divisor"
-    supplementary_analyte_divisor_suffix = (
-        "http://loinc.org/property/analyte-divisor-suffix"
-    )
-    supplementary_analyte_gene = "http://loinc.org/property/analyte-gene"
-    supplementary_analyte_numerator = "http://loinc.org/property/analyte-numerator"
-    supplementary_analyte_suffix = "http://loinc.org/property/analyte-suffix"
-    supplementary_category = "http://loinc.org/property/category"
-    supplementary_challenge = "http://loinc.org/property/challenge"
-    supplementary_CLASS = "http://loinc.org/property/CLASS"
-    supplementary_count = "http://loinc.org/property/count"
-    supplementary_METHOD_TYP = "http://loinc.org/property/METHOD_TYP"
-    supplementary_PROPERTY = "http://loinc.org/property/PROPERTY"
-    supplementary_SCALE_TYP = "http://loinc.org/property/SCALE_TYP"
-    supplementary_search = "http://loinc.org/property/search"
-    supplementary_super_system = "http://loinc.org/property/super-system"
-    supplementary_system_core = "http://loinc.org/property/system-core"
-    supplementary_time_core = "http://loinc.org/property/time-core"
-    supplementary_time_modifier = "http://loinc.org/property/time-modifier"
+@dataclass(kw_only=True)
+class LoincTermSupplementaryEdgesArgs(EdgeTypeArgs):
+  pass
 
 
-class LoincPartProps(StrEnum):
-    part_number = "part_number"
-    part_type_name = "part_type_name"
-    part_name = "part_name"
-    part_display_name = "part_display_name"
-    status = "status"
+class LoincTermSupplementaryEdges(EdgeType):
+  supplementary_adjustment = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/adjustment")
+  supplementary_analyte = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/analyte")
+  supplementary_analyte_core = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/analyte-core")
+  supplementary_analyte_divisor = LoincTermSupplementaryEdgesArgs(
+      name="http://loinc.org/property/analyte-divisor"
+  )
+  supplementary_analyte_divisor_suffix = LoincTermSupplementaryEdgesArgs(
+      name="http://loinc.org/property/analyte-divisor-suffix"
+  )
+  supplementary_analyte_gene = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/analyte-gene")
+  supplementary_analyte_numerator = LoincTermSupplementaryEdgesArgs(
+      name="http://loinc.org/property/analyte-numerator"
+  )
+  supplementary_analyte_suffix = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/analyte-suffix")
+  supplementary_category = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/category")
+  supplementary_challenge = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/challenge")
+  supplementary_CLASS = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/CLASS")
+  supplementary_count = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/count")
+  supplementary_METHOD_TYP = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/METHOD_TYP")
+  supplementary_PROPERTY = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/PROPERTY")
+  supplementary_SCALE_TYP = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/SCALE_TYP")
+  supplementary_search = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/search")
+  supplementary_super_system = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/super-system")
+  supplementary_system_core = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/system-core")
+  supplementary_time_core = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/time-core")
+  supplementary_time_modifier = LoincTermSupplementaryEdgesArgs(name="http://loinc.org/property/time-modifier")
 
-    code_text__from_comp_hierarch = "part_text__from_comp_hierarch"
-    code_text__from_tree = "code_text__from_tree"
 
-    from_hierarchy = "from_hierarchy"
+@dataclass(kw_only=True)
+class LoincPartPropsArgs(PropertyTypeArgs):
+  pass
 
 
-class LoincPartEdge(StrEnum):
-    parent_comp_by_system = (
-        "parent_comp_by_system"  # This edge comes from ComponentHierarchyBySystem.csv
-    )
+class LoincPartProps(PropertyType):
+  part_number = LoincPartPropsArgs(name="part_number")
+  part_type_name = LoincPartPropsArgs(name="part_type_name")
+  part_name = LoincPartPropsArgs(name="part_name")
+  part_display_name = LoincPartPropsArgs(name="part_display_name")
+  status = LoincPartPropsArgs(name="status")
+
+  code_text__from_comp_hierarch = LoincPartPropsArgs(name="part_text__from_comp_hierarch")
+  code_text__from_tree = LoincPartPropsArgs(name="code_text__from_tree")
+
+  from_hierarchy = LoincPartPropsArgs(name="from_hierarchy")
+
+@dataclass(kw_only=True)
+class LoincPartEdgeArgs(EdgeTypeArgs):
+  pass
+
+class LoincPartEdge(EdgeType):
+
+  parent_comp_by_system = LoincPartEdgeArgs(
+      name="parent_comp_by_system"  # This edge comes from ComponentHierarchyBySystem.csv
+  )
 
 
 # loinc_schema: Schema = Schema()
@@ -222,12 +267,20 @@ class LoincPartEdge(StrEnum):
 # # edge
 # loinc_term.add_edge_type(EdgeType(node_type=loinc_term, type_=LoincPartEdges.sub_class_of))
 
+@dataclass(kw_only=True)
+class LoincClassPropsArgs(PropertyTypeArgs):
+  pass
 
-class LoincClassProps(StrEnum):
-    abbreviation = "Abbreviation"
-    title = "title"
-    part_number = "part_number"
+class LoincClassProps(PropertyType):
 
+  abbreviation = LoincClassPropsArgs(name="Abbreviation")
+  title = LoincClassPropsArgs(name="title")
+  part_number = LoincClassPropsArgs(name="part_number")
 
-class LoincClassEdge(StrEnum):
-    part = "part"
+@dataclass(kw_only=True)
+class LoincClassEdgesArgs(EdgeTypeArgs):
+  pass
+
+class LoincClassEdges(EdgeType):
+
+  part = LoincClassEdgesArgs(name="part")

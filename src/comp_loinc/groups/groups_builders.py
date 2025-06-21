@@ -13,6 +13,7 @@ import loinclib as ll
 from comp_loinc.datamodel import LoincTerm, LoincPartId
 from comp_loinc.groups.property_use import Property, Part
 from comp_loinc.module import Module
+from comploinc_schame import ComploincNodeType
 from loinclib.loinc_schema import (
     LoincNodeType,
     LoincTermPrimaryEdges,
@@ -21,7 +22,11 @@ from loinclib.loinc_schema import (
     LoincTermSupplementaryEdges,
 )
 from loinclib.loinc_tree_loader import LoincTreeLoader
-from loinclib.loinc_tree_schema import LoincDanglingNlpEdges, LoincTreeEdges, LoincTreeProps
+from loinclib.loinc_tree_schema import (
+    LoincDanglingNlpEdges,
+    LoincTreeEdges,
+    LoincTreeProps,
+)
 from loinclib.nlp_taxonomification import parts_to_tsv
 
 
@@ -119,7 +124,7 @@ class Grouper:
             print("CYCLE ============= in find_by_count_averages")
             return
         seen.add(_property)
-        print("in find_by_count_averages")
+        # print("in find_by_count_averages")
         descendants_count = _property.get_descendants_count(set())
         children_count = len(_property.child_prop_use_by_key)
         if children_count == 0:
@@ -243,11 +248,11 @@ class GroupsBuilderSteps:
         module: Module = self.runtime.current_module
         for c in _more_than_components:
             loinc_term: LoincTerm = module.getsert_entity(
-                entity_id=f"comploinc:/group/component/{c.part_number}",
+                entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:group/component/{c.part_number}",
                 entity_class=LoincTerm,
             )
             loinc_term.entity_label = f"GRP_CMP {c.part_node.part_display}"
-            loinc_term.primary_component = LoincPartId(c.part_number)
+            loinc_term.primary_component = LoincPartId(f"{LoincNodeType.LoincPart.value.id_prefix}:{c.part_number}")
 
         cl.cli.comploinc_cli_object.loinc_builders.load_schema(
             filename="comp_loinc.yaml",
@@ -262,11 +267,11 @@ class GroupsBuilderSteps:
         module: Module = self.runtime.current_module
         for s in _more_than_systems:
             loinc_term: LoincTerm = module.getsert_entity(
-                entity_id=f"comploinc:/group/system/{s.part_number}",
+                entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:group/system/{s.part_number}",
                 entity_class=LoincTerm,
             )
             loinc_term.entity_label = f"GRP_SYS {s.part_node.part_display}"
-            loinc_term.primary_system = LoincPartId(s.part_number)
+            loinc_term.primary_system = LoincPartId(f"{LoincNodeType.LoincPart.value.id_prefix}:{s.part_number}")
 
         cl.cli.comploinc_cli_object.loinc_builders.load_schema(
             filename="comp_loinc.yaml",
@@ -283,19 +288,19 @@ class GroupsBuilderSteps:
         module: Module = self.runtime.current_module
         for c, s in _more_than_pairs:
             loinc_term: LoincTerm = module.getsert_entity(
-                entity_id=f"comploinc:/group/component-system/{c.part_number}-{s.part_number}",
+                entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:group/component-system/{c.part_number}-{s.part_number}",
                 entity_class=LoincTerm,
             )
             loinc_term.entity_label = f"GRP_CMP_SYS {c.part_node.part_display}  ||  {s.part_node.part_display}"
-            loinc_term.primary_component = LoincPartId(c.part_number)
-            loinc_term.primary_system = LoincPartId(s.part_number)
+            loinc_term.primary_component = LoincPartId(f"{LoincNodeType.LoincPart.value.id_prefix}:{c.part_number}")
+            loinc_term.primary_system = LoincPartId(f"{LoincNodeType.LoincPart.value.id_prefix}:{s.part_number}")
 
         cl.cli.comploinc_cli_object.loinc_builders.load_schema(
             filename="comp_loinc.yaml", equivalent_term=True, reload=True
         )
         cl.cli.comploinc_cli_object.loinc_builders.save_to_owl()
 
-        print("debug")
+        # print("debug")
 
     def do_abstracts(self):
         components = dict(self.index.used_after_not_used["COMPONENT"])
@@ -364,7 +369,7 @@ class GroupsBuilderSteps:
             for _system in systems:
                 concrete_pairs.append((self.index.property_by_key[cc_key], _system))
 
-        print("debug")
+        # print("debug")
 
     def do_groups(self):
 
@@ -442,7 +447,7 @@ class GroupsBuilderSteps:
                 parent_part_node = self.index.parts.setdefault(
                     parent_part_number, Part(part_number=parent_part_number)
                 )
-                match edge.edge_type.type_:
+                match edge.handler.type_:
                     case LoincTreeEdges.tree_parent:
                         child_part_node.parents[parent_part_number] = parent_part_node
                         parent_part_node.children[part_number] = child_part_node
@@ -486,7 +491,7 @@ class GroupsBuilderSteps:
             term_properties: dict[str, Property] = {}
 
             for edge in edges:
-                edge_type = edge.edge_type.type_
+                edge_type = edge.handler.type_
 
                 if edge_type is LoincTermSupplementaryEdges.supplementary_search:
                     search_part_number = edge.to_node.get_property(

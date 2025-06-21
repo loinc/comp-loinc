@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import typing as t
-from enum import StrEnum
+
+from loinclib import PropertyType
 
 
 class Property:
     def __init__(
-        self, part_number: str, part_name: str, prop_type: t.Optional[StrEnum]
+        self, part_number: str, part_name: str, prop_type: t.Optional[PropertyType]
     ):
         self.count: int = 0
         self.part_number = part_number
@@ -33,7 +34,7 @@ class Property:
         return f"{self.get_simple_property_name()}_{self.part_number}"
 
     def get_simple_property_name(self):
-        s = str(self.prop_type)
+        s = str(self.prop_type.value.name)
         return s[s.rfind("/") + 1 :]
 
     def get_descendants_count(self, seen: set):
