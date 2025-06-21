@@ -39,7 +39,7 @@ torch = [
 #    {version = "*", markers = "platform_machine != 'arm64'", extras = ["cpu"]}
 ]
 transformers = ">=4.48.0"  # includes security update
-typer = "^0.9.0"
+typer-slim = "^0.16.0"
 upsetplot = "^0.9.0"
 py-horned-owl = "^1.2.0"
 

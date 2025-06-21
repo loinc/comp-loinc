@@ -6,6 +6,7 @@ import yaml
 LOINCLIB_DIR = Path(__file__).parent
 PROJECT_DIR = LOINCLIB_DIR.parent.parent
 
+
 class Configuration:
     def __init__(
         self, home_path: Path = PROJECT_DIR, config_file: Path = "comploinc_config.yaml"
@@ -84,4 +85,4 @@ class Configuration:
         return self.config["logging"]
 
     def get_prop_use_pickle(self) -> Path:
-      return self.home_path / self.config["prop_use"]["pickle"]
+        return self.home_path / self.config["prop_use"]["pickle"]

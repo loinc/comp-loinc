@@ -19,5 +19,5 @@ class MultiValuedEnum(enum.Enum):
 if __name__ == "__main__":
     print(MultiValuedEnum.ONE)
     print(MultiValuedEnum.ONE.data["one"])
-    part = LoincPart()
+    part = LoincPart(id="hello")
     print(part)

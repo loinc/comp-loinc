@@ -34,7 +34,7 @@ from comp_loinc.ingest.load_loinc_release import LoadLoincRelease
 from comp_loinc.ingest.part_ingest import PartOntology
 from comp_loinc.mapping.fhir_concept_map_ingest import ChebiFhirIngest
 
-from loinclib import PropertyType as AT
+from loinclib import PropertyHandler as AT
 
 # except ModuleNotFoundError:
 #     from comp_loinc.ingest.part_ingest import PartOntology
@@ -434,7 +434,7 @@ def loincs_primary_defs_csv():
     release.load_AccessoryFiles_PartFile_Part_csv()
 
     loinc_node_ids = release.get_all_node_ids_for_node_type(
-        loinclib.NodeType.loinc_code
+        loinclib.NodeHandler.loinc_code
     )
 
     # generator.generate_loincs_primary_defs()

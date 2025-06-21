@@ -44,6 +44,7 @@ grouping: $(GROUPING_FILES)
 # todo: when the grouping classes put into the correct dir, can remove these mv steps
 $(GROUPING_FILES):
 	python src/loinclib/attic/cli_run_groups.py
+	mkdir -p $(DEFAULT_BUILD_DIR)
 	mv -f output/group_components.owl $(DEFAULT_BUILD_DIR)/group_components.owl
 	mv -f output/group_systems.owl $(DEFAULT_BUILD_DIR)/group_systems.owl
 	mv -f output/group_components_systems.owl $(DEFAULT_BUILD_DIR)/group_components_systems.owl
