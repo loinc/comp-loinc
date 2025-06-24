@@ -143,6 +143,9 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/:
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/:
 	mkdir -p $@
 
+documentation/analyses/class-depth/:
+	mkdir -p $@
+
 # - robot stats & markdown files
 output/tmp/stats.json: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl | output/tmp/
 	robot measure $(PREFIXES_METRICS) -i $< --format json --metrics extended --output $@
@@ -158,8 +161,9 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
 # - Comparisons: SNOMED-LOINC
-# TODO: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset
-# TODO: Connect this to the pipeline
+# TODO: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
+# Todo: - how subset those mappings? involves mapped parts and terms. check notes
+# TODO: Connect this to the pipeline(s). which ones? (i) class depth, (ii) subclass axioms, (iii) other(s)?
 output/analysis/snomed/snomed-unreasoned.ofn: | output/analysis/snomed/
 	python src/comp_loinc/analysis/snomed.py --outpath $@
 
@@ -175,15 +179,18 @@ output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reaso
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: LOINC
-# TODO: Change LOINC representation
-# TODO: Connect this to the pipeline
+# TODO: Change LOINC representation. what to do?
+# TODO: 2 varaitions?: terms alone, no hierarchy VS include grouping classes? Is the code set up in any way to build any of these? I think not.
+# Todo: - flat: I think for the terms one I just need to read the classes and define them, or i could filter CompLOINC to remove all subclass axioms maybe, and leave only the LOINC term classes behind? how to remove just part classes? by URI?
+# Todo: - w/ groups: i can read the groups file and instantiate these classes and make subclass axioms, then combine w/ the previous flat output?
+# TODO: Connect this to the pipeline(s): (i) class depth?, (ii) subclass one should use reasoned w/ inferred included (even though this will have none for just terms, unless including grouping classes), (iii) any else?
 output/analysis/loinc/loinc-unreasoned.owl: | output/analysis/loinc/
 	echo 1
 
 output/analysis/loinc/loinc.owl: output/analysis/loinc/loinc-unreasoned.owl
 	robot reason --input $< --output $@
 
-# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/193
+# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/193 . Do we just replace w/ the above goal(s) instead? loinc.owl and/or loinc-unreasoned.owl?
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-reasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
 	robot reason --input $< --output $@
 
@@ -191,20 +198,40 @@ output/tmp/subclass-rels-loinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/ana
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: CompLOINC
-output/tmp/subclass-rels-comploinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl
+output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
+	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+output/tmp/subclass-rels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
+	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-primary.owl
+	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: all
-documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc.tsv
-	python src/comp_loinc/analysis/subclass_rels.py --indir output/tmp/ --outpath-md documentation/subclass-analysis.md --outpath-upset-plot documentation/upset.png
+documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv
+	python src/comp_loinc/analysis/subclass_rels.py \
+	--loinc-path output/tmp/subclass-rels-loinc.tsv \
+	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv \
+	--outpath-md documentation/subclass-analysis.md \
+	--outpath-upset-plot documentation/upset.png
+
+documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv | documentation/analyses/class-depth/
+	python src/comp_loinc/analysis/depth.py \
+	--loinc-path output/tmp/subclass-rels-loinc.tsv \
+	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
+	--outpath-md documentation/analyses/class-depth/depth.md \
+	--outdir-plots documentation/analyses/class-depth
 
 # - Build final outputs & main command
-# TODO: update prereqs: should be same as above
-documentation/depth.md documentation/depth-histogram.png documentation/depth-histogram-percents.png:
-	python src/comp_loinc/analysis/depth.py --indir output/tmp/ --outpath-md documentation/depth.md --outpath-plot-n documentation/depth-histogram.png --outpath-plot-pct documentation/depth-histogram-percents.png
-
-documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/depth.md documentation/stats-misc.md
-	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@
+documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/analyses/class-depth/depth.md documentation/stats-misc.md
+	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/analyses/class-depth/depth.md documentation/stats-misc.md > $@
 
 stats: documentation/stats.md
 
