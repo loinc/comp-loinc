@@ -3,9 +3,6 @@
 Resources
 - CLI type system docs (typer is a higher leve wrapper around click): https://click.palletsprojects.com/en/8.1.x/api/
 
-TODO's (major)
-  -
-
 todo's (minor)
   1. Path resolution / graceful exiting: If path of a file/dir doesn't exist, should exit gracefully early on. I left
   exists=False for each `typer.Option` as a reminder. I would use `exists=True`, but `typer` has a relative path bug.
@@ -364,7 +361,7 @@ def merge_owl(
     :param owl_directory: str to directory where unmerged `.owl` files are stored.
     :param output: str where output will be saved.
 
-    TODO: Consider removing the files created from this point each time this code executes e.g. any file with 'merge_*'
+    todo: Consider removing the files created from this point each time this code executes e.g. any file with 'merge_*'
     """
     files = [
         os.path.join(owl_directory, str(x))

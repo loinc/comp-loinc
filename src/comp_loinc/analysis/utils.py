@@ -3,6 +3,7 @@
 todo: curies package could be useful here
 """
 import os
+from argparse import ArgumentParser
 from pathlib import Path
 from typing import Dict, List, Set, Tuple, Union
 
@@ -10,7 +11,6 @@ import pandas as pd
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-ONTOLOGIES = ('LOINC', 'LOINC-SNOMED', 'CompLOINC')
 CLASS_TYPES = ('terms', 'groups', 'parts')
 
 
@@ -57,6 +57,49 @@ def _filter_classes(classes: Set, _filter: List[str], includes_angle_brackets=Tr
     return filtered_classes
 
 
+def bundle_inpaths(
+    loinc_path: Union[Path, str], loinc_snomed_path: Union[Path, str], comploinc_primary_path: Union[Path, str],
+    comploinc_supplementary_path: Union[Path, str], dont_convert_paths_to_abs=False, *args
+):  # -> Tuple[Dict[str, Path], ...]  # would keep this typedef, but it trips up PyCharm
+    """Bundle inpath arguments into a single dict, adding titles as dict keys"""
+    terminologies: Dict[str, Path] = {
+        'LOINC': loinc_path,
+        'LOINC-SNOMED': loinc_snomed_path,
+        'CompLOINC-Primary': comploinc_primary_path,
+        'CompLOINC-Supplementary': comploinc_supplementary_path,
+    }
+    if not dont_convert_paths_to_abs:
+        terminologies = {k: PROJECT_ROOT / Path(v) for k, v in terminologies.items()}
+        processed_args = tuple(PROJECT_ROOT / Path(arg) for arg in args)
+    else:
+        processed_args = args
+    return terminologies, *processed_args
+
+
+def cli_add_inpath_args(parser: ArgumentParser, defaults: Dict[str, str]):
+    """Add some common CLI args"""
+    parser.add_argument(
+        '-l', '--loinc-path', type=str, default=defaults.get('loinc-path'),
+        help='Path to TSV containing subclass axioms / relationships for LOINC.')
+    parser.add_argument(
+        '-L', '--loinc-snomed-path', type=str, default=defaults.get('loinc-snomed-path'),
+        help='Path to TSV containing subclass axioms / relationships for LOINC-SNOMED Ontology.')
+    parser.add_argument(
+        '-p', '--comploinc-primary-path', type=str, default=defaults.get('comploinc-primary-path'),
+        help='Path to TSV containing subclass axioms / relationships for CompLOINC (variation using the primary part '
+             'model).')
+    parser.add_argument(
+        '-s', '--comploinc-supplementary-path', type=str,
+        default=defaults.get('comploinc-supplementary-path'),
+        help='Path to TSV containing subclass axioms / relationships for CompLOINC (variation using the supplementary '
+             'part model).')
+    parser.add_argument(
+        '-r', '--dont-convert-paths-to-abs', required=False, action='store_true',
+        help='Set this flag if the all the paths you are passing absolute paths, rather than relative paths, relative'
+             ' to the root of the repository. All paths should be one or the other.')
+    return parser
+
+
 # todo?: incomplete & unused. Not sure if this will be useful for anything
 def _disaggregate_axiom_sets(ont_sets: Dict[str, Set[Tuple[str, str]]]) -> Dict[str, Dict[str, Set[Tuple[str, str]]]]:
     """Disaggregate by type (groups, terms, parts)
@@ -84,19 +127,25 @@ def _disaggregate_axiom_sets(ont_sets: Dict[str, Set[Tuple[str, str]]]) -> Dict[
     return ont_sets_by_type
 
 
-def _subclass_axioms_and_totals(indir: Union[Path, str]) -> Tuple[pd.DataFrame, Dict[str, Set[Tuple[str, str]]]]:
-    """Read & return transformed inputs"""
-    ont_paths = {k: PROJECT_ROOT / indir / f'subclass-rels-{k.lower()}.tsv' for k in ONTOLOGIES}
-    ont_sets: Dict[str, Set[Tuple[str, str]]] = {}
-    ont_dfs = {}
+def _subclass_axioms_and_totals(
+    terminologies: Dict[str, Union[Path, str]]
+) -> Tuple[pd.DataFrame, Dict[str, Set[Tuple[str, str]]]]:
+    """Get sets of axioms by ontology/terminology and grand total and by ontology set
+
+    :params terminologies: Dictionary of ontology paths to files
+    :returns tots_df: Grand total number of subclass axioms, by ontolgoy
+    :returns ont_sets: Sets of axioms by ontology, with URIs surrounded by angle brackets ('<URI>').
+    """
+    sets: Dict[str, Set[Tuple[str, str]]] = {}
+    dfs = {}
 
     # Totals
     tots_rows = []
-    for ont, path in ont_paths.items():
+    for ont, path in terminologies.items():
         df = pd.read_csv(path, sep='\t')
-        ont_dfs[ont] = df
+        dfs[ont] = df
         tots_rows.append({'': ont, 'n': f'{len(df):,}'})
-        ont_sets[ont] = set(zip(df["?child"], df["?parent"]))
+        sets[ont] = set(zip(df["?child"], df["?parent"]))
     tots_df = pd.DataFrame(tots_rows)
 
-    return tots_df, ont_sets
+    return tots_df, sets

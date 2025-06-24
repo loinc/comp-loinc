@@ -181,7 +181,7 @@ class Generator:
             parent = self._loinc_parent(properties, self.loincs)
             parent_id: LoincTermId = LoincTermId(parent.id)
 
-            # TODO: SE: there must be a better way (in Python) to check and add to list if needed, by attribute value(e)
+            # Todo: SE: there must be a better way (in Python) to check and add to list if needed, by attribute value(e)
             # How do LinkML objects implement __eq__?  Specifically the *Id classes?
             loinc = self.loincs.setdefault(
                 code, LoincTermIntersection(id=_loincify(code))

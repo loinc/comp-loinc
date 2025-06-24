@@ -92,7 +92,7 @@ classes:
   LoincTerm:
     is_a: LoincEntity
     attributes: # The naming here is intended to match the column naming in the CSV files
-      # TODO: review these names against the relevant CSVs.
+      # todo: review these names against the relevant CSVs.
       loinc_number:
         slot_uri: loinc:loinc_number
         annotations:
