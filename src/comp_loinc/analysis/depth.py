@@ -73,6 +73,8 @@ def _depth_counts(
         pd.DataFrame: A pandas DataFrame containing two columns:
             - 'depth': Represents the depth level within the class hierarchy.
             - 'n': Represents the count of classes at the corresponding depth.
+        In a polyhierarchy, a class can occur at multiple depths and will be
+        counted each time.
     """
     # logger.debug("Calculating depth counts for %d subclass pairs with filter %s", len(subclass_pairs), _filter)
     # Validation
@@ -96,21 +98,27 @@ def _depth_counts(
     # logger.debug("Found %d root classes", len(roots))
 
     # Calculate depth using BFS
-    depths_raw: Dict[str, int] = {}
+    # A class can have multiple depths if the ontology is a polyhierarchy.
+    depths_raw_sets: Dict[str, Set[int]] = defaultdict(set)
     queue = deque([(root, 1) for root in roots])
     while queue:
         cls, depth = queue.popleft()
-        if cls not in depths_raw:
-            depths_raw[cls] = depth
+        if depth not in depths_raw_sets[cls]:
+            depths_raw_sets[cls].add(depth)
             for child in children[cls]:
                 queue.append((child, depth + 1))
+    depths_raw: Dict[str, List[int]] = {
+        cls: sorted(list(depths)) for cls, depths in depths_raw_sets.items()
+    }
     # logger.debug("Calculated depths for %d classes", len(depths_raw))
 
     # Filter by class type inclusion
-    depths_filtered: Dict[str, int] = {}
+    depths_filtered: Dict[str, List[int]] = {}
     if _filter:
         filtered_classes = _filter_classes(all_classes, _filter)
-        depths_filtered = {cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes}
+        depths_filtered = {
+            cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes
+        }
         # logger.debug("After filtering, %d classes remain", len(depths_filtered))
         logging.debug(f'    n classes: {len(all_classes)}')
         logging.debug(f'    remaining after filtering: {len(filtered_classes)}')
@@ -129,7 +137,7 @@ def _depth_counts(
         #     </owl:Class>
 
     # Roots: log for additonal analysis
-    roots2 = {k for k, v in depths_filtered.items() if v == 1}
+    roots2 = {k for k, v in depths_filtered.items() if 1 in v}
     if roots != roots2:
         print()
     logging.debug(f'    n roots: {len(roots)}')
@@ -139,8 +147,9 @@ def _depth_counts(
     # Count classes at each depth
     depths = depths_filtered if depths_filtered else depths_raw
     depth_counts = defaultdict(int)
-    for depth in depths.values():
-        depth_counts[depth] += 1
+    for depth_list in depths.values():
+        for depth in depth_list:
+            depth_counts[depth] += 1
     depth_counts_list: List[Tuple[int, int]] = sorted(depth_counts.items())
     df = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
 
