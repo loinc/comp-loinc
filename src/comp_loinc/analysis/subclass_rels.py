@@ -5,6 +5,7 @@ Refs:
 
 todo's:
  - consider writing tables to TSV in addition to markdown. for easy ref / copying
+ - can replace `tabulate` w/ `df.to_markdown(index=False, tablefmt="github")`. If so, remove package from poetry.
 TODO: #1 Do I actually want a_minus_b or intersection? I thought I found that they were the same for my purposes, but
  now I'm not so sure.
 """

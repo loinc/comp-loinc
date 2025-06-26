@@ -41,7 +41,19 @@ This measures how deep into the hierarchy each class is. E.g. if the root of the
 (TermC subClassOf TermB) and (TermB subClassOf TermA), then TermC is at depth 3, TermB is at depth 2, and TermA is at 
 depth 1.
 
-Dangling classes are not represented here.
+**Dangling classes** 
+Dangling classes are not represented here in this class depth analysis.
+
+*Ramifications for LOINC*
+Note that this results in LOINC showing that it has 0 terms at any depths, as LOINC has no term hierarchy. The only 
+hierarchies that exist in LOINC are a shallow grouping hierarchy (represented by CSVs in `AccessoryFiles/GroupFile/` in 
+the LOINC release, and the part hierarchy, which is not represented in the release, but only exists in the LOINC tree 
+browser (https://loinc.org/tree/). Regarding parts, there are also a large number of those that are dangling even after 
+when considering all of the tree browser hierarchies, and those as well are not represented here. 
+
+*Ramifications for CompLOINC*
+The only dangling classes in CompLOINC are dangling parts from the LOINC release, specifically the ones which CompLOINC 
+was not able to find matches. Those classes are not represented here.
 
 {% for title, table_and_plot_path in figs_by_title.items() %}
 {% set table, plot_path = table_and_plot_path %}
@@ -95,7 +107,7 @@ def _depth_counts(
     # Find roots (classes with no parents)
     all_classes = set(children.keys()) | set(parents.keys())
     roots = all_classes - set(parents.keys())
-    # logger.debug("Found %d root classes", len(roots))
+    logging.debug(f'    n roots: {len(roots)}')
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
@@ -113,12 +125,12 @@ def _depth_counts(
     # logger.debug("Calculated depths for %d classes", len(depths_raw))
 
     # Filter by class type inclusion
-    depths_filtered: Dict[str, List[int]] = {}
+    depths = depths_raw
     if _filter:
         filtered_classes = _filter_classes(all_classes, _filter)
-        depths_filtered = {
-            cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes
-        }
+        depths_filtered: Dict[str, List[int]] = {
+            cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes}
+        depths = depths_filtered
         # logger.debug("After filtering, %d classes remain", len(depths_filtered))
         logging.debug(f'    n classes: {len(all_classes)}')
         logging.debug(f'    remaining after filtering: {len(filtered_classes)}')
@@ -126,26 +138,14 @@ def _depth_counts(
         # TODO: ensure that for (terms, groups, parts), filtered_classes is the same as all_classes. at least numbers
         #  OK: 0 in filtered classes. why? cuz LOINC and filter is 'terms' and axioms are parts
         if len(filtered_classes) != len(all_classes) and _filter == ('terms', 'groups', 'parts'):
+            # TODO: Why do filtered classes have LoincPArt but AllClasses do not?
+            diff1 = all_classes - filtered_classes
+            diff2 = filtered_classes - all_classes
+            print(diff1)
+            print(diff2)
             print()
 
-        # TODO temp: how to handle multi-roots?
-        # TODO: case 1: CompLOINC-Primary: {'<https://loinc.org/138875005>', '<https://loinc.org/LoincTerm>'}
-        #  - which file does this appear in? CompLOINC-Primary
-        #      <owl:Class rdf:about="https://loinc.org/138875005">
-        #         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        #         <rdfs:label>SCT   SNOMED CT Concept (SNOMED RT+CTV3)</rdfs:label>
-        #     </owl:Class>
-
-    # Roots: log for additonal analysis
-    roots2 = {k for k, v in depths_filtered.items() if 1 in v}
-    if roots != roots2:
-        print()
-    logging.debug(f'    n roots: {len(roots)}')
-    if len(roots2) > 1:
-        print()
-
     # Count classes at each depth
-    depths = depths_filtered if depths_filtered else depths_raw
     depth_counts = defaultdict(int)
     for depth_list in depths.values():
         for depth in depth_list:
@@ -173,6 +173,32 @@ def _get_stat_label(stat: str) -> str:
     """Generate a label for outputs from stat type"""
     stat_str = 'Number' if stat == "totals" else "%" if stat == 'percentages' else 'Measure'
     return f'{stat_str} of classes'
+
+
+def _get_plot_colors(df: pd.DataFrame) -> List[str]:
+    """Get colors for bars"""
+    default_color = '#6D8196'  # slate grey
+    columns = df.columns.tolist()
+    colors = []
+    for col in columns:
+        if col.startswith('CompLOINC'):
+            if col == 'CompLOINC-Primary':
+                colors.append('#1f77b4')  # dark blue
+            if col == 'CompLOINC-Supplementary':
+                colors.append('#aec7e8')  # light blue
+            else:
+                colors.append(default_color)  # todo: variations if rendering subtrees
+        # Let matplotlib handle other colors automatically ( didn't work)
+        # else:
+        #     colors.append(None)
+        # Alternative: Manually
+        elif col == 'LOINC':
+            colors.append('#d62728')  # red
+        elif col == 'LOINC-SNOMED':
+            colors.append('#2ca02c')  # green
+        else:
+            colors.append(default_color)
+    return colors
 
 
 def _save_plot(
@@ -210,7 +236,7 @@ def _save_plot(
 
     # Create bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
-    merged.plot(kind="bar", stacked=False, ax=ax)
+    merged.plot(kind="bar", stacked=False, ax=ax, color=_get_plot_colors(merged))
     ax.set_xlabel("Depth")
     ax.set_ylabel(y_lab)
     ax.set_title(f"Class depth distribution ({class_types_str})")
@@ -248,7 +274,7 @@ def _save_markdown(
         # Convert formats
         df, plot_path = table_and_plot_path
         plot_path = str(plot_path)
-        table_str = df.to_markdown(index=False, tablefmt="orgtbl")
+        table_str = df.to_markdown(tablefmt="github")
         figs_by_title[title] = (table_str, plot_path)
     # logger.debug("Markdown will contain %d sections", len(figs_by_title))
 
@@ -261,6 +287,22 @@ def _save_markdown(
     with open(outpath, "w", encoding="utf-8") as f:
         f.write(rendered_markdown)
     # logger.debug("Wrote markdown to %s", outpath)
+
+
+def _reformat_table(df: pd.DataFrame, stat: str, set_index_name=False) -> pd.DataFrame:
+    """Convert the dataframe from a version that is good for plotting, to one that is good for a table."""
+    df2 = df.copy()
+    # Format numbers
+    if stat == 'totals':
+        df2 = df2.applymap(lambda x: int(x) if pd.notna(x) else x)  # integers
+    elif stat == 'percentages':
+        df2 = df2.applymap(lambda x: f"{float(x):.2g}" if pd.notna(x) else x)  # 2 significant figures
+    else:
+        raise ValueError(f"Unknown stat {stat}")
+    # Set index name
+    if set_index_name:
+        df2.index.name = "Depth"
+    return df2
 
 
 def analyze_class_depth(
@@ -303,7 +345,9 @@ def analyze_class_depth(
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
         for stat, data in {'totals': ont_depth_tables, 'percentages': ont_depth_pct_tables}.items():
             df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
-            tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df, plot_filename)
+            df2: pd.DataFrame = _reformat_table(df, stat)
+            tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df2, plot_filename)
+    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
 
 
 def cli():
