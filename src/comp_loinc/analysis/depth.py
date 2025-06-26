@@ -33,16 +33,16 @@ DEFAULTS = {
     'outpath-md': 'documentation/analyses/class-depth/depth.md',
     'outdir-plots': 'documentation/analyses/class-depth',
     # Non-CLI args
-    'variations': (['terms'], ['terms', 'groups'], ['terms', 'groups', 'parts']),
+    'variations': (('terms', ), ('terms', 'groups'), ('terms', 'groups', 'parts')),
 }
 # If need smaller, cand o: ![Title]({{ outpath }}){: width="600px"}
 md_template = """
-# Classifcation depth analysis 
+# Classification depth analysis 
 This measures how deep into the hierarchy each class is. E.g. if the root of the hierarchy is TermA, and we have axioms
 (TermC subClassOf TermB) and (TermB subClassOf TermA), then TermC is at depth 3, TermB is at depth 2, and TermA is at 
 depth 1.
 
-{% title, table_and_plot_path in figs_by_title.items() %}
+{% for title, table_and_plot_path in figs_by_title.items() %}
 {% set table, plot_path = table_and_plot_path %}
 ## {{ title }}
 ![{{ title }}]({{ plot_path }})
@@ -122,7 +122,7 @@ def _counts_to_pcts(ont_depth_tables: Dict[str, pd.DataFrame]) -> Dict[str, pd.D
 def _get_stat_label(stat: str) -> str:
     """Generate a label for outputs from stat type"""
     stat_str = 'Number' if stat == "totals" else "%" if stat == 'percentages' else 'Measure'
-    return f'{stat_str} of classes)'
+    return f'{stat_str} of classes'
 
 
 def _save_plot(
@@ -177,7 +177,7 @@ def _save_plot(
     # todo: ensure that the dfs look good
     # todo: convert the df to tabulated string using 'tabulate' package?
 def _save_markdown(
-    tables_n_plots_by_filter_and_stat: Dict[Tuple[str, str], Tuple[pd.DataFrame, Path]],
+    tables_n_plots_by_filter_and_stat: Dict[Tuple[Tuple[str], str], Tuple[pd.DataFrame, Path]],
     outpath: Union[Path, str],
     template: str = md_template
 ):
@@ -229,16 +229,17 @@ def analyze_class_depth(
     tots_df, ont_sets = _subclass_axioms_and_totals(terminologies)
 
     # Derive depths & save
-    tables_n_plots_by_filter_and_stat: Dict[Tuple[str, str], Tuple[pd.DataFrame, Path]] = {}
+    tables_n_plots_by_filter_and_stat: Dict[Tuple[Tuple[str], str], Tuple[pd.DataFrame, Path]] = {}
     for _filter in variations:
         ont_depth_tables: Dict[str, pd.DataFrame] = {}
+        ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
         for ont_name, axioms in ont_sets.items():
             print('processing ontology:', ont_name, 'with filter:', _filter)  # todo: remove?
             ont_depth_tables[ont_name] = _depth_counts(axioms, _filter)
-            ont_depth_pct_tables: Dict[str, pd.DataFrame] = _counts_to_pcts(ont_depth_tables)
-            for stat, data in {'totals': ont_depth_tables, 'percentages': ont_depth_pct_tables}.items():
-                df, plot_outpath = _save_plot(data, outdir_plots, _filter, stat)
-                tables_n_plots_by_filter_and_stat[(ont_name, _filter)] = (df, plot_outpath)
+            ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
+        for stat, data in {'totals': ont_depth_tables, 'percentages': ont_depth_pct_tables}.items():
+            df, plot_outpath = _save_plot(data, outdir_plots, _filter, stat)
+            tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df, plot_outpath)
     _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
 
 
