@@ -9,6 +9,7 @@ TODO: #1 Do I actually want a_minus_b or intersection? I thought I found that th
  now I'm not so sure.
 """
 import os
+import logging
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Dict, Set, Tuple, Union
@@ -18,6 +19,8 @@ import pandas as pd
 from jinja2 import Template
 from tabulate import tabulate
 from upsetplot import from_contents, UpSet
+
+logger = logging.getLogger(__name__)
 
 from comp_loinc.analysis.utils import bundle_inpaths, cli_add_inpath_args, _subclass_axioms_and_totals
 
@@ -159,16 +162,16 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
     Args:
         ont_sets: Dictionary mapping ontology names to sets of subclass axioms
     """
-    print("Interrogating non-inclusion of axioms in CompLOINC and its sources.")
+    logger.debug("Interrogating non-inclusion of axioms in CompLOINC and its sources.")
     all_elements = set()
     for s in ont_sets.values():
         all_elements.update(s)
-    print(f"- Total unique elements across all sets: {len(all_elements)}")
+    logger.debug(f"- Total unique elements across all sets: {len(all_elements)}")
 
     # Find elements not in CompLOINC
     if "CompLOINC" in ont_sets:
         missing_from_comploinc = all_elements - ont_sets["CompLOINC"]
-        print(
+        logger.debug(
             f"- Elements missing from CompLOINC: "
             f"{len(missing_from_comploinc)} ({len(missing_from_comploinc) / len(all_elements) * 100:.2f}%)")
 
@@ -187,9 +190,9 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
             key = tuple(sorted(sources))
             source_combinations[key] = source_combinations.get(key, 0) + 1
 
-        print("\n- Missing elements by source combinations:")
+        logger.debug("\n- Missing elements by source combinations:")
         for sources, count in sorted(source_combinations.items(), key=lambda x: x[1], reverse=True):
-            print(f" - {', '.join(sources)}: {count} elements")
+            logger.debug(f" - {', '.join(sources)}: {count} elements")
 
         rows = []
         for axiom, sources in missing_elements_source.items():
@@ -200,7 +203,7 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
         try:
             missing_df.to_csv(MISSING_AXIOMS_PATH, index=False, sep='\t')
         except FileNotFoundError:
-            print('Could not save missing axioms to tmp directory; doesn\'t exist.')
+            logger.debug("Could not save missing axioms to tmp directory; doesn't exist.")
 
 
 def _make_upset_plot(ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
@@ -265,7 +268,13 @@ def cli():
     parser.add_argument(
         '-u', '--outpath-upset-plot', type=str, default=DEFAULTS['outpath-upset-plot'],
         help='Outpath for upset plot.')
-    d: Dict = vars(parser.parse_args())
+    parser.add_argument(
+        '--log-level', type=str, default='DEBUG',
+        help='Logging level (e.g. DEBUG, INFO).')
+    args = parser.parse_args()
+    logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.DEBUG))
+    d: Dict = vars(args)
+    d.pop('log_level', None)
     return subclass_rel_analysis(**d)
 
 
