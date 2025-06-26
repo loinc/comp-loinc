@@ -5,7 +5,6 @@ todo's
   http://comploinc//group/component/LP...
   http://comploinc//group/system/LP...
 """
-
 import os
 import logging
 from argparse import ArgumentParser
@@ -17,18 +16,8 @@ import pandas as pd
 from jinja2 import Template
 from matplotlib import pyplot as plt
 
-logger = logging.getLogger(__name__)
-
-# from jinja2 import Template
-# from tabulate import tabulate
-
-from comp_loinc.analysis.utils import (
-    CLASS_TYPES,
-    bundle_inpaths,
-    cli_add_inpath_args,
-    _filter_classes,
-    _subclass_axioms_and_totals,
-)
+from comp_loinc.analysis.utils import CLASS_TYPES, bundle_inpaths, cli_add_inpath_args, _filter_classes, \
+    _subclass_axioms_and_totals
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
@@ -45,11 +34,14 @@ DEFAULTS = {
     'variations': (('terms', ), ('terms', 'groups'), ('terms', 'groups', 'parts'))
 }
 # If need smaller, cand o: ![Title]({{ outpath }}){: width="600px"}
+logger = logging.getLogger(__name__)
 md_template = """
 # Classification depth analysis 
 This measures how deep into the hierarchy each class is. E.g. if the root of the hierarchy is TermA, and we have axioms
 (TermC subClassOf TermB) and (TermB subClassOf TermA), then TermC is at depth 3, TermB is at depth 2, and TermA is at 
 depth 1.
+
+Dangling classes are not represented here.
 
 {% for title, table_and_plot_path in figs_by_title.items() %}
 {% set table, plot_path = table_and_plot_path %}
@@ -82,17 +74,18 @@ def _depth_counts(
             - 'depth': Represents the depth level within the class hierarchy.
             - 'n': Represents the count of classes at the corresponding depth.
     """
-    logger.debug(
-        "Calculating depth counts for %d subclass pairs with filter %s",
-        len(subclass_pairs),
-        _filter,
-    )
+    # logger.debug("Calculating depth counts for %d subclass pairs with filter %s", len(subclass_pairs), _filter)
+    # Validation
     if _filter and any([x not in CLASS_TYPES for x in _filter]):
         raise ValueError(f"Filter must be one of {CLASS_TYPES}")
+
+    # Remove owl:Thing as root if exists
+    owl_thing_axioms = {x for x in subclass_pairs if x[1] == '<http://www.w3.org/2002/07/owl#Thing>'}
+    subclass_pairs -= owl_thing_axioms
+
     # Build parent-child relationships
     children = defaultdict(set)
     parents = defaultdict(set)
-
     for child, parent in subclass_pairs:
         children[parent].add(child)
         parents[child].add(parent)
@@ -100,36 +93,59 @@ def _depth_counts(
     # Find roots (classes with no parents)
     all_classes = set(children.keys()) | set(parents.keys())
     roots = all_classes - set(parents.keys())
-    logger.debug("Found %d root classes", len(roots))
+    # logger.debug("Found %d root classes", len(roots))
 
     # Calculate depth using BFS
-    depths: Dict[str, int] = {}
+    depths_raw: Dict[str, int] = {}
     queue = deque([(root, 1) for root in roots])
-
     while queue:
         cls, depth = queue.popleft()
-        if cls not in depths:
-            depths[cls] = depth
+        if cls not in depths_raw:
+            depths_raw[cls] = depth
             for child in children[cls]:
                 queue.append((child, depth + 1))
-    logger.debug("Calculated depths for %d classes", len(depths))
+    # logger.debug("Calculated depths for %d classes", len(depths_raw))
 
+    # Filter by class type inclusion
+    depths_filtered: Dict[str, int] = {}
     if _filter:
         filtered_classes = _filter_classes(all_classes, _filter)
-        # TODO: ensure that for [terms, groups, parts], filtered classes is the same as all classes. at least numbers
-        depths = {
-            cls: depth for cls, depth in depths.items() if cls in filtered_classes
-        }  # TODO: check if the root is owl:thing, or loincTerm etc. and maybe update narrative w/ that info
-        logger.debug("After filtering, %d classes remain", len(depths))
+        depths_filtered = {cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes}
+        # logger.debug("After filtering, %d classes remain", len(depths_filtered))
+        logging.debug(f'    n classes: {len(all_classes)}')
+        logging.debug(f'    remaining after filtering: {len(filtered_classes)}')
+
+        # TODO: ensure that for (terms, groups, parts), filtered_classes is the same as all_classes. at least numbers
+        #  OK: 0 in filtered classes. why? cuz LOINC and filter is 'terms' and axioms are parts
+        if len(filtered_classes) != len(all_classes) and _filter == ('terms', 'groups', 'parts'):
+            print()
+
+        # TODO temp: how to handle multi-roots?
+        # TODO: case 1: CompLOINC-Primary: {'<https://loinc.org/138875005>', '<https://loinc.org/LoincTerm>'}
+        #  - which file does this appear in? CompLOINC-Primary
+        #      <owl:Class rdf:about="https://loinc.org/138875005">
+        #         <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        #         <rdfs:label>SCT   SNOMED CT Concept (SNOMED RT+CTV3)</rdfs:label>
+        #     </owl:Class>
+
+    # Roots: log for additonal analysis
+    roots2 = {k for k, v in depths_filtered.items() if v == 1}
+    if roots != roots2:
+        print()
+    logging.debug(f'    n roots: {len(roots)}')
+    if len(roots2) > 1:
+        print()
 
     # Count classes at each depth
+    depths = depths_filtered if depths_filtered else depths_raw
     depth_counts = defaultdict(int)
     for depth in depths.values():
         depth_counts[depth] += 1
     depth_counts_list: List[Tuple[int, int]] = sorted(depth_counts.items())
-    logger.debug("Computed depth distribution: %s", depth_counts_list)
+    df = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
 
-    return pd.DataFrame(depth_counts_list, columns=["depth", "n"])
+    # logger.debug("Computed depth distribution: %s", depth_counts_list)
+    return df
 
 
 def _counts_to_pcts(
@@ -140,7 +156,7 @@ def _counts_to_pcts(
     for ont_name, df in ont_depth_tables.items():
         df["%"] = (df["n"] / df["n"].sum()) * 100
         ont_pct_tables[ont_name] = df[["depth", "%"]]
-        logger.debug("Converted counts to percentages for %s", ont_name)
+        # logger.debug("Converted counts to percentages for %s", ont_name)
     return ont_pct_tables
 
 
@@ -151,11 +167,8 @@ def _get_stat_label(stat: str) -> str:
 
 
 def _save_plot(
-    ont_depth_tables: Dict[str, pd.DataFrame],
-    outdir: Union[Path, str],
-    _filter: List[str],
-    stat: str,
-) -> Tuple[pd.DataFrame, Path]:
+    ont_depth_tables: Dict[str, pd.DataFrame], outdir: Union[Path, str], _filter: List[str], stat: str,
+) -> Tuple[pd.DataFrame, str]:
     """Saves a plot representing the class depth distribution based on the provided ontology depth tables.
 
     This function processes multiple ontology depth tables, aggregates them into a consistent format, and
@@ -172,7 +185,7 @@ def _save_plot(
     """
     if stat not in ("totals", "percentages"):
         raise ValueError(f'`stat` arg must be either "totals" or "percentages".')
-    logger.debug("Saving plot for stat %s with filter %s", stat, _filter)
+    # logger.debug("Saving plot for stat %s with filter %s", stat, _filter)
     # Labels and paths
     class_types_str = f'{", ".join(_filter)}'
     y_lab = _get_stat_label(stat)
@@ -195,24 +208,22 @@ def _save_plot(
     ax.legend(title="Terminology")
     plt.tight_layout()
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
-    logger.debug("Saved plot to %s", outpath)
+    # logger.debug("Saved plot to %s", outpath)
 
-    return merged, outpath
+    return merged, os.path.basename(outpath)
 
 
-# TODO:
-# todo: does this way of iteration work?
-# {% title, table_and_plot_path in figs_by_title.items() %}
-# {% set table, plot_path = table_and_plot_path %}
-# todo: ensure that the dfs look good
-# todo: convert the df to tabulated string using 'tabulate' package?
 def _save_markdown(
-    tables_n_plots_by_filter_and_stat: Dict[Tuple[Tuple[str], str], Tuple[pd.DataFrame, Path]],
-    outpath: Union[Path, str],
-    template: str = md_template,
+    tables_n_plots_by_filter_and_stat: Dict[Tuple[Tuple[str], str], Tuple[pd.DataFrame, str]],
+    outpath: Union[Path, str], template: str = md_template,
 ):
-    """Save results to markdown"""
-    logger.debug("Saving markdown to %s", outpath)
+    """Save results to markdown
+
+    :param tables_n_plots_by_filter_and_stat: keys are [(_filter, stat)], and values are (df, plot_filename).
+     The df is a pandas dataframe that was used to create the plot. stat is one of ['totals', 'percentages']. _filter is
+     one of class variations, e.g. ('terms', ), ('terms', 'groups'), or ('terms', 'groups', 'parts').
+    """
+    # logger.debug("Saving markdown to %s", outpath)
     figs_by_title: Dict[str, Tuple[str, str]] = {}
 
     for (
@@ -230,7 +241,7 @@ def _save_markdown(
         plot_path = str(plot_path)
         table_str = df.to_markdown(index=False, tablefmt="orgtbl")
         figs_by_title[title] = (table_str, plot_path)
-    logger.debug("Markdown will contain %d sections", len(figs_by_title))
+    # logger.debug("Markdown will contain %d sections", len(figs_by_title))
 
     # Render template
     template_obj = Template(template)
@@ -240,7 +251,7 @@ def _save_markdown(
     outpath = Path(outpath)
     with open(outpath, "w", encoding="utf-8") as f:
         f.write(rendered_markdown)
-    logger.debug("Wrote markdown to %s", outpath)
+    # logger.debug("Wrote markdown to %s", outpath)
 
 
 def analyze_class_depth(
@@ -254,19 +265,11 @@ def analyze_class_depth(
     dont_convert_paths_to_abs=False,
 ):
     """Analyze classification depth"""
-    logger.debug("Starting analysis")
     # Resolve paths
     terminologies: Dict[str, Path]
     terminologies, outpath_md, outdir_plots = bundle_inpaths(
-        loinc_path,
-        loinc_snomed_path,
-        comploinc_primary_path,
-        comploinc_supplementary_path,
-        dont_convert_paths_to_abs,
-        outpath_md,
-        outdir_plots,
-    )
-    logger.debug("Resolved input paths: %s", terminologies)
+        loinc_path, loinc_snomed_path, comploinc_primary_path, comploinc_supplementary_path, dont_convert_paths_to_abs,
+        outpath_md, outdir_plots)
     if not os.path.exists(outdir_plots):
         os.makedirs(outdir_plots)
 
@@ -276,23 +279,23 @@ def analyze_class_depth(
     # Get sets of axioms by ontology and grand total and by ontology set
     ont_sets: Dict[str, Set[Tuple[str, str]]]
     tots_df, ont_sets = _subclass_axioms_and_totals(terminologies)
-    logger.debug("Loaded subclass axioms for %d ontologies", len(ont_sets))
+    # logger.debug("Loaded subclass axioms for %d ontologies", len(ont_sets))
 
     # Derive depths & save
-    tables_n_plots_by_filter_and_stat: Dict[Tuple[Tuple[str], str], Tuple[pd.DataFrame, Path]] = {}
+    logger.debug("Running class depth analysis.\n\nLog format:\nINCLUDED_CLASSES\n - TERMINOLOGY\n")
+    tables_n_plots_by_filter_and_stat: Dict[Tuple[Tuple[str], str], Tuple[pd.DataFrame, str]] = {}
     for _filter in variations:
+        logger.debug(" " + ", ".join(_filter))
         ont_depth_tables: Dict[str, pd.DataFrame] = {}
         ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
         for ont_name, axioms in ont_sets.items():
-            logger.debug("Processing ontology %s with filter %s", ont_name, _filter)
+            logger.debug("  - " + ont_name)
             ont_depth_tables[ont_name] = _depth_counts(axioms, _filter)
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
         for stat, data in {'totals': ont_depth_tables, 'percentages': ont_depth_pct_tables}.items():
-            df, plot_outpath = _save_plot(data, outdir_plots, _filter, stat)
-            tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df, plot_outpath)
-            logger.debug("Generated plot %s for ontology %s", plot_outpath, ont_name)
+            df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
+            tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df, plot_filename)
     _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
-    logger.debug("Analysis complete")
 
 
 def cli():
@@ -316,14 +319,15 @@ def cli():
     parser.add_argument(
         "--log-level",
         type=str,
-        default="DEBUG",
+        default="INFO",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Logging level.",
     )
     args = parser.parse_args()
     logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.DEBUG))
+    logging.getLogger('matplotlib').setLevel(logging.WARNING)
     d: Dict = vars(args)
-    d.pop("log_level", None)
+    del d['log_level']
     return analyze_class_depth(**d)
 
 
