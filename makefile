@@ -111,6 +111,7 @@ TEMPLATE_AXIOMS_ENTITIES=src/comp_loinc/analysis/stats-main-axioms-entities.md.j
 TEMPLATE_MISC=src/comp_loinc/analysis/stats-misc.md.j2
 PREFIXES_METRICS=\
 	--prefix 'LOINC_PART: https://loinc.org/LP' \
+	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
 	--prefix 'LOINC_PART_GRP_CMP: http://comploinc//group/component/LP' \
 	--prefix 'LOINC_PART_GRP_SYS: http://comploinc//group/system/LP' \
@@ -125,10 +126,10 @@ input/analysis/:
 output/analysis/:
 	mkdir -p $@
 
-output/analysis/snomed/:
+$(SNOMED_OWL_DIR)/:
 	mkdir -p $@
 
-output/analysis/loinc/:
+$(LOINC_OWL_DIR)/:
 	mkdir -p $@
 
 output/tmp/:
@@ -164,14 +165,16 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
 # - Comparisons: SNOMED-LOINC
+# todo: Do I want 2 dif dirs? 1 for SNOMED & one for SNOMED-LOINC Ontology?
+SNOMED_OWL_DIR=output/analysis/snomed
 # TODO: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
 # Todo: - how subset those mappings? involves mapped parts and terms. check notes
 # TODO: Connect this to the pipeline(s). which ones? (i) class depth, (ii) subclass axioms, (iii) other(s)?
-output/analysis/snomed/snomed-unreasoned.ofn: | output/analysis/snomed/
+$(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)/
 	python src/comp_loinc/analysis/snomed.py --outpath $@
 
 # FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
-output/analysis/snomed/snomed.ofn: output/analysis/snomed/snomed-unreasoned.ofn
+$(SNOMED_OWL_DIR)/snomed.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
 	robot reason --input $< --output $@
 
 # Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
@@ -182,22 +185,25 @@ output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reaso
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: LOINC
+# loinc-reasoned.owl: Not including, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons.
+#$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)/
+#	robot reason --input $< --output $@
+LOINC_OWL_DIR=output/analysis/loinc
+$(LOINC_OWL_DIR)/loinc-groups.owl: $(LOINC_OWL_DIR)/
+	python src/comp_loinc/analysis/loinc.py --outpath $@
+
 # TODO: Change LOINC representation. what to do?
+#  - i may have already completed some of these sub-tasks by now
 # TODO: 2 varaitions?: terms alone, no hierarchy VS include grouping classes? Is the code set up in any way to build any of these? I think not.
 # Todo: - flat: I think for the terms one I just need to read the classes and define them, or i could filter CompLOINC to remove all subclass axioms maybe, and leave only the LOINC term classes behind? how to remove just part classes? by URI?
 # Todo: - w/ groups: i can read the groups file and instantiate these classes and make subclass axioms, then combine w/ the previous flat output?
 # TODO: Connect this to the pipeline(s): (i) class depth?, (ii) subclass one should use reasoned w/ inferred included (even though this will have none for just terms, unless including grouping classes), (iii) any else?
-output/analysis/loinc/loinc-unreasoned.owl: | output/analysis/loinc/
-	echo 1
+# TODO: concat with parts list but not hierarchy
+# loinc-unreasoned.owl: This representation includes (i) group defs, (ii) term defs, (iii) part defs, (iv) subclass axioms (groups::groups, terms::groups; part::part; no term::term exist). Doesn't include: equivalent class axioms (for neither part model)
+$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl $(LOINC_OWL_DIR)/loinc-groups.owl| $(LOINC_OWL_DIR)/
+	robot merge --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
 
-output/analysis/loinc/loinc.owl: output/analysis/loinc/loinc-unreasoned.owl
-	robot reason --input $< --output $@
-
-# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/193 . Do we just replace w/ the above goal(s) instead? loinc.owl and/or loinc-unreasoned.owl?
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-reasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
-	robot reason --input $< --output $@
-
-output/tmp/subclass-rels-loinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-reasoned.owl
+output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: CompLOINC
