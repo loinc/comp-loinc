@@ -107,7 +107,7 @@ def _depth_counts(
     # Find roots (classes with no parents)
     all_classes = set(children.keys()) | set(parents.keys())
     roots = all_classes - set(parents.keys())
-    logging.debug(f'    n roots: {len(roots)}')
+    logging.debug(f'    n roots: {len(roots):,}')
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
@@ -132,8 +132,8 @@ def _depth_counts(
             cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes}
         depths = depths_filtered
         # logger.debug("After filtering, %d classes remain", len(depths_filtered))
-        logging.debug(f'    n classes: {len(all_classes)}')
-        logging.debug(f'    remaining after filtering: {len(filtered_classes)}')
+        logging.debug(f'    n classes: {len(all_classes):,}')
+        logging.debug(f'    n after class type filtration: {len(filtered_classes):,}')
 
         # TODO: ensure that for (terms, groups, parts), filtered_classes is the same as all_classes. at least numbers
         #  OK: 0 in filtered classes. why? cuz LOINC and filter is 'terms' and axioms are parts
@@ -376,7 +376,7 @@ def cli():
         help="Logging level.",
     )
     args = parser.parse_args()
-    logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.DEBUG))
+    logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.DEBUG), format='%(message)s')
     logging.getLogger('matplotlib').setLevel(logging.WARNING)
     d: Dict = vars(args)
     del d['log_level']

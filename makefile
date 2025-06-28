@@ -4,8 +4,10 @@
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
 	chebi-subsets
 DEFAULT_BUILD_DIR=output/build-default
-# Directory for dangling analysis outputs
 DANGLING_DIR=output/analysis/dangling
+LOINC_OWL_DIR=output/analysis/loinc
+LOINC_SNOMED_OWL_DIR=output/analysis/loinc-snomed
+SNOMED_OWL_DIR=output/analysis/snomed
 
 # Resolve the directory name for the default LOINC release using the
 # project's Python configuration.  This is required so that the
@@ -132,19 +134,19 @@ input/analysis/:
 output/analysis/:
 	mkdir -p $@
 
-$(SNOMED_OWL_DIR)/:
+$(LOINC_OWL_DIR):
 	mkdir -p $@
 
-$(LOINC_OWL_DIR)/:
+$(LOINC_SNOMED_OWL_DIR):
+	mkdir -p $@
+
+$(SNOMED_OWL_DIR):
 	mkdir -p $@
 
 output/tmp/:
 	mkdir -p $@
 
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/:
-	mkdir -p $@
-
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/:
 	mkdir -p $@
 
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/:
@@ -170,29 +172,32 @@ documentation/stats-misc.md: output/tmp/stats.json
 documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
-# - Comparisons: SNOMED-LOINC
-# todo: Do I want 2 dif dirs? 1 for SNOMED & one for SNOMED-LOINC Ontology?
-SNOMED_OWL_DIR=output/analysis/snomed
-# TODO: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
-# Todo: - how subset those mappings? involves mapped parts and terms. check notes
-# TODO: Connect this to the pipeline(s). which ones? (i) class depth, (ii) subclass axioms, (iii) other(s)?
-$(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)/
+# - Comparisons: LOINC-SNOMED Ontology
+# -- SNOMED representation
+# Todo: Connect this to the pipeline(s). which ones? (i) class depth, (ii) subclass axioms, (iii) other(s)?
+$(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
 	python src/comp_loinc/analysis/snomed.py --outpath $@
 
 # FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
-$(SNOMED_OWL_DIR)/snomed.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
+$(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
 	robot reason --input $< --output $@
 
+# -- LOINC-SNOMED representation
 # Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-snomed-reasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
+# Todo: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
+# Todo: - how subset those mappings? involves mapped parts and terms. check notes
+# Todo: robot merge? What other inputs does this need?
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(LOINC_SNOMED_OWL_DIR)
+	robot merge --input $(DEFAULT_BUILD_DIR)/snomed-parts.owl --output $@
+
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl | $(LOINC_SNOMED_OWL_DIR)
 	robot reason --input $< --output $@
 
-output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-snomed-reasoned.owl
+output/tmp/subclass-rels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: LOINC
-LOINC_OWL_DIR=output/analysis/loinc
-$(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)/
+$(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)
 	robot template --template $< \
 	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
@@ -206,11 +211,11 @@ output/tmp/loinc-groups.robot.tsv: | output/tmp/
 	--outpath $@
 
 # loinc-unreasoned.owl: This representation includes (i) group defs, (ii) term defs, (iii) part defs, (iv) subclass axioms (groups::groups, terms::groups; part::part; no term::term exist). Doesn't include: equivalent class axioms for temrs (for neither part model)
-$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl $(LOINC_OWL_DIR)/loinc-groups.owl| $(LOINC_OWL_DIR)/
-	robot merge --intput $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
+$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl $(LOINC_OWL_DIR)/loinc-groups.owl| $(LOINC_OWL_DIR)
+	robot merge --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
 
 # loinc-reasoned.owl: Not including, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons.
-#$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)/
+#$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)
 #	robot reason --input $< --output $@
 
 output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
@@ -314,5 +319,5 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 alternative-hierarchies: chebi-subsets
 
 # Ad hoc analyses: not connected to the main pipeline
-output/tmp/cl-parts.tsv:
-	robot query --input $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl --query src/comp_loinc/analysis/ad_hoc/cl-parts.sparql $@
+output/tmp/cl-parts.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
+	robot query --input $< --query src/comp_loinc/analysis/ad_hoc/cl-parts.sparql $@

@@ -18,9 +18,16 @@ def _disaggregate_classes(classes: Set, includes_angle_brackets=True, verbose=Fa
     """Disaggregate classes by type"""
     b = '<' if includes_angle_brackets else ''
     classes_by_type: Dict[str, Set] = {'terms': set(), 'groups': set(), 'parts': set(), 'other': set()}
-    if '<https://loinc.org/LoincPart>' in classes:
-        classes_by_type['parts'].add('<https://loinc.org/LoincPart>')
-        classes.remove('<https://loinc.org/LoincPart>')
+    # Parse roots
+    # todo: Any other root types in LOINC, CompLOINC, or LOINC-SNOMED Ontology?
+    #  - perhaps if we add roots like GRP_SYS, etc, if they have a different URL pattenr, will need to parse them here.
+    # Note: No such "https://loinc.org/LoincGroup" exists.
+    for root_uri, root_type in (('<https://loinc.org/LoincTerm>', 'terms'), ('<https://loinc.org/LoincPart>', 'parts')):
+        if root_uri in classes:
+            classes_by_type[root_type].add(root_uri)
+            classes.remove(root_uri)
+
+    # Parse non-roots
     for cls in classes:
         if cls.startswith(f'{b}http://comploinc//group/'):
             classes_by_type['groups'].add(cls)
@@ -33,6 +40,11 @@ def _disaggregate_classes(classes: Set, includes_angle_brackets=True, verbose=Fa
                 classes_by_type['terms'].add(cls)
         else:
             classes_by_type['other'].add(cls)
+
+    if len(classes_by_type['other']) > 0:
+        raise ValueError(f'Found n unexpected classes: {len(classes_by_type["other"])}. Check that '
+            f'_disaggregate_classes() is aware of all prefixes for terms, groups, and parts in CompLOINC, LOINC-SNOMED '
+            f'Ontology, and LOINC.')
 
     if verbose:
         for k, v in classes_by_type.items():
