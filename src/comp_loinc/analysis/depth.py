@@ -16,8 +16,9 @@ import pandas as pd
 from jinja2 import Template
 from matplotlib import pyplot as plt
 
-from comp_loinc.analysis.utils import CLASS_TYPES, bundle_inpaths, cli_add_inpath_args, _filter_classes, \
-    _subclass_axioms_and_totals
+from comp_loinc.analysis.utils import CLASS_TYPES, _disaggregate_classes, bundle_inpaths_and_update_abs_paths, \
+    cli_add_inpath_args, \
+    _filter_classes, _subclass_axioms_and_totals
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
@@ -129,8 +130,9 @@ def _depth_counts(
 
     # Filter by class type inclusion
     depths: Dict[str, List[int]] = depths_raw
+    classes_by_type: Dict[str, Set] = _disaggregate_classes(all_classes)
     if _filter:
-        filtered_classes = _filter_classes(all_classes, _filter)
+        filtered_classes = _filter_classes(_filter, classes_by_type)
         depths_filtered: Dict[str, List[int]] = {
             cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes}
         depths = depths_filtered
@@ -149,12 +151,19 @@ def _depth_counts(
             print()
 
     # Count classes at each depth
+    # - Create reverse lookup: class_id -> class_type
+    class_to_type = {}
+    for class_type, class_set in classes_by_type.items():
+        for class_id in class_set:
+            class_to_type[class_id] = class_type
+    # - Get counts
     depth_counts = defaultdict(int)
     depths_rows = []
     for cls_id, depth_list in depths.items():
+        class_type: str = class_to_type.get(cls_id, 'unknown')  # fallback for missing classes
         for depth in depth_list:
             depth_counts[depth] += 1
-            depths_rows.append({"class": cls_id, "depth": depth})
+            depths_rows.append({"class_type": class_type, "class": cls_id, "depth": depth})
     depth_counts_list: List[Tuple[int, int]] = sorted(depth_counts.items())
     df_counts = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
     df_depths = pd.DataFrame(depths_rows)
@@ -325,16 +334,9 @@ def analyze_class_depth(
     """Analyze classification depth"""
     # Resolve paths
     terminologies: Dict[str, Path]
-    terminologies, outpath_md, outpath_tsv, outdir_plots = bundle_inpaths(
-        loinc_path,
-        loinc_snomed_path,
-        comploinc_primary_path,
-        comploinc_supplementary_path,
-        dont_convert_paths_to_abs,
-        outpath_md,
-        outpath_tsv,
-        outdir_plots,
-    )
+    terminologies, outpath_md, outpath_tsv, outdir_plots = bundle_inpaths_and_update_abs_paths(
+        loinc_path, loinc_snomed_path, comploinc_primary_path, comploinc_supplementary_path, dont_convert_paths_to_abs,
+        outpath_md, outpath_tsv, outdir_plots)
     if not os.path.exists(outdir_plots):
         os.makedirs(outdir_plots)
 
@@ -354,24 +356,32 @@ def analyze_class_depth(
         logger.debug(" " + ", ".join(_filter))
         ont_depth_tables: Dict[str, pd.DataFrame] = {}
         ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
+        # - get data for tables and plots
         for ont_name, axioms in ont_sets.items():
             logger.debug("  - " + ont_name)
-            counts_df, detail_df = _depth_counts(axioms, _filter)
+            counts_df, detail_df = _depth_counts(axioms, _filter)  # main data processing func
             ont_depth_tables[ont_name] = counts_df
             if tuple(_filter) == tuple(CLASS_TYPES):
                 detail_df.insert(0, "terminology", ont_name)
                 depth_detail_frames.append(detail_df)
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
+        # - plots
         for stat, data in {'totals': ont_depth_tables, 'percentages': ont_depth_pct_tables}.items():
             df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
             df2: pd.DataFrame = _reformat_table(df, stat)
             tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df2, plot_filename)
-    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
 
+    # Save markdown
+    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
+    # Save depths TSV
+    df_depths_all = pd.DataFrame()
     if depth_detail_frames:
         df_depths_all = pd.concat(depth_detail_frames, ignore_index=True)
-        df_depths_all.sort_values(["terminology", "depth", "class"], inplace=True)
-        df_depths_all.to_csv(outpath_tsv, sep="\t", index=False)
+        df_depths_all.sort_values(["terminology", "depth", "class_type", "class"], inplace=True)
+    else:
+        logger.warning(f'{os.path.basename(outpath_tsv)} empty because no variation was processed which includes all '
+            f'class types: {str(CLASS_TYPES)}')
+    df_depths_all.to_csv(outpath_tsv, sep="\t", index=False)
 
 
 def cli():

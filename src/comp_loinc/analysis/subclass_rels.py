@@ -23,7 +23,7 @@ from upsetplot import from_contents, UpSet
 
 logger = logging.getLogger(__name__)
 
-from comp_loinc.analysis.utils import bundle_inpaths, cli_add_inpath_args, _subclass_axioms_and_totals
+from comp_loinc.analysis.utils import bundle_inpaths_and_update_abs_paths, cli_add_inpath_args, _subclass_axioms_and_totals
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
@@ -246,7 +246,7 @@ def subclass_rel_analysis(
 ):
     """Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."""
     terminologies: Dict[str, Path]
-    terminologies, outpath_md, outdir_plots = bundle_inpaths(
+    terminologies, outpath_md, outdir_plots = bundle_inpaths_and_update_abs_paths(
         loinc_path, loinc_snomed_path, comploinc_primary_path, comploinc_supplementary_path, dont_convert_paths_to_abs,
         outpath_md, outpath_upset_plot)
 

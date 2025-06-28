@@ -54,14 +54,19 @@ def _disaggregate_classes(classes: Set, includes_angle_brackets=True, verbose=Fa
     return classes_by_type
 
 
-def _filter_classes(classes: Set, _filter: List[str], includes_angle_brackets=True) -> Set:
+def _filter_classes(
+    _filter: List[str], classes_by_type: Dict[str, Set] = None, classes: Set = None, includes_angle_brackets=True
+) -> Set:
     """Flter classes by type
 
     :param: includes_angle_brackets: Leave True if URI looks like <http://www.w3.org/2002/07/owl#Thing>"""
     if any([x not in CLASS_TYPES for x in _filter]):
         raise ValueError(f'Filter must be one of {CLASS_TYPES}')
     # Disaggregate
-    classes_by_type: Dict[str, Set] = _disaggregate_classes(classes, includes_angle_brackets)
+    if not classes_by_type:
+        if not classes:
+            raise ValueError('Must pass classes_by_type or classes')
+        classes_by_type: Dict[str, Set] = _disaggregate_classes(classes, includes_angle_brackets)
     # Filter
     filtered_classes = set()
     for cls_type in _filter:
@@ -69,11 +74,11 @@ def _filter_classes(classes: Set, _filter: List[str], includes_angle_brackets=Tr
     return filtered_classes
 
 
-def bundle_inpaths(
+def bundle_inpaths_and_update_abs_paths(
     loinc_path: Union[Path, str], loinc_snomed_path: Union[Path, str], comploinc_primary_path: Union[Path, str],
     comploinc_supplementary_path: Union[Path, str], dont_convert_paths_to_abs=False, *args
 ):  # -> Tuple[Dict[str, Path], ...]  # would keep this typedef, but it trips up PyCharm
-    """Bundle inpath arguments into a single dict, adding titles as dict keys"""
+    """Bundle inpath arguments into dict, adding titles as dict keys. Also can update relative paths to absolute"""
     terminologies: Dict[str, Path] = {
         'LOINC': loinc_path,
         'LOINC-SNOMED': loinc_snomed_path,

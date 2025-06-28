@@ -244,12 +244,13 @@ documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_co
 	--outpath-md documentation/subclass-analysis.md \
 	--outpath-upset-plot documentation/upset.png
 
-documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv | documentation/analyses/class-depth/
+documentation/analyses/class-depth/depth.md output/tmp/depth-counts.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv | documentation/analyses/class-depth/
 	python src/comp_loinc/analysis/depth.py \
 	--loinc-path output/tmp/subclass-rels-loinc.tsv \
 	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
 	--comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
 	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
+	--outpath-tsv output/tmp/depth-counts.tsv \
 	--outpath-md documentation/analyses/class-depth/depth.md \
 	--outdir-plots documentation/analyses/class-depth
 
