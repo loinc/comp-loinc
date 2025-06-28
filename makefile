@@ -185,9 +185,6 @@ output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reaso
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 # - Comparisons: LOINC
-# loinc-reasoned.owl: Not including, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons.
-#$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)/
-#	robot reason --input $< --output $@
 LOINC_OWL_DIR=output/analysis/loinc
 $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)/
 	robot template --template $< \
@@ -202,16 +199,13 @@ output/tmp/loinc-groups.robot.tsv: | output/tmp/
 	--parent-group-path loinc_release/AccessoryFiles/GroupFile/ParentGroup.csv\
 	--outpath $@
 
-# TODO: Change LOINC representation. what to do?
-#  - i may have already completed some of these sub-tasks by now
-# TODO: 2 varaitions?: terms alone, no hierarchy VS include grouping classes? Is the code set up in any way to build any of these? I think not.
-# Todo: - flat: I think for the terms one I just need to read the classes and define them, or i could filter CompLOINC to remove all subclass axioms maybe, and leave only the LOINC term classes behind? how to remove just part classes? by URI?
-# Todo: - w/ groups: i can read the groups file and instantiate these classes and make subclass axioms, then combine w/ the previous flat output?
-# TODO: Connect this to the pipeline(s): (i) class depth?, (ii) subclass one should use reasoned w/ inferred included (even though this will have none for just terms, unless including grouping classes), (iii) any else?
-# TODO: concat with parts list but not hierarchy
-# loinc-unreasoned.owl: This representation includes (i) group defs, (ii) term defs, (iii) part defs, (iv) subclass axioms (groups::groups, terms::groups; part::part; no term::term exist). Doesn't include: equivalent class axioms (for neither part model)
-$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl $(LOINC_OWL_DIR)/loinc-groups.owl| $(LOINC_OWL_DIR)/
-	robot merge --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
+# loinc-unreasoned.owl: This representation includes (i) group defs, (ii) term defs, (iii) part defs, (iv) subclass axioms (groups::groups, terms::groups; part::part; no term::term exist). Doesn't include: equivalent class axioms for temrs (for neither part model)
+$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl $(LOINC_OWL_DIR)/loinc-groups.owl| $(LOINC_OWL_DIR)/
+	robot merge --intput $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
+
+# loinc-reasoned.owl: Not including, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons.
+#$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)/
+#	robot reason --input $< --output $@
 
 output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
