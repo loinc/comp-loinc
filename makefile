@@ -183,6 +183,7 @@ $(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
 	robot reason --input $< --output $@
 
 # -- LOINC-SNOMED representation
+# Todo: if needed temporarily to make subclass rels / labels until this is ready, use instead as source: output/analysis/snomed/bak/snomed-parts-reasoned.owl instead of loinc-snomed-reasoned.owl
 # Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
 # Todo: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
 # Todo: - how subset those mappings? involves mapped parts and terms. check notes
@@ -195,6 +196,9 @@ $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc
 
 output/tmp/subclass-rels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+
+output/tmp/labels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
+	robot query -i $< --query src/comp_loinc/labels.sparql $@
 
 # - Comparisons: LOINC
 $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)
@@ -221,6 +225,9 @@ $(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.
 output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
+output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
+	robot query -i $< --query src/comp_loinc/labels.sparql $@
+
 # - Comparisons: CompLOINC
 output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
@@ -232,25 +239,18 @@ output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv: $(DEFAULT_BUIL
 	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
-        robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
-
-# Labels ----------------------------------------------------------------------
-output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
-        robot query -i $< --query src/comp_loinc/labels.sparql $@
-
-output/tmp/labels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
-        robot query -i $< --query src/comp_loinc/labels.sparql $@
+	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
 
 output/tmp/labels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
-        robot query -i $< --query src/comp_loinc/labels.sparql $@
+	robot query -i $< --query src/comp_loinc/labels.sparql $@
 
 output/tmp/labels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
-        robot query -i $< --query src/comp_loinc/labels.sparql $@
-
-output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv
-        cat $^ > $@
+	robot query -i $< --query src/comp_loinc/labels.sparql $@
 
 # - Comparisons: all
+output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv
+	cat $^ > $@
+
 documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv
 	python src/comp_loinc/analysis/subclass_rels.py \
 	--loinc-path output/tmp/subclass-rels-loinc.tsv \
@@ -261,15 +261,15 @@ documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_co
 	--outpath-upset-plot documentation/upset.png
 
 documentation/analyses/class-depth/depth.md output/tmp/depth-counts.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
-        python src/comp_loinc/analysis/depth.py \
-        --loinc-path output/tmp/subclass-rels-loinc.tsv \
-        --loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
-        --comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
-        --comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
-        --labels-path output/tmp/labels-all-terminologies.tsv \
-        --outpath-tsv output/tmp/depth-counts.tsv \
-        --outpath-md documentation/analyses/class-depth/depth.md \
-        --outdir-plots documentation/analyses/class-depth
+	python src/comp_loinc/analysis/depth.py \
+	--loinc-path output/tmp/subclass-rels-loinc.tsv \
+	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
+	--labels-path output/tmp/labels-all-terminologies.tsv \
+	--outpath-tsv output/tmp/depth-counts.tsv \
+	--outpath-md documentation/analyses/class-depth/depth.md \
+	--outdir-plots documentation/analyses/class-depth
 
 # - Build final outputs & main command
 documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/analyses/class-depth/depth.md documentation/stats-misc.md
