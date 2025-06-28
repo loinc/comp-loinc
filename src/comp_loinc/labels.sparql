@@ -1,0 +1,8 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?class_str ?label
+WHERE {
+  ?class rdfs:label ?label .
+  FILTER (lang(?label) = "" || langMatches(lang(?label), "en"))
+  BIND(STR(?class) AS ?class_str)
+}
