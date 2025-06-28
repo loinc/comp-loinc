@@ -1,5 +1,7 @@
 import typing as t
 from pathlib import Path
+import argparse
+import os
 
 import yaml
 
@@ -92,3 +94,40 @@ class Configuration:
 
     def get_prop_use_pickle(self) -> Path:
       return self.home_path / self.config["prop_use"]["pickle"]
+
+    def get_loinc_default_dir_name(self) -> str:
+        """Return directory name of the default LOINC release."""
+        path_str = str(self.get_loinc_release_path())
+        marker = "loinc_release" + os.sep
+        idx = path_str.rfind(marker)
+        if idx != -1:
+            return path_str[idx + len(marker) :]
+        return path_str
+
+
+
+def cli() -> None:
+    parser = argparse.ArgumentParser(
+        prog="loinclib-config",
+        description="Utilities for working with comploinc configuration.",
+    )
+    parser.add_argument(
+        "--method-names",
+        nargs="+",
+        help=(
+            "Space-separated Configuration method names to call. "
+            "Each method's return value will be printed on a new line."
+        ),
+    )
+
+    args = parser.parse_args()
+
+    if args.method_names:
+        conf = Configuration(PROJECT_DIR, Path("comploinc_config.yaml"))
+        for name in args.method_names:
+            method = getattr(conf, name)
+            print(method())
+
+
+if __name__ == "__main__":
+    cli()
