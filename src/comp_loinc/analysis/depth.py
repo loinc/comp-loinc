@@ -30,6 +30,7 @@ DEFAULTS = {
     "comploinc-supplementary-path": "output/tmp/subclass-rels-comploinc-supplementary.tsv",
     "outpath-md": "documentation/analyses/class-depth/depth.md",
     "outdir-plots": "documentation/analyses/class-depth",
+    "outpath-tsv": "output/tmp/depth-counts.tsv",
     # Non-CLI args
     'variations': (('terms', ), ('terms', 'groups'), ('terms', 'groups', 'parts'))
 }
@@ -68,7 +69,7 @@ was not able to find matches. Those classes are not represented here.
 
 def _depth_counts(
     subclass_pairs: Set[Tuple[str, str]], _filter: List[str] = None
-) -> pd.DataFrame:
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Provides a function to compute and analyze the hierarchical depth of classes based on their parent-child
     relationships, with an optional filter for specific class types.
 
@@ -82,11 +83,13 @@ def _depth_counts(
             `CLASS_TYPES`.
 
     Returns:
-        pd.DataFrame: A pandas DataFrame containing two columns:
-            - 'depth': Represents the depth level within the class hierarchy.
-            - 'n': Represents the count of classes at the corresponding depth.
-        In a polyhierarchy, a class can occur at multiple depths and will be
-        counted each time.
+        Tuple[pd.DataFrame, pd.DataFrame]:
+            - The first DataFrame contains two columns:
+                * ``depth``: The depth level within the class hierarchy.
+                * ``n``: The count of classes at the corresponding depth.
+            - The second DataFrame contains a row for each class-depth pair with
+              the columns ``class`` and ``depth``. In a polyhierarchy a class can
+              occur at multiple depths and will be returned multiple times.
     """
     # logger.debug("Calculating depth counts for %d subclass pairs with filter %s", len(subclass_pairs), _filter)
     # Validation
@@ -147,14 +150,17 @@ def _depth_counts(
 
     # Count classes at each depth
     depth_counts = defaultdict(int)
-    for depth_list in depths.values():
+    depths_rows = []
+    for cls_id, depth_list in depths.items():
         for depth in depth_list:
             depth_counts[depth] += 1
+            depths_rows.append({"class": cls_id, "depth": depth})
     depth_counts_list: List[Tuple[int, int]] = sorted(depth_counts.items())
-    df = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
+    df_counts = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
+    df_depths = pd.DataFrame(depths_rows)
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
-    return df
+    return df_counts, df_depths
 
 
 def _counts_to_pcts(
@@ -311,6 +317,7 @@ def analyze_class_depth(
     comploinc_primary_path: Union[Path, str],
     comploinc_supplementary_path: Union[Path, str],
     outpath_md: Union[Path, str],
+    outpath_tsv: Union[Path, str],
     outdir_plots: Union[Path, str],
     variations=DEFAULTS["variations"],
     dont_convert_paths_to_abs=False,
@@ -318,9 +325,16 @@ def analyze_class_depth(
     """Analyze classification depth"""
     # Resolve paths
     terminologies: Dict[str, Path]
-    terminologies, outpath_md, outdir_plots = bundle_inpaths(
-        loinc_path, loinc_snomed_path, comploinc_primary_path, comploinc_supplementary_path, dont_convert_paths_to_abs,
-        outpath_md, outdir_plots)
+    terminologies, outpath_md, outpath_tsv, outdir_plots = bundle_inpaths(
+        loinc_path,
+        loinc_snomed_path,
+        comploinc_primary_path,
+        comploinc_supplementary_path,
+        dont_convert_paths_to_abs,
+        outpath_md,
+        outpath_tsv,
+        outdir_plots,
+    )
     if not os.path.exists(outdir_plots):
         os.makedirs(outdir_plots)
 
@@ -335,19 +349,29 @@ def analyze_class_depth(
     # Derive depths & save
     logger.debug("Running class depth analysis.\n\nLog format:\nINCLUDED_CLASSES\n - TERMINOLOGY\n")
     tables_n_plots_by_filter_and_stat: Dict[Tuple[Tuple[str], str], Tuple[pd.DataFrame, str]] = {}
+    depth_detail_frames: List[pd.DataFrame] = []
     for _filter in variations:
         logger.debug(" " + ", ".join(_filter))
         ont_depth_tables: Dict[str, pd.DataFrame] = {}
         ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
         for ont_name, axioms in ont_sets.items():
             logger.debug("  - " + ont_name)
-            ont_depth_tables[ont_name] = _depth_counts(axioms, _filter)
+            counts_df, detail_df = _depth_counts(axioms, _filter)
+            ont_depth_tables[ont_name] = counts_df
+            if tuple(_filter) == tuple(CLASS_TYPES):
+                detail_df.insert(0, "terminology", ont_name)
+                depth_detail_frames.append(detail_df)
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
         for stat, data in {'totals': ont_depth_tables, 'percentages': ont_depth_pct_tables}.items():
             df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
             df2: pd.DataFrame = _reformat_table(df, stat)
             tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df2, plot_filename)
     _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
+
+    if depth_detail_frames:
+        df_depths_all = pd.concat(depth_detail_frames, ignore_index=True)
+        df_depths_all.sort_values(["terminology", "depth", "class"], inplace=True)
+        df_depths_all.to_csv(outpath_tsv, sep="\t", index=False)
 
 
 def cli():
@@ -367,6 +391,13 @@ def cli():
         type=str,
         default=DEFAULTS["outdir-plots"],
         help="Outdir for plots: (number/% of classes) x (types of classes included).",
+    )
+    parser.add_argument(
+        "-T",
+        "--outpath-tsv",
+        type=str,
+        default=DEFAULTS["outpath-tsv"],
+        help="Outpath for TSV containing class depths.",
     )
     parser.add_argument(
         "--log-level",
