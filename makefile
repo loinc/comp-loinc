@@ -200,7 +200,7 @@ $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_O
   	--output $@
 
 output/tmp/loinc-groups.robot.tsv: | output/tmp/
-	python src/comp_loinc/analysis/loinc.py \
+	python src/comp_loinc/analysis/loinc_groups.py \
 	--group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/Group.csv\
 	--parent-group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/ParentGroup.csv\
 	--outpath $@

@@ -1,4 +1,4 @@
-"""Utilities for working with LOINC group files."""
+"""Create ROBOT TSV representation of the LOINC group hierarchy, including its grouping classes and linked terms"""
 import os
 from argparse import ArgumentParser
 from pathlib import Path
@@ -25,7 +25,7 @@ DEFAULTS = {
     "group-path": str(
         LOINC_RELEASE_PATH / "AccessoryFiles" / "GroupFile" / "Group.csv"
     ),
-    "outpath": "output/tmp/loinc-groups.tsv",
+    "outpath": PROJECT_ROOT / "output/tmp/loinc-groups.robot.tsv",
 }
 
 HEADER = ["id", "parent_id", "label"]
@@ -43,8 +43,8 @@ def build_template(
     outpath = Path(outpath)
 
     # Read CSVs
-    df_parent = pd.read_csv(parent_group_path, sep="\t", dtype=str).fillna("")
-    df_group = pd.read_csv(group_path, sep="\t", dtype=str).fillna("")
+    df_parent = pd.read_csv(parent_group_path, dtype=str).fillna("")
+    df_group = pd.read_csv(group_path, dtype=str).fillna("")
 
     # Process ParentGroup.csv
     parent_rows = pd.DataFrame(
