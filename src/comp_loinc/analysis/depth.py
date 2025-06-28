@@ -119,13 +119,13 @@ def _depth_counts(
             depths_raw_sets[cls].add(depth)
             for child in children[cls]:
                 queue.append((child, depth + 1))
-    depths_raw: Dict[str, List[int]] = {
+    depths_raw: Dict[str, List[int]] = {  # type: ignore
         cls: sorted(list(depths)) for cls, depths in depths_raw_sets.items()
     }
     # logger.debug("Calculated depths for %d classes", len(depths_raw))
 
     # Filter by class type inclusion
-    depths = depths_raw
+    depths: Dict[str, List[int]] = depths_raw
     if _filter:
         filtered_classes = _filter_classes(all_classes, _filter)
         depths_filtered: Dict[str, List[int]] = {
@@ -371,7 +371,7 @@ def cli():
     parser.add_argument(
         "--log-level",
         type=str,
-        default="INFO",
+        default="WARNING",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Logging level.",
     )
