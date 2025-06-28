@@ -189,8 +189,12 @@ output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reaso
 #$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)/
 #	robot reason --input $< --output $@
 LOINC_OWL_DIR=output/analysis/loinc
-$(LOINC_OWL_DIR)/loinc-groups.owl: $(LOINC_OWL_DIR)/
-	python src/comp_loinc/analysis/loinc.py --outpath $@
+$(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)/
+	robot template --template $< \
+	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
+	--prefix 'LOINC_TERM: https://loinc.org/' \
+  	--ontology-iri "https://github.com/loinc/comploinc/source-representations/loinc/loing-groups.owl" \
+  	--output $@
 
 output/tmp/loinc-groups.robot.tsv: | output/tmp/
 	python src/comp_loinc/analysis/loinc.py \
