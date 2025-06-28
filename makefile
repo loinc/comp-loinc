@@ -192,6 +192,12 @@ LOINC_OWL_DIR=output/analysis/loinc
 $(LOINC_OWL_DIR)/loinc-groups.owl: $(LOINC_OWL_DIR)/
 	python src/comp_loinc/analysis/loinc.py --outpath $@
 
+output/tmp/loinc-groups.robot.tsv: | output/tmp/
+	python src/comp_loinc/analysis/loinc.py \
+	--group-path loinc_release/AccessoryFiles/GroupFile/Group.csv\
+	--parent-group-path loinc_release/AccessoryFiles/GroupFile/ParentGroup.csv\
+	--outpath $@
+
 # TODO: Change LOINC representation. what to do?
 #  - i may have already completed some of these sub-tasks by now
 # TODO: 2 varaitions?: terms alone, no hierarchy VS include grouping classes? Is the code set up in any way to build any of these? I think not.
