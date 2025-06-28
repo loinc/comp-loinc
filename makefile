@@ -4,7 +4,13 @@
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
 	chebi-subsets
 DEFAULT_BUILD_DIR=output/build-default
+# Directory for dangling analysis outputs
 DANGLING_DIR=output/analysis/dangling
+
+# Resolve the directory name for the default LOINC release using the
+# project's Python configuration.  This is required so that the
+# analysis targets always reference the correct release directory.
+LOINC_DEFAULT_DIR := $(shell python src/loinclib/config.py --method-names get_loinc_default_dir_name)
 # STRICT:
 #  - if true, sets '--equivalent-classes-allowed none' when reasoning.
 #  - Usage: `make STRICT=true merge-reason`
@@ -195,8 +201,8 @@ $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_O
 
 output/tmp/loinc-groups.robot.tsv: | output/tmp/
 	python src/comp_loinc/analysis/loinc.py \
-	--group-path loinc_release/AccessoryFiles/GroupFile/Group.csv\
-	--parent-group-path loinc_release/AccessoryFiles/GroupFile/ParentGroup.csv\
+	--group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/Group.csv\
+	--parent-group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/ParentGroup.csv\
 	--outpath $@
 
 # loinc-unreasoned.owl: This representation includes (i) group defs, (ii) term defs, (iii) part defs, (iv) subclass axioms (groups::groups, terms::groups; part::part; no term::term exist). Doesn't include: equivalent class axioms for temrs (for neither part model)
