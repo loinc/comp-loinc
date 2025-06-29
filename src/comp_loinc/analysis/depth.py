@@ -38,9 +38,9 @@ DEFAULTS = {
     "labels-path": "output/tmp/labels-all-terminologies.tsv",
     "outpath-md": "documentation/analyses/class-depth/depth.md",
     "outdir-plots": "documentation/analyses/class-depth",
-    "outpath-tsv": "output/tmp/depth-counts.tsv",
     # Non-CLI args
     "variations": (("terms",), ("terms", "groups"), ("terms", "groups", "parts")),
+    "outpath-tsv-pattern": "output/tmp/depth-by-class-{}.tsv",
 }
 # If need smaller, cand o: ![Title]({{ outpath }}){: width="600px"}
 logger = logging.getLogger(__name__)
@@ -348,30 +348,65 @@ def _reformat_table(df: pd.DataFrame, stat: str, set_index_name=False) -> pd.Dat
     return df2
 
 
+def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], outpath_pattern: Union[Path, str]):
+    """Save depths TSVs."""
+    # todo: this combining into one df is no longer needed
+    df_depths_all = pd.DataFrame()
+    if dfs:
+        df_depths_all = pd.concat(dfs, ignore_index=True)
+        df_depths_all.sort_values(
+            ["terminology", "depth", "class_type", "class"], inplace=True
+        )
+        # Add labels
+        try:
+            labels_df = pd.read_csv(labels_path, sep="\t")
+            label_map = {
+                f"<{cls}>" if not str(cls).startswith("<") else str(cls): lbl
+                for cls, lbl in zip(labels_df.iloc[:, 0], labels_df.iloc[:, 1])
+            }
+            df_depths_all["label"] = df_depths_all["class"].map(label_map)
+        except FileNotFoundError:
+            logger.warning(f"Labels file not found: {labels_path}. Couldn't add labels to 'Classes by depth' TSVs")
+    else:
+        logger.warning(
+            f"'Classes by depth' TSVs empty because no variation was processed which includes all "
+            f"class types: {str(CLASS_TYPES)}"
+        )
+    # df_depths_all.to_csv(outpath_tsv, sep="\t", index=False)  # opting not to save because ~>200mb
+    # todo: would be nice maybe to have these variations in the makefile target, but idk
+    for terminology, group_df in df_depths_all.groupby('terminology'):
+        del group_df['terminology']
+        group_df.to_csv(str(outpath_pattern).format(terminology), sep="\t", index=False)
+
+
 def analyze_class_depth(
+    # CLI args
     loinc_path: Union[Path, str],
     loinc_snomed_path: Union[Path, str],
     comploinc_primary_path: Union[Path, str],
     comploinc_supplementary_path: Union[Path, str],
     labels_path: Union[Path, str],
     outpath_md: Union[Path, str],
-    outpath_tsv: Union[Path, str],
     outdir_plots: Union[Path, str],
+    # Non CLI args
+    outpath_tsv_pattern: Union[Path, str] = DEFAULTS["outpath-tsv-pattern"],
     variations=DEFAULTS["variations"],
     dont_convert_paths_to_abs=False,
 ):
     """Analyze classification depth"""
     # Resolve paths
     terminologies: Dict[str, Path]
-    terminologies, outpath_md, outpath_tsv, outdir_plots, labels_path = (
+    terminologies, outpath_md, outpath_tsv_pattern, outdir_plots, labels_path = (
         bundle_inpaths_and_update_abs_paths(
+            # Inpaths to bundle into `terminologies`
             loinc_path,
             loinc_snomed_path,
             comploinc_primary_path,
             comploinc_supplementary_path,
             dont_convert_paths_to_abs,
+            # Path varibales to update
             outpath_md,
-            outpath_tsv,
+            outpath_tsv_pattern,
             outdir_plots,
             labels_path,
         )
@@ -394,7 +429,7 @@ def analyze_class_depth(
     tables_n_plots_by_filter_and_stat: Dict[
         Tuple[Tuple[str], str], Tuple[pd.DataFrame, str]
     ] = {}
-    depth_detail_frames: List[pd.DataFrame] = []
+    depth_by_class_dfs: List[pd.DataFrame] = []
     for _filter in variations:
         logger.debug(" " + ", ".join(_filter))
         ont_depth_tables: Dict[str, pd.DataFrame] = {}
@@ -402,13 +437,13 @@ def analyze_class_depth(
         # - get data for tables and plots
         for ont_name, axioms in ont_sets.items():
             logger.debug("  - " + ont_name)
-            counts_df, detail_df = _depth_counts(
+            counts_df, depth_by_class_df = _depth_counts(
                 axioms, _filter
             )  # main data processing func
             ont_depth_tables[ont_name] = counts_df
             if tuple(_filter) == tuple(CLASS_TYPES):
-                detail_df.insert(0, "terminology", ont_name)
-                depth_detail_frames.append(detail_df)
+                depth_by_class_df.insert(0, "terminology", ont_name)
+                depth_by_class_dfs.append(depth_by_class_df)
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
         # - plots
         for stat, data in {
@@ -419,33 +454,9 @@ def analyze_class_depth(
             df2: pd.DataFrame = _reformat_table(df, stat)
             tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df2, plot_filename)
 
-    # Save markdown
+    # Save
     _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
-    # Save depths TSV
-    df_depths_all = pd.DataFrame()
-    if depth_detail_frames:
-        df_depths_all = pd.concat(depth_detail_frames, ignore_index=True)
-        df_depths_all.sort_values(
-            ["terminology", "depth", "class_type", "class"], inplace=True
-        )
-        # Add labels
-        try:
-            labels_df = pd.read_csv(labels_path, sep="\t")
-            label_map = {
-                f"<{cls}>" if not str(cls).startswith("<") else str(cls): lbl
-                for cls, lbl in zip(labels_df.iloc[:, 0], labels_df.iloc[:, 1])
-            }
-            df_depths_all["label"] = df_depths_all["class"].map(label_map)
-        except FileNotFoundError:
-            logger.warning(f"Labels file not found: {labels_path}")
-        except Exception as e:
-            logger.warning(f"Could not add labels: {e}")
-    else:
-        logger.warning(
-            f"{os.path.basename(outpath_tsv)} empty because no variation was processed which includes all "
-            f"class types: {str(CLASS_TYPES)}"
-        )
-    df_depths_all.to_csv(outpath_tsv, sep="\t", index=False)
+    _save_depths_tsvs(depth_by_class_dfs, labels_path, outpath_tsv_pattern)
 
 
 def cli():
@@ -465,13 +476,6 @@ def cli():
         type=str,
         default=DEFAULTS["outdir-plots"],
         help="Outdir for plots: (number/% of classes) x (types of classes included).",
-    )
-    parser.add_argument(
-        "-T",
-        "--outpath-tsv",
-        type=str,
-        default=DEFAULTS["outpath-tsv"],
-        help="Outpath for TSV containing class depths.",
     )
     parser.add_argument(
         "-b",

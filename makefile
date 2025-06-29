@@ -27,6 +27,11 @@ build: grouping dangling modules merge-reason stats
 
 additional-outputs: alternative-hierarchies
 
+# Functions ------------------------------------------------------------------------------------------------------------
+define remove_subclass_axioms
+robot remove --input $(1) --axioms "subclass" --output $(2)
+endef
+
 # Core modules ---------------------------------------------------------------------------------------------------------
 MODULE_FILES = \
 	$(DEFAULT_BUILD_DIR)/loinc-snomed-equiv.owl \
@@ -214,9 +219,12 @@ output/tmp/loinc-groups.robot.tsv: | output/tmp/
 	--parent-group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/ParentGroup.csv\
 	--outpath $@
 
+$(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl: $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl | $(LOINC_OWL_DIR)
+	$(call remove_subclass_axioms,$<,$@)
+
 # loinc-unreasoned.owl: This representation includes (i) group defs, (ii) term defs, (iii) part defs, (iv) subclass axioms (groups::groups, terms::groups; part::part; no term::term exist). Doesn't include: equivalent class axioms for temrs (for neither part model)
-$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl $(LOINC_OWL_DIR)/loinc-groups.owl| $(LOINC_OWL_DIR)
-	robot merge --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
+$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl $(LOINC_OWL_DIR)/loinc-groups.owl | $(LOINC_OWL_DIR)
+	robot merge --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
 
 # loinc-reasoned.owl: Not including, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons.
 #$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)
@@ -260,14 +268,13 @@ documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_co
 	--outpath-md documentation/subclass-analysis.md \
 	--outpath-upset-plot documentation/upset.png
 
-documentation/analyses/class-depth/depth.md output/tmp/depth-counts.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
+documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
 	python src/comp_loinc/analysis/depth.py \
 	--loinc-path output/tmp/subclass-rels-loinc.tsv \
 	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
 	--comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
 	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
 	--labels-path output/tmp/labels-all-terminologies.tsv \
-	--outpath-tsv output/tmp/depth-counts.tsv \
 	--outpath-md documentation/analyses/class-depth/depth.md \
 	--outdir-plots documentation/analyses/class-depth
 
