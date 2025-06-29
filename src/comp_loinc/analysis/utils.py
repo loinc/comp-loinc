@@ -32,10 +32,12 @@ def _disaggregate_classes(classes: Set, includes_angle_brackets=True, verbose=Fa
         if cls.startswith(f'{b}http://comploinc//group/'):
             classes_by_type['groups'].add(cls)
         elif cls.startswith(f'{b}https://loinc.org/'):
-            if cls.startswith(f'{b}https://loinc.org/LP'):
-                classes_by_type['parts'].add(cls)
+            if cls.startswith(f'{b}https://loinc.org/category/'):  # LOINC "categories", e.g. "Document groups"
+                classes_by_type['groups'].add(cls)
             elif cls.startswith(f'{b}https://loinc.org/LG'):  # LOINC groups, e.g. LG10324-8
                 classes_by_type['groups'].add(cls)
+            elif cls.startswith(f'{b}https://loinc.org/LP'):
+                classes_by_type['parts'].add(cls)
             else:
                 classes_by_type['terms'].add(cls)
         else:

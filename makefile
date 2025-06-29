@@ -122,9 +122,11 @@ merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merge
 # - defs & dirs
 TEMPLATE_AXIOMS_ENTITIES=src/comp_loinc/analysis/stats-main-axioms-entities.md.j2
 TEMPLATE_MISC=src/comp_loinc/analysis/stats-misc.md.j2
+# todo: for https://loinc.org/category/, maybe it'd be better to add a CompLOINC URI since even though this is part of LOINC and not CompLOINC the ontology, it is CompLOINC the project that ontologises these classes
 PREFIXES_METRICS=\
-	--prefix 'LOINC_PART: https://loinc.org/LP' \
+	--prefix 'LOINC_CATEGORY: https://loinc.org/category/' \
 	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
+	--prefix 'LOINC_PART: https://loinc.org/LP' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
 	--prefix 'LOINC_PART_GRP_CMP: http://comploinc//group/component/LP' \
 	--prefix 'LOINC_PART_GRP_SYS: http://comploinc//group/system/LP' \
@@ -208,6 +210,7 @@ output/tmp/labels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasone
 # - Comparisons: LOINC
 $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)
 	robot template --template $< \
+	--prefix 'LOINC_CATEGORY: https://loinc.org/category/' \
 	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
   	--ontology-iri "https://github.com/loinc/comploinc/source-representations/loinc/loing-groups.owl" \
@@ -217,6 +220,7 @@ output/tmp/loinc-groups.robot.tsv: | output/tmp/
 	python src/comp_loinc/analysis/loinc_groups.py \
 	--group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/Group.csv\
 	--parent-group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/ParentGroup.csv\
+    --group-loinc-terms-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/GroupLoincTerms.csv\
 	--outpath $@
 
 $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl: $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl | $(LOINC_OWL_DIR)

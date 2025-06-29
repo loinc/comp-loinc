@@ -1,4 +1,11 @@
-"""Create ROBOT TSV representation of the LOINC group hierarchy, including its grouping classes and linked terms"""
+"""Create ROBOT TSV representation of the LOINC group hierarchy, including its grouping classes and linked terms
+
+Example subclass axioms:
+CHILD_ID,PARENT_ID
+LG10030-1,LG100-4
+LG10030-1,https://loinc.org/category/flowsheet-laboratory
+26970-4,LG10030-1
+"""
 import os
 from argparse import ArgumentParser
 from pathlib import Path
