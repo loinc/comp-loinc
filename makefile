@@ -32,6 +32,16 @@ define remove_subclass_axioms
 robot remove --input $(1) --axioms "subclass" --output $(2)
 endef
 
+# run a ROBOT SPARQL query
+define robot_query
+robot query -i $(1) --query $(2) $(3)
+endef
+
+# run ROBOT reasoner
+define robot_reason
+robot reason --input $(1) --output $(2)
+endef
+
 # Core modules ---------------------------------------------------------------------------------------------------------
 MODULE_FILES = \
 	$(DEFAULT_BUILD_DIR)/loinc-snomed-equiv.owl \
@@ -187,7 +197,7 @@ $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
 
 # FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
 $(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
-	robot reason --input $< --output $@
+	$(call robot_reason,$<,$@)
 
 # -- LOINC-SNOMED representation
 # Todo: if needed temporarily to make subclass rels / labels until this is ready, use instead as source: output/analysis/snomed/bak/snomed-parts-reasoned.owl instead of loinc-snomed-reasoned.owl
@@ -199,13 +209,13 @@ $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl: $(DEFAULT_BUILD_DIR)/snomed
 	robot merge --input $(DEFAULT_BUILD_DIR)/snomed-parts.owl --output $@
 
 $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl | $(LOINC_SNOMED_OWL_DIR)
-	robot reason --input $< --output $@
+	$(call robot_reason,$<,$@)
 
 output/tmp/subclass-rels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
-	robot query -i $< --query src/comp_loinc/labels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
 
 # - Comparisons: LOINC
 $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)
@@ -235,29 +245,29 @@ $(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.
 #	robot reason --input $< --output $@
 
 output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
-	robot query -i $< --query src/comp_loinc/labels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
 
 # - Comparisons: CompLOINC
 output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/subclass-rels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-primary.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
-	robot query -i $< --query src/comp_loinc/labels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
 
 output/tmp/labels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
-	robot query -i $< --query src/comp_loinc/labels.sparql $@
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
 
 # - Comparisons: all
 output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv
@@ -349,4 +359,4 @@ alternative-hierarchies: chebi-subsets
 
 # Ad hoc analyses: not connected to the main pipeline
 output/tmp/cl-parts.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
-	robot query --input $< --query src/comp_loinc/analysis/ad_hoc/cl-parts.sparql $@
+	$(call robot_query,$<,src/comp_loinc/analysis/ad_hoc/cl-parts.sparql,$@)
