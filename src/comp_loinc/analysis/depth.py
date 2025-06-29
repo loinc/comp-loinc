@@ -4,6 +4,9 @@ todo's
  if including, disaggregate groups by type? e.g.:
   http://comploinc//group/component/LP...
   http://comploinc//group/system/LP...
+ inner bar stacking: IDK if this is possible, but it'd be great to have a separate bar for each source, and then the
+ source bars are actually stacked, depending on class type. To do this, I'd need to pass classes_by_type as well to the
+ plot function.
 """
 
 import os
@@ -50,17 +53,17 @@ This measures how deep into the hierarchy each class is. E.g. if the root of the
 (TermC subClassOf TermB) and (TermB subClassOf TermA), then TermC is at depth 3, TermB is at depth 2, and TermA is at 
 depth 1.
 
-**Dangling classes** 
+**Dangling classes**  
 Dangling classes are not represented here in this class depth analysis.
 
-*Ramifications for LOINC*
+*Ramifications for LOINC*  
 Note that this results in LOINC showing that it has 0 terms at any depths, as LOINC has no term hierarchy. The only 
 hierarchies that exist in LOINC are a shallow grouping hierarchy (represented by CSVs in `AccessoryFiles/GroupFile/` in 
 the LOINC release, and the part hierarchy, which is not represented in the release, but only exists in the LOINC tree 
 browser (https://loinc.org/tree/). Regarding parts, there are also a large number of those that are dangling even after 
 when considering all of the tree browser hierarchies, and those as well are not represented here. 
 
-*Ramifications for CompLOINC*
+*Ramifications for CompLOINC*  
 The only dangling classes in CompLOINC are dangling parts from the LOINC release, specifically the ones which CompLOINC 
 was not able to find matches. Those classes are not represented here.
 
@@ -118,51 +121,44 @@ def _depth_counts(
         parents[child].add(parent)
 
     # Find roots (classes with no parents)
-    all_classes = set(children.keys()) | set(parents.keys())
-    roots = all_classes - set(parents.keys())
+    classes_all = set(children.keys()) | set(parents.keys())
+    logging.debug(f"    n classes: {len(classes_all):,}")
+
+    # Filter
+    classes_by_type: Dict[str, Set] = _disaggregate_classes(classes_all)
+    classes_filtered = _filter_classes(_filter, classes_by_type)
+    logging.debug(f"    n after class type filtration: {len(classes_filtered):,}")
+
+    # TODO temp: ensure that for (terms, groups, parts), filtered_classes is the same as all_classes. at least numbers
+    #  OK: 0 in filtered classes. why? cuz LOINC and filter is 'terms' and axioms are parts
+    if len(classes_filtered) != len(classes_all) and _filter == (
+        "terms",
+        "groups",
+        "parts",
+    ):
+        # TODO temp: Why do filtered classes have LoincPart but AllClasses do not?
+        diff1 = classes_all - classes_filtered
+        diff2 = classes_filtered - classes_all
+        print(diff1)
+        print(diff2)
+        print()
+
+    roots = classes_filtered - set(parents.keys())
     logging.debug(f"    n roots: {len(roots):,}")
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
-    depths_raw_sets: Dict[str, Set[int]] = defaultdict(set)
+    depths_sets: Dict[str, Set[int]] = defaultdict(set)
     queue = deque([(root, 1) for root in roots])
     while queue:
         cls, depth = queue.popleft()
-        if depth not in depths_raw_sets[cls]:
-            depths_raw_sets[cls].add(depth)
+        if depth not in depths_sets[cls]:
+            depths_sets[cls].add(depth)
             for child in children[cls]:
                 queue.append((child, depth + 1))
-    depths_raw: Dict[str, List[int]] = {  # type: ignore
-        cls: sorted(list(depths)) for cls, depths in depths_raw_sets.items()
+    depths: Dict[str, List[int]] = {  # type: ignore
+        cls: sorted(list(depths)) for cls, depths in depths_sets.items()
     }
-    # logger.debug("Calculated depths for %d classes", len(depths_raw))
-
-    # Filter by class type inclusion
-    depths: Dict[str, List[int]] = depths_raw
-    classes_by_type: Dict[str, Set] = _disaggregate_classes(all_classes)
-    if _filter:
-        filtered_classes = _filter_classes(_filter, classes_by_type)
-        depths_filtered: Dict[str, List[int]] = {
-            cls: depth for cls, depth in depths_raw.items() if cls in filtered_classes
-        }
-        depths = depths_filtered
-        # logger.debug("After filtering, %d classes remain", len(depths_filtered))
-        logging.debug(f"    n classes: {len(all_classes):,}")
-        logging.debug(f"    n after class type filtration: {len(filtered_classes):,}")
-
-        # TODO: ensure that for (terms, groups, parts), filtered_classes is the same as all_classes. at least numbers
-        #  OK: 0 in filtered classes. why? cuz LOINC and filter is 'terms' and axioms are parts
-        if len(filtered_classes) != len(all_classes) and _filter == (
-            "terms",
-            "groups",
-            "parts",
-        ):
-            # TODO: Why do filtered classes have LoincPArt but AllClasses do not?
-            diff1 = all_classes - filtered_classes
-            diff2 = filtered_classes - all_classes
-            print(diff1)
-            print(diff2)
-            print()
 
     # Count classes at each depth
     # - Create reverse lookup: class_id -> class_type
