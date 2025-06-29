@@ -28,16 +28,20 @@ build: grouping dangling modules merge-reason stats
 additional-outputs: alternative-hierarchies
 
 # Functions ------------------------------------------------------------------------------------------------------------
+# Remove subclass axioms
+# 1: The input file; 2: the output file
 define remove_subclass_axioms
 robot remove --input $(1) --axioms "subclass" --output $(2)
 endef
 
-# run a ROBOT SPARQL query
+# Run a ROBOT SPARQL query
+# 1: The input file; 2: the query; 3: the output file
 define robot_query
 robot query -i $(1) --query $(2) $(3)
 endef
 
-# run ROBOT reasoner
+# Run ROBOT reasoner
+# 1: The input file; 2: the output file
 define robot_reason
 robot reason --input $(1) --output $(2)
 endef
