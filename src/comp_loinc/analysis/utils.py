@@ -14,31 +14,33 @@ PROJECT_ROOT = THIS_DIR.parent.parent.parent
 CLASS_TYPES = ('terms', 'groups', 'parts')
 
 
+def _bracket_variants(uri: str) -> List[str]:
+    """Returns URI forms with and without surrounding brackets"""
+    return [f'<{uri}>', f'{uri}']
+
+
 def _disaggregate_classes(classes: Set, includes_angle_brackets=True, verbose=False) -> Dict[str, Set]:
-    """Disaggregate classes by type"""
+    """Disaggregate classes by type
+
+    todo: Any other root types in LOINC, CompLOINC, or LOINC-SNOMED Ontology?
+     - perhaps if we add roots like GRP_SYS, etc, if they have a different URL pattenr, will need to parse them here.
+    """
     b = '<' if includes_angle_brackets else ''
     classes_by_type: Dict[str, Set] = {'terms': set(), 'groups': set(), 'parts': set(), 'other': set()}
-    # Parse roots
-    # todo: Any other root types in LOINC, CompLOINC, or LOINC-SNOMED Ontology?
-    #  - perhaps if we add roots like GRP_SYS, etc, if they have a different URL pattenr, will need to parse them here.
-    # Note: No such "https://loinc.org/LoincGroup" exists.
-    for root_uri, root_type in (('<https://loinc.org/LoincTerm>', 'terms'), ('<https://loinc.org/LoincPart>', 'parts')):
-        if root_uri in classes:
-            classes_by_type[root_type].add(root_uri)
-            classes.remove(root_uri)
-
-    # Parse non-roots
     for cls in classes:
+        # Non-roots
         if cls.startswith(f'{b}http://comploinc//group/'):
             classes_by_type['groups'].add(cls)
         elif cls.startswith(f'{b}https://loinc.org/'):
+            # - Note: No such "https://loinc.org/LoincGroup" exists.
             if cls.startswith(f'{b}https://loinc.org/category/'):  # LOINC "categories", e.g. "Document groups"
                 classes_by_type['groups'].add(cls)
             elif cls.startswith(f'{b}https://loinc.org/LG'):  # LOINC groups, e.g. LG10324-8
                 classes_by_type['groups'].add(cls)
-            elif cls.startswith(f'{b}https://loinc.org/LP'):
+            elif cls.startswith(f'{b}https://loinc.org/LP') or cls in _bracket_variants('https://loinc.org/LoincPart'):
                 classes_by_type['parts'].add(cls)
             else:
+                # Includes root https://loinc.org/LoincTerm & terms, e.g. https://loinc.org/26970-4
                 classes_by_type['terms'].add(cls)
         else:
             classes_by_type['other'].add(cls)
