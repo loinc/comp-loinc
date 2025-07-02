@@ -110,8 +110,10 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 def _depth_counts(
-    subclass_pairs: Set[Tuple[str, str]], _filter: List[str] = None
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    subclass_pairs: Set[Tuple[str, str]],
+    _filter: List[str] = None,
+    by_root: bool = False,
+) -> Tuple[Union[pd.DataFrame, Dict[str, pd.DataFrame]], pd.DataFrame]:
     """Provides a function to compute and analyze the hierarchical depth of classes based on their parent-child
     relationships, with an optional filter for specific class types.
 
@@ -125,13 +127,15 @@ def _depth_counts(
             `CLASS_TYPES`.
 
     Returns:
-        Tuple[pd.DataFrame, pd.DataFrame]:
-            - The first DataFrame contains two columns:
-                * ``depth``: The depth level within the class hierarchy.
-                * ``n``: The count of classes at the corresponding depth.
+        Tuple[pd.DataFrame | Dict[str, pd.DataFrame], pd.DataFrame]:
+            - The first element is either a DataFrame containing ``depth``/``n``
+              or a dictionary mapping each root to such a DataFrame when
+              ``by_root`` is ``True``.
             - The second DataFrame contains a row for each class-depth pair with
               the columns ``class`` and ``depth``. In a polyhierarchy a class can
-              occur at multiple depths and will be returned multiple times.
+              occur at multiple depths and will be returned multiple times. When
+              ``by_root`` is ``True`` this DataFrame also contains a ``root``
+              column.
     """
     # logger.debug("Calculating depth counts for %d subclass pairs with filter %s", len(subclass_pairs), _filter)
     # Validation
@@ -170,17 +174,32 @@ def _depth_counts(
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
-    depths_sets: Dict[str, Set[int]] = defaultdict(set)
-    queue = deque([(root, 1) for root in roots])
-    while queue:
-        cls, depth = queue.popleft()
-        if depth not in depths_sets[cls]:
-            depths_sets[cls].add(depth)
-            for child in children[cls]:
-                queue.append((child, depth + 1))
-    depths: Dict[str, List[int]] = {  # type: ignore
-        cls: sorted(list(depths)) for cls, depths in depths_sets.items()
-    }
+    if by_root:
+        depths_sets_by_root: Dict[str, Dict[str, Set[int]]] = defaultdict(
+            lambda: defaultdict(set)
+        )
+        queue = deque([(root, 1, root) for root in roots])
+        while queue:
+            cls, depth, root_id = queue.popleft()
+            if depth not in depths_sets_by_root[root_id][cls]:
+                depths_sets_by_root[root_id][cls].add(depth)
+                for child in children[cls]:
+                    queue.append((child, depth + 1, root_id))
+        depths_by_root: Dict[str, Dict[str, List[int]]] = {}
+        for r, dsets in depths_sets_by_root.items():
+            depths_by_root[r] = {cls: sorted(list(ds)) for cls, ds in dsets.items()}
+    else:
+        depths_sets: Dict[str, Set[int]] = defaultdict(set)
+        queue = deque([(root, 1) for root in roots])
+        while queue:
+            cls, depth = queue.popleft()
+            if depth not in depths_sets[cls]:
+                depths_sets[cls].add(depth)
+                for child in children[cls]:
+                    queue.append((child, depth + 1))
+        depths: Dict[str, List[int]] = {
+            cls: sorted(list(depths)) for cls, depths in depths_sets.items()
+        }
 
     # Count classes at each depth
     # - Create reverse lookup: class_id -> class_type
@@ -189,23 +208,43 @@ def _depth_counts(
         for class_id in class_set:
             class_to_type[class_id] = class_type
     # - Get counts
-    depth_counts = defaultdict(int)
-    depths_rows = []
-    for cls_id, depth_list in depths.items():
-        class_type: str = class_to_type.get(
-            cls_id, "unknown"
-        )  # fallback for missing classes
-        for depth in depth_list:
-            depth_counts[depth] += 1
-            depths_rows.append(
-                {"class_type": class_type, "class": cls_id, "depth": depth}
+    if by_root:
+        counts_by_root: Dict[str, pd.DataFrame] = {}
+        depths_rows = []
+        for root_id, depth_map in depths_by_root.items():
+            depth_counts = defaultdict(int)
+            for cls_id, depth_list in depth_map.items():
+                class_type: str = class_to_type.get(cls_id, "unknown")
+                for depth in depth_list:
+                    depth_counts[depth] += 1
+                    depths_rows.append(
+                        {
+                            "root": root_id,
+                            "class_type": class_type,
+                            "class": cls_id,
+                            "depth": depth,
+                        }
+                    )
+            depth_counts_list = sorted(depth_counts.items())
+            counts_by_root[root_id] = pd.DataFrame(
+                depth_counts_list, columns=["depth", "n"]
             )
-    depth_counts_list: List[Tuple[int, int]] = sorted(depth_counts.items())
-    df_counts = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
-    df_depths = pd.DataFrame(depths_rows)
-
-    # logger.debug("Computed depth distribution: %s", depth_counts_list)
-    return df_counts, df_depths
+        df_depths = pd.DataFrame(depths_rows)
+        return counts_by_root, df_depths
+    else:
+        depth_counts = defaultdict(int)
+        depths_rows = []
+        for cls_id, depth_list in depths.items():
+            class_type: str = class_to_type.get(cls_id, "unknown")
+            for depth in depth_list:
+                depth_counts[depth] += 1
+                depths_rows.append(
+                    {"class_type": class_type, "class": cls_id, "depth": depth}
+                )
+        depth_counts_list = sorted(depth_counts.items())
+        df_counts = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
+        df_depths = pd.DataFrame(depths_rows)
+        return df_counts, df_depths
 
 
 def _counts_to_pcts(
@@ -366,7 +405,11 @@ def _reformat_table(df: pd.DataFrame, stat: str, set_index_name=False) -> pd.Dat
     return df2
 
 
-def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], outpath_pattern: Union[Path, str]):
+def _save_depths_tsvs(
+    dfs: List[pd.DataFrame],
+    labels_path: Union[Path, str],
+    outpath_pattern: Union[Path, str],
+):
     """Save depths TSVs."""
     # todo: this combining into one df is no longer needed
     df_depths_all = pd.DataFrame()
@@ -384,7 +427,9 @@ def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], ou
             }
             df_depths_all["label"] = df_depths_all["class"].map(label_map)
         except FileNotFoundError:
-            logger.warning(f"Labels file not found: {labels_path}. Couldn't add labels to 'Classes by depth' TSVs")
+            logger.warning(
+                f"Labels file not found: {labels_path}. Couldn't add labels to 'Classes by depth' TSVs"
+            )
     else:
         logger.warning(
             f"'Classes by depth' TSVs empty because no variation was processed which includes all "
@@ -392,8 +437,8 @@ def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], ou
         )
     # df_depths_all.to_csv(outpath_tsv, sep="\t", index=False)  # opting not to save because ~>200mb
     # todo: would be nice maybe to have these variations in the makefile target, but idk
-    for terminology, group_df in df_depths_all.groupby('terminology'):
-        del group_df['terminology']
+    for terminology, group_df in df_depths_all.groupby("terminology"):
+        del group_df["terminology"]
         group_df.to_csv(str(outpath_pattern).format(terminology), sep="\t", index=False)
 
 
@@ -410,8 +455,13 @@ def analyze_class_depth(
     outpath_tsv_pattern: Union[Path, str] = DEFAULTS["outpath-tsv-pattern"],
     variations=DEFAULTS["variations"],
     dont_convert_paths_to_abs=False,
+    by_root: bool = False,
 ):
-    """Analyze classification depth"""
+    """Analyze classification depth
+
+    If ``by_root`` is ``True`` the results are split by each root of every
+    terminology, producing a column per root rather than per terminology.
+    """
     # Resolve paths
     terminologies: Dict[str, Path]
     terminologies, outpath_md, outpath_tsv_pattern, outdir_plots, labels_path = (
@@ -455,10 +505,17 @@ def analyze_class_depth(
         # - get data for tables and plots
         for ont_name, axioms in ont_sets.items():
             logger.debug("  - " + ont_name)
-            counts_df, depth_by_class_df = _depth_counts(
-                axioms, _filter
+            counts_res, depth_by_class_df = _depth_counts(
+                axioms, _filter, by_root=by_root
             )  # main data processing func
-            ont_depth_tables[ont_name] = counts_df
+            if by_root:
+                assert isinstance(counts_res, dict)
+                for root_uri, cdf in counts_res.items():
+                    key = f"{ont_name}__{root_uri.strip('<>')}"
+                    ont_depth_tables[key] = cdf
+            else:
+                assert not isinstance(counts_res, dict)
+                ont_depth_tables[ont_name] = counts_res
             if tuple(_filter) == tuple(CLASS_TYPES):
                 depth_by_class_df.insert(0, "terminology", ont_name)
                 depth_by_class_dfs.append(depth_by_class_df)
@@ -508,6 +565,11 @@ def cli():
         default="WARNING",
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Logging level.",
+    )
+    parser.add_argument(
+        "--by-root",
+        action="store_true",
+        help="Split results by terminology root instead of by terminology.",
     )
     args = parser.parse_args()
     logging.basicConfig(
