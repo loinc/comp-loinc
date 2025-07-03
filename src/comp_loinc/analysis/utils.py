@@ -4,6 +4,7 @@ todo: curies package could be useful here
 """
 import os
 from argparse import ArgumentParser
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Set, Tuple, Union
 
@@ -60,24 +61,56 @@ def _disaggregate_classes_from_class_list(classes: Set, includes_angle_brackets=
     return classes_by_type
 
 
+def _get_parent_child_lookups(pairs: Set[Tuple[str, str]]) -> Tuple[Dict[str, Set], Dict[str, Set]]:
+    """Get parent-children and child-parents lookups via subclass axioms"""
+    parent_children = defaultdict(set)
+    child_parents = defaultdict(set)
+    for child, parent in pairs:
+        parent_children[parent].add(child)
+        child_parents[child].add(parent)
+    return child_parents, parent_children
+
+
 def _filter_classes(
-    _filter: List[str], classes_by_type: Dict[str, Set] = None, classes: Set = None, includes_angle_brackets=True
-) -> Set:
+    subclass_pairs: Set[Tuple[str, str]], _filter: List[str], classes_by_type: Dict[str, Set] = None,
+    classes: Set = None, includes_angle_brackets=True
+) -> Tuple[Set[str], Set[Tuple[str, str]], Dict[str, Set], Dict[str, Set]]:
     """Flter classes by type
 
     :param: includes_angle_brackets: Leave True if URI looks like <http://www.w3.org/2002/07/owl#Thing>"""
+    # Validation
     if any([x not in CLASS_TYPES for x in _filter]):
         raise ValueError(f'Filter must be one of {CLASS_TYPES}')
+
     # Disaggregate
     if not classes_by_type:
         if not classes:
             raise ValueError('Must pass classes_by_type or classes')
         classes_by_type: Dict[str, Set] = _disaggregate_classes_from_class_list(classes, includes_angle_brackets)
     # Filter
-    filtered_classes = set()
+    classes_filtered = set()
     for cls_type in _filter:
-        filtered_classes |= classes_by_type.get(cls_type, set())
-    return filtered_classes
+        classes_filtered |= classes_by_type.get(cls_type, set())
+    # TODO temp: problem. for ex, when term is subclass of part, and part gets filtered out, term looks like it's dangling
+    #  - but how does this make sense. because '<https://loinc.org/22244007>' should be in classes_filtered, but its
+    #  parent should not. so it should not appear in filtered_Pairs. thus it shouldn't appear in child_parents or
+    #  parent_children
+    # '<https://loinc.org/22244007>' in classes_filtered  # True (ok cuz it is a term)
+    # filtered_pair_parents = set([x[1] for x in filtered_pairs])
+    # filtered_pair_children = set([x[0] for x in filtered_pairs])
+    # '<https://loinc.org/22244007>' in filtered_pair_parents  # True
+    # #  - this seemms to be the problem. but how is this happening?
+    # a_retained_pairs_where_parent = [x for x in filtered_pairs if x[1] == '<https://loinc.org/22244007>']
+    # # - len 2. neither of them are parts. so why does it show up with no children?
+    # its_kids = parent_children['<https://loinc.org/22244007>']  # 2. it's not a dangling term; it's a dangling pair
+    # its_parents = child_parents['<https://loinc.org/22244007>']  # 0. consistent w/ above
+    # '<https://loinc.org/22244007>' in filtered_pair_children  # False
+
+    # - Filter pairs: Strict: Both parent and child must be in the filtered class types, not just one or the other
+    filtered_pairs = set([x for x in subclass_pairs if x[0] in classes_filtered and x[1] in classes_filtered])
+    child_parents, parent_children = _get_parent_child_lookups(filtered_pairs)
+
+    return classes_filtered, filtered_pairs, child_parents, parent_children
 
 
 def bundle_inpaths_and_update_abs_paths(

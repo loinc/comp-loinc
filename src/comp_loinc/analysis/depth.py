@@ -23,7 +23,7 @@ from matplotlib import pyplot as plt
 from comp_loinc.analysis.utils import (
     CLASS_TYPES,
     CL_GROUPING_CLASS_URI_STEMS, _disaggregate_classes_from_class_list,
-    bundle_inpaths_and_update_abs_paths,
+    _get_parent_child_lookups, bundle_inpaths_and_update_abs_paths,
     cli_add_inpath_args,
     _filter_classes,
     _subclass_axioms_and_totals,
@@ -127,7 +127,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 def _depth_counts(
     subclass_pairs: Set[Tuple[str, str]], ont_name: str, _filter: List[str] = None, group_groups=True,
     includes_angle_brackets=True
-) -> Tuple[pd.DataFrame, pd.DataFrame]:
+) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Tuple[pd.DataFrame, pd.DataFrame]]]:
     """Provides a function to compute and analyze the hierarchical depth of classes based on their parent-child
     relationships, with an optional filter for specific class types.
 
@@ -170,26 +170,29 @@ def _depth_counts(
         subclass_pairs, includes_angle_brackets, not group_groups)
 
     # Group grouping classes
-    if group_groups and 'CompLOINC' in ont_name:
-        classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_comploinc(
-            subclass_pairs, classes_by_type, includes_angle_brackets)
-    if group_groups and 'LOINC' == ont_name:
-        classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_loinc(
-            subclass_pairs, child_parents, parent_children, includes_angle_brackets)
+    if group_groups and 'group' in _filter:
+        if 'CompLOINC' in ont_name:
+            classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_comploinc(
+                subclass_pairs, classes_by_type, includes_angle_brackets)
+        elif 'LOINC' == ont_name:
+            classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_loinc(
+                subclass_pairs, child_parents, parent_children, includes_angle_brackets)
 
-    # Filter, by axiom types for this analysis
-    classes_filtered: Set = _filter_classes(_filter, classes_by_type)
+    # Filter by class types included in this analysis
+    # TODO: ensure changes work
+    classes_filtered, subclass_pairs_filtered, child_parents, parent_children = _filter_classes(
+        subclass_pairs, _filter, classes_by_type)
     logging.debug(f"    n after class type filtration: {len(classes_filtered):,}")
 
-    # Find roots (classes with no parents)
-    roots = classes_filtered - set(child_parents.keys())
+    # Find roots
+    # - classes w/ no parents
+    # TODO: does this have negative conesequences? lead to logic errs?
+    #  I'm hesitant to touch `classes_filtered`, because this is a polyhierarchy, and these classes may appear elsewhere
+    #  in non-dangling form and be allowed.
+    roots: Set[str] = classes_filtered - set(child_parents.keys())
+    # - filter dangling
+    roots = set([x for x in roots if parent_children[x]])
     logging.debug(f"    n roots: {len(roots):,}")
-
-    # TODO: Handle polyhierarchy. disag roots.
-    #  - perhaps i need to split out the code below
-
-    # # TODO temp
-    print('roots: ', roots)
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
@@ -227,8 +230,39 @@ def _depth_counts(
     df_counts = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
     df_depths = pd.DataFrame(depths_rows)
 
+    # TODO: Handle polyhierarchy. disag roots. verify worked
+    # Get counts by subtree / major hierarchy
+    by_subtree: Dict[str, Tuple[pd.DataFrame, pd.DataFrame]] = {}
+    if len(roots) > 1:
+        for root in roots:
+            nodes = _get_subtree(root, parent_children)
+            df_d = df_depths[df_depths['class'].isin(nodes)].copy()
+            df_c = df_d.groupby('depth').size().reset_index(name='n')
+            by_subtree[root] = (df_c, df_d)
+        # TODO temp
+        if '<https://loinc.org/138875005>' in by_subtree:
+            if set(by_subtree['<https://loinc.org/138875005>'][1]['class_type'].unique()) != set(_filter):
+                raise ValueError("by_subtree invalid. filtering not working")
+
+    # TODO temp for analysis
+    print('roots: ', roots)
+    # noinspection PyUnusedLocal
+    a_df_counts, a_df_depths, a_by_subtree = df_counts, df_depths, by_subtree
+
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
-    return df_counts, df_depths
+    return df_counts, df_depths, by_subtree
+
+
+def _get_subtree(root: str, parent_children: Dict[str, Set[str]]) -> Set[str]:
+    """Get subtree of root (including root)"""
+    seen, q = {root}, [root]
+    while q:
+        cur = q.pop()
+        for ch in parent_children.get(cur, []):
+            if ch not in seen:
+                seen.add(ch)
+                q.append(ch)
+    return seen
 
 
 def _add_synthetic_transient_groups_loinc(
@@ -296,11 +330,7 @@ def _parse_subclass_pairs(
 ) -> Tuple[Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
     """Get parents, children, and type disaggregation lookups"""
     # Build parent-child relationships
-    parent_children = defaultdict(set)
-    child_parents = defaultdict(set)
-    for child, parent in pairs:
-        parent_children[parent].add(child)
-        child_parents[child].add(parent)
+    child_parents, parent_children = _get_parent_child_lookups(pairs)
 
     # Get all classes on both sides of all subclass axioms
     classes = set(parent_children.keys()) | set(child_parents.keys())
@@ -519,7 +549,6 @@ def analyze_class_depth(
     outpath_tsv_pattern: Union[Path, str] = DEFAULTS["outpath-tsv-pattern"],
     variations=DEFAULTS["variations"],
     dont_convert_paths_to_abs=False,
-    disaggregate_roots_variations=(True, False),
 ):
     """Analyze classification depth"""
     # Resolve paths
@@ -556,36 +585,36 @@ def analyze_class_depth(
     ] = {}
     depth_by_class_dfs: List[pd.DataFrame] = []
 
-    i = 0
-    for disag_tf in disaggregate_roots_variations:
-        i += 1
-        disag_lab = "root subtrees disaggregated" if disaggregate_roots_variations else "all root subtrees combined"
-        logger.debug(f"# Set of outputs {i} of {len(disaggregate_roots_variations)}: {disag_lab}\n")
-        for _filter in variations:
-            logger.debug(" " + ", ".join(_filter))
-            ont_depth_tables: Dict[str, pd.DataFrame] = {}
-            ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
-            # - get data for tables and plots
-            for ont_name, axioms in ont_sets.items():
-                logger.debug(f"  - {ont_name}")
-                counts_df, depth_by_class_df = _depth_counts(
-                    axioms, ont_name, _filter, disag_tf
-                )  # main data processing func
-                ont_depth_tables[ont_name] = counts_df
-                if tuple(_filter) == tuple(CLASS_TYPES):
-                    depth_by_class_df.insert(0, "terminology", ont_name)
-                    depth_by_class_dfs.append(depth_by_class_df)
-                ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
-            # - plots
-            for stat, data in {
-                "totals": ont_depth_tables,
-                "percentages": ont_depth_pct_tables,
-            }.items():
-                # TODO: use disaggregate_roots
-                df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
-                # TODO: use disaggregate_roots
-                df2: pd.DataFrame = _reformat_table(df, stat)
-                tables_n_plots_by_filter_and_stat[(disag_tf, _filter, stat)] = (df2, plot_filename)
+    for _filter in variations:
+        logger.debug(" " + ", ".join(_filter))
+        ont_depth_tables: Dict[str, pd.DataFrame] = {}
+        ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
+        # - get data for tables and plots
+        for ont_name, axioms in ont_sets.items():
+            logger.debug(f"  - {ont_name}")
+            # TODO use by_subtree
+            #  - note if only 1 root, by_subtree will be {}
+            counts_df, depth_by_class_df, by_subtree = _depth_counts(
+                axioms, ont_name, _filter
+            )  # main data processing func
+            ont_depth_tables[ont_name] = counts_df
+            if tuple(_filter) == tuple(CLASS_TYPES):
+                depth_by_class_df.insert(0, "terminology", ont_name)
+                depth_by_class_dfs.append(depth_by_class_df)
+            ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
+        # - plots
+        # TODO: temp. figure out what to do w/ this. maybe make a separate tables_n_plots_by_filter_and_stat for whether
+        #  we're going over disaggregated stuff or not, idk
+        disag_tf = True
+        for stat, data in {
+            "totals": ont_depth_tables,
+            "percentages": ont_depth_pct_tables,
+        }.items():
+            # TODO: use disaggregate_roots
+            df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
+            # TODO: use disaggregate_roots
+            df2: pd.DataFrame = _reformat_table(df, stat)
+            tables_n_plots_by_filter_and_stat[(disag_tf, _filter, stat)] = (df2, plot_filename)
 
     # Save
     # TODO: update to also show a "by root" section
