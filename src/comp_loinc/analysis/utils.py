@@ -12,6 +12,7 @@ import pandas as pd
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
 CLASS_TYPES = ('terms', 'groups', 'parts')
+CL_GROUPING_CLASS_URI_STEMS = ('http://comploinc//group', 'http://comploinc/group')  # future proof for // bug fix
 
 
 def _bracket_variants(uri: str) -> List[str]:
@@ -19,7 +20,7 @@ def _bracket_variants(uri: str) -> List[str]:
     return [f'<{uri}>', f'{uri}']
 
 
-def _disaggregate_classes(classes: Set, includes_angle_brackets=True, verbose=False) -> Dict[str, Set]:
+def _disaggregate_classes_from_class_list(classes: Set, includes_angle_brackets=True, verbose=False) -> Dict[str, Set]:
     """Disaggregate classes by type
 
     todo: Any other root types in LOINC, CompLOINC, or LOINC-SNOMED Ontology?
@@ -28,20 +29,21 @@ def _disaggregate_classes(classes: Set, includes_angle_brackets=True, verbose=Fa
     b = '<' if includes_angle_brackets else ''
     classes_by_type: Dict[str, Set] = {'terms': set(), 'groups': set(), 'parts': set(), 'other': set()}
     for cls in classes:
-        # Non-roots
-        if cls.startswith(f'{b}http://comploinc//group/'):
-            classes_by_type['groups'].add(cls)
-        elif cls.startswith(f'{b}https://loinc.org/'):
-            # - Note: No such "https://loinc.org/LoincGroup" exists.
-            if cls.startswith(f'{b}https://loinc.org/category/'):  # LOINC "categories", e.g. "Document groups"
+        if cls.startswith(f'{b}https://loinc.org/'):
+            # LOINC "categories", e.g. "Document groups" (added by CompLOINC just for analysis)
+            if (cls.startswith(f'{b}https://loinc.org/category/')
+                    or cls in _bracket_variants('https://loinc.org/LoincCategory')):
                 classes_by_type['groups'].add(cls)
-            elif cls.startswith(f'{b}https://loinc.org/LG'):  # LOINC groups, e.g. LG10324-8
+            # LOINC groups, e.g. LG10324-8 (oincGroup added by CompLOINC just for analysis)
+            elif cls.startswith(f'{b}https://loinc.org/LG') or cls in _bracket_variants('https://loinc.org/LoincGroup'):
                 classes_by_type['groups'].add(cls)
             elif cls.startswith(f'{b}https://loinc.org/LP') or cls in _bracket_variants('https://loinc.org/LoincPart'):
                 classes_by_type['parts'].add(cls)
             else:
                 # Includes root https://loinc.org/LoincTerm & terms, e.g. https://loinc.org/26970-4
                 classes_by_type['terms'].add(cls)
+        elif any([cls.startswith(f'{b}{x}') for x in CL_GROUPING_CLASS_URI_STEMS]):
+            classes_by_type['groups'].add(cls)
         else:
             classes_by_type['other'].add(cls)
 
@@ -70,7 +72,7 @@ def _filter_classes(
     if not classes_by_type:
         if not classes:
             raise ValueError('Must pass classes_by_type or classes')
-        classes_by_type: Dict[str, Set] = _disaggregate_classes(classes, includes_angle_brackets)
+        classes_by_type: Dict[str, Set] = _disaggregate_classes_from_class_list(classes, includes_angle_brackets)
     # Filter
     filtered_classes = set()
     for cls_type in _filter:

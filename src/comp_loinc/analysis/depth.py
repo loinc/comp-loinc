@@ -22,7 +22,7 @@ from matplotlib import pyplot as plt
 
 from comp_loinc.analysis.utils import (
     CLASS_TYPES,
-    _disaggregate_classes,
+    CL_GROUPING_CLASS_URI_STEMS, _disaggregate_classes_from_class_list,
     bundle_inpaths_and_update_abs_paths,
     cli_add_inpath_args,
     _filter_classes,
@@ -72,6 +72,21 @@ the LOINC release, and the part hierarchy, which is not represented in the relea
 browser (https://loinc.org/tree/). Regarding parts, there are also a large number of those that are dangling even after 
 when considering all of the tree browser hierarchies, and those as well are not represented here. 
 
+## CompLOINC representation
+**Grouping class depths adjusted via synthetic "master grouping classes"**  
+This particular analysis makes small modifications to the CompLOINC representation with respect to groups. In the 
+CompLOINC .owl artefacts, there are many top-level grouping classes at the root of the ontology. These top level 
+grouping classes come in various sets, one for each LOINC property or combination of properties used to construct the 
+groups. For example, the grouping class http://comploinc/group/component/LP16066-0 falls under the "component" property 
+axis, while the grouping class http://comploinc/group/component-system/LP7795-0-LP310005-6 falls under the 
+"component+system" property (combination) axis. If these parts for these properties have no parents, then these grouping
+classes will reside at the root of CompLOINC. However, for these classification depth analyses, we are comparing against 
+other subtrees that have a single root, e.g. LoincPart or LoincTerm. Therefore, for the depths to be consistent along 
+class types (terms, parts, groups), we have included "master grouping classes" just for this analysis. The top level for
+all grouping clases is http://comploinc/group/ ("GRP"), and the children of this class are all of the roots of each 
+property axis, e.g. http://comploinc/group/component/ ("GRP_CMP"), http://comploinc/group/component-system/ ("GRP_SYS"),
+and so on.
+
 ## LOINC representation
 LOINC itself does not have an `.owl` representaiton, but for this analysis we constructed one. The following are some 
 caveats about the representation, by class type.
@@ -110,15 +125,18 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 def _depth_counts(
-    subclass_pairs: Set[Tuple[str, str]], _filter: List[str] = None
+    subclass_pairs: Set[Tuple[str, str]], ont_name: str, _filter: List[str] = None, group_groups=True,
+    includes_angle_brackets=True
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Provides a function to compute and analyze the hierarchical depth of classes based on their parent-child
     relationships, with an optional filter for specific class types.
 
     Args:
         subclass_pairs: A set of tuples where each tuple represents a child-parent relationship
-            between classes.
+         between classes.
         _filter: Optional list of strings specifying the class types to include in the filtering.
+        group_groups: If True, will create a "GRP" master grouping class to group all "group by property" (e.g. GRP_CMP,
+         GRP_SYS), and then all of the "CMP" and "SYS" grouping classes, etc, will also fall under their tree.
 
     Raises:
         ValueError: Raised when one or more values in `_filter` do not belong to the acceptable
@@ -144,29 +162,34 @@ def _depth_counts(
     }
     subclass_pairs -= owl_thing_axioms
 
-    # Build parent-child relationships
-    children = defaultdict(set)
-    parents = defaultdict(set)
-    for child, parent in subclass_pairs:
-        children[parent].add(child)
-        parents[child].add(parent)
+    # Get classes by type
+    classes_by_type: Dict[str, Set]
+    child_parents: Dict[str, Set[str]]
+    parent_children: Dict[str, Set[str]]
+    classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
+        subclass_pairs, includes_angle_brackets, not group_groups)
 
-    # Get all classes on both sides of all subclass axioms
-    classes_all = set(children.keys()) | set(parents.keys())
-    logging.debug(f"    n classes: {len(classes_all):,}")
+    # Group grouping classes
+    if group_groups and 'CompLOINC' in ont_name:
+        classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_comploinc(
+            subclass_pairs, classes_by_type, includes_angle_brackets)
+    if group_groups and 'LOINC' == ont_name:
+        classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_loinc(
+            subclass_pairs, child_parents, parent_children, includes_angle_brackets)
 
-    # Filter, by axiom types for thi sanalysis
-    classes_by_type: Dict[str, Set] = _disaggregate_classes(classes_all)
-    classes_filtered = _filter_classes(_filter, classes_by_type)
+    # Filter, by axiom types for this analysis
+    classes_filtered: Set = _filter_classes(_filter, classes_by_type)
     logging.debug(f"    n after class type filtration: {len(classes_filtered):,}")
 
     # Find roots (classes with no parents)
-    roots = classes_filtered - set(parents.keys())
+    roots = classes_filtered - set(child_parents.keys())
     logging.debug(f"    n roots: {len(roots):,}")
 
+    # TODO: Handle polyhierarchy. disag roots.
+    #  - perhaps i need to split out the code below
+
     # # TODO temp
-    # for root in roots:
-    #     print(root)
+    print('roots: ', roots)
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
@@ -176,7 +199,7 @@ def _depth_counts(
         cls, depth = queue.popleft()
         if depth not in depths_sets[cls]:
             depths_sets[cls].add(depth)
-            for child in children[cls]:
+            for child in parent_children[cls]:
                 queue.append((child, depth + 1))
     depths: Dict[str, List[int]] = {  # type: ignore
         cls: sorted(list(depths)) for cls, depths in depths_sets.items()
@@ -206,6 +229,87 @@ def _depth_counts(
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
     return df_counts, df_depths
+
+
+def _add_synthetic_transient_groups_loinc(
+    subclass_pairs: Set[Tuple[str, str]], child_parents: Dict[str, Set[str]],
+    parent_children: Dict[str, Set[str]], includes_angle_brackets=True,
+) -> Tuple[Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+    """Add transient groups (just for this analysis) to LOINC"""
+    cat_uri = 'https://loinc.org/LoincCategory'
+    grp_uri = 'https://loinc.org/LoincGroup'
+    cat_uri = f'<{cat_uri}>' if includes_angle_brackets else cat_uri
+    grp_uri = f'<{grp_uri}>' if includes_angle_brackets else grp_uri
+    classes = set(parent_children.keys()) | set(child_parents.keys())
+    roots = classes - set(child_parents.keys())
+    subclass_pairs_group_groups: Set[Tuple[str, str]] = set()
+    for root in roots:
+        if 'loinc.org/category/' in root:
+            subclass_pairs_group_groups.add((root, cat_uri))
+        elif 'loinc.org/LG' in root:
+            subclass_pairs_group_groups.add((root, grp_uri))
+        # else: Should just be 1 case left over: LoincPart, which is already a proper root
+    subclass_pairs = subclass_pairs.union(subclass_pairs_group_groups)
+    classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
+        subclass_pairs, includes_angle_brackets, True)
+    return classes_by_type, child_parents, parent_children
+
+
+def _add_synthetic_transient_groups_comploinc(
+    subclass_pairs: Set[Tuple[str, str]], classes_by_type: Dict[str, Set], includes_angle_brackets=True
+) -> Tuple[Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+    """Add transient groups (just for this analysis) to CompLOINC
+
+    Eventually we may do this in core CompLOINC, by adding these as actual classes. If so, we should remove this code,
+    or easily deactivate it by setting the flag to false.
+    E.g. "CMP_SYS" (component-system)
+    Examples: http://comploinc//group/component-system/LP7795-0-LP310005-6 http://comploinc//group/component/LP16066-0
+    """
+    child_parents: Dict[str, Set[str]]
+    parent_children: Dict[str, Set[str]]
+    master_group_uri = 'http://comploinc/group'
+    master_group_uri = f'<{master_group_uri}>' if includes_angle_brackets else master_group_uri
+    subclass_pairs_group_groups: Set[Tuple[str, str]] = set()
+    grouping_classes_by_prop: Dict[str, List[str]] = defaultdict(list)  # e.g. {"component": [URI_1, ..., URI_N]}
+    for uri in classes_by_type["groups"]:
+        fixed_uri = uri.replace('//', '/')  # as of 2025/07/02, there is a bug: http://comploinc//group/...
+        property_axis = fixed_uri.split('/')[-2]  # e.g. "component-system" or "component"
+        grouping_classes_by_prop[property_axis].append(uri)
+    prop_axis_uris: List[str] = []
+    for prop_axis, uris in grouping_classes_by_prop.items():
+        # prop_axis_uri: e.g. http://comploinc/group/component-system
+        prop_axis_uri = CL_GROUPING_CLASS_URI_STEMS[1] + '/' + prop_axis
+        prop_axis_uri = f'<{prop_axis_uri}>' if includes_angle_brackets else prop_axis_uri
+        prop_axis_uris.append(prop_axis_uri)
+        subclass_pairs_group_groups |= {(uri, prop_axis_uri) for uri in uris}
+    for prop_axis_uri in prop_axis_uris:
+        subclass_pairs_group_groups.add((prop_axis_uri, master_group_uri))
+    subclass_pairs = subclass_pairs.union(subclass_pairs_group_groups)
+    # todo: mutate like this, or make alt versions so we can compare before/after easily?
+    classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
+        subclass_pairs, includes_angle_brackets, True)
+    return classes_by_type, child_parents, parent_children
+
+
+def _parse_subclass_pairs(
+    pairs: Set[Tuple[str, str]], includes_angle_brackets=True, verbose=True
+) -> Tuple[Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+    """Get parents, children, and type disaggregation lookups"""
+    # Build parent-child relationships
+    parent_children = defaultdict(set)
+    child_parents = defaultdict(set)
+    for child, parent in pairs:
+        parent_children[parent].add(child)
+        child_parents[child].add(parent)
+
+    # Get all classes on both sides of all subclass axioms
+    classes = set(parent_children.keys()) | set(child_parents.keys())
+    if verbose:
+        logging.debug(f"    n classes: {len(classes):,}")
+
+    # Group classes by class type
+    classes_by_type: Dict[str, Set] = _disaggregate_classes_from_class_list(classes, includes_angle_brackets)
+    return classes_by_type, child_parents, parent_children
 
 
 def _counts_to_pcts(
@@ -306,7 +410,7 @@ def _save_plot(
 
 def _save_markdown(
     tables_n_plots_by_filter_and_stat: Dict[
-        Tuple[Tuple[str], str], Tuple[pd.DataFrame, str]
+        Tuple[bool, Tuple[str], str], Tuple[pd.DataFrame, str]
     ],
     outpath: Union[Path, str],
     template: str = md_template,
@@ -321,11 +425,16 @@ def _save_markdown(
     figs_by_title: Dict[str, Tuple[str, str]] = {}
 
     for (
-        filter_and_stat,
+        disag_filter_stat,
         table_and_plot_path,
     ) in tables_n_plots_by_filter_and_stat.items():
         # Construct title
-        _filter, stat = filter_and_stat
+        disaggregate_roots, _filter, stat = disag_filter_stat
+        # TODO: use disaggregate_roots
+        # TODO temp: skip it for now
+        if disaggregate_roots:
+            continue
+
         stat_label: str = _get_stat_label(stat)
         class_types_str = f'{", ".join(_filter)}'
         title = f"{stat_label} ({class_types_str})"
@@ -410,6 +519,7 @@ def analyze_class_depth(
     outpath_tsv_pattern: Union[Path, str] = DEFAULTS["outpath-tsv-pattern"],
     variations=DEFAULTS["variations"],
     dont_convert_paths_to_abs=False,
+    disaggregate_roots_variations=(True, False),
 ):
     """Analyze classification depth"""
     # Resolve paths
@@ -432,9 +542,6 @@ def analyze_class_depth(
     if not os.path.exists(outdir_plots):
         os.makedirs(outdir_plots)
 
-    # todo: do I want 2 sets of outputs, 1 per part model? maybe not
-    # for mdl in ('primary', 'supplementary'):
-
     # Get sets of axioms by ontology and grand total and by ontology set
     ont_sets: Dict[str, Set[Tuple[str, str]]]
     tots_df, ont_sets = _subclass_axioms_and_totals(terminologies)
@@ -445,35 +552,46 @@ def analyze_class_depth(
         "Running class depth analysis.\n\nLog format:\nINCLUDED_CLASSES\n - TERMINOLOGY\n"
     )
     tables_n_plots_by_filter_and_stat: Dict[
-        Tuple[Tuple[str], str], Tuple[pd.DataFrame, str]
+        Tuple[bool, Tuple[str], str], Tuple[pd.DataFrame, str]
     ] = {}
     depth_by_class_dfs: List[pd.DataFrame] = []
-    for _filter in variations:
-        logger.debug(" " + ", ".join(_filter))
-        ont_depth_tables: Dict[str, pd.DataFrame] = {}
-        ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
-        # - get data for tables and plots
-        for ont_name, axioms in ont_sets.items():
-            logger.debug("  - " + ont_name)
-            counts_df, depth_by_class_df = _depth_counts(
-                axioms, _filter
-            )  # main data processing func
-            ont_depth_tables[ont_name] = counts_df
-            if tuple(_filter) == tuple(CLASS_TYPES):
-                depth_by_class_df.insert(0, "terminology", ont_name)
-                depth_by_class_dfs.append(depth_by_class_df)
-            ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
-        # - plots
-        for stat, data in {
-            "totals": ont_depth_tables,
-            "percentages": ont_depth_pct_tables,
-        }.items():
-            df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
-            df2: pd.DataFrame = _reformat_table(df, stat)
-            tables_n_plots_by_filter_and_stat[(_filter, stat)] = (df2, plot_filename)
+
+    i = 0
+    for disag_tf in disaggregate_roots_variations:
+        i += 1
+        disag_lab = "root subtrees disaggregated" if disaggregate_roots_variations else "all root subtrees combined"
+        logger.debug(f"# Set of outputs {i} of {len(disaggregate_roots_variations)}: {disag_lab}\n")
+        for _filter in variations:
+            logger.debug(" " + ", ".join(_filter))
+            ont_depth_tables: Dict[str, pd.DataFrame] = {}
+            ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
+            # - get data for tables and plots
+            for ont_name, axioms in ont_sets.items():
+                logger.debug(f"  - {ont_name}")
+                counts_df, depth_by_class_df = _depth_counts(
+                    axioms, ont_name, _filter, disag_tf
+                )  # main data processing func
+                ont_depth_tables[ont_name] = counts_df
+                if tuple(_filter) == tuple(CLASS_TYPES):
+                    depth_by_class_df.insert(0, "terminology", ont_name)
+                    depth_by_class_dfs.append(depth_by_class_df)
+                ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
+            # - plots
+            for stat, data in {
+                "totals": ont_depth_tables,
+                "percentages": ont_depth_pct_tables,
+            }.items():
+                # TODO: use disaggregate_roots
+                df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
+                # TODO: use disaggregate_roots
+                df2: pd.DataFrame = _reformat_table(df, stat)
+                tables_n_plots_by_filter_and_stat[(disag_tf, _filter, stat)] = (df2, plot_filename)
 
     # Save
+    # TODO: update to also show a "by root" section
+    #  - wiltables_n_plots_by_filter_and_stat now has a disaggregate_roots T/F key at start of tuple
     _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
+    # todo: also output TSVs for when disaggregate by roots, too?
     _save_depths_tsvs(depth_by_class_dfs, labels_path, outpath_tsv_pattern)
 
 
