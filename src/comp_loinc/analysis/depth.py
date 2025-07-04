@@ -177,8 +177,8 @@ def _depth_counts(
     # Group grouping classes
     if group_groups and 'groups' in _filter:
         if 'CompLOINC' in ont_name:
-            classes, classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_comploinc(
-                subclass_pairs, classes_by_type, includes_angle_brackets)
+            classes, subclass_pairs, classes_by_type, child_parents, parent_children = \
+                _add_synthetic_transient_groups_comploinc(subclass_pairs, classes_by_type, includes_angle_brackets)
         elif 'LOINC' == ont_name:
             classes, classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_loinc(
                 subclass_pairs, child_parents, parent_children, includes_angle_brackets)
@@ -388,7 +388,7 @@ def _add_synthetic_transient_groups_loinc(
 
 def _add_synthetic_transient_groups_comploinc(
     subclass_pairs: Set[Tuple[str, str]], classes_by_type: Dict[str, Set], includes_angle_brackets=True
-) -> Tuple[Set[str], Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+) -> Tuple[Set[str], Set[Tuple[str, str]], Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
     """Add transient groups (just for this analysis) to CompLOINC
 
     Eventually we may do this in core CompLOINC, by adding these as actual classes. If so, we should remove this code,
@@ -419,7 +419,7 @@ def _add_synthetic_transient_groups_comploinc(
     # todo: mutate like this, or make alt versions so we can compare before/after easily?
     classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
         subclass_pairs, includes_angle_brackets)
-    return classes, classes_by_type, child_parents, parent_children
+    return classes, subclass_pairs, classes_by_type, child_parents, parent_children
 
 
 def _parse_subclass_pairs(
