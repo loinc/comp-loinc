@@ -166,47 +166,70 @@ def _depth_counts(
     classes_by_type: Dict[str, Set]
     child_parents: Dict[str, Set[str]]
     parent_children: Dict[str, Set[str]]
-    classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
-        subclass_pairs, includes_angle_brackets, not group_groups)
+    classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
+        subclass_pairs, includes_angle_brackets)
+    roots: Set[str] = classes - set(child_parents.keys())
+    logging.debug(f"    n raw:")
+    logging.debug(f"     - subclass pairs: {len(subclass_pairs):,}")
+    logging.debug(f"     - classes: {len(classes):,}")
+    logging.debug(f"     - roots: {len(roots):,}")
 
     # Group grouping classes
-    if group_groups and 'group' in _filter:
+    if group_groups and 'groups' in _filter:
         if 'CompLOINC' in ont_name:
-            classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_comploinc(
+            classes, classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_comploinc(
                 subclass_pairs, classes_by_type, includes_angle_brackets)
         elif 'LOINC' == ont_name:
-            classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_loinc(
+            classes, classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_loinc(
                 subclass_pairs, child_parents, parent_children, includes_angle_brackets)
+    roots = classes - set(child_parents.keys())
+    logging.debug(f"    n after adding synthetic master grouping classes:")
+    logging.debug(f"     - subclass pairs: {len(subclass_pairs):,}")
+    logging.debug(f"     - classes: {len(classes):,}")
+    logging.debug(f"     - roots: {len(roots):,}")
 
     # Preserve lookups prior to filtering to detect dangling roots later
     child_parents_before = child_parents
-    parent_children_before = parent_children
 
     # Filter by class types included in this analysis
-    # TODO: ensure changes work
+    # TODO temp: ok here. 4 roots. LoincPart will die later. but <http://comploinc/group>' needs to stay
+    #  - prob prolly in this func
     classes_filtered, subclass_pairs_filtered, child_parents, parent_children = _filter_classes(
         subclass_pairs, _filter, classes_by_type)
-    logging.debug(f"    n after class type filtration: {len(classes_filtered):,}")
+    roots = classes_filtered - set(child_parents.keys())
+    logging.debug(f"    n after class type filtration:")
+    logging.debug(f"     - subclass pairs: {len(subclass_pairs_filtered):,}")
+    logging.debug(f"     - classes : {len(classes_filtered):,}")
+    logging.debug(f"     - roots: {len(roots):,}")
 
-    # Remove subtrees that became dangling due to filtering
+    # TODO temp
+    print('<http://comploinc/group>' in classes_filtered)
+
+    # Remove dangling subtrees: that became dangling due to filtering
+    #  - This can happen e.g. because a term can have a part as a parent, and have a subtree of parts and/or terms.
+    #    Filtering out parts will chop off its parent, leaving it and its descendants dangling.
     classes_filtered, subclass_pairs_filtered, child_parents, parent_children = _prune_dangling_subtrees(
         classes_filtered,
         subclass_pairs_filtered,
         child_parents,
         parent_children,
         child_parents_before,
-        parent_children_before,
     )
 
-    # Find roots
-    # - classes w/ no parents
-    # TODO: does this have negative conesequences? lead to logic errs?
-    #  I'm hesitant to touch `classes_filtered`, because this is a polyhierarchy, and these classes may appear elsewhere
-    #  in non-dangling form and be allowed.
-    roots: Set[str] = classes_filtered - set(child_parents.keys())
-    # - filter dangling
+    # TODO temp
+    print('<http://comploinc/group>' in classes_filtered)
+    grps_remain = [x for x in classes_filtered if x.startswith('<http://comploinc/group>')]
+    print('grps_remain', len(grps_remain))  # TODO: prob. only 1. so now it's dangling
+
+    # Filter dangling nodes
     roots = set([x for x in roots if parent_children[x]])
-    logging.debug(f"    n roots: {len(roots):,}")
+    logging.debug(f"    n after pruning dangling subtrees & nodes:")
+    logging.debug(f"     - subclass pairs: {len(subclass_pairs_filtered):,}")
+    logging.debug(f"     - classes: {len(classes_filtered):,}")
+    logging.debug(f"     - roots: {len(roots):,}")
+
+    # TODO temp
+    print('<http://comploinc/group>' in classes_filtered)  # still true.
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
@@ -245,29 +268,33 @@ def _depth_counts(
     df_depths = pd.DataFrame(depths_rows)
 
     # TODO: Handle polyhierarchy. disag roots. verify worked
+    #  - write test?
     # Get counts by subtree / major hierarchy
     by_subtree: Dict[str, Tuple[pd.DataFrame, pd.DataFrame]] = {}
     if len(roots) > 1:
         for root in roots:
-            nodes = _get_subtree(root, parent_children)
-            df_d = df_depths[df_depths['class'].isin(nodes)].copy()
-            df_c = df_d.groupby('depth').size().reset_index(name='n')
-            by_subtree[root] = (df_c, df_d)
-        # TODO temp
-        if '<https://loinc.org/138875005>' in by_subtree:
-            if set(by_subtree['<https://loinc.org/138875005>'][1]['class_type'].unique()) != set(_filter):
-                raise ValueError("by_subtree invalid. filtering not working")
+            nodes = _get_subtree_nodes(root, parent_children)
+            df_depths_i = df_depths[df_depths['class'].isin(nodes)].copy()
+            df_counts_i = df_depths_i.groupby('depth').size().reset_index(name='n')
+            by_subtree[root] = (df_counts_i, df_depths_i)
 
     # TODO temp for analysis
     print('roots: ', roots)
     # noinspection PyUnusedLocal
     a_df_counts, a_df_depths, a_by_subtree = df_counts, df_depths, by_subtree
+    # TODO temp
+    for k in by_subtree:
+        unique_class_types = set(by_subtree[k][1]['class_type'].unique())
+        if unique_class_types != set(_filter):
+            print(f'prolly OK. just wanna check filtering working everywhere. not all classes represented in all trees: {k}: {unique_class_types} | filter: {_filter}')
+            # print()
+    print('<http://comploinc/group>' in df_depths['class'].unique())  # False. Consistent (good) if its children removed
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
     return df_counts, df_depths, by_subtree
 
 
-def _get_subtree(root: str, parent_children: Dict[str, Set[str]]) -> Set[str]:
+def _get_subtree_nodes(root: str, parent_children: Dict[str, Set[str]]) -> Set[str]:
     """Get subtree of root (including root)"""
     seen, q = {root}, [root]
     while q:
@@ -285,18 +312,23 @@ def _prune_dangling_subtrees(
     child_parents: Dict[str, Set[str]],
     parent_children: Dict[str, Set[str]],
     child_parents_before: Dict[str, Set[str]],
-    parent_children_before: Dict[str, Set[str]],
+    # parent_children_before: Dict[str, Set[str]],
 ) -> Tuple[Set[str], Set[Tuple[str, str]], Dict[str, Set[str]], Dict[str, Set[str]]]:
     """Remove dangling subtrees introduced by filtering."""
-
-    roots_before = {
-        c
-        for c in classes_filtered
-        if c not in child_parents_before and parent_children_before.get(c)
-    }
-    roots_after = {
-        c for c in classes_filtered if c not in child_parents and parent_children.get(c)
-    }
+    # Old way: was too restrictive for my taste here. This gets rid of dangling isolated nodes too, not just dangling
+    # subtrees. We're getting rid of dangling isolated nodes further down.
+    # https://claude.ai/chat/43ac6f3b-426b-434b-b44c-73bd67c96cca
+    # roots_before = {
+    #     c
+    #     for c in classes_filtered
+    #     if c not in child_parents_before and parent_children_before.get(c)
+    # }
+    #
+    # roots_after = {
+    #     c for c in classes_filtered if c not in child_parents and parent_children.get(c)
+    # }
+    roots_before: Set[str] = classes_filtered - set(child_parents_before.keys())
+    roots_after: Set[str] = classes_filtered - set(child_parents.keys())
     dangling_roots = roots_after - roots_before
     if not dangling_roots:
         return classes_filtered, filtered_pairs, child_parents, parent_children
@@ -328,7 +360,7 @@ def _prune_dangling_subtrees(
 def _add_synthetic_transient_groups_loinc(
     subclass_pairs: Set[Tuple[str, str]], child_parents: Dict[str, Set[str]],
     parent_children: Dict[str, Set[str]], includes_angle_brackets=True,
-) -> Tuple[Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+) -> Tuple[Set[str], Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
     """Add transient groups (just for this analysis) to LOINC"""
     cat_uri = 'https://loinc.org/LoincCategory'
     grp_uri = 'https://loinc.org/LoincGroup'
@@ -344,14 +376,14 @@ def _add_synthetic_transient_groups_loinc(
             subclass_pairs_group_groups.add((root, grp_uri))
         # else: Should just be 1 case left over: LoincPart, which is already a proper root
     subclass_pairs = subclass_pairs.union(subclass_pairs_group_groups)
-    classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
-        subclass_pairs, includes_angle_brackets, True)
-    return classes_by_type, child_parents, parent_children
+    classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
+        subclass_pairs, includes_angle_brackets)
+    return classes, classes_by_type, child_parents, parent_children
 
 
 def _add_synthetic_transient_groups_comploinc(
     subclass_pairs: Set[Tuple[str, str]], classes_by_type: Dict[str, Set], includes_angle_brackets=True
-) -> Tuple[Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+) -> Tuple[Set[str], Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
     """Add transient groups (just for this analysis) to CompLOINC
 
     Eventually we may do this in core CompLOINC, by adding these as actual classes. If so, we should remove this code,
@@ -380,26 +412,24 @@ def _add_synthetic_transient_groups_comploinc(
         subclass_pairs_group_groups.add((prop_axis_uri, master_group_uri))
     subclass_pairs = subclass_pairs.union(subclass_pairs_group_groups)
     # todo: mutate like this, or make alt versions so we can compare before/after easily?
-    classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
-        subclass_pairs, includes_angle_brackets, True)
-    return classes_by_type, child_parents, parent_children
+    classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
+        subclass_pairs, includes_angle_brackets)
+    return classes, classes_by_type, child_parents, parent_children
 
 
 def _parse_subclass_pairs(
-    pairs: Set[Tuple[str, str]], includes_angle_brackets=True, verbose=True
-) -> Tuple[Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+    pairs: Set[Tuple[str, str]], includes_angle_brackets=True
+) -> Tuple[Set[str], Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
     """Get parents, children, and type disaggregation lookups"""
     # Build parent-child relationships
     child_parents, parent_children = _get_parent_child_lookups(pairs)
 
     # Get all classes on both sides of all subclass axioms
     classes = set(parent_children.keys()) | set(child_parents.keys())
-    if verbose:
-        logging.debug(f"    n classes: {len(classes):,}")
 
     # Group classes by class type
     classes_by_type: Dict[str, Set] = _disaggregate_classes_from_class_list(classes, includes_angle_brackets)
-    return classes_by_type, child_parents, parent_children
+    return classes, classes_by_type, child_parents, parent_children
 
 
 def _counts_to_pcts(
@@ -644,6 +674,10 @@ def analyze_class_depth(
         Tuple[bool, Tuple[str], str], Tuple[pd.DataFrame, str]
     ] = {}
     depth_by_class_dfs: List[pd.DataFrame] = []
+
+    # TODO temp
+    variations = (('terms', 'groups'), )
+    ont_sets = {k: v for k, v in ont_sets.items() if k == 'CompLOINC-Primary'}
 
     for _filter in variations:
         logger.debug(" " + ", ".join(_filter))

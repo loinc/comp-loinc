@@ -36,7 +36,9 @@ def _disaggregate_classes_from_class_list(classes: Set, includes_angle_brackets=
                     or cls in _bracket_variants('https://loinc.org/LoincCategory')):
                 classes_by_type['groups'].add(cls)
             # LOINC groups, e.g. LG10324-8 (oincGroup added by CompLOINC just for analysis)
-            elif cls.startswith(f'{b}https://loinc.org/LG') or cls in _bracket_variants('https://loinc.org/LoincGroup'):
+            elif (cls.startswith(f'{b}https://loinc.org/LG')
+                  or cls.startswith(f'{b}http://comploinc/group')
+                  or cls in _bracket_variants('https://loinc.org/LoincGroup')):
                 classes_by_type['groups'].add(cls)
             elif cls.startswith(f'{b}https://loinc.org/LP') or cls in _bracket_variants('https://loinc.org/LoincPart'):
                 classes_by_type['parts'].add(cls)
@@ -91,20 +93,6 @@ def _filter_classes(
     classes_filtered = set()
     for cls_type in _filter:
         classes_filtered |= classes_by_type.get(cls_type, set())
-    # TODO temp: problem. for ex, when term is subclass of part, and part gets filtered out, term looks like it's dangling
-    #  - but how does this make sense. because '<https://loinc.org/22244007>' should be in classes_filtered, but its
-    #  parent should not. so it should not appear in filtered_Pairs. thus it shouldn't appear in child_parents or
-    #  parent_children
-    # '<https://loinc.org/22244007>' in classes_filtered  # True (ok cuz it is a term)
-    # filtered_pair_parents = set([x[1] for x in filtered_pairs])
-    # filtered_pair_children = set([x[0] for x in filtered_pairs])
-    # '<https://loinc.org/22244007>' in filtered_pair_parents  # True
-    # #  - this seemms to be the problem. but how is this happening?
-    # a_retained_pairs_where_parent = [x for x in filtered_pairs if x[1] == '<https://loinc.org/22244007>']
-    # # - len 2. neither of them are parts. so why does it show up with no children?
-    # its_kids = parent_children['<https://loinc.org/22244007>']  # 2. it's not a dangling term; it's a dangling pair
-    # its_parents = child_parents['<https://loinc.org/22244007>']  # 0. consistent w/ above
-    # '<https://loinc.org/22244007>' in filtered_pair_children  # False
 
     # - Filter pairs: Strict: Both parent and child must be in the filtered class types, not just one or the other
     filtered_pairs = set([x for x in subclass_pairs if x[0] in classes_filtered and x[1] in classes_filtered])
