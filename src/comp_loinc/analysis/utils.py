@@ -6,7 +6,7 @@ import os
 from argparse import ArgumentParser
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Set, Tuple, Union
+from typing import Dict, Iterable, List, Set, Tuple, Union
 
 import pandas as pd
 
@@ -72,7 +72,7 @@ def _get_parent_child_lookups(pairs: Set[Tuple[str, str]]) -> Tuple[Dict[str, Se
 
 
 def _filter_classes(
-    subclass_pairs: Set[Tuple[str, str]], _filter: List[str], classes_by_type: Dict[str, Set] = None,
+    subclass_pairs: Set[Tuple[str, str]], _filter: Iterable[str], classes_by_type: Dict[str, Set] = None,
     classes: Set = None, includes_angle_brackets=True
 ) -> Tuple[Set[str], Set[Tuple[str, str]], Dict[str, Set], Dict[str, Set]]:
     """Flter classes by type

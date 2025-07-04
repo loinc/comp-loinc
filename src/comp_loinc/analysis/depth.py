@@ -14,7 +14,7 @@ import logging
 from argparse import ArgumentParser
 from collections import defaultdict, deque
 from pathlib import Path
-from typing import Dict, List, Set, Tuple, Union
+from typing import Dict, Iterable, List, Set, Tuple, Union
 
 import pandas as pd
 from jinja2 import Template
@@ -122,11 +122,19 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 {% endfor %}
 """
+ROOT_URI_LABEL_MAP = {
+    '<https://loinc.org/138875005>': 'SNOMED-Inspired',
+    '<https://loinc.org/LoincTerm>': 'LoincTerm',
+    '<https://loinc.org/LoincCategory>': 'LOINC Categories',
+    '<https://loinc.org/LoincGroup>': 'LOINC Groups',
+    '<http://comploinc/group>': 'CompLOINC Groups',
+    '<https://loinc.org/LoincPart>': 'LoincPart',
+}
 
 
 def _depth_counts(
-    subclass_pairs: Set[Tuple[str, str]], ont_name: str, _filter: List[str] = None, group_groups=True,
-    includes_angle_brackets=True
+    subclass_pairs: Set[Tuple[str, str]], ont_name: str, _filter: Iterable[str] = None, group_groups=True,
+    rename_subtree_roots=True, includes_angle_brackets=True
 ) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Tuple[pd.DataFrame, pd.DataFrame]]]:
     """Provides a function to compute and analyze the hierarchical depth of classes based on their parent-child
     relationships, with an optional filter for specific class types.
@@ -256,8 +264,6 @@ def _depth_counts(
     df_counts = pd.DataFrame(depth_counts_list, columns=["depth", "n"])
     df_depths = pd.DataFrame(depths_rows)
 
-    # TODO: Handle polyhierarchy. disag roots. verify worked
-    #  - write test?
     # Get counts by subtree / major hierarchy
     by_subtree: Dict[str, Tuple[pd.DataFrame, pd.DataFrame]] = {}
     if len(roots) > 1:
@@ -266,18 +272,10 @@ def _depth_counts(
             df_depths_i = df_depths[df_depths['class'].isin(nodes)].copy()
             df_counts_i = df_depths_i.groupby('depth').size().reset_index(name='n')
             by_subtree[root] = (df_counts_i, df_depths_i)
-
-    # TODO temp for analysis
-    print('roots: ', roots)
-    # noinspection PyUnusedLocal
-    a_df_counts, a_df_depths, a_by_subtree = df_counts, df_depths, by_subtree
-    # TODO temp
-    for k in by_subtree:
-        unique_class_types = set(by_subtree[k][1]['class_type'].unique())
-        if unique_class_types != set(_filter):
-            print(f'prolly OK. just wanna check filtering working everywhere. not all classes represented in all '
-                  f'trees: {k}: {unique_class_types} | filter: {_filter}')
-            # print()
+    elif len(roots) == 1:
+        by_subtree[list(roots)[0]] = (df_counts, df_depths)
+    if rename_subtree_roots:
+        by_subtree = {ROOT_URI_LABEL_MAP[k]: v for k, v in by_subtree.items()}
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
     return df_counts, df_depths, by_subtree
@@ -470,7 +468,7 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
 def _save_plot(
     ont_depth_tables: Dict[str, pd.DataFrame],
     outdir: Union[Path, str],
-    _filter: List[str],
+    _filter: Iterable[str],
     stat: str,
 ) -> Tuple[pd.DataFrame, str]:
     """Saves a plot representing the class depth distribution based on the provided ontology depth tables.
@@ -519,7 +517,7 @@ def _save_plot(
 
 def _save_markdown(
     tables_n_plots_by_filter_and_stat: Dict[
-        Tuple[bool, Tuple[str], str], Tuple[pd.DataFrame, str]
+        Tuple[bool, Iterable[str], str], Tuple[pd.DataFrame, str]
     ],
     outpath: Union[Path, str],
     template: str = md_template,
@@ -626,7 +624,7 @@ def analyze_class_depth(
     outdir_plots: Union[Path, str],
     # Non CLI args
     outpath_tsv_pattern: Union[Path, str] = DEFAULTS["outpath-tsv-pattern"],
-    variations=DEFAULTS["variations"],
+    variations: Iterable[Iterable[str]] = DEFAULTS["variations"],
     dont_convert_paths_to_abs=False,
 ):
     """Analyze classification depth"""
@@ -660,13 +658,13 @@ def analyze_class_depth(
         "Running class depth analysis.\n\nLog format:\nINCLUDED_CLASSES\n - TERMINOLOGY\n"
     )
     tables_n_plots_by_filter_and_stat: Dict[
-        Tuple[bool, Tuple[str], str], Tuple[pd.DataFrame, str]
+        Tuple[bool, Iterable[str], str], Tuple[pd.DataFrame, str]
     ] = {}
-    depth_by_class_dfs: List[pd.DataFrame] = []
+    depth_by_class_dfs: List[pd.DataFrame] = []  # for TSVs
 
     # TODO temp
-    # variations = (('terms', 'groups'), )
-    # ont_sets = {k: v for k, v in ont_sets.items() if k == 'LOINC'}
+    variations = [('terms', 'groups', 'parts'), ]
+    ont_sets = {k: v for k, v in ont_sets.items() if k == 'CompLOINC-Primary'}
 
     for _filter in variations:
         logger.debug(" " + ", ".join(_filter))
@@ -675,16 +673,16 @@ def analyze_class_depth(
         # - get data for tables and plots
         for ont_name, axioms in ont_sets.items():
             logger.debug(f"  - {ont_name}")
-            # TODO use by_subtree
-            #  - note if only 1 root, by_subtree will be {}
             counts_df, depth_by_class_df, by_subtree = _depth_counts(
                 axioms, ont_name, _filter
             )  # main data processing func
+            # Main outputs: plots & tables
             ont_depth_tables[ont_name] = counts_df
+            ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
+            # TSV outputs
             if tuple(_filter) == tuple(CLASS_TYPES):
                 depth_by_class_df.insert(0, "terminology", ont_name)
                 depth_by_class_dfs.append(depth_by_class_df)
-            ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
         # - plots
         # TODO: temp. figure out what to do w/ this. maybe make a separate tables_n_plots_by_filter_and_stat for whether
         #  we're going over disaggregated stuff or not, idk
