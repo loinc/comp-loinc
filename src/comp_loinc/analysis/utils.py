@@ -36,15 +36,14 @@ def _disaggregate_classes_from_class_list(classes: Set, includes_angle_brackets=
                     or cls in _bracket_variants('https://loinc.org/LoincCategory')):
                 classes_by_type['groups'].add(cls)
             # LOINC groups, e.g. LG10324-8 (oincGroup added by CompLOINC just for analysis)
-            elif (cls.startswith(f'{b}https://loinc.org/LG')
-                  or cls.startswith(f'{b}http://comploinc/group')
-                  or cls in _bracket_variants('https://loinc.org/LoincGroup')):
+            elif cls.startswith(f'{b}https://loinc.org/LG') or cls in _bracket_variants('https://loinc.org/LoincGroup'):
                 classes_by_type['groups'].add(cls)
             elif cls.startswith(f'{b}https://loinc.org/LP') or cls in _bracket_variants('https://loinc.org/LoincPart'):
                 classes_by_type['parts'].add(cls)
             else:
                 # Includes root https://loinc.org/LoincTerm & terms, e.g. https://loinc.org/26970-4
                 classes_by_type['terms'].add(cls)
+        # TODO temp: issue here or above? grouping classes getting labeled as terms?
         elif any([cls.startswith(f'{b}{x}') for x in CL_GROUPING_CLASS_URI_STEMS]):
             classes_by_type['groups'].add(cls)
         else:
@@ -90,15 +89,17 @@ def _filter_classes(
             raise ValueError('Must pass classes_by_type or classes')
         classes_by_type: Dict[str, Set] = _disaggregate_classes_from_class_list(classes, includes_angle_brackets)
     # Filter
-    classes_filtered = set()
+    classes_post_filter = set()
     for cls_type in _filter:
-        classes_filtered |= classes_by_type.get(cls_type, set())
+        classes_post_filter |= classes_by_type.get(cls_type, set())
 
     # - Filter pairs: Strict: Both parent and child must be in the filtered class types, not just one or the other
-    filtered_pairs = set([x for x in subclass_pairs if x[0] in classes_filtered and x[1] in classes_filtered])
-    child_parents, parent_children = _get_parent_child_lookups(filtered_pairs)
+    # TODO temp: is there a problem here? i mean i should at least have my top level group pairs...
+    subclass_pairs_post_filter = set(
+        [x for x in subclass_pairs if x[0] in classes_post_filter and x[1] in classes_post_filter])
+    child_parents, parent_children = _get_parent_child_lookups(subclass_pairs_post_filter)
 
-    return classes_filtered, filtered_pairs, child_parents, parent_children
+    return classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children
 
 
 def bundle_inpaths_and_update_abs_paths(

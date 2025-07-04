@@ -192,44 +192,49 @@ def _depth_counts(
     child_parents_before = child_parents
 
     # Filter by class types included in this analysis
-    # TODO temp: ok here. 4 roots. LoincPart will die later. but <http://comploinc/group>' needs to stay
+    # TODO temp: before now, there are 4 roots. that's good. LoincPart will die later. but <http://comploinc/group>'
+    #  needs to stay
     #  - prob prolly in this func
-    classes_filtered, subclass_pairs_filtered, child_parents, parent_children = _filter_classes(
+    classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children = _filter_classes(
         subclass_pairs, _filter, classes_by_type)
-    roots = classes_filtered - set(child_parents.keys())
+    roots = classes_post_filter - set(child_parents.keys())
     logging.debug(f"    n after class type filtration:")
-    logging.debug(f"     - subclass pairs: {len(subclass_pairs_filtered):,}")
-    logging.debug(f"     - classes : {len(classes_filtered):,}")
+    logging.debug(f"     - subclass pairs: {len(subclass_pairs_post_filter):,}")
+    logging.debug(f"     - classes : {len(classes_post_filter):,}")
     logging.debug(f"     - roots: {len(roots):,}")
 
     # TODO temp
-    print('<http://comploinc/group>' in classes_filtered)
+    # TODO examine roots. there are lots of groups. but they lok like they have the pattern
+    print('<http://comploinc/group>' in classes_post_filter)
+    # only parts were filtered out. all start with LP, except 1 class: LoincPart
+    # classes_filtered_out = classes - classes_post_filter  # mostly parts from what i can see
+    # classes_filtered_out_non_parts = [x for x in classes_filtered_out if not x.startswith('<https://loinc.org/LP')]
 
     # Remove dangling subtrees: that became dangling due to filtering
     #  - This can happen e.g. because a term can have a part as a parent, and have a subtree of parts and/or terms.
     #    Filtering out parts will chop off its parent, leaving it and its descendants dangling.
-    classes_filtered, subclass_pairs_filtered, child_parents, parent_children = _prune_dangling_subtrees(
-        classes_filtered,
-        subclass_pairs_filtered,
+    classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children = _prune_dangling_subtrees(
+        classes_post_filter,
+        subclass_pairs_post_filter,
         child_parents,
         parent_children,
         child_parents_before,
     )
 
     # TODO temp
-    print('<http://comploinc/group>' in classes_filtered)
-    grps_remain = [x for x in classes_filtered if x.startswith('<http://comploinc/group>')]
+    print('<http://comploinc/group>' in classes_post_filter)
+    grps_remain = [x for x in classes_post_filter if x.startswith('<http://comploinc/group>')]
     print('grps_remain', len(grps_remain))  # TODO: prob. only 1. so now it's dangling
 
     # Filter dangling nodes
     roots = set([x for x in roots if parent_children[x]])
     logging.debug(f"    n after pruning dangling subtrees & nodes:")
-    logging.debug(f"     - subclass pairs: {len(subclass_pairs_filtered):,}")
-    logging.debug(f"     - classes: {len(classes_filtered):,}")
+    logging.debug(f"     - subclass pairs: {len(subclass_pairs_post_filter):,}")
+    logging.debug(f"     - classes: {len(classes_post_filter):,}")
     logging.debug(f"     - roots: {len(roots):,}")
 
     # TODO temp
-    print('<http://comploinc/group>' in classes_filtered)  # still true.
+    print('<http://comploinc/group>' in classes_post_filter)  # still true.
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
