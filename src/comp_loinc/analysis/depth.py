@@ -178,11 +178,25 @@ def _depth_counts(
             classes_by_type, child_parents, parent_children = _add_synthetic_transient_groups_loinc(
                 subclass_pairs, child_parents, parent_children, includes_angle_brackets)
 
+    # Preserve lookups prior to filtering to detect dangling roots later
+    child_parents_before = child_parents
+    parent_children_before = parent_children
+
     # Filter by class types included in this analysis
     # TODO: ensure changes work
     classes_filtered, subclass_pairs_filtered, child_parents, parent_children = _filter_classes(
         subclass_pairs, _filter, classes_by_type)
     logging.debug(f"    n after class type filtration: {len(classes_filtered):,}")
+
+    # Remove subtrees that became dangling due to filtering
+    classes_filtered, subclass_pairs_filtered, child_parents, parent_children = _prune_dangling_subtrees(
+        classes_filtered,
+        subclass_pairs_filtered,
+        child_parents,
+        parent_children,
+        child_parents_before,
+        parent_children_before,
+    )
 
     # Find roots
     # - classes w/ no parents
@@ -263,6 +277,52 @@ def _get_subtree(root: str, parent_children: Dict[str, Set[str]]) -> Set[str]:
                 seen.add(ch)
                 q.append(ch)
     return seen
+
+
+def _prune_dangling_subtrees(
+    classes_filtered: Set[str],
+    filtered_pairs: Set[Tuple[str, str]],
+    child_parents: Dict[str, Set[str]],
+    parent_children: Dict[str, Set[str]],
+    child_parents_before: Dict[str, Set[str]],
+    parent_children_before: Dict[str, Set[str]],
+) -> Tuple[Set[str], Set[Tuple[str, str]], Dict[str, Set[str]], Dict[str, Set[str]]]:
+    """Remove dangling subtrees introduced by filtering."""
+
+    roots_before = {
+        c
+        for c in classes_filtered
+        if c not in child_parents_before and parent_children_before.get(c)
+    }
+    roots_after = {
+        c for c in classes_filtered if c not in child_parents and parent_children.get(c)
+    }
+    dangling_roots = roots_after - roots_before
+    if not dangling_roots:
+        return classes_filtered, filtered_pairs, child_parents, parent_children
+
+    to_remove = set(dangling_roots)
+    queue = list(dangling_roots)
+    while queue:
+        cur = queue.pop()
+        for ch in parent_children.get(cur, []):
+            if ch in to_remove:
+                continue
+            remaining_parents = {
+                p for p in child_parents.get(ch, set()) if p not in to_remove
+            }
+            if not remaining_parents:
+                to_remove.add(ch)
+                queue.append(ch)
+
+    classes_filtered -= to_remove
+    filtered_pairs = {
+        (ch, par)
+        for ch, par in filtered_pairs
+        if ch not in to_remove and par not in to_remove
+    }
+    child_parents, parent_children = _get_parent_child_lookups(filtered_pairs)
+    return classes_filtered, filtered_pairs, child_parents, parent_children
 
 
 def _add_synthetic_transient_groups_loinc(
