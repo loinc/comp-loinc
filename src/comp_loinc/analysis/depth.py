@@ -52,11 +52,73 @@ This measures how deep into the hierarchy each class is. E.g. if the root of the
 (TermC subClassOf TermB) and (TermB subClassOf TermA), then TermC is at depth 3, TermB is at depth 2, and TermA is at 
 depth 1.
 
-## Polyhierarchies and their effect on counts
+## Polyhierarchies
+**Impact on class depths**  
 CompLOINC and the LOINC and LOINC-SNOMED representations are all polyhierarchies. This means that classes can appear 
 multiple times. For this analysis, we have decided to include every occurrence of a class in the counts. For example, if
 a class appears in 3 subtrees, once at depth 3, and in two subtrees at depth 2, this class will be tallied twice at 
 depth 2, and once at depth 3. 
+
+**Disaggregating major subtrees**  
+CompLOINC and LOINC have more than 1 top-level branches (AKA subhierachies or subtrees).
+
+| Terminology | Hierarchy name | Root URI |
+|---|---|---|
+| CompLOINC | SNOMED-Inspired | https://loinc.org/138875005 |
+| CompLOINC | LoincTerm | https://loinc.org/LoincTerm |
+| CompLOINC | CompLOINC Groups | http://comploinc/group |
+| CompLOINC | LoincPart | https://loinc.org/LoincPart |
+| LOINC | LOINC Categories | https://loinc.org/LoincCategory |
+| LOINC | LOINC Groups | https://loinc.org/LoincGroup |
+| LOINC | LoincPart | https://loinc.org/LoincPart |
+
+Note, by subtree:
+- *SNOMED-Inspired*: This is inspired largely by the LOINC-SNOMED Ontology.
+- *LoincTerm*: LOINC has no Term hierarchy. It has a part hierarchy in the tree browser (https://loinc.org/tree/), which 
+has parts as leaves. CompLOINC has a term hierarchy based on inference, combining the part hierarchy from the tree 
+browser with supplementary or primary part model definitions.
+- *LoincPart*: Exists in the LOINC tree browser, but not the official LOINC release. CompLOINC includes it as an 
+optional subtree, largely obtained.
+- *LOINC Groups*: Part of the LOINC release. See more: https://loinc.org/groups/. Terms are grouped, and some groups 
+have groups. Also just for this analysis, we have added a single, novel https://loinc.org/LoincGroup root as a parent of
+the otherwise top level groups in the LOINC release.
+- *LOINC Categories*: Part of  the LOINC release, but not as formal as LOINC groups. These categories have no URIs, just 
+labels. They are parents only of groups, not terms. From https://loinc.org/groups/: 'Category: A short description that 
+identifies the general purpose of the group, such as "Flowsheet", "Reportable microbiology" or "Document ontology 
+grouped by role and subject matter domain".'
+- *CompLOINC Groups*: CompLOINC has a novel grouping class hierarchy. It does not utilize LOINC groups or categories in 
+the LOINC release. The top level class is "http://comploinc/group", followed by a major group branch for each "property 
+axis" (that is, a single part property or combination thereof), e.g. "http://comploinc/group/component/". Then, groups 
+which are defined via these properties descend from there. 
+
+**Two sets of outputs**  
+In many cases, the best way to use each of these is not to use the entire polyhierarchy, but individual major subtrees. 
+As such, we have produced a set of "by hierarchy" outputs, where these major subtrees have been disaggregated. The other
+set of outputs aggregates all of the subtrees together in its counts. 
+
+## Class types
+We consider the following 3 types of classes: terms, parts, and groups. There are 3 sets of outputs with respect to 
+class types: terms only, terms+groups, and terms+groups+parts.
+
+There are also different kinds of possible axioms in CompLOINC, LOINC, and LOINC-SNOMED Ontology, with respect to class 
+types.  
+
+Homogeneous
+- term --> term
+- part --> part
+- group --> group
+
+Heterogeneous
+- term --> part
+- part --> term
+- term --> group
+- group --> term
+- part --> group
+- group --> part 
+
+For a given filter of class type, we discard any subclass axioms where either the parent or child is not included. So, 
+for example if we are only looking at 'terms', we only consider the term-->term axioms. If we are looking at 
+'terms+groups', we retain axioms for term-->term, group-->group, term-->group, and group-->term.
 
 ## Dangling classes  
 Dangling classes are not represented here in this class depth analysis.
@@ -71,6 +133,13 @@ hierarchies that exist in LOINC are a shallow grouping hierarchy (represented by
 the LOINC release, and the part hierarchy, which is not represented in the release, but only exists in the LOINC tree 
 browser (https://loinc.org/tree/). Regarding parts, there are also a large number of those that are dangling even after 
 when considering all of the tree browser hierarchies, and those as well are not represented here. 
+
+**Dangling subtrees**  
+There is also the case where, as a result of filtering class types, there end up being dangling sub-trees. For example, 
+it could be that somewhere in a hierarchy, there is a term-group axiom, which is the root of its own subtree. If we are 
+filtering to show terms only, then this axiom gets removed, leaving its descendants (subtree) dangling. This subtree may
+contain term-term axioms, which would otherwise be kept, but since they are part of a dangling subtree, they are 
+removed. 
 
 ## CompLOINC representation
 **Grouping class depths adjusted via synthetic "master grouping classes"**  
@@ -663,8 +732,8 @@ def analyze_class_depth(
     depth_by_class_dfs: List[pd.DataFrame] = []  # for TSVs
 
     # TODO temp
-    variations = [('terms', 'groups', 'parts'), ]
-    ont_sets = {k: v for k, v in ont_sets.items() if k == 'CompLOINC-Primary'}
+    # variations = [('terms', 'groups', 'parts'), ]
+    # ont_sets = {k: v for k, v in ont_sets.items() if k == 'CompLOINC-Primary'}
 
     for _filter in variations:
         logger.debug(" " + ", ".join(_filter))
