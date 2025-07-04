@@ -19,6 +19,7 @@ from typing import Dict, Iterable, List, Set, Tuple, Union
 import pandas as pd
 from jinja2 import Template
 from matplotlib import pyplot as plt
+from matplotlib.colors import to_hex
 
 from comp_loinc.analysis.utils import (
     CLASS_TYPES,
@@ -117,6 +118,15 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 {% set table, plot_path = table_and_plot_path %}
 ## {{ title }}
 ![{{ title }}]({{ plot_path }})
+
+{{ table }}
+
+{% endfor %}
+
+{% for title, table_and_plot_path in figs_by_title_by_hierarchy.items() %}
+{% set table, plot_path = table_and_plot_path %}
+## {{ title }}, by hierarchy
+![{{ title }}, by hierarchy]({{ plot_path }})
 
 {{ table }}
 
@@ -440,28 +450,55 @@ def _get_stat_label(stat: str) -> str:
 
 
 def _get_plot_colors(df: pd.DataFrame) -> List[str]:
-    """Get colors for bars"""
+    """Get colors for bars.
+
+    When columns contain ``"ONT - SUBTREE"`` style labels, each subtree will get
+    a different shade of the ontology's base colour. Otherwise the base colour is
+    used directly.
+    """
+
     default_color = "#6D8196"  # slate grey
     columns = df.columns.tolist()
-    colors = []
+    colors: List[str] = []
+
+    # Base colours and colormaps per ontology
+    base_colours = {
+        "CompLOINC-Primary": "#1f77b4",
+        "CompLOINC-Supplementary": "#ff7f0e",
+        "LOINC": "#d62728",
+        "LOINC-SNOMED": "#2ca02c",
+    }
+    cmaps = {
+        "CompLOINC-Primary": plt.cm.Blues,
+        "CompLOINC-Supplementary": plt.cm.Oranges,
+        "LOINC": plt.cm.Reds,
+        "LOINC-SNOMED": plt.cm.Greens,
+    }
+
+    # Group columns by ontology
+    ont_to_cols: Dict[str, List[str]] = defaultdict(list)
     for col in columns:
-        if col.startswith("CompLOINC"):
-            if col == "CompLOINC-Primary":
-                colors.append("#1f77b4")  # dark blue
-            if col == "CompLOINC-Supplementary":
-                colors.append("#aec7e8")  # light blue
-            else:
-                colors.append(default_color)  # todo: variations if rendering subtrees
-        # Let matplotlib handle other colors automatically ( didn't work)
-        # else:
-        #     colors.append(None)
-        # Alternative: Manually
-        elif col == "LOINC":
-            colors.append("#d62728")  # red
-        elif col == "LOINC-SNOMED":
-            colors.append("#2ca02c")  # green
-        else:
-            colors.append(default_color)
+        ont = col.split(" - ")[0]
+        ont_to_cols[ont].append(col)
+
+    # Generate colours
+    col_colour_map: Dict[str, str] = {}
+    for ont, cols in ont_to_cols.items():
+        n = len(cols)
+        if n == 1:
+            colour = base_colours.get(ont, default_color)
+            col_colour_map[cols[0]] = colour
+            continue
+
+        cmap = cmaps.get(ont, plt.cm.Greys)
+        for i, col in enumerate(cols):
+            # Spread shades between 0.3 and 0.9 so they remain distinguishable
+            frac = 0.3 + (0.6 * (i / max(n - 1, 1)))
+            col_colour_map[col] = to_hex(cmap(frac))
+
+    for col in columns:
+        colors.append(col_colour_map.get(col, default_color))
+
     return colors
 
 
@@ -470,6 +507,7 @@ def _save_plot(
     outdir: Union[Path, str],
     _filter: Iterable[str],
     stat: str,
+    disaggregate_roots: bool = False,
 ) -> Tuple[pd.DataFrame, str]:
     """Saves a plot representing the class depth distribution based on the provided ontology depth tables.
 
@@ -491,7 +529,8 @@ def _save_plot(
     # Labels and paths
     class_types_str = f'{", ".join(_filter)}'
     y_lab = _get_stat_label(stat)
-    outpath = outdir / f'plot-class-depth_{"-".join(_filter)}_{stat}.png'
+    suffix = "_by-hierarchy" if disaggregate_roots else ""
+    outpath = outdir / f'plot-class-depth{suffix}_{"-".join(_filter)}_{stat}.png'
 
     # Data prep
     data_for_plot = {}
@@ -506,8 +545,9 @@ def _save_plot(
     merged.plot(kind="bar", stacked=False, ax=ax, color=_get_plot_colors(merged))
     ax.set_xlabel("Depth")
     ax.set_ylabel(y_lab)
-    ax.set_title(f"Class depth distribution ({class_types_str})")
-    ax.legend(title="Terminology")
+    title_extra = ", by hierarchy" if disaggregate_roots else ""
+    ax.set_title(f"Class depth distribution{title_extra} ({class_types_str})")
+    ax.legend(title="Terminology" + (" - Subtree" if disaggregate_roots else ""))
     plt.tight_layout()
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
     # logger.debug("Saved plot to %s", outpath)
@@ -530,6 +570,7 @@ def _save_markdown(
     """
     # logger.debug("Saving markdown to %s", outpath)
     figs_by_title: Dict[str, Tuple[str, str]] = {}
+    figs_by_title_hier: Dict[str, Tuple[str, str]] = {}
 
     for (
         disag_filter_stat,
@@ -537,10 +578,6 @@ def _save_markdown(
     ) in tables_n_plots_by_filter_and_stat.items():
         # Construct title
         disaggregate_roots, _filter, stat = disag_filter_stat
-        # TODO: use disaggregate_roots
-        # TODO temp: skip it for now
-        if disaggregate_roots:
-            continue
 
         stat_label: str = _get_stat_label(stat)
         class_types_str = f'{", ".join(_filter)}'
@@ -550,12 +587,18 @@ def _save_markdown(
         df, plot_path = table_and_plot_path
         plot_path = str(plot_path)
         table_str = df.to_markdown(tablefmt="github")
-        figs_by_title[title] = (table_str, plot_path)
+        if disaggregate_roots:
+            figs_by_title_hier[title] = (table_str, plot_path)
+        else:
+            figs_by_title[title] = (table_str, plot_path)
     # logger.debug("Markdown will contain %d sections", len(figs_by_title))
 
     # Render template
     template_obj = Template(template)
-    rendered_markdown = template_obj.render(figs_by_title=figs_by_title)
+    rendered_markdown = template_obj.render(
+        figs_by_title=figs_by_title,
+        figs_by_title_by_hierarchy=figs_by_title_hier,
+    )
 
     # Write to file
     outpath = Path(outpath)
@@ -669,7 +712,9 @@ def analyze_class_depth(
     for _filter in variations:
         logger.debug(" " + ", ".join(_filter))
         ont_depth_tables: Dict[str, pd.DataFrame] = {}
+        ont_depth_tables_by_subtree: Dict[str, pd.DataFrame] = {}
         ont_depth_pct_tables: Dict[str, pd.DataFrame] = {}
+        ont_depth_pct_tables_by_subtree: Dict[str, pd.DataFrame] = {}
         # - get data for tables and plots
         for ont_name, axioms in ont_sets.items():
             logger.debug(f"  - {ont_name}")
@@ -678,24 +723,31 @@ def analyze_class_depth(
             )  # main data processing func
             # Main outputs: plots & tables
             ont_depth_tables[ont_name] = counts_df
+            for subtree_name, (counts_sub, _) in by_subtree.items():
+                key = f"{ont_name} - {subtree_name}"
+                ont_depth_tables_by_subtree[key] = counts_sub
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
+            ont_depth_pct_tables_by_subtree = _counts_to_pcts(ont_depth_tables_by_subtree)
             # TSV outputs
             if tuple(_filter) == tuple(CLASS_TYPES):
                 depth_by_class_df.insert(0, "terminology", ont_name)
                 depth_by_class_dfs.append(depth_by_class_df)
         # - plots
-        # TODO: temp. figure out what to do w/ this. maybe make a separate tables_n_plots_by_filter_and_stat for whether
-        #  we're going over disaggregated stuff or not, idk
-        disag_tf = True
-        for stat, data in {
-            "totals": ont_depth_tables,
-            "percentages": ont_depth_pct_tables,
-        }.items():
-            # TODO: use disaggregate_roots
-            df, plot_filename = _save_plot(data, outdir_plots, _filter, stat)
-            # TODO: use disaggregate_roots
+        # Create plots and tables for both aggregate and per-subtree views
+        for stat, data, disag in [
+            ("totals", ont_depth_tables, False),
+            ("percentages", ont_depth_pct_tables, False),
+            ("totals", ont_depth_tables_by_subtree, True),
+            ("percentages", ont_depth_pct_tables_by_subtree, True),
+        ]:
+            df, plot_filename = _save_plot(
+                data, outdir_plots, _filter, stat, disaggregate_roots=disag
+            )
             df2: pd.DataFrame = _reformat_table(df, stat)
-            tables_n_plots_by_filter_and_stat[(disag_tf, _filter, stat)] = (df2, plot_filename)
+            tables_n_plots_by_filter_and_stat[(disag, _filter, stat)] = (
+                df2,
+                plot_filename,
+            )
 
     # Save
     # TODO: update to also show a "by root" section
