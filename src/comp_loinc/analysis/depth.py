@@ -18,7 +18,7 @@ from typing import Dict, Iterable, List, Set, Tuple, Union
 
 import pandas as pd
 from jinja2 import Template
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, colormaps
 from matplotlib.colors import to_hex
 
 from comp_loinc.analysis.utils import (
@@ -63,15 +63,15 @@ depth 2, and once at depth 3.
 **Disaggregating major subtrees**  
 CompLOINC and LOINC have more than 1 top-level branches (AKA subhierachies or subtrees).
 
-| Terminology | Hierarchy name | Root URI |
-|---|---|---|
-| CompLOINC | SNOMED-Inspired | https://loinc.org/138875005 |
-| CompLOINC | LoincTerm | https://loinc.org/LoincTerm |
-| CompLOINC | CompLOINC Groups | http://comploinc/group |
-| CompLOINC | LoincPart | https://loinc.org/LoincPart |
-| LOINC | LOINC Categories | https://loinc.org/LoincCategory |
-| LOINC | LOINC Groups | https://loinc.org/LoincGroup |
-| LOINC | LoincPart | https://loinc.org/LoincPart |
+| Terminology | Hierarchy name   | Root URI                        |
+|-------------|------------------|---------------------------------|
+| CompLOINC   | SNOMED-Inspired  | https://loinc.org/138875005     |
+| CompLOINC   | LoincTerm        | https://loinc.org/LoincTerm     |
+| CompLOINC   | CompLOINC Groups | http://comploinc/group          |
+| CompLOINC   | LoincPart        | https://loinc.org/LoincPart     |
+| LOINC       | LOINC Categories | https://loinc.org/LoincCategory |
+| LOINC       | LOINC Groups     | https://loinc.org/LoincGroup    |
+| LOINC       | LoincPart        | https://loinc.org/LoincPart     |
 
 Note, by subtree:
 - *SNOMED-Inspired*: This is inspired largely by the LOINC-SNOMED Ontology.
@@ -355,6 +355,9 @@ def _depth_counts(
         by_subtree[list(roots)[0]] = (df_counts, df_depths)
     if rename_subtree_roots:
         by_subtree = {ROOT_URI_LABEL_MAP[k]: v for k, v in by_subtree.items()}
+        # Not most elegant solution. Mainly for plotting later. Disambiguate from same/similar tree in CompLOINC.
+        if ont_name == 'LOINC-SNOMED':
+            by_subtree = {'LOINC-SNOMED': by_subtree[list(by_subtree.keys())[0]]}
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
     return df_counts, df_depths, by_subtree
@@ -535,15 +538,15 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
         "LOINC": "#d62728",  # medium/deep red
         "LOINC-SNOMED": "#2ca02c",  # medium green
         "CompLOINC-Primary": "#1f77b4",  # mid-tone blue
-        "CompLOINC-Supplementary": "#ff7f0e",  # dark blue
+        "CompLOINC-Supplementary": "#1f38b4",  # dark blue
         # "CompLOINC-Supplementary": "#ff7f0e",  # orange
     }
     # For "by hierarchy" variations
     cmaps = {
-        "LOINC": plt.cm.get_cmap("Reds"),
-        "LOINC-SNOMED": plt.cm.get_cmap("Greens"),
-        "CompLOINC-Primary": plt.cm.get_cmap("Blues"),
-        "CompLOINC-Supplementary": plt.cm.get_cmap("Purples"),
+        "LOINC": colormaps.get_cmap("Reds"),
+        "LOINC-SNOMED": colormaps.get_cmap("Greens"),
+        "CompLOINC-Primary": colormaps.get_cmap("Blues"),
+        "CompLOINC-Supplementary": colormaps.get_cmap("Purples"),
     }
 
     # Group columns by ontology
@@ -561,11 +564,10 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
             col_colour_map[cols[0]] = colour
             continue
 
-        cmap = cmaps.get(ont, plt.cm.get_cmap("Greys"))
+        cmap = cmaps.get(ont, colormaps.get_cmap("Greys"))
         for i, col in enumerate(cols):
-            # Spread shades between set ranges so they remain distinguishable.
-            # LOINC shades were previously too extreme in brightness, so we
-            # constrain the range used for that ontology.
+            # Spread shades between set ranges so they remain distinguishable. LOINC shades were previously too extreme
+            # in brightness variation, so we constrain the range for it alone.
             start, end = 0.3, 0.9
             if ont == "LOINC":
                 start, end = 0.45, 0.75
@@ -618,7 +620,7 @@ def _save_plot(
 
     # Create bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
-    merged.plot(kind="bar", stacked=False, ax=ax, color=_get_plot_colors(merged))
+    merged.plot(kind="barh", stacked=False, ax=ax, color=_get_plot_colors(merged))
     ax.set_xlabel("Depth")
     ax.set_ylabel(y_lab)
     title_extra = ", by hierarchy" if disaggregate_roots else ""
