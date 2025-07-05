@@ -18,7 +18,7 @@ from typing import Dict, Iterable, List, Set, Tuple, Union
 
 import pandas as pd
 from jinja2 import Template
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, colormaps
 from matplotlib.colors import to_hex
 
 from comp_loinc.analysis.utils import (
@@ -355,6 +355,9 @@ def _depth_counts(
         by_subtree[list(roots)[0]] = (df_counts, df_depths)
     if rename_subtree_roots:
         by_subtree = {ROOT_URI_LABEL_MAP[k]: v for k, v in by_subtree.items()}
+        # Not most elegant solution. Mainly for plotting later. Disambiguate from same/similar tree in CompLOINC.
+        if ont_name == 'LOINC-SNOMED':
+            by_subtree = {'LOINC-SNOMED': by_subtree[list(by_subtree.keys())[0]]}
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
     return df_counts, df_depths, by_subtree
@@ -540,10 +543,10 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
     }
     # For "by hierarchy" variations
     cmaps = {
-        "LOINC": plt.cm.get_cmap("Reds"),
-        "LOINC-SNOMED": plt.cm.get_cmap("Greens"),
-        "CompLOINC-Primary": plt.cm.get_cmap("Blues"),
-        "CompLOINC-Supplementary": plt.cm.get_cmap("Purples"),
+        "LOINC": colormaps.get_cmap("Reds"),
+        "LOINC-SNOMED": colormaps.get_cmap("Greens"),
+        "CompLOINC-Primary": colormaps.get_cmap("Blues"),
+        "CompLOINC-Supplementary": colormaps.get_cmap("Purples"),
     }
 
     # Group columns by ontology
@@ -561,7 +564,7 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
             col_colour_map[cols[0]] = colour
             continue
 
-        cmap = cmaps.get(ont, plt.cm.get_cmap("Greys"))
+        cmap = cmaps.get(ont, colormaps.get_cmap("Greys"))
         for i, col in enumerate(cols):
             # Spread shades between set ranges so they remain distinguishable.
             # LOINC shades were previously too extreme in brightness, so we
