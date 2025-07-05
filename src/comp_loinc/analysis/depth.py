@@ -530,18 +530,20 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
     columns = df.columns.tolist()
     colors: List[str] = []
 
-    # Base colours and colormaps per ontology
+    # For "merged" variations
     base_colours = {
-        "CompLOINC-Primary": "#1f77b4",
-        "CompLOINC-Supplementary": "#ff7f0e",
-        "LOINC": "#d62728",
-        "LOINC-SNOMED": "#2ca02c",
+        "LOINC": "#d62728",  # medium/deep red
+        "LOINC-SNOMED": "#2ca02c",  # medium green
+        "CompLOINC-Primary": "#1f77b4",  # mid-tone blue
+        "CompLOINC-Supplementary": "#ff7f0e",  # dark blue
+        # "CompLOINC-Supplementary": "#ff7f0e",  # orange
     }
+    # For "by hierarchy" variations
     cmaps = {
-        "CompLOINC-Primary": plt.cm.Blues,
-        "CompLOINC-Supplementary": plt.cm.Oranges,
-        "LOINC": plt.cm.Reds,
-        "LOINC-SNOMED": plt.cm.Greens,
+        "LOINC": plt.cm.get_cmap("Reds"),
+        "LOINC-SNOMED": plt.cm.get_cmap("Greens"),
+        "CompLOINC-Primary": plt.cm.get_cmap("Blues"),
+        "CompLOINC-Supplementary": plt.cm.get_cmap("Purples"),
     }
 
     # Group columns by ontology
@@ -559,7 +561,7 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
             col_colour_map[cols[0]] = colour
             continue
 
-        cmap = cmaps.get(ont, plt.cm.Greys)
+        cmap = cmaps.get(ont, plt.cm.get_cmap("Greys"))
         for i, col in enumerate(cols):
             # Spread shades between 0.3 and 0.9 so they remain distinguishable
             frac = 0.3 + (0.6 * (i / max(n - 1, 1)))
