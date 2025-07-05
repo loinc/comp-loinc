@@ -2,7 +2,7 @@
 # todo: Ideally would change pipeline to use `make all` instead of `make all -B`. Leaving -B out is preferred whenever possible, because it will theoretically only update targets and their prereqs that are outdated. But if the codebase changes, these files will be outdated but they will not appear so to make, which means we must execute using -B.
 
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
-	chebi-subsets
+	chebi-subsets start-app
 DEFAULT_BUILD_DIR=output/build-default
 DANGLING_DIR=output/analysis/dangling
 LOINC_OWL_DIR=output/analysis/loinc
@@ -364,3 +364,10 @@ alternative-hierarchies: chebi-subsets
 # Ad hoc analyses: not connected to the main pipeline
 output/tmp/cl-parts.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/ad_hoc/cl-parts.sparql,$@)
+
+start-app-debug:
+	python src/comp_loinc/analysis/app.py
+
+start-app:
+	#gunicorn comp_loinc.analysis.app:server --bind 0.0.0.0:$PORT  # this is the version of the command used on render.com
+	gunicorn src.comp_loinc.analysis.app:server

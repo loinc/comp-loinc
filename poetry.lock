@@ -430,6 +430,23 @@ diskcache = ["diskcache (>=5.2.1)", "multiprocess (>=0.70.12)", "psutil (>=5.8.0
 testing = ["beautifulsoup4 (>=4.8.2)", "cryptography", "dash-testing-stub (>=0.0.2)", "lxml (>=4.6.2)", "multiprocess (>=0.70.12)", "percy (>=2.0.2)", "psutil (>=5.8.0)", "pytest (>=6.0.2)", "requests[security] (>=2.21.0)", "selenium (>=3.141.0,<=4.2.0)", "waitress (>=1.4.4)"]
 
 [[package]]
+name = "dash-bootstrap-components"
+version = "2.0.3"
+description = "Bootstrap themed components for use in Plotly Dash"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "dash_bootstrap_components-2.0.3-py3-none-any.whl", hash = "sha256:82754d3d001ad5482b8a82b496c7bf98a1c68d2669d607a89dda7ec627304af5"},
+    {file = "dash_bootstrap_components-2.0.3.tar.gz", hash = "sha256:5c161b04a6e7ed19a7d54e42f070c29fd6c385d5a7797e7a82999aa2fc15b1de"},
+]
+
+[package.dependencies]
+dash = ">=3.0.4"
+
+[package.extras]
+pandas = ["numpy (>=2.0.2)", "pandas (>=2.2.3)"]
+
+[[package]]
 name = "deprecated"
 version = "1.2.18"
 description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
@@ -752,6 +769,26 @@ files = [
 [package.extras]
 docs = ["Sphinx", "furo"]
 test = ["objgraph", "psutil"]
+
+[[package]]
+name = "gunicorn"
+version = "20.1.0"
+description = "WSGI HTTP Server for UNIX"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
+    {file = "gunicorn-20.1.0.tar.gz", hash = "sha256:e0a968b5ba15f8a328fdfd7ab1fcb5af4470c28aaf7e55df02a99bc13138e6e8"},
+]
+
+[package.dependencies]
+setuptools = ">=3.0"
+
+[package.extras]
+eventlet = ["eventlet (>=0.24.1)"]
+gevent = ["gevent (>=1.4.0)"]
+setproctitle = ["setproctitle"]
+tornado = ["tornado (>=0.2)"]
 
 [[package]]
 name = "hbreader"
@@ -3496,4 +3533,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "ed1509499f2461c65c9964b7e24f8eb6b412d8ea1fd055320390304184380029"
+content-hash = "63caef51a3b40bce3fc3596f32c823240a217faefb04959a5fb2a1944ea4de12"

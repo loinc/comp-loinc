@@ -45,6 +45,7 @@ upsetplot = "^0.9.0"
 dash = "*"
 plotly = "*"
 dash-bootstrap-components = "*"
+gunicorn = "^20.1.0"  # for deploy
 
 
 [tool.poetry.group.dev.dependencies]

@@ -32,7 +32,7 @@ from comp_loinc.analysis.utils import (
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-TMP_DIR = PROJECT_ROOT / "output" / "tmp"
+APP_DATA_DIR = THIS_DIR / 'app_data'
 DESC = "Analyze classification depth."
 DEFAULTS = {
     # CLI args
@@ -54,6 +54,10 @@ md_template = """# Classification depth analysis
 This measures how deep into the hierarchy each class is. E.g. if the root of the hierarchy is TermA, and we have axioms
 (TermC subClassOf TermB) and (TermB subClassOf TermA), then TermC is at depth 3, TermB is at depth 2, and TermA is at 
 depth 1.
+
+## Web application: https://comp-loinc.onrender.com/
+Can take ~5 minutes to load when asleep. Sleeps when unused for 15 minutes. Contains interactive variations of these 
+plots.
 
 ## Polyhierarchies
 **Impact on class depths**  
@@ -227,10 +231,10 @@ def _log_counts(
     """Log counts for a processing stage and return rows for a dataframe."""
 
     stage_to_label = {
-        "raw_input": "raw",
-        "post_new_groupings": "after adding synthetic master grouping classes",
-        "post_filters": "after class type filtration",
-        "post_pruning": "after pruning dangling subtrees & nodes",
+        "1: raw_input": "raw",
+        "2: post_new_groupings": "after adding synthetic master grouping classes",
+        "3: post_filters": "after class type filtration",
+        "4: post_pruning": "after pruning dangling subtrees & nodes",
     }
     label = stage_to_label.get(stage, stage)
     logging.debug(f"    n {label}:")
@@ -326,7 +330,7 @@ def _depth_counts(
     roots: Set[str] = classes - set(child_parents.keys())
     etl_counts_rows.extend(
         _log_counts(
-            "raw_input",
+            "1: raw_input",
             subclass_pairs,
             classes,
             roots,
@@ -347,7 +351,7 @@ def _depth_counts(
     roots = classes - set(child_parents.keys())
     etl_counts_rows.extend(
         _log_counts(
-            "post_new_groupings",
+            "2: post_new_groupings",
             subclass_pairs,
             classes,
             roots,
@@ -365,7 +369,7 @@ def _depth_counts(
     roots = classes_post_filter - set(child_parents.keys())
     etl_counts_rows.extend(
         _log_counts(
-            "post_filters",
+            "3: post_filters",
             subclass_pairs_post_filter,
             classes_post_filter,
             roots,
@@ -388,7 +392,7 @@ def _depth_counts(
     roots = set([x for x in roots if parent_children[x]])
     etl_counts_rows.extend(
         _log_counts(
-            "post_pruning",
+            "4: post_pruning",
             subclass_pairs_post_filter,
             classes_post_filter,
             roots,
@@ -441,13 +445,14 @@ def _depth_counts(
             df_depths_i = df_depths[df_depths['class'].isin(nodes)].copy()
             df_counts_i = df_depths_i.groupby('depth').size().reset_index(name='n')
             by_subtree[root] = (df_counts_i, df_depths_i)
-    elif len(roots) == 1:
-        by_subtree[list(roots)[0]] = (df_counts, df_depths)
+    # elif len(roots) == 1:
+        # by_subtree[list(roots)[0]] = (df_counts, df_depths)
+    else:
+        by_subtree['hierarchy'] = (df_counts, df_depths)
+
     if rename_subtree_roots:
-        by_subtree = {ROOT_URI_LABEL_MAP[k]: v for k, v in by_subtree.items()}
+        by_subtree = {ROOT_URI_LABEL_MAP.get(k, k): v for k, v in by_subtree.items()}
         # Not most elegant solution. Mainly for plotting later. Disambiguate from same/similar tree in CompLOINC.
-        if ont_name == 'LOINC-SNOMED':
-            by_subtree = {'LOINC-SNOMED': by_subtree[list(by_subtree.keys())[0]]}
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
     return df_counts, df_depths, by_subtree, pd.DataFrame(etl_counts_rows)
@@ -658,9 +663,7 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
         for i, col in enumerate(cols):
             # Spread shades between set ranges so they remain distinguishable. LOINC shades were previously too extreme
             # in brightness variation, so we constrain the range for it alone.
-            start, end = 0.3, 0.9
-            if ont == "LOINC":
-                start, end = 0.45, 0.75
+            start, end = (0.3, 0.9) if ont != "LOINC" else (0.6, 1)
             frac = start + ((end - start) * (i / max(n - 1, 1)))
             col_colour_map[col] = to_hex(cmap(frac))
 
@@ -675,7 +678,7 @@ def _save_plot(
     outdir: Union[Path, str],
     _filter: Iterable[str],
     stat: str,
-    disaggregate_roots: bool = False,
+    disaggregated_subtrees: bool = False,
 ) -> Tuple[pd.DataFrame, str]:
     """Saves a plot representing the class depth distribution based on the provided ontology depth tables.
 
@@ -690,6 +693,10 @@ def _save_plot(
         outdir (Union[Path, str]): The directory path where the generated plot will be saved.
         _filter: Shows which CLASS_TYPES are represented in the data. 1+ of ['terms', 'groups', 'parts'].
         stat: The statistic to use for the plot. 1+ of ['totals', 'percentages'].
+        disaggregated_subtrees: Set to True if the data/plot is not just 1 set of measures / bar per terminology, but
+         per major hierarchy. This will change labels and optimize rendering.
+
+    todo: For 'by hierarchy' change plot & lagend to be "TERMINOLOGY: SUBTREE" rather than "TERMINOLOGY - SUBTREE"
     """
     if stat not in ("totals", "percentages"):
         raise ValueError(f'`stat` arg must be either "totals" or "percentages".')
@@ -697,7 +704,7 @@ def _save_plot(
     # Labels and paths
     class_types_str = f'{", ".join(_filter)}'
     y_lab = _get_stat_label(stat)
-    suffix = "_by-hierarchy" if disaggregate_roots else ""
+    suffix = "_by-hierarchy" if disaggregated_subtrees else ""
     outpath = outdir / f'plot-class-depth{suffix}_{"-".join(_filter)}_{stat}.png'
 
     # Data prep
@@ -710,18 +717,28 @@ def _save_plot(
     merged.index.name = "Depth"
 
     # Create bar chart
-    fig, ax = plt.subplots(figsize=(10, 6))
-    merged.plot(kind="barh", stacked=False, ax=ax, color=_get_plot_colors(merged))
+    bars_direction_map = {'vertical': 'bar', 'horizontal': 'barh'}
+    bars_direction = 'horizontal' if disaggregated_subtrees else 'vertical'
+    fig_height = 15 if disaggregated_subtrees else 6
+    fig, ax = plt.subplots(figsize=(10, fig_height))
+    bar_width = 1 if disaggregated_subtrees else 0.8
+    merged.plot(
+        kind=bars_direction_map[bars_direction], stacked=False, ax=ax, color=_get_plot_colors(merged), width=bar_width)
+    if disaggregated_subtrees:  # unsure why, but when bar direction is horizontal, changes to descending. this fixes it
+        ax.invert_yaxis()
     ax.set_xlabel("Depth")
     ax.set_ylabel(y_lab)
-    title_extra = ", by hierarchy" if disaggregate_roots else ""
+    title_extra = ", by hierarchy" if disaggregated_subtrees else ""
     ax.set_title(f"Class depth distribution{title_extra} ({class_types_str})")
-    ax.legend(title="Terminology" + (" - Subtree" if disaggregate_roots else ""))
+    if disaggregated_subtrees:
+        ax.legend(title="Terminology - Subtree", bbox_to_anchor=(1.05, 0.4), loc='center left')
+    else:
+        ax.legend(title="Terminology")
     plt.tight_layout()
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
 
-    # Also save a TSV version of the data used to render the plot
-    tsv_path = TMP_DIR / f"plot-class-depth{suffix}_{'-'.join(_filter)}_{stat}.tsv"
+    # Save a TSV of plot data. Used by web app.
+    tsv_path = APP_DATA_DIR / f"plot-class-depth{suffix}_{'-'.join(_filter)}_{stat}.tsv"
     merged.to_csv(tsv_path, sep="\t")
 
     return merged, os.path.basename(outpath)
@@ -732,7 +749,7 @@ def _save_markdown(
         Tuple[bool, Iterable[str], str], Tuple[pd.DataFrame, str]
     ],
     outpath: Union[Path, str],
-    counts_df: pd.DataFrame = None,
+    etl_counts_df: pd.DataFrame = None,
     template: str = md_template,
 ):
     """Save results to markdown
@@ -740,7 +757,7 @@ def _save_markdown(
     :param tables_n_plots_by_filter_and_stat: keys are [(_filter, stat)], and values are (df, plot_filename).
      The df is a pandas dataframe that was used to create the plot. stat is one of ['totals', 'percentages']. _filter is
      one of class variations, e.g. ('terms', ), ('terms', 'groups'), or ('terms', 'groups', 'parts').
-    :param counts_df: DataFrame summarising processing counts to render.
+    :param etl_counts_df: DataFrame summarising processing counts to render.
     """
     # logger.debug("Saving markdown to %s", outpath)
     figs_by_title: Dict[str, Tuple[str, str]] = {}
@@ -769,18 +786,18 @@ def _save_markdown(
 
     # Render template
     etl_counts_table = ""
-    if counts_df is not None and not counts_df.empty:
-        etl_counts_table = counts_df.to_markdown(tablefmt="github", index=False)
+    if etl_counts_df is not None and not etl_counts_df.empty:
+        etl_counts_table = etl_counts_df.to_markdown(tablefmt="github", index=False)
 
     template_obj = Template(template)
     rendered_markdown = template_obj.render(
         figs_by_title=figs_by_title,
         figs_by_title_by_hierarchy=figs_by_title_hier,
-        counts_table=etl_counts_table,
+        etl_counts_table=etl_counts_table,
     )
 
     # Write to file
-    outpath = Path(outpath)
+    outpath = Path(outpath)  # TODO check etl counts if has data
     with open(outpath, "w", encoding="utf-8") as f:
         f.write(rendered_markdown)
     # logger.debug("Wrote markdown to %s", outpath)
@@ -885,10 +902,10 @@ def analyze_class_depth(
         Tuple[bool, Iterable[str], str], Tuple[pd.DataFrame, str]
     ] = {}
     depth_by_class_dfs: List[pd.DataFrame] = []  # for TSVs
-    stage_count_dfs: List[pd.DataFrame] = []
+    etl_stage_count_dfs: List[pd.DataFrame] = []
 
     # TODO temp
-    # variations = [('terms', 'groups', 'parts'), ]
+    variations = [('terms', 'groups', 'parts'), ]
     # ont_sets = {k: v for k, v in ont_sets.items() if k == 'CompLOINC-Primary'}
 
     for _filter in variations:
@@ -906,7 +923,8 @@ def analyze_class_depth(
             # Main outputs: plots & tables
             ont_depth_tables[ont_name] = counts_df
             for subtree_name, (counts_sub, _) in by_subtree.items():
-                key = f"{ont_name} - {subtree_name}"
+                key = f"{ont_name} - {subtree_name}" if subtree_name != 'hierarchy'\
+                    else ont_name  # improves labels if just 1 root
                 ont_depth_tables_by_subtree[key] = counts_sub
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
             ont_depth_pct_tables_by_subtree = _counts_to_pcts(ont_depth_tables_by_subtree)
@@ -914,7 +932,7 @@ def analyze_class_depth(
             if tuple(_filter) == tuple(CLASS_TYPES):
                 depth_by_class_df.insert(0, "terminology", ont_name)
                 depth_by_class_dfs.append(depth_by_class_df)
-            stage_count_dfs.append(etl_counts_df)
+            etl_stage_count_dfs.append(etl_counts_df)
         # - plots
         # Create plots and tables for both aggregate and per-subtree views
         for stat, data, disag in [
@@ -924,7 +942,7 @@ def analyze_class_depth(
             ("percentages", ont_depth_pct_tables_by_subtree, True),
         ]:
             df, plot_filename = _save_plot(
-                data, outdir_plots, _filter, stat, disaggregate_roots=disag
+                data, outdir_plots, _filter, stat, disaggregated_subtrees=disag
             )
             df2: pd.DataFrame = _reformat_table(df, stat)
             tables_n_plots_by_filter_and_stat[(disag, _filter, stat)] = (
@@ -934,10 +952,10 @@ def analyze_class_depth(
 
     # Save
     # - Data processing stage counts
-    etl_counts_df_all = pd.concat(stage_count_dfs, ignore_index=True)
+    etl_counts_df_all = pd.concat(etl_stage_count_dfs, ignore_index=True)
     etl_counts_df_all.to_csv(outpath_counts_tsv, sep="\t", index=False)  # redundant
     # - Markdown
-    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md, etl_counts_df_all)
+    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md, etl_counts_df_all)  # TODO temp: etl df empty?
     # todo: also output TSVs for when disaggregate by roots, too?
     # - Depths TSVs
     _save_depths_tsvs(depth_by_class_dfs, labels_path, outpath_tsv_pattern)  # for manual analysis / troubleshooting

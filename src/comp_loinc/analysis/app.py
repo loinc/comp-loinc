@@ -8,7 +8,7 @@ from dash import Dash, dcc, html, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.express as px
 
-from comp_loinc.analysis.depth import analyze_class_depth, TMP_DIR
+from comp_loinc.analysis.depth import analyze_class_depth, APP_DATA_DIR
 
 # Convenience mappings for UI -> data keys
 FILTER_OPTIONS = {
@@ -26,7 +26,7 @@ def _expected_tsvs() -> Iterable[Path]:
         for stat in STAT_OPTIONS.values():
             for by_sub in VIEW_OPTIONS.values():
                 suffix = "_by-hierarchy" if by_sub else ""
-                yield TMP_DIR / f"plot-class-depth{suffix}_{filt_str}_{stat}.tsv"
+                yield APP_DATA_DIR / f"plot-class-depth{suffix}_{filt_str}_{stat}.tsv"
 
 
 def ensure_data() -> None:
@@ -50,7 +50,7 @@ def load_data() -> Dict[Tuple[bool, Tuple[str, ...], str], pd.DataFrame]:
         for stat in STAT_OPTIONS.values():
             for by_sub in VIEW_OPTIONS.values():
                 suffix = "_by-hierarchy" if by_sub else ""
-                path = TMP_DIR / f"plot-class-depth{suffix}_{filt_str}_{stat}.tsv"
+                path = APP_DATA_DIR / f"plot-class-depth{suffix}_{filt_str}_{stat}.tsv"
                 df = pd.read_csv(path, sep="\t", index_col=0)
                 data[(by_sub, filt, stat)] = df
     return data
@@ -170,12 +170,23 @@ def create_app(data: Dict[Tuple[bool, Tuple[str, ...], str], pd.DataFrame]) -> D
     return app
 
 
-def main() -> None:
-    """Main function"""
+def load_data_and_create_app():
+    """Load data and create app"""
     ensure_data()
     data = load_data()
     app = create_app(data)
+    return app
+
+
+def main() -> None:
+    """Main function"""
+    app = load_data_and_create_app()
     app.run(debug=True)
+
+
+# expose a WSGI server for Gunicorn
+APP = load_data_and_create_app()
+server = APP.server
 
 
 if __name__ == "__main__":
