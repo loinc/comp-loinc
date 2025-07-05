@@ -32,6 +32,7 @@ from comp_loinc.analysis.utils import (
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
+TMP_DIR = PROJECT_ROOT / "output" / "tmp"
 DESC = "Analyze classification depth."
 DEFAULTS = {
     # CLI args
@@ -720,7 +721,7 @@ def _save_plot(
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
 
     # Also save a TSV version of the data used to render the plot
-    tsv_path = outdir / f"plot-class-depth{suffix}_{'-'.join(_filter)}_{stat}.tsv"
+    tsv_path = TMP_DIR / f"plot-class-depth{suffix}_{'-'.join(_filter)}_{stat}.tsv"
     merged.to_csv(tsv_path, sep="\t")
 
     return merged, os.path.basename(outpath)
