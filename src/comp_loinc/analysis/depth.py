@@ -709,6 +709,7 @@ def _save_plot(
         # Create a series with depth as index and n as values
         data_for_plot[name] = df.set_index(cols[0])[cols[1]]
     merged = pd.DataFrame(data_for_plot).fillna(0)
+    merged.index.name = "Depth"
 
     # Create bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -720,7 +721,10 @@ def _save_plot(
     ax.legend(title="Terminology" + (" - Subtree" if disaggregate_roots else ""))
     plt.tight_layout()
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
-    # logger.debug("Saved plot to %s", outpath)
+
+    # Also save a TSV version of the data used to render the plot
+    tsv_path = outdir / f"plot-class-depth{suffix}_{'-'.join(_filter)}_{stat}.tsv"
+    merged.to_csv(tsv_path, sep="\t")
 
     return merged, os.path.basename(outpath)
 
@@ -835,18 +839,18 @@ def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], ou
 
 def analyze_class_depth(
     # CLI args
-    loinc_path: Union[Path, str],
-    loinc_snomed_path: Union[Path, str],
-    comploinc_primary_path: Union[Path, str],
-    comploinc_supplementary_path: Union[Path, str],
-    labels_path: Union[Path, str],
-    outpath_md: Union[Path, str],
-    outdir_plots: Union[Path, str],
+    loinc_path: Union[Path, str] = DEFAULTS["loinc-path"],
+    loinc_snomed_path: Union[Path, str] = DEFAULTS["loinc-snomed-path"],
+    comploinc_primary_path: Union[Path, str] = DEFAULTS["comploinc-primary-path"],
+    comploinc_supplementary_path: Union[Path, str] = DEFAULTS["comploinc-supplementary-path"],
+    labels_path: Union[Path, str] = DEFAULTS["labels-path"],
+    outpath_md: Union[Path, str] = DEFAULTS["outpath-md"],
+    outdir_plots: Union[Path, str] = DEFAULTS["outdir-plots"],
     outpath_counts_tsv: Union[Path, str] = DEFAULTS["outpath-counts-tsv"],
     # Non CLI args
     outpath_tsv_pattern: Union[Path, str] = DEFAULTS["outpath-tsv-pattern"],
     variations: Iterable[Iterable[str]] = DEFAULTS["variations"],
-    dont_convert_paths_to_abs=False,
+    dont_convert_paths_to_abs: bool = False,
 ):
     """Analyze classification depth"""
     # Resolve paths
