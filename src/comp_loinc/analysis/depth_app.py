@@ -1,9 +1,11 @@
 """Interactive visualization app"""
+
 from pathlib import Path
 from typing import Dict, Iterable, Tuple
 
 import pandas as pd
 from dash import Dash, dcc, html, Input, Output
+import dash_bootstrap_components as dbc
 import plotly.express as px
 
 from comp_loinc.analysis.depth import analyze_class_depth, TMP_DIR
@@ -35,7 +37,9 @@ def ensure_data() -> None:
         analyze_class_depth()
         missing = [p for p in _expected_tsvs() if not p.exists()]
         if missing:
-            raise FileNotFoundError("Missing expected TSVs: " + ", ".join(str(p) for p in missing))
+            raise FileNotFoundError(
+                "Missing expected TSVs: " + ", ".join(str(p) for p in missing)
+            )
 
 
 def load_data() -> Dict[Tuple[bool, Tuple[str, ...], str], pd.DataFrame]:
@@ -54,27 +58,67 @@ def load_data() -> Dict[Tuple[bool, Tuple[str, ...], str], pd.DataFrame]:
 
 def create_app(data: Dict[Tuple[bool, Tuple[str, ...], str], pd.DataFrame]) -> Dash:
     """Create application object"""
-    app = Dash(__name__)
-    app.layout = html.Div([
-        html.H3("CompLOINC Classification Depth"),
-        html.Div([
-            html.Label("Filter:"),
-            dcc.RadioItems(list(FILTER_OPTIONS.keys()), list(FILTER_OPTIONS.keys())[0], id="filter-radio")
-        ]),
-        html.Div([
-            html.Label("View:"),
-            dcc.RadioItems(list(VIEW_OPTIONS.keys()), list(VIEW_OPTIONS.keys())[0], id="view-radio")
-        ]),
-        html.Div([
-            html.Label("Display:"),
-            dcc.RadioItems(list(STAT_OPTIONS.keys()), list(STAT_OPTIONS.keys())[0], id="stat-radio")
-        ]),
-        html.Div([
-            html.Label("Terminologies:"),
-            dcc.Checklist(id="ont-checklist")
-        ]),
-        dcc.Graph(id="depth-graph")
-    ])
+    app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+
+    app.layout = dbc.Container(
+        [
+            dbc.Row(
+                dbc.Col(html.H3("CompLOINC Classification Depth"), className="mb-4")
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                        [
+                            dbc.Label("Filter:"),
+                            dbc.RadioItems(
+                                list(FILTER_OPTIONS.keys()),
+                                list(FILTER_OPTIONS.keys())[0],
+                                id="filter-radio",
+                                inline=True,
+                            ),
+                        ],
+                        md=4,
+                    ),
+                    dbc.Col(
+                        [
+                            dbc.Label("View:"),
+                            dbc.RadioItems(
+                                list(VIEW_OPTIONS.keys()),
+                                list(VIEW_OPTIONS.keys())[0],
+                                id="view-radio",
+                                inline=True,
+                            ),
+                        ],
+                        md=4,
+                    ),
+                    dbc.Col(
+                        [
+                            dbc.Label("Display:"),
+                            dbc.RadioItems(
+                                list(STAT_OPTIONS.keys()),
+                                list(STAT_OPTIONS.keys())[0],
+                                id="stat-radio",
+                                inline=True,
+                            ),
+                        ],
+                        md=4,
+                    ),
+                ],
+                className="mb-3",
+            ),
+            dbc.Row(
+                dbc.Col(
+                    [
+                        dbc.Label("Terminologies:"),
+                        dbc.Checklist(id="ont-checklist", inline=True),
+                    ]
+                ),
+                className="mb-4",
+            ),
+            dbc.Row(dbc.Col(dcc.Graph(id="depth-graph"))),
+        ],
+        fluid=True,
+    )
 
     @app.callback(
         Output("ont-checklist", "options"),
