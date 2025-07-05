@@ -563,8 +563,13 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
 
         cmap = cmaps.get(ont, plt.cm.get_cmap("Greys"))
         for i, col in enumerate(cols):
-            # Spread shades between 0.3 and 0.9 so they remain distinguishable
-            frac = 0.3 + (0.6 * (i / max(n - 1, 1)))
+            # Spread shades between set ranges so they remain distinguishable.
+            # LOINC shades were previously too extreme in brightness, so we
+            # constrain the range used for that ontology.
+            start, end = 0.3, 0.9
+            if ont == "LOINC":
+                start, end = 0.45, 0.75
+            frac = start + ((end - start) * (i / max(n - 1, 1)))
             col_colour_map[col] = to_hex(cmap(frac))
 
     for col in columns:
