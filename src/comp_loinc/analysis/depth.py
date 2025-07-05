@@ -18,7 +18,7 @@ from typing import Dict, Iterable, List, Set, Tuple, Union
 
 import pandas as pd
 from jinja2 import Template
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, colormaps
 from matplotlib.colors import to_hex
 
 from comp_loinc.analysis.utils import (
@@ -45,6 +45,7 @@ DEFAULTS = {
     # Non-CLI args
     "variations": (("terms",), ("terms", "groups"), ("terms", "groups", "parts")),
     "outpath-tsv-pattern": "output/tmp/depth-by-class-{}.tsv",
+    "outpath-counts-tsv": "output/tmp/depth-processing-counts.tsv",
 }
 # If need smaller, cand o: ![Title]({{ outpath }}){: width="600px"}
 logger = logging.getLogger(__name__)
@@ -183,6 +184,9 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 ---
 
+## Counts, by data processing stage
+{{ counts_table }}
+
 {% for title, table_and_plot_path in figs_by_title.items() %}
 {% set table, plot_path = table_and_plot_path %}
 ## {{ title }}
@@ -211,10 +215,68 @@ ROOT_URI_LABEL_MAP = {
 }
 
 
+def _log_counts(
+    stage: str,
+    pairs: Set[Tuple[str, str]],
+    classes_set: Set[str],
+    roots_set: Set[str],
+    ont_name: str,
+    filter_str: str,
+) -> List[Dict[str, Union[str, int]]]:
+    """Log counts for a processing stage and return rows for a dataframe."""
+
+    stage_to_label = {
+        "raw_input": "raw",
+        "post_new_groupings": "after adding synthetic master grouping classes",
+        "post_filters": "after class type filtration",
+        "post_pruning": "after pruning dangling subtrees & nodes",
+    }
+    label = stage_to_label.get(stage, stage)
+    logging.debug(f"    n {label}:")
+    logging.debug(f"     - subclass pairs: {len(pairs):,}")
+    logging.debug(f"     - classes: {len(classes_set):,}")
+    logging.debug(f"     - roots: {len(roots_set):,}")
+
+    rows = [
+        {
+            "filter": filter_str,
+            "terminology": ont_name,
+            "stage": stage,
+            "metric": "subclass pairs",
+            "value": len(pairs),
+        },
+        {
+            "filter": filter_str,
+            "terminology": ont_name,
+            "stage": stage,
+            "metric": "classes",
+            "value": len(classes_set),
+        },
+        {
+            "filter": filter_str,
+            "terminology": ont_name,
+            "stage": stage,
+            "metric": "roots",
+            "value": len(roots_set),
+        },
+    ]
+
+    return rows
+
+
 def _depth_counts(
-    subclass_pairs: Set[Tuple[str, str]], ont_name: str, _filter: Iterable[str] = None, group_groups=True,
-    rename_subtree_roots=True, includes_angle_brackets=True
-) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Tuple[pd.DataFrame, pd.DataFrame]]]:
+    subclass_pairs: Set[Tuple[str, str]],
+    ont_name: str,
+    _filter: Iterable[str] = None,
+    group_groups=True,
+    rename_subtree_roots=True,
+    includes_angle_brackets=True,
+) -> Tuple[
+    pd.DataFrame,
+    pd.DataFrame,
+    Dict[str, Tuple[pd.DataFrame, pd.DataFrame]],
+    pd.DataFrame,
+]:
     """Provides a function to compute and analyze the hierarchical depth of classes based on their parent-child
     relationships, with an optional filter for specific class types.
 
@@ -230,18 +292,23 @@ def _depth_counts(
             `CLASS_TYPES`.
 
     Returns:
-        Tuple[pd.DataFrame, pd.DataFrame]:
+        Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Tuple[pd.DataFrame, pd.DataFrame]], pd.DataFrame]:
             - The first DataFrame contains two columns:
                 * ``depth``: The depth level within the class hierarchy.
                 * ``n``: The count of classes at the corresponding depth.
             - The second DataFrame contains a row for each class-depth pair with
               the columns ``class`` and ``depth``. In a polyhierarchy a class can
               occur at multiple depths and will be returned multiple times.
+            - The final DataFrame summarises counts of subclass pairs, classes,
+              and roots at key processing stages.
     """
     # logger.debug("Calculating depth counts for %d subclass pairs with filter %s", len(subclass_pairs), _filter)
     # Validation
     if _filter and any([x not in CLASS_TYPES for x in _filter]):
         raise ValueError(f"Filter must be one of {CLASS_TYPES}")
+
+    filter_str = ", ".join(_filter) if _filter else ""
+    stage_rows: List[Dict[str, Union[str, int]]] = []
 
     # Remove owl:Thing as root if exists
     owl_thing_axioms = {
@@ -256,10 +323,16 @@ def _depth_counts(
     classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
         subclass_pairs, includes_angle_brackets)
     roots: Set[str] = classes - set(child_parents.keys())
-    logging.debug(f"    n raw:")
-    logging.debug(f"     - subclass pairs: {len(subclass_pairs):,}")
-    logging.debug(f"     - classes: {len(classes):,}")
-    logging.debug(f"     - roots: {len(roots):,}")
+    stage_rows.extend(
+        _log_counts(
+            "raw_input",
+            subclass_pairs,
+            classes,
+            roots,
+            ont_name,
+            filter_str,
+        )
+    )
 
     # Group grouping classes
     if group_groups and 'groups' in _filter:
@@ -271,10 +344,16 @@ def _depth_counts(
                 _add_synthetic_transient_groups_loinc(
                     subclass_pairs, child_parents, parent_children, includes_angle_brackets)
     roots = classes - set(child_parents.keys())
-    logging.debug(f"    n after adding synthetic master grouping classes:")
-    logging.debug(f"     - subclass pairs: {len(subclass_pairs):,}")
-    logging.debug(f"     - classes: {len(classes):,}")
-    logging.debug(f"     - roots: {len(roots):,}")
+    stage_rows.extend(
+        _log_counts(
+            "post_new_groupings",
+            subclass_pairs,
+            classes,
+            roots,
+            ont_name,
+            filter_str,
+        )
+    )
 
     # Preserve lookups prior to filtering to detect dangling roots later
     child_parents_before = child_parents
@@ -283,12 +362,16 @@ def _depth_counts(
     classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children = _filter_classes(
         subclass_pairs, _filter, classes_by_type)
     roots = classes_post_filter - set(child_parents.keys())
-    logging.debug(f"    n after class type filtration:")
-    # logging.debug(f"     - Note: Can create more roots; parents can be filtered, but descendants might be of another"
-    #               f" class type, resulting in dangling subtrees. Will prune.")
-    logging.debug(f"     - subclass pairs: {len(subclass_pairs_post_filter):,}")
-    logging.debug(f"     - classes : {len(classes_post_filter):,}")
-    logging.debug(f"     - roots: {len(roots):,}")
+    stage_rows.extend(
+        _log_counts(
+            "post_filters",
+            subclass_pairs_post_filter,
+            classes_post_filter,
+            roots,
+            ont_name,
+            filter_str,
+        )
+    )
 
     # Remove dangling subtrees: that became dangling due to filtering
     #  - This can happen e.g. because a term can have a part as a parent, and have a subtree of parts and/or terms.
@@ -302,10 +385,16 @@ def _depth_counts(
     )
     # Remove dangling nodes
     roots = set([x for x in roots if parent_children[x]])
-    logging.debug(f"    n after pruning dangling subtrees & nodes:")
-    logging.debug(f"     - subclass pairs: {len(subclass_pairs_post_filter):,}")
-    logging.debug(f"     - classes: {len(classes_post_filter):,}")
-    logging.debug(f"     - roots: {len(roots):,}")
+    stage_rows.extend(
+        _log_counts(
+            "post_pruning",
+            subclass_pairs_post_filter,
+            classes_post_filter,
+            roots,
+            ont_name,
+            filter_str,
+        )
+    )
 
     # Calculate depth using BFS
     # A class can have multiple depths if the ontology is a polyhierarchy.
@@ -355,9 +444,14 @@ def _depth_counts(
         by_subtree[list(roots)[0]] = (df_counts, df_depths)
     if rename_subtree_roots:
         by_subtree = {ROOT_URI_LABEL_MAP[k]: v for k, v in by_subtree.items()}
+        # Not most elegant solution. Mainly for plotting later. Disambiguate from same/similar tree in CompLOINC.
+        if ont_name == 'LOINC-SNOMED':
+            by_subtree = {'LOINC-SNOMED': by_subtree[list(by_subtree.keys())[0]]}
+
+    stage_counts_df = pd.DataFrame(stage_rows)
 
     # logger.debug("Computed depth distribution: %s", depth_counts_list)
-    return df_counts, df_depths, by_subtree
+    return df_counts, df_depths, by_subtree, stage_counts_df
 
 
 def _get_subtree_nodes(root: str, parent_children: Dict[str, Set[str]]) -> Set[str]:
@@ -530,18 +624,20 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
     columns = df.columns.tolist()
     colors: List[str] = []
 
-    # Base colours and colormaps per ontology
+    # For "merged" variations
     base_colours = {
-        "CompLOINC-Primary": "#1f77b4",
-        "CompLOINC-Supplementary": "#ff7f0e",
-        "LOINC": "#d62728",
-        "LOINC-SNOMED": "#2ca02c",
+        "LOINC": "#d62728",  # medium/deep red
+        "LOINC-SNOMED": "#2ca02c",  # medium green
+        "CompLOINC-Primary": "#1f77b4",  # mid-tone blue
+        "CompLOINC-Supplementary": "#ff7f0e",  # dark blue
+        # "CompLOINC-Supplementary": "#ff7f0e",  # orange
     }
+    # For "by hierarchy" variations
     cmaps = {
-        "CompLOINC-Primary": plt.cm.Blues,
-        "CompLOINC-Supplementary": plt.cm.Oranges,
-        "LOINC": plt.cm.Reds,
-        "LOINC-SNOMED": plt.cm.Greens,
+        "LOINC": colormaps.get_cmap("Reds"),
+        "LOINC-SNOMED": colormaps.get_cmap("Greens"),
+        "CompLOINC-Primary": colormaps.get_cmap("Blues"),
+        "CompLOINC-Supplementary": colormaps.get_cmap("Purples"),
     }
 
     # Group columns by ontology
@@ -559,7 +655,7 @@ def _get_plot_colors(df: pd.DataFrame) -> List[str]:
             col_colour_map[cols[0]] = colour
             continue
 
-        cmap = cmaps.get(ont, plt.cm.Greys)
+        cmap = cmaps.get(ont, colormaps.get_cmap("Greys"))
         for i, col in enumerate(cols):
             # Spread shades between set ranges so they remain distinguishable.
             # LOINC shades were previously too extreme in brightness, so we
@@ -613,6 +709,7 @@ def _save_plot(
         # Create a series with depth as index and n as values
         data_for_plot[name] = df.set_index(cols[0])[cols[1]]
     merged = pd.DataFrame(data_for_plot).fillna(0)
+    merged.index.name = "Depth"
 
     # Create bar chart
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -624,7 +721,10 @@ def _save_plot(
     ax.legend(title="Terminology" + (" - Subtree" if disaggregate_roots else ""))
     plt.tight_layout()
     plt.savefig(outpath, dpi=300, bbox_inches="tight")
-    # logger.debug("Saved plot to %s", outpath)
+
+    # Also save a TSV version of the data used to render the plot
+    tsv_path = outdir / f"plot-class-depth{suffix}_{'-'.join(_filter)}_{stat}.tsv"
+    merged.to_csv(tsv_path, sep="\t")
 
     return merged, os.path.basename(outpath)
 
@@ -634,6 +734,7 @@ def _save_markdown(
         Tuple[bool, Iterable[str], str], Tuple[pd.DataFrame, str]
     ],
     outpath: Union[Path, str],
+    counts_df: pd.DataFrame = None,
     template: str = md_template,
 ):
     """Save results to markdown
@@ -641,6 +742,7 @@ def _save_markdown(
     :param tables_n_plots_by_filter_and_stat: keys are [(_filter, stat)], and values are (df, plot_filename).
      The df is a pandas dataframe that was used to create the plot. stat is one of ['totals', 'percentages']. _filter is
      one of class variations, e.g. ('terms', ), ('terms', 'groups'), or ('terms', 'groups', 'parts').
+    :param counts_df: DataFrame summarising processing counts to render.
     """
     # logger.debug("Saving markdown to %s", outpath)
     figs_by_title: Dict[str, Tuple[str, str]] = {}
@@ -668,10 +770,15 @@ def _save_markdown(
     # logger.debug("Markdown will contain %d sections", len(figs_by_title))
 
     # Render template
+    counts_table = ""
+    if counts_df is not None and not counts_df.empty:
+        counts_table = counts_df.to_markdown(tablefmt="github", index=False)
+
     template_obj = Template(template)
     rendered_markdown = template_obj.render(
         figs_by_title=figs_by_title,
         figs_by_title_by_hierarchy=figs_by_title_hier,
+        counts_table=counts_table,
     )
 
     # Write to file
@@ -732,22 +839,23 @@ def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], ou
 
 def analyze_class_depth(
     # CLI args
-    loinc_path: Union[Path, str],
-    loinc_snomed_path: Union[Path, str],
-    comploinc_primary_path: Union[Path, str],
-    comploinc_supplementary_path: Union[Path, str],
-    labels_path: Union[Path, str],
-    outpath_md: Union[Path, str],
-    outdir_plots: Union[Path, str],
+    loinc_path: Union[Path, str] = DEFAULTS["loinc-path"],
+    loinc_snomed_path: Union[Path, str] = DEFAULTS["loinc-snomed-path"],
+    comploinc_primary_path: Union[Path, str] = DEFAULTS["comploinc-primary-path"],
+    comploinc_supplementary_path: Union[Path, str] = DEFAULTS["comploinc-supplementary-path"],
+    labels_path: Union[Path, str] = DEFAULTS["labels-path"],
+    outpath_md: Union[Path, str] = DEFAULTS["outpath-md"],
+    outdir_plots: Union[Path, str] = DEFAULTS["outdir-plots"],
+    outpath_counts_tsv: Union[Path, str] = DEFAULTS["outpath-counts-tsv"],
     # Non CLI args
     outpath_tsv_pattern: Union[Path, str] = DEFAULTS["outpath-tsv-pattern"],
     variations: Iterable[Iterable[str]] = DEFAULTS["variations"],
-    dont_convert_paths_to_abs=False,
+    dont_convert_paths_to_abs: bool = False,
 ):
     """Analyze classification depth"""
     # Resolve paths
     terminologies: Dict[str, Path]
-    terminologies, outpath_md, outpath_tsv_pattern, outdir_plots, labels_path = (
+    terminologies, outpath_md, outpath_tsv_pattern, outdir_plots, labels_path, outpath_counts_tsv = (
         bundle_inpaths_and_update_abs_paths(
             # Inpaths to bundle into `terminologies`
             loinc_path,
@@ -760,6 +868,7 @@ def analyze_class_depth(
             outpath_tsv_pattern,
             outdir_plots,
             labels_path,
+            outpath_counts_tsv,
         )
     )
     if not os.path.exists(outdir_plots):
@@ -778,6 +887,7 @@ def analyze_class_depth(
         Tuple[bool, Iterable[str], str], Tuple[pd.DataFrame, str]
     ] = {}
     depth_by_class_dfs: List[pd.DataFrame] = []  # for TSVs
+    stage_count_dfs: List[pd.DataFrame] = []
 
     # TODO temp
     # variations = [('terms', 'groups', 'parts'), ]
@@ -792,7 +902,7 @@ def analyze_class_depth(
         # - get data for tables and plots
         for ont_name, axioms in ont_sets.items():
             logger.debug(f"  - {ont_name}")
-            counts_df, depth_by_class_df, by_subtree = _depth_counts(
+            counts_df, depth_by_class_df, by_subtree, stage_counts_df = _depth_counts(
                 axioms, ont_name, _filter
             )  # main data processing func
             # Main outputs: plots & tables
@@ -806,6 +916,7 @@ def analyze_class_depth(
             if tuple(_filter) == tuple(CLASS_TYPES):
                 depth_by_class_df.insert(0, "terminology", ont_name)
                 depth_by_class_dfs.append(depth_by_class_df)
+            stage_count_dfs.append(stage_counts_df)
         # - plots
         # Create plots and tables for both aggregate and per-subtree views
         for stat, data, disag in [
@@ -826,7 +937,10 @@ def analyze_class_depth(
     # Save
     # TODO: update to also show a "by root" section
     #  - wiltables_n_plots_by_filter_and_stat now has a disaggregate_roots T/F key at start of tuple
-    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md)
+    counts_df_all = pd.concat(stage_count_dfs, ignore_index=True)
+    counts_df_all.to_csv(outpath_counts_tsv, sep="\t", index=False)
+
+    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md, counts_df_all)
     # todo: also output TSVs for when disaggregate by roots, too?
     _save_depths_tsvs(depth_by_class_dfs, labels_path, outpath_tsv_pattern)
 
@@ -848,6 +962,13 @@ def cli():
         type=str,
         default=DEFAULTS["outdir-plots"],
         help="Outdir for plots: (number/% of classes) x (types of classes included).",
+    )
+    parser.add_argument(
+        "-c",
+        "--outpath-counts-tsv",
+        type=str,
+        default=DEFAULTS["outpath-counts-tsv"],
+        help="Path to TSV of processing stage counts.",
     )
     parser.add_argument(
         "-b",
