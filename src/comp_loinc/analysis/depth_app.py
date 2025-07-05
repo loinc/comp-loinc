@@ -106,7 +106,17 @@ def create_app(data: Dict[Tuple[bool, Tuple[str, ...], str], pd.DataFrame]) -> D
         df = data[(by_sub, filt, stat)]
         if ont_values:
             df = df[ont_values]
-        fig = px.bar(df, x=df.index, y=df.columns, barmode="group")
+        # Reset the index to work around issues with Plotly handling
+        # DataFrames that use the index for the x-axis.  Explicitly passing a
+        # template also avoids template related errors on some Plotly versions.
+        df_reset = df.reset_index()
+        fig = px.bar(
+            df_reset,
+            x=df_reset.columns[0],
+            y=df.columns.tolist(),
+            barmode="group",
+            template="plotly",
+        )
         fig.update_layout(
             xaxis_title="Depth",
             yaxis_title="Number of classes" if stat == "totals" else "% of classes",
