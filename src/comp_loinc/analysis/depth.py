@@ -805,6 +805,11 @@ def _save_markdown(
     # Render template
     etl_counts_table = ""
     if etl_counts_df is not None and not etl_counts_df.empty:
+        etl_counts_df = etl_counts_df.copy()
+        if "value" in etl_counts_df.columns:
+            etl_counts_df["value"] = etl_counts_df["value"].apply(
+                lambda x: f"{int(x):,}"
+            )
         etl_counts_table = etl_counts_df.to_markdown(tablefmt="github", index=False)
 
     template_obj = Template(template)
@@ -825,7 +830,9 @@ def _reformat_table(df: pd.DataFrame, stat: str, set_index_name=False) -> pd.Dat
     df2 = df.copy()
     # Format numbers
     if stat == "totals":
-        df2 = df2.applymap(lambda x: int(x) if pd.notna(x) else x)  # integers
+        df2 = df2.applymap(
+            lambda x: f"{int(x):,}" if pd.notna(x) else x
+        )
     elif stat == "percentages":
         df2 = df2.applymap(
             lambda x: f"{float(x):.2g}" if pd.notna(x) else x
