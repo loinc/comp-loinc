@@ -200,15 +200,6 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 {{ table }}
 
 {% endfor %}
-
-{% for title, table_and_plot_path in figs_by_title_by_hierarchy.items() %}
-{% set table, plot_path = table_and_plot_path %}
-## {{ title }}, by hierarchy
-![{{ title }}, by hierarchy]({{ plot_path }})
-
-{{ table }}
-
-{% endfor %}
 """
 ROOT_URI_LABEL_MAP = {
     '<https://loinc.org/138875005>': 'SNOMED-Inspired',
@@ -767,7 +758,7 @@ def _save_markdown(
     figs_by_title: "OrderedDict[str, Tuple[str, str]]" = OrderedDict()
 
     # Determine ordering of filters based on insertion order
-    filter_order: List[Tuple[str, ...]] = []
+    filter_order: List[Iterable[str]] = []
     for disagg, filt, _ in tables_n_plots_by_filter_and_stat.keys():
         if filt not in filter_order:
             filter_order.append(filt)
@@ -798,7 +789,6 @@ def _save_markdown(
     template_obj = Template(template)
     rendered_markdown = template_obj.render(
         figs_by_title=figs_by_title,
-        figs_by_title_by_hierarchy={},
         etl_counts_table=etl_counts_table,
     )
 
