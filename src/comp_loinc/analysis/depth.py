@@ -707,6 +707,27 @@ def _save_plot(
     merged = pd.DataFrame(data_for_plot).fillna(0)
     merged.index.name = "Depth"
 
+    # Ensure deterministic column ordering.
+    term_order = [
+        "LOINC",
+        "LOINC-SNOMED",
+        "CompLOINC-Primary",
+        "CompLOINC-Supplementary",
+    ]
+
+    def _sort_key(col: str):
+        if disaggregated_subtrees:
+            ont, subtree = col.split(" - ", 1)
+        else:
+            ont, subtree = col, ""
+        try:
+            ont_idx = term_order.index(ont)
+        except ValueError:
+            ont_idx = len(term_order)
+        return (ont_idx, subtree.lower())
+
+    merged = merged[sorted(merged.columns, key=_sort_key)]
+
     # Create bar chart
     bars_direction_map = {'vertical': 'bar', 'horizontal': 'barh'}
     bars_direction = 'horizontal' if disaggregated_subtrees else 'vertical'
