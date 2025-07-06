@@ -725,7 +725,7 @@ def _save_plot(
     ]
 
     def _sort_key(col: str):
-        if disaggregated_subtrees:
+        if disaggregated_subtrees and " - " in col:
             ont, subtree = col.split(" - ", 1)
         else:
             ont, subtree = col, ""
@@ -733,7 +733,7 @@ def _save_plot(
             ont_idx = term_order.index(ont)
         except ValueError:
             ont_idx = len(term_order)
-        return (ont_idx, subtree.lower())
+        return ont_idx, subtree.lower()
 
     merged = merged[sorted(merged.columns, key=_sort_key)]
 
