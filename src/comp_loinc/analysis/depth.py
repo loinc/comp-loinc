@@ -12,7 +12,7 @@ todo's
 import os
 import logging
 from argparse import ArgumentParser
-from collections import defaultdict, deque
+from collections import defaultdict, deque, OrderedDict
 from pathlib import Path
 from typing import Dict, Iterable, List, Set, Tuple, Union
 
@@ -755,36 +755,41 @@ def _save_markdown(
 ):
     """Save results to markdown
 
-    :param tables_n_plots_by_filter_and_stat: keys are [(_filter, stat)], and values are (df, plot_filename).
-     The df is a pandas dataframe that was used to create the plot. stat is one of ['totals', 'percentages']. _filter is
-     one of class variations, e.g. ('terms', ), ('terms', 'groups'), or ('terms', 'groups', 'parts').
+    :param tables_n_plots_by_filter_and_stat: Keys are ``(disaggregate_roots, filter, stat)`` and values are
+        ``(df, plot_filename)``. ``stat`` is one of ``['totals', 'percentages']`` and ``filter`` is one of the class
+        type variations, e.g. ``('terms',)`` or ``('terms', 'groups')``.
     :param etl_counts_df: DataFrame summarising processing counts to render.
+
+    Results are rendered in the following order:
+    filter variation -> merged/by hierarchy -> counts/percentages.
     """
     # logger.debug("Saving markdown to %s", outpath)
-    figs_by_title: Dict[str, Tuple[str, str]] = {}
-    figs_by_title_hier: Dict[str, Tuple[str, str]] = {}
+    figs_by_title: "OrderedDict[str, Tuple[str, str]]" = OrderedDict()
 
-    for (
-        disag_filter_stat,
-        table_and_plot_path,
-    ) in tables_n_plots_by_filter_and_stat.items():
-        # Construct title
-        disaggregate_roots, _filter, stat = disag_filter_stat
+    # Determine ordering of filters based on insertion order
+    filter_order: List[Tuple[str, ...]] = []
+    for disagg, filt, _ in tables_n_plots_by_filter_and_stat.keys():
+        if filt not in filter_order:
+            filter_order.append(filt)
 
-        stat_label: str = _get_stat_label(stat)
-        class_types_str = f'{", ".join(_filter)}'
-        title = f"{stat_label} ({class_types_str})"
+    # Build ordered sections: per filter -> aggregated/by hierarchy -> stat
+    for filt in filter_order:
+        for disagg in (False, True):
+            for stat in ("totals", "percentages"):
+                key = (disagg, filt, stat)
+                if key not in tables_n_plots_by_filter_and_stat:
+                    continue
+                df, plot_path = tables_n_plots_by_filter_and_stat[key]
+                stat_label: str = _get_stat_label(stat)
+                class_types_str = ", ".join(filt)
+                title = f"{stat_label} ({class_types_str})"
+                if disagg:
+                    title += ", by hierarchy"
 
-        # Convert formats
-        df, plot_path = table_and_plot_path
-        plot_path = str(plot_path)
-        table_str = df.to_markdown(tablefmt="github")
-        if disaggregate_roots:
-            figs_by_title_hier[title] = (table_str, plot_path)
-        else:
-            figs_by_title[title] = (table_str, plot_path)
+                plot_path = str(plot_path)
+                table_str = df.to_markdown(tablefmt="github")
+                figs_by_title[title] = (table_str, plot_path)
     # logger.debug("Markdown will contain %d sections", len(figs_by_title))
-
     # Render template
     etl_counts_table = ""
     if etl_counts_df is not None and not etl_counts_df.empty:
@@ -793,7 +798,7 @@ def _save_markdown(
     template_obj = Template(template)
     rendered_markdown = template_obj.render(
         figs_by_title=figs_by_title,
-        figs_by_title_by_hierarchy=figs_by_title_hier,
+        figs_by_title_by_hierarchy={},
         etl_counts_table=etl_counts_table,
     )
 
