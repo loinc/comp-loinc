@@ -731,7 +731,8 @@ def _save_plot(
     title_extra = ", by hierarchy" if disaggregated_subtrees else ""
     ax.set_title(f"Class depth distribution{title_extra} ({class_types_str})")
     if disaggregated_subtrees:
-        ax.legend(title="Terminology - Subtree", bbox_to_anchor=(1.05, 0.4), loc='center left')
+        # Can also lower a little more if overlaps w/ any bars; add: `bbox_to_anchor=(0.98, 0.4)`
+        ax.legend(title="Terminology - Subtree", loc='center right')
     else:
         ax.legend(title="Terminology")
     plt.tight_layout()
@@ -905,7 +906,7 @@ def analyze_class_depth(
     etl_stage_count_dfs: List[pd.DataFrame] = []
 
     # TODO temp
-    variations = [('terms', 'groups', 'parts'), ]
+    # variations = [('terms', 'groups', 'parts'), ]
     # ont_sets = {k: v for k, v in ont_sets.items() if k == 'CompLOINC-Primary'}
 
     for _filter in variations:
