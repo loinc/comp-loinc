@@ -189,9 +189,6 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 ---
 
-## Counts, by data processing stage
-{{ etl_counts_table }}
-
 {% for title, table_and_plot_path in figs_by_title.items() %}
 {% set table, plot_path = table_and_plot_path %}
 ## {{ title }}
@@ -200,6 +197,18 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 {{ table }}
 
 {% endfor %}
+
+---
+
+## Counts, by data processing stage
+The following table shows details in regards to number of clases and subclass axioms at various sequential stages of 
+data preparation. We start with the raw inputs queried by the ontology, including all class types. Then, a few transient 
+grouping clases just for this analysis were added to LOINC and CompLOINC. Next, we filter out the classes types that are
+not needed for one of the sub-analyses. The filter is some combination of terms, parts, and/or groups. Finally, we 
+remove any dangling classes, as well as any dangling subtrees that were caused by the previous filtration step.  
+
+{{ etl_counts_table }}
+
 """
 ROOT_URI_LABEL_MAP = {
     '<https://loinc.org/138875005>': 'SNOMED-Inspired',
