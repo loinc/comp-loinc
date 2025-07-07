@@ -23,8 +23,10 @@ from matplotlib.colors import to_hex
 
 from comp_loinc.analysis.utils import (
     CLASS_TYPES,
-    CL_GROUPING_CLASS_URI_STEMS, _disaggregate_classes_from_class_list,
-    _get_parent_child_lookups, bundle_inpaths_and_update_abs_paths,
+    CL_GROUPING_CLASS_URI_STEMS,
+    _disaggregate_classes_from_class_list,
+    _get_parent_child_lookups,
+    bundle_inpaths_and_update_abs_paths,
     cli_add_inpath_args,
     _filter_classes,
     _subclass_axioms_and_totals,
@@ -32,7 +34,7 @@ from comp_loinc.analysis.utils import (
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-APP_DATA_DIR = THIS_DIR / 'app_data'
+APP_DATA_DIR = THIS_DIR / "app_data"
 DESC = "Analyze classification depth."
 DEFAULTS = {
     # CLI args
@@ -212,15 +214,15 @@ that were caused by the previous filtration step.
 {{ etl_counts_table }}
 
 ### Percentages
-
+{{ etl_percents_table }}
 """
 ROOT_URI_LABEL_MAP = {
-    '<https://loinc.org/138875005>': 'SNOMED-Inspired',
-    '<https://loinc.org/LoincTerm>': 'LoincTerm',
-    '<https://loinc.org/LoincCategory>': 'LOINC Categories',
-    '<https://loinc.org/LoincGroup>': 'LOINC Groups',
-    '<http://comploinc/group>': 'CompLOINC Groups',
-    '<https://loinc.org/LoincPart>': 'LoincPart',
+    "<https://loinc.org/138875005>": "SNOMED-Inspired",
+    "<https://loinc.org/LoincTerm>": "LoincTerm",
+    "<https://loinc.org/LoincCategory>": "LOINC Categories",
+    "<https://loinc.org/LoincGroup>": "LOINC Groups",
+    "<http://comploinc/group>": "CompLOINC Groups",
+    "<https://loinc.org/LoincPart>": "LoincPart",
 }
 
 
@@ -330,7 +332,8 @@ def _depth_counts(
     child_parents: Dict[str, Set[str]]
     parent_children: Dict[str, Set[str]]
     classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
-        subclass_pairs, includes_angle_brackets)
+        subclass_pairs, includes_angle_brackets
+    )
     roots: Set[str] = classes - set(child_parents.keys())
     etl_counts_rows.extend(
         _log_counts(
@@ -344,14 +347,22 @@ def _depth_counts(
     )
 
     # Group grouping classes
-    if group_groups and 'groups' in _filter:
-        if 'CompLOINC' in ont_name:
-            classes, subclass_pairs, classes_by_type, child_parents, parent_children = \
-                _add_synthetic_transient_groups_comploinc(subclass_pairs, classes_by_type, includes_angle_brackets)
-        elif 'LOINC' == ont_name:
-            classes, subclass_pairs, classes_by_type, child_parents, parent_children = \
+    if group_groups and "groups" in _filter:
+        if "CompLOINC" in ont_name:
+            classes, subclass_pairs, classes_by_type, child_parents, parent_children = (
+                _add_synthetic_transient_groups_comploinc(
+                    subclass_pairs, classes_by_type, includes_angle_brackets
+                )
+            )
+        elif "LOINC" == ont_name:
+            classes, subclass_pairs, classes_by_type, child_parents, parent_children = (
                 _add_synthetic_transient_groups_loinc(
-                    subclass_pairs, child_parents, parent_children, includes_angle_brackets)
+                    subclass_pairs,
+                    child_parents,
+                    parent_children,
+                    includes_angle_brackets,
+                )
+            )
     roots = classes - set(child_parents.keys())
     etl_counts_rows.extend(
         _log_counts(
@@ -368,8 +379,9 @@ def _depth_counts(
     child_parents_before = child_parents
 
     # Filter by class types included in this analysis
-    classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children = _filter_classes(
-        subclass_pairs, _filter, classes_by_type)
+    classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children = (
+        _filter_classes(subclass_pairs, _filter, classes_by_type)
+    )
     roots = classes_post_filter - set(child_parents.keys())
     etl_counts_rows.extend(
         _log_counts(
@@ -385,12 +397,14 @@ def _depth_counts(
     # Remove dangling subtrees: that became dangling due to filtering
     #  - This can happen e.g. because a term can have a part as a parent, and have a subtree of parts and/or terms.
     #    Filtering out parts will chop off its parent, leaving it and its descendants dangling.
-    classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children = _prune_dangling_subtrees(
-        classes_post_filter,
-        subclass_pairs_post_filter,
-        child_parents,
-        parent_children,
-        child_parents_before,
+    classes_post_filter, subclass_pairs_post_filter, child_parents, parent_children = (
+        _prune_dangling_subtrees(
+            classes_post_filter,
+            subclass_pairs_post_filter,
+            child_parents,
+            parent_children,
+            child_parents_before,
+        )
     )
     # Remove dangling nodes
     roots = set([x for x in roots if parent_children[x]])
@@ -446,13 +460,13 @@ def _depth_counts(
     if len(roots) > 1:
         for root in roots:
             nodes = _get_subtree_nodes(root, parent_children)
-            df_depths_i = df_depths[df_depths['class'].isin(nodes)].copy()
-            df_counts_i = df_depths_i.groupby('depth').size().reset_index(name='n')
+            df_depths_i = df_depths[df_depths["class"].isin(nodes)].copy()
+            df_counts_i = df_depths_i.groupby("depth").size().reset_index(name="n")
             by_subtree[root] = (df_counts_i, df_depths_i)
     # elif len(roots) == 1:
-        # by_subtree[list(roots)[0]] = (df_counts, df_depths)
+    # by_subtree[list(roots)[0]] = (df_counts, df_depths)
     else:
-        by_subtree['hierarchy'] = (df_counts, df_depths)
+        by_subtree["hierarchy"] = (df_counts, df_depths)
 
     if rename_subtree_roots:
         by_subtree = {ROOT_URI_LABEL_MAP.get(k, k): v for k, v in by_subtree.items()}
@@ -526,32 +540,41 @@ def _prune_dangling_subtrees(
 
 
 def _add_synthetic_transient_groups_loinc(
-    subclass_pairs: Set[Tuple[str, str]], child_parents: Dict[str, Set[str]],
-    parent_children: Dict[str, Set[str]], includes_angle_brackets=True,
-) -> Tuple[Set[str], Set[Tuple[str, str]], Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+    subclass_pairs: Set[Tuple[str, str]],
+    child_parents: Dict[str, Set[str]],
+    parent_children: Dict[str, Set[str]],
+    includes_angle_brackets=True,
+) -> Tuple[
+    Set[str], Set[Tuple[str, str]], Dict[str, Set], Dict[str, Set], Dict[str, Set]
+]:
     """Add transient groups (just for this analysis) to LOINC"""
-    cat_uri = 'https://loinc.org/LoincCategory'
-    grp_uri = 'https://loinc.org/LoincGroup'
-    cat_uri = f'<{cat_uri}>' if includes_angle_brackets else cat_uri
-    grp_uri = f'<{grp_uri}>' if includes_angle_brackets else grp_uri
+    cat_uri = "https://loinc.org/LoincCategory"
+    grp_uri = "https://loinc.org/LoincGroup"
+    cat_uri = f"<{cat_uri}>" if includes_angle_brackets else cat_uri
+    grp_uri = f"<{grp_uri}>" if includes_angle_brackets else grp_uri
     classes = set(parent_children.keys()) | set(child_parents.keys())
     roots = classes - set(child_parents.keys())
     subclass_pairs_group_groups: Set[Tuple[str, str]] = set()
     for root in roots:
-        if 'loinc.org/category/' in root:
+        if "loinc.org/category/" in root:
             subclass_pairs_group_groups.add((root, cat_uri))
-        elif 'loinc.org/LG' in root:
+        elif "loinc.org/LG" in root:
             subclass_pairs_group_groups.add((root, grp_uri))
         # else: Should just be 1 case left over: LoincPart, which is already a proper root
     subclass_pairs2 = subclass_pairs.union(subclass_pairs_group_groups)
     classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
-        subclass_pairs2, includes_angle_brackets)
+        subclass_pairs2, includes_angle_brackets
+    )
     return classes, subclass_pairs2, classes_by_type, child_parents, parent_children
 
 
 def _add_synthetic_transient_groups_comploinc(
-    subclass_pairs: Set[Tuple[str, str]], classes_by_type: Dict[str, Set], includes_angle_brackets=True
-) -> Tuple[Set[str], Set[Tuple[str, str]], Dict[str, Set], Dict[str, Set], Dict[str, Set]]:
+    subclass_pairs: Set[Tuple[str, str]],
+    classes_by_type: Dict[str, Set],
+    includes_angle_brackets=True,
+) -> Tuple[
+    Set[str], Set[Tuple[str, str]], Dict[str, Set], Dict[str, Set], Dict[str, Set]
+]:
     """Add transient groups (just for this analysis) to CompLOINC
 
     Eventually we may do this in core CompLOINC, by adding these as actual classes. If so, we should remove this code,
@@ -561,19 +584,29 @@ def _add_synthetic_transient_groups_comploinc(
     """
     child_parents: Dict[str, Set[str]]
     parent_children: Dict[str, Set[str]]
-    master_group_uri = 'http://comploinc/group'
-    master_group_uri = f'<{master_group_uri}>' if includes_angle_brackets else master_group_uri
+    master_group_uri = "http://comploinc/group"
+    master_group_uri = (
+        f"<{master_group_uri}>" if includes_angle_brackets else master_group_uri
+    )
     subclass_pairs_group_groups: Set[Tuple[str, str]] = set()
-    grouping_classes_by_prop: Dict[str, List[str]] = defaultdict(list)  # e.g. {"component": [URI_1, ..., URI_N]}
+    grouping_classes_by_prop: Dict[str, List[str]] = defaultdict(
+        list
+    )  # e.g. {"component": [URI_1, ..., URI_N]}
     for uri in classes_by_type["groups"]:
-        fixed_uri = uri.replace('//', '/')  # as of 2025/07/02, there is a bug: http://comploinc//group/...
-        property_axis = fixed_uri.split('/')[-2]  # e.g. "component-system" or "component"
+        fixed_uri = uri.replace(
+            "//", "/"
+        )  # as of 2025/07/02, there is a bug: http://comploinc//group/...
+        property_axis = fixed_uri.split("/")[
+            -2
+        ]  # e.g. "component-system" or "component"
         grouping_classes_by_prop[property_axis].append(uri)
     prop_axis_uris: List[str] = []
     for prop_axis, uris in grouping_classes_by_prop.items():
         # prop_axis_uri: e.g. http://comploinc/group/component-system
-        prop_axis_uri = CL_GROUPING_CLASS_URI_STEMS[1] + '/' + prop_axis
-        prop_axis_uri = f'<{prop_axis_uri}>' if includes_angle_brackets else prop_axis_uri
+        prop_axis_uri = CL_GROUPING_CLASS_URI_STEMS[1] + "/" + prop_axis
+        prop_axis_uri = (
+            f"<{prop_axis_uri}>" if includes_angle_brackets else prop_axis_uri
+        )
         prop_axis_uris.append(prop_axis_uri)
         subclass_pairs_group_groups |= {(uri, prop_axis_uri) for uri in uris}
     for prop_axis_uri in prop_axis_uris:
@@ -581,7 +614,8 @@ def _add_synthetic_transient_groups_comploinc(
     subclass_pairs2 = subclass_pairs.union(subclass_pairs_group_groups)
     # todo: mutate like this, or make alt versions so we can compare before/after easily?
     classes, classes_by_type, child_parents, parent_children = _parse_subclass_pairs(
-        subclass_pairs2, includes_angle_brackets)
+        subclass_pairs2, includes_angle_brackets
+    )
     return classes, subclass_pairs2, classes_by_type, child_parents, parent_children
 
 
@@ -596,7 +630,9 @@ def _parse_subclass_pairs(
     classes = set(parent_children.keys()) | set(child_parents.keys())
 
     # Group classes by class type
-    classes_by_type: Dict[str, Set] = _disaggregate_classes_from_class_list(classes, includes_angle_brackets)
+    classes_by_type: Dict[str, Set] = _disaggregate_classes_from_class_list(
+        classes, includes_angle_brackets
+    )
     return classes, classes_by_type, child_parents, parent_children
 
 
@@ -742,14 +778,21 @@ def _save_plot(
     merged = merged[sorted(merged.columns, key=_sort_key)]
 
     # Create bar chart
-    bars_direction_map = {'vertical': 'bar', 'horizontal': 'barh'}
-    bars_direction = 'horizontal' if disaggregated_subtrees else 'vertical'
+    bars_direction_map = {"vertical": "bar", "horizontal": "barh"}
+    bars_direction = "horizontal" if disaggregated_subtrees else "vertical"
     fig_height = 15 if disaggregated_subtrees else 6
     fig, ax = plt.subplots(figsize=(10, fig_height))
     bar_width = 1 if disaggregated_subtrees else 0.8
     merged.plot(
-        kind=bars_direction_map[bars_direction], stacked=False, ax=ax, color=_get_plot_colors(merged), width=bar_width)
-    if disaggregated_subtrees:  # unsure why, but when bar direction is horizontal, changes to descending. this fixes it
+        kind=bars_direction_map[bars_direction],
+        stacked=False,
+        ax=ax,
+        color=_get_plot_colors(merged),
+        width=bar_width,
+    )
+    if (
+        disaggregated_subtrees
+    ):  # unsure why, but when bar direction is horizontal, changes to descending. this fixes it
         ax.invert_yaxis()
     ax.set_xlabel("Depth")
     ax.set_ylabel(y_lab)
@@ -757,7 +800,7 @@ def _save_plot(
     ax.set_title(f"Class depth distribution{title_extra} ({class_types_str})")
     if disaggregated_subtrees:
         # Can also lower a little more if overlaps w/ any bars; add: `bbox_to_anchor=(0.98, 0.4)`
-        ax.legend(title="Terminology - Subtree", loc='center right')
+        ax.legend(title="Terminology - Subtree", loc="center right")
     else:
         ax.legend(title="Terminology")
     plt.tight_layout()
@@ -776,6 +819,7 @@ def _save_markdown(
     ],
     outpath: Union[Path, str],
     etl_counts_df: pd.DataFrame = None,
+    etl_percents_df: pd.DataFrame = None,
     template: str = md_template,
 ):
     """Save results to markdown
@@ -784,6 +828,7 @@ def _save_markdown(
         ``(df, plot_filename)``. ``stat`` is one of ``['totals', 'percentages']`` and ``filter`` is one of the class
         type variations, e.g. ``('terms',)`` or ``('terms', 'groups')``.
     :param etl_counts_df: DataFrame summarising processing counts to render.
+    :param etl_percents_df: DataFrame summarising percentage changes to render.
 
     Results are rendered in the following order:
     filter variation -> merged/by hierarchy -> counts/percentages.
@@ -819,16 +864,28 @@ def _save_markdown(
     etl_counts_table = ""
     if etl_counts_df is not None and not etl_counts_df.empty:
         etl_counts_df = etl_counts_df.copy()
-        if "value" in etl_counts_df.columns:
-            etl_counts_df["value"] = etl_counts_df["value"].apply(
-                lambda x: f"{int(x):,}"
-            )
+        for col in etl_counts_df.columns:
+            if etl_counts_df[col].dtype.kind in {"i", "u", "f"}:
+                etl_counts_df[col] = etl_counts_df[col].apply(
+                    lambda x: f"{int(x):,}" if pd.notna(x) else x
+                )
         etl_counts_table = etl_counts_df.to_markdown(tablefmt="github", index=False)
+
+    etl_percents_table = ""
+    if etl_percents_df is not None and not etl_percents_df.empty:
+        etl_percents_df = etl_percents_df.copy()
+        for col in etl_percents_df.columns:
+            if etl_percents_df[col].dtype.kind in {"i", "u", "f"}:
+                etl_percents_df[col] = etl_percents_df[col].apply(
+                    lambda x: f"{float(x):.3g}" if pd.notna(x) else x
+                )
+        etl_percents_table = etl_percents_df.to_markdown(tablefmt="github", index=False)
 
     template_obj = Template(template)
     rendered_markdown = template_obj.render(
         figs_by_title=figs_by_title,
         etl_counts_table=etl_counts_table,
+        etl_percents_table=etl_percents_table,
     )
 
     # Write to file
@@ -843,9 +900,7 @@ def _reformat_table(df: pd.DataFrame, stat: str, set_index_name=False) -> pd.Dat
     df2 = df.copy()
     # Format numbers
     if stat == "totals":
-        df2 = df2.applymap(
-            lambda x: f"{int(x):,}" if pd.notna(x) else x
-        )
+        df2 = df2.applymap(lambda x: f"{int(x):,}" if pd.notna(x) else x)
     elif stat == "percentages":
         df2 = df2.applymap(
             lambda x: f"{float(x):.2g}" if pd.notna(x) else x
@@ -858,7 +913,11 @@ def _reformat_table(df: pd.DataFrame, stat: str, set_index_name=False) -> pd.Dat
     return df2
 
 
-def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], outpath_pattern: Union[Path, str]):
+def _save_depths_tsvs(
+    dfs: List[pd.DataFrame],
+    labels_path: Union[Path, str],
+    outpath_pattern: Union[Path, str],
+):
     """Save depths TSVs."""
     # todo: this combining into one df is no longer needed
     df_depths_all = pd.DataFrame()
@@ -876,7 +935,9 @@ def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], ou
             }
             df_depths_all["label"] = df_depths_all["class"].map(label_map)
         except FileNotFoundError:
-            logger.warning(f"Labels file not found: {labels_path}. Couldn't add labels to 'Classes by depth' TSVs")
+            logger.warning(
+                f"Labels file not found: {labels_path}. Couldn't add labels to 'Classes by depth' TSVs"
+            )
     else:
         logger.warning(
             f"'Classes by depth' TSVs empty because no variation was processed which includes all "
@@ -884,8 +945,8 @@ def _save_depths_tsvs(dfs: List[pd.DataFrame], labels_path: Union[Path, str], ou
         )
     # df_depths_all.to_csv(outpath_tsv, sep="\t", index=False)  # opting not to save because ~>200mb
     # todo: would be nice maybe to have these variations in the makefile target, but idk
-    for terminology, group_df in df_depths_all.groupby('terminology'):
-        del group_df['terminology']
+    for terminology, group_df in df_depths_all.groupby("terminology"):
+        del group_df["terminology"]
         group_df.to_csv(str(outpath_pattern).format(terminology), sep="\t", index=False)
 
 
@@ -894,7 +955,9 @@ def analyze_class_depth(
     loinc_path: Union[Path, str] = DEFAULTS["loinc-path"],
     loinc_snomed_path: Union[Path, str] = DEFAULTS["loinc-snomed-path"],
     comploinc_primary_path: Union[Path, str] = DEFAULTS["comploinc-primary-path"],
-    comploinc_supplementary_path: Union[Path, str] = DEFAULTS["comploinc-supplementary-path"],
+    comploinc_supplementary_path: Union[Path, str] = DEFAULTS[
+        "comploinc-supplementary-path"
+    ],
     labels_path: Union[Path, str] = DEFAULTS["labels-path"],
     outpath_md: Union[Path, str] = DEFAULTS["outpath-md"],
     outdir_plots: Union[Path, str] = DEFAULTS["outdir-plots"],
@@ -907,21 +970,26 @@ def analyze_class_depth(
     """Analyze classification depth"""
     # Resolve paths
     terminologies: Dict[str, Path]
-    terminologies, outpath_md, outpath_tsv_pattern, outdir_plots, labels_path, outpath_counts_tsv = (
-        bundle_inpaths_and_update_abs_paths(
-            # Inpaths to bundle into `terminologies`
-            loinc_path,
-            loinc_snomed_path,
-            comploinc_primary_path,
-            comploinc_supplementary_path,
-            dont_convert_paths_to_abs,
-            # Path varibales to update
-            outpath_md,
-            outpath_tsv_pattern,
-            outdir_plots,
-            labels_path,
-            outpath_counts_tsv,
-        )
+    (
+        terminologies,
+        outpath_md,
+        outpath_tsv_pattern,
+        outdir_plots,
+        labels_path,
+        outpath_counts_tsv,
+    ) = bundle_inpaths_and_update_abs_paths(
+        # Inpaths to bundle into `terminologies`
+        loinc_path,
+        loinc_snomed_path,
+        comploinc_primary_path,
+        comploinc_supplementary_path,
+        dont_convert_paths_to_abs,
+        # Path varibales to update
+        outpath_md,
+        outpath_tsv_pattern,
+        outdir_plots,
+        labels_path,
+        outpath_counts_tsv,
     )
     if not os.path.exists(outdir_plots):
         os.makedirs(outdir_plots)
@@ -956,11 +1024,16 @@ def analyze_class_depth(
             # Main outputs: plots & tables
             ont_depth_tables[ont_name] = counts_df
             for subtree_name, (counts_sub, _) in by_subtree.items():
-                key = f"{ont_name} - {subtree_name}" if subtree_name != 'hierarchy'\
-                    else ont_name  # improves labels if just 1 root
+                key = (
+                    f"{ont_name} - {subtree_name}"
+                    if subtree_name != "hierarchy"
+                    else ont_name
+                )  # improves labels if just 1 root
                 ont_depth_tables_by_subtree[key] = counts_sub
             ont_depth_pct_tables = _counts_to_pcts(ont_depth_tables)
-            ont_depth_pct_tables_by_subtree = _counts_to_pcts(ont_depth_tables_by_subtree)
+            ont_depth_pct_tables_by_subtree = _counts_to_pcts(
+                ont_depth_tables_by_subtree
+            )
             # TSV outputs
             if tuple(_filter) == tuple(CLASS_TYPES):
                 depth_by_class_df.insert(0, "terminology", ont_name)
@@ -987,11 +1060,44 @@ def analyze_class_depth(
     # - Data processing stage counts
     etl_counts_df_all = pd.concat(etl_stage_count_dfs, ignore_index=True)
     etl_counts_df_all.to_csv(outpath_counts_tsv, sep="\t", index=False)  # redundant
+
+    # Pivot counts so each terminology has its own column
+    etl_counts_pivot = etl_counts_df_all.pivot_table(
+        index=["filter", "stage", "metric"],
+        columns="terminology",
+        values="value",
+        aggfunc="first",
+    ).reset_index()
+
+    # Calculate percentages relative to stage 1 for each metric/terminology
+    base_series = etl_counts_df_all[
+        etl_counts_df_all["stage"] == "1: raw_input"
+    ].set_index(["filter", "terminology", "metric"])["value"]
+
+    def _calc_pct(row):
+        base = base_series.get((row["filter"], row["terminology"], row["metric"]), 0)
+        return (row["value"] / base * 100) if base else float("nan")
+
+    etl_counts_df_all["percent"] = etl_counts_df_all.apply(_calc_pct, axis=1)
+    etl_percents_pivot = etl_counts_df_all.pivot_table(
+        index=["filter", "stage", "metric"],
+        columns="terminology",
+        values="percent",
+        aggfunc="first",
+    ).reset_index()
+
     # - Markdown
-    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md, etl_counts_df_all)
+    _save_markdown(
+        tables_n_plots_by_filter_and_stat,
+        outpath_md,
+        etl_counts_pivot,
+        etl_percents_pivot,
+    )
     # todo: also output TSVs for when disaggregate by roots, too?
     # - Depths TSVs
-    _save_depths_tsvs(depth_by_class_dfs, labels_path, outpath_tsv_pattern)  # for manual analysis / troubleshooting
+    _save_depths_tsvs(
+        depth_by_class_dfs, labels_path, outpath_tsv_pattern
+    )  # for manual analysis / troubleshooting
 
 
 def cli():
