@@ -1,12 +1,8 @@
 """Analyze classification depth
 
 todo's
- if including, disaggregate groups by type? e.g.:
-  http://comploinc//group/component/LP...
-  http://comploinc//group/system/LP...
- inner bar stacking: IDK if this is possible, but it'd be great to have a separate bar for each source, and then the
- source bars are actually stacked, depending on class type. To do this, I'd need to pass classes_by_type as well to the
- plot function.
+ source bar stacking: it'd be great to have a separate bar for each source, and then the source bars are actually
+ stacked, stratified by class type. To do this, I'd need to pass classes_by_type as well to the plot function.
 """
 
 import os
@@ -950,6 +946,41 @@ def _save_depths_tsvs(
         group_df.to_csv(str(outpath_pattern).format(terminology), sep="\t", index=False)
 
 
+def _pivot_etl_data(
+    etl_stage_count_dfs: List[pd.DataFrame], outpath_counts_tsv: Union[Path, str] = DEFAULTS["outpath-counts-tsv"]
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Pivot ETL data"""
+    etl_counts_df_all = pd.concat(etl_stage_count_dfs, ignore_index=True)
+    etl_counts_df_all.to_csv(outpath_counts_tsv, sep="\t", index=False)  # redundant
+
+    # Pivot counts so each terminology has its own column
+    etl_counts_pivot = etl_counts_df_all.pivot_table(
+        index=["filter", "stage", "metric"],
+        columns="terminology",
+        values="value",
+        aggfunc="first",
+    ).reset_index()
+
+    # Calculate percentages relative to stage 1 for each metric/terminology
+    base_series = etl_counts_df_all[
+        etl_counts_df_all["stage"] == "1: raw_input"
+        ].set_index(["filter", "terminology", "metric"])["value"]
+
+    def _calc_pct(row):
+        base = base_series.get((row["filter"], row["terminology"], row["metric"]), 0)
+        return (row["value"] / base * 100) if base else float("nan")
+
+    etl_counts_df_all["percent"] = etl_counts_df_all.apply(_calc_pct, axis=1)
+    etl_percents_pivot = etl_counts_df_all.pivot_table(
+        index=["filter", "stage", "metric"],
+        columns="terminology",
+        values="percent",
+        aggfunc="first",
+    ).reset_index()
+
+    return etl_counts_pivot, etl_percents_pivot
+
+
 def analyze_class_depth(
     # CLI args
     loinc_path: Union[Path, str] = DEFAULTS["loinc-path"],
@@ -1057,35 +1088,8 @@ def analyze_class_depth(
             )
 
     # Save
-    # - Data processing stage counts
-    etl_counts_df_all = pd.concat(etl_stage_count_dfs, ignore_index=True)
-    etl_counts_df_all.to_csv(outpath_counts_tsv, sep="\t", index=False)  # redundant
-
-    # Pivot counts so each terminology has its own column
-    etl_counts_pivot = etl_counts_df_all.pivot_table(
-        index=["filter", "stage", "metric"],
-        columns="terminology",
-        values="value",
-        aggfunc="first",
-    ).reset_index()
-
-    # Calculate percentages relative to stage 1 for each metric/terminology
-    base_series = etl_counts_df_all[
-        etl_counts_df_all["stage"] == "1: raw_input"
-    ].set_index(["filter", "terminology", "metric"])["value"]
-
-    def _calc_pct(row):
-        base = base_series.get((row["filter"], row["terminology"], row["metric"]), 0)
-        return (row["value"] / base * 100) if base else float("nan")
-
-    etl_counts_df_all["percent"] = etl_counts_df_all.apply(_calc_pct, axis=1)
-    etl_percents_pivot = etl_counts_df_all.pivot_table(
-        index=["filter", "stage", "metric"],
-        columns="terminology",
-        values="percent",
-        aggfunc="first",
-    ).reset_index()
-
+    # - ETL processing stage data
+    etl_counts_pivot, etl_percents_pivot = _pivot_etl_data(etl_stage_count_dfs, outpath_counts_tsv)
     # - Markdown
     _save_markdown(
         tables_n_plots_by_filter_and_stat,

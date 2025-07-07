@@ -537,156 +537,90 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 ---
 
-## Counts, by data processing stage
-The following table shows details in regards to number of clases and subclass axioms at various sequential stages of 
-data preparation. We start with the raw inputs queried by the ontology, including all class types. Then, a few transient 
-grouping clases just for this analysis were added to LOINC and CompLOINC. Next, we filter out the classes types that are
-not needed for one of the sub-analyses. The filter is some combination of terms, parts, and/or groups. Finally, we 
-remove any dangling classes, as well as any dangling subtrees that were caused by the previous filtration step.  
+## Changes, by data processing stage
+The following tables shows details in regards to total counts and percentages remaining of classes, subclass axioms, and
+roots at various sequential stages of data preparation. The We start with the raw inputs queried by the ontology, 
+including all class types. Then, a few transient grouping clases just for this analysis were added to LOINC and 
+CompLOINC. Next, we filter out the classes types that are not needed for one of the sub-analyses. The filter is some 
+combination of terms, parts, and/or groups. Finally, we remove any dangling classes, as well as any dangling subtrees 
+that were caused by the previous filtration step.  
 
-| filter               | terminology             | stage                 | metric         | value   |
-|----------------------|-------------------------|-----------------------|----------------|---------|
-| terms                | LOINC                   | 1: raw_input          | subclass pairs | 177,265 |
-| terms                | LOINC                   | 1: raw_input          | classes        | 153,742 |
-| terms                | LOINC                   | 1: raw_input          | roots          | 62      |
-| terms                | LOINC                   | 2: post_new_groupings | subclass pairs | 177,265 |
-| terms                | LOINC                   | 2: post_new_groupings | classes        | 153,742 |
-| terms                | LOINC                   | 2: post_new_groupings | roots          | 62      |
-| terms                | LOINC                   | 3: post_filters       | subclass pairs | 0       |
-| terms                | LOINC                   | 3: post_filters       | classes        | 30,327  |
-| terms                | LOINC                   | 3: post_filters       | roots          | 30,327  |
-| terms                | LOINC                   | 4: post_pruning       | subclass pairs | 0       |
-| terms                | LOINC                   | 4: post_pruning       | classes        | 0       |
-| terms                | LOINC                   | 4: post_pruning       | roots          | 0       |
-| terms                | LOINC-SNOMED            | 1: raw_input          | subclass pairs | 11,376  |
-| terms                | LOINC-SNOMED            | 1: raw_input          | classes        | 7,963   |
-| terms                | LOINC-SNOMED            | 1: raw_input          | roots          | 1       |
-| terms                | LOINC-SNOMED            | 2: post_new_groupings | subclass pairs | 11,376  |
-| terms                | LOINC-SNOMED            | 2: post_new_groupings | classes        | 7,963   |
-| terms                | LOINC-SNOMED            | 2: post_new_groupings | roots          | 1       |
-| terms                | LOINC-SNOMED            | 3: post_filters       | subclass pairs | 11,376  |
-| terms                | LOINC-SNOMED            | 3: post_filters       | classes        | 7,963   |
-| terms                | LOINC-SNOMED            | 3: post_filters       | roots          | 1       |
-| terms                | LOINC-SNOMED            | 4: post_pruning       | subclass pairs | 11,376  |
-| terms                | LOINC-SNOMED            | 4: post_pruning       | classes        | 7,963   |
-| terms                | LOINC-SNOMED            | 4: post_pruning       | roots          | 1       |
-| terms                | CompLOINC-Primary       | 1: raw_input          | subclass pairs | 422,349 |
-| terms                | CompLOINC-Primary       | 1: raw_input          | classes        | 241,791 |
-| terms                | CompLOINC-Primary       | 1: raw_input          | roots          | 938     |
-| terms                | CompLOINC-Primary       | 2: post_new_groupings | subclass pairs | 422,349 |
-| terms                | CompLOINC-Primary       | 2: post_new_groupings | classes        | 241,791 |
-| terms                | CompLOINC-Primary       | 2: post_new_groupings | roots          | 938     |
-| terms                | CompLOINC-Primary       | 3: post_filters       | subclass pairs | 120,819 |
-| terms                | CompLOINC-Primary       | 3: post_filters       | classes        | 103,412 |
-| terms                | CompLOINC-Primary       | 3: post_filters       | roots          | 71      |
-| terms                | CompLOINC-Primary       | 4: post_pruning       | subclass pairs | 120,387 |
-| terms                | CompLOINC-Primary       | 4: post_pruning       | classes        | 103,104 |
-| terms                | CompLOINC-Primary       | 4: post_pruning       | roots          | 2       |
-| terms                | CompLOINC-Supplementary | 1: raw_input          | subclass pairs | 360,244 |
-| terms                | CompLOINC-Supplementary | 1: raw_input          | classes        | 241,785 |
-| terms                | CompLOINC-Supplementary | 1: raw_input          | roots          | 932     |
-| terms                | CompLOINC-Supplementary | 2: post_new_groupings | subclass pairs | 360,244 |
-| terms                | CompLOINC-Supplementary | 2: post_new_groupings | classes        | 241,785 |
-| terms                | CompLOINC-Supplementary | 2: post_new_groupings | roots          | 932     |
-| terms                | CompLOINC-Supplementary | 3: post_filters       | subclass pairs | 147,034 |
-| terms                | CompLOINC-Supplementary | 3: post_filters       | classes        | 103,412 |
-| terms                | CompLOINC-Supplementary | 3: post_filters       | roots          | 71      |
-| terms                | CompLOINC-Supplementary | 4: post_pruning       | subclass pairs | 146,602 |
-| terms                | CompLOINC-Supplementary | 4: post_pruning       | classes        | 103,104 |
-| terms                | CompLOINC-Supplementary | 4: post_pruning       | roots          | 2       |
-| terms, groups        | LOINC                   | 1: raw_input          | subclass pairs | 177,265 |
-| terms, groups        | LOINC                   | 1: raw_input          | classes        | 153,742 |
-| terms, groups        | LOINC                   | 1: raw_input          | roots          | 62      |
-| terms, groups        | LOINC                   | 2: post_new_groupings | subclass pairs | 177,326 |
-| terms, groups        | LOINC                   | 2: post_new_groupings | classes        | 153,744 |
-| terms, groups        | LOINC                   | 2: post_new_groupings | roots          | 3       |
-| terms, groups        | LOINC                   | 3: post_filters       | subclass pairs | 56,877  |
-| terms, groups        | LOINC                   | 3: post_filters       | classes        | 37,558  |
-| terms, groups        | LOINC                   | 3: post_filters       | roots          | 2       |
-| terms, groups        | LOINC                   | 4: post_pruning       | subclass pairs | 56,877  |
-| terms, groups        | LOINC                   | 4: post_pruning       | classes        | 37,558  |
-| terms, groups        | LOINC                   | 4: post_pruning       | roots          | 2       |
-| terms, groups        | LOINC-SNOMED            | 1: raw_input          | subclass pairs | 11,376  |
-| terms, groups        | LOINC-SNOMED            | 1: raw_input          | classes        | 7,963   |
-| terms, groups        | LOINC-SNOMED            | 1: raw_input          | roots          | 1       |
-| terms, groups        | LOINC-SNOMED            | 2: post_new_groupings | subclass pairs | 11,376  |
-| terms, groups        | LOINC-SNOMED            | 2: post_new_groupings | classes        | 7,963   |
-| terms, groups        | LOINC-SNOMED            | 2: post_new_groupings | roots          | 1       |
-| terms, groups        | LOINC-SNOMED            | 3: post_filters       | subclass pairs | 11,376  |
-| terms, groups        | LOINC-SNOMED            | 3: post_filters       | classes        | 7,963   |
-| terms, groups        | LOINC-SNOMED            | 3: post_filters       | roots          | 1       |
-| terms, groups        | LOINC-SNOMED            | 4: post_pruning       | subclass pairs | 11,376  |
-| terms, groups        | LOINC-SNOMED            | 4: post_pruning       | classes        | 7,963   |
-| terms, groups        | LOINC-SNOMED            | 4: post_pruning       | roots          | 1       |
-| terms, groups        | CompLOINC-Primary       | 1: raw_input          | subclass pairs | 422,349 |
-| terms, groups        | CompLOINC-Primary       | 1: raw_input          | classes        | 241,791 |
-| terms, groups        | CompLOINC-Primary       | 1: raw_input          | roots          | 938     |
-| terms, groups        | CompLOINC-Primary       | 2: post_new_groupings | subclass pairs | 444,545 |
-| terms, groups        | CompLOINC-Primary       | 2: post_new_groupings | classes        | 241,795 |
-| terms, groups        | CompLOINC-Primary       | 2: post_new_groupings | roots          | 4       |
-| terms, groups        | CompLOINC-Primary       | 3: post_filters       | subclass pairs | 277,664 |
-| terms, groups        | CompLOINC-Primary       | 3: post_filters       | classes        | 125,609 |
-| terms, groups        | CompLOINC-Primary       | 3: post_filters       | roots          | 72      |
-| terms, groups        | CompLOINC-Primary       | 4: post_pruning       | subclass pairs | 277,232 |
-| terms, groups        | CompLOINC-Primary       | 4: post_pruning       | classes        | 125,301 |
-| terms, groups        | CompLOINC-Primary       | 4: post_pruning       | roots          | 3       |
-| terms, groups        | CompLOINC-Supplementary | 1: raw_input          | subclass pairs | 360,244 |
-| terms, groups        | CompLOINC-Supplementary | 1: raw_input          | classes        | 241,785 |
-| terms, groups        | CompLOINC-Supplementary | 1: raw_input          | roots          | 932     |
-| terms, groups        | CompLOINC-Supplementary | 2: post_new_groupings | subclass pairs | 382,434 |
-| terms, groups        | CompLOINC-Supplementary | 2: post_new_groupings | classes        | 241,789 |
-| terms, groups        | CompLOINC-Supplementary | 2: post_new_groupings | roots          | 4       |
-| terms, groups        | CompLOINC-Supplementary | 3: post_filters       | subclass pairs | 215,553 |
-| terms, groups        | CompLOINC-Supplementary | 3: post_filters       | classes        | 125,603 |
-| terms, groups        | CompLOINC-Supplementary | 3: post_filters       | roots          | 72      |
-| terms, groups        | CompLOINC-Supplementary | 4: post_pruning       | subclass pairs | 215,121 |
-| terms, groups        | CompLOINC-Supplementary | 4: post_pruning       | classes        | 125,295 |
-| terms, groups        | CompLOINC-Supplementary | 4: post_pruning       | roots          | 3       |
-| terms, groups, parts | LOINC                   | 1: raw_input          | subclass pairs | 177,265 |
-| terms, groups, parts | LOINC                   | 1: raw_input          | classes        | 153,742 |
-| terms, groups, parts | LOINC                   | 1: raw_input          | roots          | 62      |
-| terms, groups, parts | LOINC                   | 2: post_new_groupings | subclass pairs | 177,326 |
-| terms, groups, parts | LOINC                   | 2: post_new_groupings | classes        | 153,744 |
-| terms, groups, parts | LOINC                   | 2: post_new_groupings | roots          | 3       |
-| terms, groups, parts | LOINC                   | 3: post_filters       | subclass pairs | 177,326 |
-| terms, groups, parts | LOINC                   | 3: post_filters       | classes        | 153,744 |
-| terms, groups, parts | LOINC                   | 3: post_filters       | roots          | 3       |
-| terms, groups, parts | LOINC                   | 4: post_pruning       | subclass pairs | 177,326 |
-| terms, groups, parts | LOINC                   | 4: post_pruning       | classes        | 153,744 |
-| terms, groups, parts | LOINC                   | 4: post_pruning       | roots          | 3       |
-| terms, groups, parts | LOINC-SNOMED            | 1: raw_input          | subclass pairs | 11,376  |
-| terms, groups, parts | LOINC-SNOMED            | 1: raw_input          | classes        | 7,963   |
-| terms, groups, parts | LOINC-SNOMED            | 1: raw_input          | roots          | 1       |
-| terms, groups, parts | LOINC-SNOMED            | 2: post_new_groupings | subclass pairs | 11,376  |
-| terms, groups, parts | LOINC-SNOMED            | 2: post_new_groupings | classes        | 7,963   |
-| terms, groups, parts | LOINC-SNOMED            | 2: post_new_groupings | roots          | 1       |
-| terms, groups, parts | LOINC-SNOMED            | 3: post_filters       | subclass pairs | 11,376  |
-| terms, groups, parts | LOINC-SNOMED            | 3: post_filters       | classes        | 7,963   |
-| terms, groups, parts | LOINC-SNOMED            | 3: post_filters       | roots          | 1       |
-| terms, groups, parts | LOINC-SNOMED            | 4: post_pruning       | subclass pairs | 11,376  |
-| terms, groups, parts | LOINC-SNOMED            | 4: post_pruning       | classes        | 7,963   |
-| terms, groups, parts | LOINC-SNOMED            | 4: post_pruning       | roots          | 1       |
-| terms, groups, parts | CompLOINC-Primary       | 1: raw_input          | subclass pairs | 422,349 |
-| terms, groups, parts | CompLOINC-Primary       | 1: raw_input          | classes        | 241,791 |
-| terms, groups, parts | CompLOINC-Primary       | 1: raw_input          | roots          | 938     |
-| terms, groups, parts | CompLOINC-Primary       | 2: post_new_groupings | subclass pairs | 444,545 |
-| terms, groups, parts | CompLOINC-Primary       | 2: post_new_groupings | classes        | 241,795 |
-| terms, groups, parts | CompLOINC-Primary       | 2: post_new_groupings | roots          | 4       |
-| terms, groups, parts | CompLOINC-Primary       | 3: post_filters       | subclass pairs | 444,545 |
-| terms, groups, parts | CompLOINC-Primary       | 3: post_filters       | classes        | 241,795 |
-| terms, groups, parts | CompLOINC-Primary       | 3: post_filters       | roots          | 4       |
-| terms, groups, parts | CompLOINC-Primary       | 4: post_pruning       | subclass pairs | 444,545 |
-| terms, groups, parts | CompLOINC-Primary       | 4: post_pruning       | classes        | 241,795 |
-| terms, groups, parts | CompLOINC-Primary       | 4: post_pruning       | roots          | 4       |
-| terms, groups, parts | CompLOINC-Supplementary | 1: raw_input          | subclass pairs | 360,244 |
-| terms, groups, parts | CompLOINC-Supplementary | 1: raw_input          | classes        | 241,785 |
-| terms, groups, parts | CompLOINC-Supplementary | 1: raw_input          | roots          | 932     |
-| terms, groups, parts | CompLOINC-Supplementary | 2: post_new_groupings | subclass pairs | 382,434 |
-| terms, groups, parts | CompLOINC-Supplementary | 2: post_new_groupings | classes        | 241,789 |
-| terms, groups, parts | CompLOINC-Supplementary | 2: post_new_groupings | roots          | 4       |
-| terms, groups, parts | CompLOINC-Supplementary | 3: post_filters       | subclass pairs | 382,434 |
-| terms, groups, parts | CompLOINC-Supplementary | 3: post_filters       | classes        | 241,789 |
-| terms, groups, parts | CompLOINC-Supplementary | 3: post_filters       | roots          | 4       |
-| terms, groups, parts | CompLOINC-Supplementary | 4: post_pruning       | subclass pairs | 382,434 |
-| terms, groups, parts | CompLOINC-Supplementary | 4: post_pruning       | classes        | 241,789 |
-| terms, groups, parts | CompLOINC-Supplementary | 4: post_pruning       | roots          | 4       |
+### Counts
+| filter               | stage                 | metric         | CompLOINC-Primary   | CompLOINC-Supplementary   | LOINC   | LOINC-SNOMED   |
+|----------------------|-----------------------|----------------|---------------------|---------------------------|---------|----------------|
+| terms                | 1: raw_input          | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
+| terms                | 1: raw_input          | roots          | 938                 | 932                       | 62      | 1              |
+| terms                | 1: raw_input          | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
+| terms                | 2: post_new_groupings | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
+| terms                | 2: post_new_groupings | roots          | 938                 | 932                       | 62      | 1              |
+| terms                | 2: post_new_groupings | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
+| terms                | 3: post_filters       | classes        | 103,412             | 103,412                   | 30,327  | 7,963          |
+| terms                | 3: post_filters       | roots          | 71                  | 71                        | 30,327  | 1              |
+| terms                | 3: post_filters       | subclass pairs | 120,819             | 147,034                   | 0       | 11,376         |
+| terms                | 4: post_pruning       | classes        | 103,104             | 103,104                   | 0       | 7,963          |
+| terms                | 4: post_pruning       | roots          | 2                   | 2                         | 0       | 1              |
+| terms                | 4: post_pruning       | subclass pairs | 120,387             | 146,602                   | 0       | 11,376         |
+| terms, groups        | 1: raw_input          | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
+| terms, groups        | 1: raw_input          | roots          | 938                 | 932                       | 62      | 1              |
+| terms, groups        | 1: raw_input          | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
+| terms, groups        | 2: post_new_groupings | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
+| terms, groups        | 2: post_new_groupings | roots          | 4                   | 4                         | 3       | 1              |
+| terms, groups        | 2: post_new_groupings | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
+| terms, groups        | 3: post_filters       | classes        | 125,609             | 125,603                   | 37,558  | 7,963          |
+| terms, groups        | 3: post_filters       | roots          | 72                  | 72                        | 2       | 1              |
+| terms, groups        | 3: post_filters       | subclass pairs | 277,664             | 215,553                   | 56,877  | 11,376         |
+| terms, groups        | 4: post_pruning       | classes        | 125,301             | 125,295                   | 37,558  | 7,963          |
+| terms, groups        | 4: post_pruning       | roots          | 3                   | 3                         | 2       | 1              |
+| terms, groups        | 4: post_pruning       | subclass pairs | 277,232             | 215,121                   | 56,877  | 11,376         |
+| terms, groups, parts | 1: raw_input          | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
+| terms, groups, parts | 1: raw_input          | roots          | 938                 | 932                       | 62      | 1              |
+| terms, groups, parts | 1: raw_input          | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
+| terms, groups, parts | 2: post_new_groupings | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
+| terms, groups, parts | 2: post_new_groupings | roots          | 4                   | 4                         | 3       | 1              |
+| terms, groups, parts | 2: post_new_groupings | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
+| terms, groups, parts | 3: post_filters       | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
+| terms, groups, parts | 3: post_filters       | roots          | 4                   | 4                         | 3       | 1              |
+| terms, groups, parts | 3: post_filters       | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
+| terms, groups, parts | 4: post_pruning       | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
+| terms, groups, parts | 4: post_pruning       | roots          | 4                   | 4                         | 3       | 1              |
+| terms, groups, parts | 4: post_pruning       | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
+
+### Percentages
+| filter               | stage                 | metric         |   CompLOINC-Primary |   CompLOINC-Supplementary |    LOINC |   LOINC-SNOMED |
+|----------------------|-----------------------|----------------|---------------------|---------------------------|----------|----------------|
+| terms                | 1: raw_input          | classes        |             100     |                   100     |   100    |            100 |
+| terms                | 1: raw_input          | roots          |             100     |                   100     |   100    |            100 |
+| terms                | 1: raw_input          | subclass pairs |             100     |                   100     |   100    |            100 |
+| terms                | 2: post_new_groupings | classes        |             100     |                   100     |   100    |            100 |
+| terms                | 2: post_new_groupings | roots          |             100     |                   100     |   100    |            100 |
+| terms                | 2: post_new_groupings | subclass pairs |             100     |                   100     |   100    |            100 |
+| terms                | 3: post_filters       | classes        |              42.8   |                    42.8   |    19.7  |            100 |
+| terms                | 3: post_filters       | roots          |               7.57  |                     7.62  | 48900    |            100 |
+| terms                | 3: post_filters       | subclass pairs |              28.6   |                    40.8   |     0    |            100 |
+| terms                | 4: post_pruning       | classes        |              42.6   |                    42.6   |     0    |            100 |
+| terms                | 4: post_pruning       | roots          |               0.213 |                     0.215 |     0    |            100 |
+| terms                | 4: post_pruning       | subclass pairs |              28.5   |                    40.7   |     0    |            100 |
+| terms, groups        | 1: raw_input          | classes        |             100     |                   100     |   100    |            100 |
+| terms, groups        | 1: raw_input          | roots          |             100     |                   100     |   100    |            100 |
+| terms, groups        | 1: raw_input          | subclass pairs |             100     |                   100     |   100    |            100 |
+| terms, groups        | 2: post_new_groupings | classes        |             100     |                   100     |   100    |            100 |
+| terms, groups        | 2: post_new_groupings | roots          |               0.426 |                     0.429 |     4.84 |            100 |
+| terms, groups        | 2: post_new_groupings | subclass pairs |             105     |                   106     |   100    |            100 |
+| terms, groups        | 3: post_filters       | classes        |              51.9   |                    51.9   |    24.4  |            100 |
+| terms, groups        | 3: post_filters       | roots          |               7.68  |                     7.73  |     3.23 |            100 |
+| terms, groups        | 3: post_filters       | subclass pairs |              65.7   |                    59.8   |    32.1  |            100 |
+| terms, groups        | 4: post_pruning       | classes        |              51.8   |                    51.8   |    24.4  |            100 |
+| terms, groups        | 4: post_pruning       | roots          |               0.32  |                     0.322 |     3.23 |            100 |
+| terms, groups        | 4: post_pruning       | subclass pairs |              65.6   |                    59.7   |    32.1  |            100 |
+| terms, groups, parts | 1: raw_input          | classes        |             100     |                   100     |   100    |            100 |
+| terms, groups, parts | 1: raw_input          | roots          |             100     |                   100     |   100    |            100 |
+| terms, groups, parts | 1: raw_input          | subclass pairs |             100     |                   100     |   100    |            100 |
+| terms, groups, parts | 2: post_new_groupings | classes        |             100     |                   100     |   100    |            100 |
+| terms, groups, parts | 2: post_new_groupings | roots          |               0.426 |                     0.429 |     4.84 |            100 |
+| terms, groups, parts | 2: post_new_groupings | subclass pairs |             105     |                   106     |   100    |            100 |
+| terms, groups, parts | 3: post_filters       | classes        |             100     |                   100     |   100    |            100 |
+| terms, groups, parts | 3: post_filters       | roots          |               0.426 |                     0.429 |     4.84 |            100 |
+| terms, groups, parts | 3: post_filters       | subclass pairs |             105     |                   106     |   100    |            100 |
+| terms, groups, parts | 4: post_pruning       | classes        |             100     |                   100     |   100    |            100 |
+| terms, groups, parts | 4: post_pruning       | roots          |               0.426 |                     0.429 |     4.84 |            100 |
+| terms, groups, parts | 4: post_pruning       | subclass pairs |             105     |                   106     |   100    |            100 |
