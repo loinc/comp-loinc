@@ -308,7 +308,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## Number of classes (terms)
-![Number of classes (terms)](plot-class-depth_terms_totals.png)
+![Number of classes (terms)](analyses/class-depth/plot-class-depth_terms_totals.png)
 
 |   Depth |   LOINC | LOINC-SNOMED   | CompLOINC-Primary   | CompLOINC-Supplementary   |
 |---------|---------|----------------|---------------------|---------------------------|
@@ -341,7 +341,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## % of classes (terms)
-![% of classes (terms)](plot-class-depth_terms_percentages.png)
+![% of classes (terms)](analyses/class-depth/plot-class-depth_terms_percentages.png)
 
 |   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary |   CompLOINC-Supplementary |
 |---------|---------|----------------|---------------------|---------------------------|
@@ -374,7 +374,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## Number of classes (terms), by hierarchy
-![Number of classes (terms), by hierarchy](plot-class-depth_by-hierarchy_terms_totals.png)
+![Number of classes (terms), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms_totals.png)
 
 |   Depth |   LOINC | LOINC-SNOMED   | CompLOINC-Primary - LoincTerm   | CompLOINC-Primary - SNOMED-Inspired   | CompLOINC-Supplementary - LoincTerm   | CompLOINC-Supplementary - SNOMED-Inspired   |
 |---------|---------|----------------|---------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|
@@ -407,7 +407,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## % of classes (terms), by hierarchy
-![% of classes (terms), by hierarchy](plot-class-depth_by-hierarchy_terms_percentages.png)
+![% of classes (terms), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms_percentages.png)
 
 |   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary - LoincTerm |   CompLOINC-Primary - SNOMED-Inspired |   CompLOINC-Supplementary - LoincTerm |   CompLOINC-Supplementary - SNOMED-Inspired |
 |---------|---------|----------------|---------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|
@@ -440,7 +440,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## Number of classes (terms, groups)
-![Number of classes (terms, groups)](plot-class-depth_terms-groups_totals.png)
+![Number of classes (terms, groups)](analyses/class-depth/plot-class-depth_terms-groups_totals.png)
 
 |   Depth | LOINC   | LOINC-SNOMED   | CompLOINC-Primary   | CompLOINC-Supplementary   |
 |---------|---------|----------------|---------------------|---------------------------|
@@ -473,7 +473,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## % of classes (terms, groups)
-![% of classes (terms, groups)](plot-class-depth_terms-groups_percentages.png)
+![% of classes (terms, groups)](analyses/class-depth/plot-class-depth_terms-groups_percentages.png)
 
 |   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary |   CompLOINC-Supplementary |
 |---------|---------|----------------|---------------------|---------------------------|
@@ -506,7 +506,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## Number of classes (terms, groups), by hierarchy
-![Number of classes (terms, groups), by hierarchy](plot-class-depth_by-hierarchy_terms-groups_totals.png)
+![Number of classes (terms, groups), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups_totals.png)
 
 |   Depth | LOINC - LOINC Categories   | LOINC - LOINC Groups   | LOINC-SNOMED   | CompLOINC-Primary - CompLOINC Groups   | CompLOINC-Primary - LoincTerm   | CompLOINC-Primary - SNOMED-Inspired   | CompLOINC-Supplementary - CompLOINC Groups   | CompLOINC-Supplementary - LoincTerm   | CompLOINC-Supplementary - SNOMED-Inspired   |
 |---------|----------------------------|------------------------|----------------|----------------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------------|
@@ -539,7 +539,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## % of classes (terms, groups), by hierarchy
-![% of classes (terms, groups), by hierarchy](plot-class-depth_by-hierarchy_terms-groups_percentages.png)
+![% of classes (terms, groups), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups_percentages.png)
 
 |   Depth |   LOINC - LOINC Categories |   LOINC - LOINC Groups |   LOINC-SNOMED |   CompLOINC-Primary - CompLOINC Groups |   CompLOINC-Primary - LoincTerm |   CompLOINC-Primary - SNOMED-Inspired |   CompLOINC-Supplementary - CompLOINC Groups |   CompLOINC-Supplementary - LoincTerm |   CompLOINC-Supplementary - SNOMED-Inspired |
 |---------|----------------------------|------------------------|----------------|----------------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------------|
@@ -572,7 +572,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## Number of classes (terms, groups, parts)
-![Number of classes (terms, groups, parts)](plot-class-depth_terms-groups-parts_totals.png)
+![Number of classes (terms, groups, parts)](analyses/class-depth/plot-class-depth_terms-groups-parts_totals.png)
 
 |   Depth | LOINC   | LOINC-SNOMED   | CompLOINC-Primary   | CompLOINC-Supplementary   |
 |---------|---------|----------------|---------------------|---------------------------|
@@ -605,7 +605,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## % of classes (terms, groups, parts)
-![% of classes (terms, groups, parts)](plot-class-depth_terms-groups-parts_percentages.png)
+![% of classes (terms, groups, parts)](analyses/class-depth/plot-class-depth_terms-groups-parts_percentages.png)
 
 |   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary |   CompLOINC-Supplementary |
 |---------|---------|----------------|---------------------|---------------------------|
@@ -638,7 +638,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## Number of classes (terms, groups, parts), by hierarchy
-![Number of classes (terms, groups, parts), by hierarchy](plot-class-depth_by-hierarchy_terms-groups-parts_totals.png)
+![Number of classes (terms, groups, parts), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups-parts_totals.png)
 
 |   Depth | LOINC - LOINC Categories   | LOINC - LOINC Groups   | LOINC - LoincPart   | LOINC-SNOMED   | CompLOINC-Primary - CompLOINC Groups   | CompLOINC-Primary - LoincPart   | CompLOINC-Primary - LoincTerm   | CompLOINC-Primary - SNOMED-Inspired   | CompLOINC-Supplementary - CompLOINC Groups   | CompLOINC-Supplementary - LoincPart   | CompLOINC-Supplementary - LoincTerm   | CompLOINC-Supplementary - SNOMED-Inspired   |
 |---------|----------------------------|------------------------|---------------------|----------------|----------------------------------------|---------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|
@@ -671,7 +671,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 
 ## % of classes (terms, groups, parts), by hierarchy
-![% of classes (terms, groups, parts), by hierarchy](plot-class-depth_by-hierarchy_terms-groups-parts_percentages.png)
+![% of classes (terms, groups, parts), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups-parts_percentages.png)
 
 |   Depth |   LOINC - LOINC Categories |   LOINC - LOINC Groups |   LOINC - LoincPart |   LOINC-SNOMED |   CompLOINC-Primary - CompLOINC Groups |   CompLOINC-Primary - LoincPart |   CompLOINC-Primary - LoincTerm |   CompLOINC-Primary - SNOMED-Inspired |   CompLOINC-Supplementary - CompLOINC Groups |   CompLOINC-Supplementary - LoincPart |   CompLOINC-Supplementary - LoincTerm |   CompLOINC-Supplementary - SNOMED-Inspired |
 |---------|----------------------------|------------------------|---------------------|----------------|----------------------------------------|---------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|

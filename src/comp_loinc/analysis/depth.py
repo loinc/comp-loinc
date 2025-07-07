@@ -1,8 +1,9 @@
 """Analyze classification depth
 
 todo's
- source bar stacking: it'd be great to have a separate bar for each source, and then the source bars are actually
+ 1. source bar stacking: it'd be great to have a separate bar for each source, and then the source bars are actually
  stacked, stratified by class type. To do this, I'd need to pass classes_by_type as well to the plot function.
+ 2. depth.md doesn't show plots, only stats.md after concatenation. fix: move all files into documentation/
 """
 
 import os
@@ -190,7 +191,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 {% for title, table_and_plot_path in figs_by_title.items() %}
 {% set table, plot_path = table_and_plot_path %}
 ## {{ title }}
-![{{ title }}]({{ plot_path }})
+![{{ title }}](analyses/class-depth/{{ plot_path }})
 
 {{ table }}
 
