@@ -200,14 +200,18 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 ---
 
-## Counts, by data processing stage
-The following table shows details in regards to number of clases and subclass axioms at various sequential stages of 
-data preparation. We start with the raw inputs queried by the ontology, including all class types. Then, a few transient 
-grouping clases just for this analysis were added to LOINC and CompLOINC. Next, we filter out the classes types that are
-not needed for one of the sub-analyses. The filter is some combination of terms, parts, and/or groups. Finally, we 
-remove any dangling classes, as well as any dangling subtrees that were caused by the previous filtration step.  
+## Changes, by data processing stage
+The following tables shows details in regards to total counts and percentages remaining of classes, subclass axioms, and
+roots at various sequential stages of data preparation. The We start with the raw inputs queried by the ontology, 
+including all class types. Then, a few transient grouping clases just for this analysis were added to LOINC and 
+CompLOINC. Next, we filter out the classes types that are not needed for one of the sub-analyses. The filter is some 
+combination of terms, parts, and/or groups. Finally, we remove any dangling classes, as well as any dangling subtrees 
+that were caused by the previous filtration step.  
 
+### Counts
 {{ etl_counts_table }}
+
+### Percentages
 
 """
 ROOT_URI_LABEL_MAP = {
@@ -937,10 +941,6 @@ def analyze_class_depth(
     depth_by_class_dfs: List[pd.DataFrame] = []  # for TSVs
     etl_stage_count_dfs: List[pd.DataFrame] = []
 
-    # TODO temp
-    # variations = [('terms', 'groups', 'parts'), ]
-    # ont_sets = {k: v for k, v in ont_sets.items() if k == 'CompLOINC-Primary'}
-
     for _filter in variations:
         logger.debug(" " + ", ".join(_filter))
         ont_depth_tables: Dict[str, pd.DataFrame] = {}
@@ -988,7 +988,7 @@ def analyze_class_depth(
     etl_counts_df_all = pd.concat(etl_stage_count_dfs, ignore_index=True)
     etl_counts_df_all.to_csv(outpath_counts_tsv, sep="\t", index=False)  # redundant
     # - Markdown
-    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md, etl_counts_df_all)  # TODO temp: etl df empty?
+    _save_markdown(tables_n_plots_by_filter_and_stat, outpath_md, etl_counts_df_all)
     # todo: also output TSVs for when disaggregate by roots, too?
     # - Depths TSVs
     _save_depths_tsvs(depth_by_class_dfs, labels_path, outpath_tsv_pattern)  # for manual analysis / troubleshooting
