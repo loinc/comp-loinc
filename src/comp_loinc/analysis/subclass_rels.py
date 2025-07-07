@@ -5,10 +5,12 @@ Refs:
 
 todo's:
  - consider writing tables to TSV in addition to markdown. for easy ref / copying
+ - can replace `tabulate` w/ `df.to_markdown(index=False, tablefmt="github")`. If so, remove package from poetry.
 TODO: #1 Do I actually want a_minus_b or intersection? I thought I found that they were the same for my purposes, but
  now I'm not so sure.
 """
 import os
+import logging
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Dict, Set, Tuple, Union
@@ -19,12 +21,22 @@ from jinja2 import Template
 from tabulate import tabulate
 from upsetplot import from_contents, UpSet
 
+logger = logging.getLogger(__name__)
+
+from comp_loinc.analysis.utils import bundle_inpaths_and_update_abs_paths, cli_add_inpath_args, _subclass_axioms_and_totals
+
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-ONTO_DIR = PROJECT_ROOT / 'src' / 'ontology'
 MISSING_AXIOMS_PATH = PROJECT_ROOT / 'output' / 'tmp' / 'missing_comploinc_axioms.tsv'
 DESC = 'Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED.'
-ONTOLOGIES = ('LOINC', 'LOINC-SNOMED', 'CompLOINC')
+DEFAULTS = {
+    'loinc-path': 'output/tmp/subclass-rels-loinc.tsv',
+    'loinc-snomed-path': 'output/tmp/subclass-rels-loinc-snomed.tsv',
+    'comploinc-primary-path': 'output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv',
+    'comploinc-supplementary-path': 'output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv',
+    'outpath-md': 'documentation/analyses/class-depth/depth.md',
+    'outpath-upset-plot': 'documentation/analyses/class-depth',
+}
 md_template = """
 # Subclass axiom analysis
 This analysis shows set totals, intersections, and differences for direct subclass axioms in LOINC, CompLOINC, and 
@@ -76,88 +88,70 @@ Meaning of table headers:
 """
 
 
-def _read(indir: Union[Path, str]) -> Tuple[pd.DataFrame, Dict[str, Set[Tuple[str, str]]]]:
-    """Read & return transformed inputs"""
-    ont_paths = {k: PROJECT_ROOT / indir / f'subclass-rels-{k.lower()}.tsv' for k in ONTOLOGIES}
-    ont_sets: Dict[str, Set[Tuple[str, str]]] = {}
-    ont_dfs = {}
-
-    # Totals
-    tots_rows = []
-    for ont, path in ont_paths.items():
-        df = pd.read_csv(path, sep='\t')
-        ont_dfs[ont] = df
-        tots_rows.append({'': ont, 'n': f'{len(df):,}'})
-        ont_sets[ont] = set(zip(df["?child"], df["?parent"]))
-    tots_df = pd.DataFrame(tots_rows)
-    return tots_df, ont_sets
-
-
 def _make_tables(tots_df: pd.DataFrame, ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
-    """Calculate and save tables"""
+    """Calculate and save tables
+
+    todo: logic is similar for each for loop, iterating over ont_sets.items() 2x. Should we abstract?
+    """
     # Overlap/comparison: merged table
     overlap_direct_merged_rows = []
-    for row_ont in ONTOLOGIES:
-        overlap_row = {'': row_ont}
-        row_set = ont_sets[row_ont]
-        for col_ont in ONTOLOGIES:
-            col_set = ont_sets[col_ont]
-            if row_ont == col_ont:
-                overlap_row[col_ont] = "-"
+    for row_ont_name, row_axioms in ont_sets.items():
+        overlap_row = {'': row_ont_name}
+        for col_ont_name, col_axioms in ont_sets.items():
+            if row_ont_name == col_ont_name:
+                overlap_row[col_ont_name] = "-"
             else:
                 # noinspection DuplicatedCode
-                intersection = row_set.intersection(col_set)
+                intersection = row_axioms.intersection(col_axioms)
                 # Calculate percentages
-                pct_row_in_col = len(intersection) / len(row_set) * 100 if len(row_set) > 0 else 0
-                pct_col_in_row = len(intersection) / len(col_set) * 100 if len(col_set) > 0 else 0
-                overlap_row[col_ont] = f"{pct_row_in_col:.1f}% / {len(intersection):,} / {pct_col_in_row:.1f}%"
+                pct_row_in_col = len(intersection) / len(row_axioms) * 100 if len(row_axioms) > 0 else 0
+                pct_col_in_row = len(intersection) / len(col_axioms) * 100 if len(col_axioms) > 0 else 0
+                overlap_row[col_ont_name] = f"{pct_row_in_col:.1f}% / {len(intersection):,} / {pct_col_in_row:.1f}%"
         overlap_direct_merged_rows.append(overlap_row)
     overlap_direct_merged_df = pd.DataFrame(overlap_direct_merged_rows)
 
     # Overlap/comparison: individual tables
     comparison_tables = {}
-    for ont_a in ONTOLOGIES:
-        comparison_tables[ont_a] = {}
-        set_a = ont_sets[ont_a]
-        for ont_b in ONTOLOGIES:
-            if ont_a == ont_b:
+    for ont_a_name, axioms_a in ont_sets.items():
+        comparison_tables[ont_a_name] = {}
+        for ont_b_name, axioms_b in ont_sets.items():
+            if ont_a_name == ont_b_name:
                 continue  # Skip self-comparison
-            set_b = ont_sets[ont_b]
             # Calculate differences and intersection
-            a_minus_b = set_a.difference(set_b)
-            b_minus_a = set_b.difference(set_a)
+            a_minus_b = axioms_a.difference(axioms_b)
+            b_minus_a = axioms_b.difference(axioms_a)
             # noinspection DuplicatedCode
-            intersection = set_a.intersection(set_b)
+            intersection = axioms_a.intersection(axioms_b)
             # TODO: #1 Do I actually want a_minus_b or intersection? I thought I found that they were the same for my
             #  purposes, but now I'm not so sure.
             # Calculate percentages
-            pct_a_minus_b = len(a_minus_b) / len(set_a) * 100 if len(set_a) > 0 else 0
-            pct_b_minus_a = len(b_minus_a) / len(set_b) * 100 if len(set_b) > 0 else 0
+            pct_a_minus_b = len(a_minus_b) / len(axioms_a) * 100 if len(axioms_a) > 0 else 0
+            pct_b_minus_a = len(b_minus_a) / len(axioms_b) * 100 if len(axioms_b) > 0 else 0
 
             # Create comparison dataframe
             comparison_df = pd.DataFrame([{
                 '% (a-b)': f"{pct_a_minus_b:.1f}%",
                 'n (a-b)': len(a_minus_b),
-                'tot a': len(set_a),
+                'tot a': len(axioms_a),
                 'intersection': len(intersection),
-                'tot b': len(set_b),
+                'tot b': len(axioms_b),
                 'n (b-a)': len(b_minus_a),
                 '% (b-a)': f"{pct_b_minus_a:.1f}%",
             }])
-            comparison_tables[ont_a][ont_b] = comparison_df
+            comparison_tables[ont_a_name][ont_b_name] = comparison_df
 
     # Render & save
     template = Template(md_template)
     tots_table = tabulate(tots_df, headers='keys', tablefmt='pipe', showindex=False)
     rendered_comparisons = {}
-    for ont_a in comparison_tables:
-        rendered_comparisons[ont_a] = {}
-        for ont_b in comparison_tables[ont_a]:
-            rendered_comparisons[ont_a][ont_b] = tabulate(
-                comparison_tables[ont_a][ont_b], headers='keys', tablefmt='pipe', showindex=False)
+    for ont_a_name in comparison_tables:
+        rendered_comparisons[ont_a_name] = {}
+        for ont_b_name in comparison_tables[ont_a_name]:
+            rendered_comparisons[ont_a_name][ont_b_name] = tabulate(
+                comparison_tables[ont_a_name][ont_b_name], headers='keys', tablefmt='pipe', showindex=False)
     overlap_direct_merged_table = tabulate(overlap_direct_merged_df, headers='keys', tablefmt='pipe', showindex=False)
     markdown_output = template.render(
-        tot_table=tots_table, ontologies=ONTOLOGIES, comparisons=rendered_comparisons,
+        tot_table=tots_table, ontologies=list(ont_sets.keys()), comparisons=rendered_comparisons,
         overlap_direct_merged_table=overlap_direct_merged_table)
     with open(outpath, 'w') as f:
         f.write(markdown_output)
@@ -169,16 +163,16 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
     Args:
         ont_sets: Dictionary mapping ontology names to sets of subclass axioms
     """
-    print("Interrogating non-inclusion of axioms in CompLOINC and its sources.")
+    logger.debug("Interrogating non-inclusion of axioms in CompLOINC and its sources.")
     all_elements = set()
     for s in ont_sets.values():
         all_elements.update(s)
-    print(f"- Total unique elements across all sets: {len(all_elements)}")
+    logger.debug(f"- Total unique elements across all sets: {len(all_elements)}")
 
     # Find elements not in CompLOINC
     if "CompLOINC" in ont_sets:
         missing_from_comploinc = all_elements - ont_sets["CompLOINC"]
-        print(
+        logger.debug(
             f"- Elements missing from CompLOINC: "
             f"{len(missing_from_comploinc)} ({len(missing_from_comploinc) / len(all_elements) * 100:.2f}%)")
 
@@ -197,9 +191,9 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
             key = tuple(sorted(sources))
             source_combinations[key] = source_combinations.get(key, 0) + 1
 
-        print("\n- Missing elements by source combinations:")
+        logger.debug("\n- Missing elements by source combinations:")
         for sources, count in sorted(source_combinations.items(), key=lambda x: x[1], reverse=True):
-            print(f" - {', '.join(sources)}: {count} elements")
+            logger.debug(f" - {', '.join(sources)}: {count} elements")
 
         rows = []
         for axiom, sources in missing_elements_source.items():
@@ -210,7 +204,7 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
         try:
             missing_df.to_csv(MISSING_AXIOMS_PATH, index=False, sep='\t')
         except FileNotFoundError:
-            print('Could not save missing axioms to tmp directory; doesn\'t exist.')
+            logger.debug("Could not save missing axioms to tmp directory; doesn't exist.")
 
 
 def _make_upset_plot(ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
@@ -245,11 +239,21 @@ def _make_upset_plot(ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[P
     plt.close()
 
 
-def subclass_rel_analysis(indir: Union[Path, str], outpath_md: Union[Path, str], outpath_upset_plot: Union[Path, str]):
+def subclass_rel_analysis(
+    loinc_path: Union[Path, str], loinc_snomed_path: Union[Path, str], comploinc_primary_path: Union[Path, str],
+    comploinc_supplementary_path: Union[Path, str], outpath_md: Union[Path, str], outpath_upset_plot: Union[Path, str],
+    dont_convert_paths_to_abs=False
+):
     """Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."""
-    outpath_md = PROJECT_ROOT / outpath_md
-    outpath_upset_plot = PROJECT_ROOT / outpath_upset_plot
-    tots_df, ont_sets = _read(indir)
+    terminologies: Dict[str, Path]
+    terminologies, outpath_md, outdir_plots = bundle_inpaths_and_update_abs_paths(
+        loinc_path, loinc_snomed_path, comploinc_primary_path, comploinc_supplementary_path, dont_convert_paths_to_abs,
+        outpath_md, outpath_upset_plot)
+
+    # todo: do I want 2 sets of outputs, 1 per part model? maybe not
+    # for mdl in ('primary', 'supplementary'):
+
+    tots_df, ont_sets = _subclass_axioms_and_totals(terminologies)
     _make_tables(tots_df, ont_sets, outpath_md)
     _make_upset_plot(ont_sets, outpath_upset_plot)
     _interrogate_missing_axioms(ont_sets)
@@ -258,15 +262,20 @@ def subclass_rel_analysis(indir: Union[Path, str], outpath_md: Union[Path, str],
 def cli():
     """Command line interface."""
     parser = ArgumentParser(prog='Subclass axiom analysis.', description=DESC)
+    cli_add_inpath_args(parser, DEFAULTS)
     parser.add_argument(
-        '-i', '--indir', required=True, type=str,
-        help='Path to directory containing expected inputs: subclass-rels-*.tsv, where * are: '
-             + ', '.join([x.lower() for x in ONTOLOGIES]))
+        '-m', '--outpath-md', type=str, default=DEFAULTS['outpath-md'],
+        help='Outpath for markdown file containing results.')
     parser.add_argument(
-        '-m', '--outpath-md', required=True, type=str, help='Outpath for markdown file containing results.')
+        '-u', '--outpath-upset-plot', type=str, default=DEFAULTS['outpath-upset-plot'],
+        help='Outpath for upset plot.')
     parser.add_argument(
-        '-u', '--outpath-upset-plot', required=True, type=str, help='Outpath for upset plot.')
-    d: Dict = vars(parser.parse_args())
+        '--log-level', type=str, default='DEBUG',
+        help='Logging level (e.g. DEBUG, INFO).')
+    args = parser.parse_args()
+    logging.basicConfig(level=getattr(logging, args.log_level.upper(), logging.DEBUG))
+    d: Dict = vars(args)
+    d.pop('log_level', None)
     return subclass_rel_analysis(**d)
 
 

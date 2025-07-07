@@ -41,6 +41,11 @@ torch = [
 transformers = ">=4.48.0"  # includes security update
 typer = "^0.9.0"
 upsetplot = "^0.9.0"
+# - extras for optional data viz web app
+dash = "*"
+plotly = "*"
+dash-bootstrap-components = "*"
+gunicorn = "^20.1.0"  # for deploy
 
 
 [tool.poetry.group.dev.dependencies]

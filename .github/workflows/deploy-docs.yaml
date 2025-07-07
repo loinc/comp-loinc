@@ -1,4 +1,4 @@
-# TODO: Complete implementation: https://github.com/loinc/comp-loinc/issues/81
+# Todo: Complete implementation: https://github.com/loinc/comp-loinc/issues/81
 ---
 name: Auto-deployment of comp_loinc Documentation
 on:

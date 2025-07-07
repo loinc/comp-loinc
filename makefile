@@ -2,9 +2,17 @@
 # todo: Ideally would change pipeline to use `make all` instead of `make all -B`. Leaving -B out is preferred whenever possible, because it will theoretically only update targets and their prereqs that are outdated. But if the codebase changes, these files will be outdated but they will not appear so to make, which means we must execute using -B.
 
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
-	chebi-subsets
+	chebi-subsets start-app
 DEFAULT_BUILD_DIR=output/build-default
 DANGLING_DIR=output/analysis/dangling
+LOINC_OWL_DIR=output/analysis/loinc
+LOINC_SNOMED_OWL_DIR=output/analysis/loinc-snomed
+SNOMED_OWL_DIR=output/analysis/snomed
+
+# Resolve the directory name for the default LOINC release using the
+# project's Python configuration.  This is required so that the
+# analysis targets always reference the correct release directory.
+LOINC_DEFAULT_DIR := $(shell python src/loinclib/config.py --method-names get_loinc_default_dir_name)
 # STRICT:
 #  - if true, sets '--equivalent-classes-allowed none' when reasoning.
 #  - Usage: `make STRICT=true merge-reason`
@@ -18,6 +26,25 @@ all: build additional-outputs
 build: grouping dangling modules merge-reason stats
 
 additional-outputs: alternative-hierarchies
+
+# Functions ------------------------------------------------------------------------------------------------------------
+# Remove subclass axioms
+# 1: The input file; 2: the output file
+define remove_subclass_axioms
+robot remove --input $(1) --axioms "subclass" --output $(2)
+endef
+
+# Run a ROBOT SPARQL query
+# 1: The input file; 2: the query; 3: the output file
+define robot_query
+robot query -i $(1) --query $(2) $(3)
+endef
+
+# Run ROBOT reasoner
+# 1: The input file; 2: the output file
+define robot_reason
+robot reason --input $(1) --output $(2)
+endef
 
 # Core modules ---------------------------------------------------------------------------------------------------------
 MODULE_FILES = \
@@ -109,7 +136,10 @@ merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merge
 # - defs & dirs
 TEMPLATE_AXIOMS_ENTITIES=src/comp_loinc/analysis/stats-main-axioms-entities.md.j2
 TEMPLATE_MISC=src/comp_loinc/analysis/stats-misc.md.j2
+# todo: for https://loinc.org/category/, maybe it'd be better to add a CompLOINC URI since even though this is part of LOINC and not CompLOINC the ontology, it is CompLOINC the project that ontologises these classes
 PREFIXES_METRICS=\
+	--prefix 'LOINC_CATEGORY: https://loinc.org/category/' \
+	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
 	--prefix 'LOINC_PART: https://loinc.org/LP' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
 	--prefix 'LOINC_PART_GRP_CMP: http://comploinc//group/component/LP' \
@@ -125,19 +155,28 @@ input/analysis/:
 output/analysis/:
 	mkdir -p $@
 
+$(LOINC_OWL_DIR):
+	mkdir -p $@
+
+$(LOINC_SNOMED_OWL_DIR):
+	mkdir -p $@
+
+$(SNOMED_OWL_DIR):
+	mkdir -p $@
+
 output/tmp/:
 	mkdir -p $@
 
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/:
 	mkdir -p $@
 
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/:
-	mkdir -p $@
-
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/:
 	mkdir -p $@
 
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/:
+	mkdir -p $@
+
+documentation/analyses/class-depth/:
 	mkdir -p $@
 
 # - robot stats & markdown files
@@ -154,31 +193,112 @@ documentation/stats-misc.md: output/tmp/stats.json
 documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 	python src/loinclib/nlp_taxonomification.py --stats-only
 
-# - Comparisons: SNOMED-LOINC
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/snomed-parts-reasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
-	robot reason --input $< --output $@
+# - Comparisons: LOINC-SNOMED Ontology
+# -- SNOMED representation
+# Todo: Connect this to the pipeline(s). which ones? (i) class depth, (ii) subclass axioms, (iii) other(s)?
+$(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
+	python src/comp_loinc/analysis/snomed.py --outpath $@
 
-output/tmp/subclass-rels-loinc-snomed.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/snomed-parts-reasoned.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+# FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
+$(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
+	$(call robot_reason,$<,$@)
+
+# -- LOINC-SNOMED representation
+# Todo: if needed temporarily to make subclass rels / labels until this is ready, use instead as source: output/analysis/snomed/bak/snomed-parts-reasoned.owl instead of loinc-snomed-reasoned.owl
+# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
+# Todo: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
+# Todo: - how subset those mappings? involves mapped parts and terms. check notes
+# Todo: robot merge? What other inputs does this need?
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(LOINC_SNOMED_OWL_DIR)
+	robot merge --input $(DEFAULT_BUILD_DIR)/snomed-parts.owl --output $@
+
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl | $(LOINC_SNOMED_OWL_DIR)
+	$(call robot_reason,$<,$@)
+
+output/tmp/subclass-rels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/labels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
 
 # - Comparisons: LOINC
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-part-hierarchy-all-reasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/
-	robot reason --input $< --output $@
+$(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)
+	robot template --template $< \
+	--prefix 'LOINC_CATEGORY: https://loinc.org/category/' \
+	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
+	--prefix 'LOINC_TERM: https://loinc.org/' \
+  	--ontology-iri "https://github.com/loinc/comploinc/source-representations/loinc/loing-groups.owl" \
+  	--output $@
 
-output/tmp/subclass-rels-loinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/analysis/loinc-part-hierarchy-all-reasoned.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+output/tmp/loinc-groups.robot.tsv: | output/tmp/
+	python src/comp_loinc/analysis/loinc_groups.py \
+	--group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/Group.csv\
+	--parent-group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/ParentGroup.csv\
+    --group-loinc-terms-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/GroupLoincTerms.csv\
+	--outpath $@
+
+$(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl: $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl | $(LOINC_OWL_DIR)
+	$(call remove_subclass_axioms,$<,$@)
+
+# loinc-unreasoned.owl: This representation includes (i) group defs, (ii) term defs, (iii) part defs, (iv) subclass axioms (groups::groups, terms::groups; part::part; no term::term exist). Doesn't include: equivalent class axioms for temrs (for neither part model)
+$(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl $(LOINC_OWL_DIR)/loinc-groups.owl | $(LOINC_OWL_DIR)
+	robot merge --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
+
+# loinc-reasoned.owl: Not including, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons.
+#$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)
+#	robot reason --input $< --output $@
+
+output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
 
 # - Comparisons: CompLOINC
-output/tmp/subclass-rels-comploinc.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl
-	robot query -i $< --query src/comp_loinc/analysis/subclass-rels.sparql $@
+output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/subclass-rels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-primary.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/labels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+
+output/tmp/labels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
+	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
 
 # - Comparisons: all
-documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc.tsv
-	python src/comp_loinc/analysis/subclass_rels.py --indir output/tmp/ --outpath-md documentation/subclass-analysis.md --outpath-upset-plot documentation/upset.png
+output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv
+	cat $^ > $@
+
+documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv
+	python src/comp_loinc/analysis/subclass_rels.py \
+	--loinc-path output/tmp/subclass-rels-loinc.tsv \
+	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv \
+	--outpath-md documentation/subclass-analysis.md \
+	--outpath-upset-plot documentation/upset.png
+
+documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
+	python src/comp_loinc/analysis/depth.py \
+	--loinc-path output/tmp/subclass-rels-loinc.tsv \
+	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
+	--labels-path output/tmp/labels-all-terminologies.tsv \
+	--outpath-md documentation/analyses/class-depth/depth.md \
+	--outdir-plots documentation/analyses/class-depth
 
 # - Build final outputs & main command
-documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/stats-misc.md
-	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/stats-misc.md > $@
+documentation/stats.md: documentation/stats-main-axioms-entities.md documentation/stats-dangling.md documentation/subclass-analysis.md documentation/analyses/class-depth/depth.md documentation/stats-misc.md
+	cat documentation/stats-main-axioms-entities.md documentation/subclass-analysis.md documentation/stats-dangling.md documentation/analyses/class-depth/depth.md documentation/stats-misc.md > $@
 
 stats: documentation/stats.md
 
@@ -242,5 +362,12 @@ $(CHEBI_OUT_MIREOT): $(CHEBI_OWL) $(CHEBI_MODULE)
 alternative-hierarchies: chebi-subsets
 
 # Ad hoc analyses: not connected to the main pipeline
-output/tmp/cl-parts.tsv:
-	robot query --input $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl --query src/comp_loinc/analysis/ad_hoc/cl-parts.sparql $@
+output/tmp/cl-parts.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/ad_hoc/cl-parts.sparql,$@)
+
+start-app-debug:
+	python src/comp_loinc/analysis/app.py
+
+start-app:
+	#gunicorn comp_loinc.analysis.app:server --bind 0.0.0.0:$PORT  # this is the version of the command used on render.com
+	gunicorn src.comp_loinc.analysis.app:server
