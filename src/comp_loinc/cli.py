@@ -189,4 +189,5 @@ comploinc_cli = comploinc_cli_object.cli
 
 if __name__ == "__main__":
     import sys
+
     comploinc_cli(sys.argv[1:])
