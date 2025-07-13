@@ -173,3 +173,6 @@ dmypy.json
 # more patterns
 *.zip
 .~*
+
+# AI
+.claude/settings.local.json
