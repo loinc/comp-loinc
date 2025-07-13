@@ -7,10 +7,11 @@ todo: fix so no whitespace warnings. e.g.:
     SubClassOf(:421629003 ObjectIntersectionOf(:23217006 :373249005 ObjectSomeValuesFrom(:726542003 :764393008) ObjectSomeValuesFrom(:726542003 :765175006)))
  pos16 is right after SubClassOf( and before the :. I think this needs to be after all ( tags, and probably before all )
 """
+
 import os
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 
@@ -18,8 +19,14 @@ from loinclib import Configuration
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-DESC = ('Builds a representation of SNOMED RF2 modules in OWL functional syntax.\n'
-        'If no args are passed, will convert all RF2 modules registered in the DEFAULTS config.')
+DESC = (
+    "Builds a representation of SNOMED RF2 modules in OWL functional syntax.\n"
+    "If no args are passed, will convert all RF2 modules registered in the DEFAULTS config."
+)
+
+# Module name constants
+SNOMED_MODULE_NAME = "snomed"
+LOINC_SNOMED_MODULE_NAME = "loinc-snomed"
 
 # todo: Ideally I wanted to statically declare these header tags just in case in a future release, they don't appear
 #  intermingled with the rest of the OWL expressions, but this requires doing set ops, and also parsing the prefix tags
@@ -27,44 +34,47 @@ DESC = ('Builds a representation of SNOMED RF2 modules in OWL functional syntax.
 # PREFIXES_MINIMUM_EXPECTED = {}
 # PREFIX_IRI_BAK = "http://snomed.info/id/"
 # ONTOLOGY_IRI_BAK = f"{PREFIX_IRI}ontology"
-CONFIG_PATH = PROJECT_ROOT / 'comploinc_config.yaml'
+CONFIG_PATH = PROJECT_ROOT / "comploinc_config.yaml"
 CONFIG = Configuration(
-    Path(os.path.dirname(str(CONFIG_PATH))),
-    Path(os.path.basename(str(CONFIG_PATH)))
+    Path(os.path.dirname(str(CONFIG_PATH))), Path(os.path.basename(str(CONFIG_PATH)))
 )
-DEFAULT_ontology_block_opener = 'Ontology(<http://snomed.info/sct/900000000000207008>'
-DEFAULT_prefixes_tags = [
-    'Prefix(owl:=<http://www.w3.org/2002/07/owl#>)',
-    'Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)',
-    'Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)',
-    'Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)',
-    'Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)',
-    'Prefix(:=<http://snomed.info/id/>)'
+DEFAULT_ONTOLOGY_BLOCK_OPENER = "Ontology(<http://snomed.info/sct/900000000000207008>"
+DEFAULT_PREFIXES_TAGS = [
+    "Prefix(owl:=<http://www.w3.org/2002/07/owl#>)",
+    "Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)",
+    "Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)",
+    "Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)",
+    "Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)",
+    "Prefix(:=<http://snomed.info/id/>)",
 ]
 DEFAULTS: Dict[str, Dict[str, Union[Path, str]]] = {
-    "snomed": {
+    SNOMED_MODULE_NAME: {
         "inpath_owl": CONFIG.get_snomed_owl_path(),
         "inpath_labels": CONFIG.get_snomed_description_path(),
-        "outpath": PROJECT_ROOT / 'output/analysis/snomed/snomed-unreasoned.ofn',
+        "outpath": PROJECT_ROOT / "output/analysis/snomed/snomed-unreasoned.ofn",
     },
-    "loinc-snomed": {
+    LOINC_SNOMED_MODULE_NAME: {
         "inpath_owl": CONFIG.get_loinc_snomed_owl_path(),
         "inpath_labels": CONFIG.get_loinc_snomed_description_path(),
-        "outpath": PROJECT_ROOT / 'output/analysis/loinc-snomed/loinc-snomed-module.ofn',
-    }
+        "outpath": PROJECT_ROOT
+        / "output/analysis/loinc-snomed/loinc-snomed-module.ofn",
+    },
 }
 
 
 def _write(
-    outpath: Union[Path, str], ontology_block_opener: str, prefixes_tags: List[str], axioms: List[str],
-    label_triples: List[str]
+    outpath: Union[Path, str],
+    ontology_block_opener: str,
+    prefixes_tags: List[str],
+    axioms: List[str],
+    label_triples: List[str],
 ) -> None:
     """Write to disk"""
     outdir = os.path.dirname(outpath)
     if not os.path.exists(outdir):
         os.makedirs(outdir)
 
-    with open(outpath, 'w') as f:
+    with open(outpath, "w") as f:
         # Header
         for prefix in prefixes_tags:
             f.write(f"{prefix}\n")
@@ -84,61 +94,91 @@ def _write(
 
 def _get_expressions(inpath_owl: Union[Path, str]) -> Tuple[str, List[str], List[str]]:
     """Get expressions from SNOMED release"""
-    df = pd.read_csv(inpath_owl, sep='\t', dtype=str)
-    expressions: List[str] = df['owlExpression'].dropna().tolist()
+    df = pd.read_csv(inpath_owl, sep="\t", dtype=str)
+    expressions: List[str] = df["owlExpression"].dropna().tolist()
     axioms: List[str] = []
     prefixes_tags: List[str] = []
     ontology_block_opener = None
 
     # Extract the ontology tag, prefixes, and axioms
     for exp in expressions:
-        if exp.startswith('Ontology'):
-            ontology_block_opener = exp[:-1] if exp.endswith(')') else exp
-        elif exp.startswith('Prefix'):
+        if exp.startswith("Ontology"):
+            ontology_block_opener = exp[:-1] if exp.endswith(")") else exp
+        elif exp.startswith("Prefix"):
             prefixes_tags.append(exp)
         else:
             axioms.append(exp)
 
     # Missing data
     if any([not x for x in [ontology_block_opener, prefixes_tags]]):
-        ontology_block_opener, prefixes_tags = _borrow_ontology_block_opener_and_prefixes_from_snomed()
+        ontology_block_opener, prefixes_tags = (
+            _borrow_ontology_block_opener_and_prefixes_from_snomed()
+        )
         # raise ValueError("Ontology IRI or prefixes are missing from the input data.")
 
     return ontology_block_opener, prefixes_tags, axioms
 
 
 def _borrow_ontology_block_opener_and_prefixes_from_snomed(
-    inpath_owl=DEFAULTS["snomed"]["inpath_owl"]
+    inpath_owl: Union[Path, str] = DEFAULTS[SNOMED_MODULE_NAME]["inpath_owl"]
 ) -> Tuple[str, List[str]]:
-    """SNOMED moduels don't typically have these tags, so we borrow from SNOMED proper.'"""
+    """SNOMED modules don't typically have these tags, so we borrow from SNOMED proper."""
     # Grab from registered local module
     try:
         ontology_block_opener, prefixes_tags, axioms = _get_expressions(inpath_owl)
-    # Else, use static defaults
-    except FileNotFoundError:
-        ontology_block_opener, prefixes_tags = DEFAULT_ontology_block_opener, DEFAULT_prefixes_tags
+    except FileNotFoundError as e:
+        # If the SNOMED OWL file is not found, fall back to static defaults
+        print(
+            f"Warning: SNOMED OWL file not found at {inpath_owl}. Using static defaults. Error: {e}"
+        )
+        ontology_block_opener, prefixes_tags = (
+            DEFAULT_ONTOLOGY_BLOCK_OPENER,
+            DEFAULT_PREFIXES_TAGS,
+        )
+    except pd.errors.EmptyDataError as e:
+        # If the file exists but is empty or has no valid data
+        print(
+            f"Warning: SNOMED OWL file at {inpath_owl} is empty or invalid. Using static defaults. Error: {e}"
+        )
+        ontology_block_opener, prefixes_tags = (
+            DEFAULT_ONTOLOGY_BLOCK_OPENER,
+            DEFAULT_PREFIXES_TAGS,
+        )
+    except Exception as e:
+        # Catch any other unexpected errors during file processing
+        print(
+            f"Warning: Failed to parse SNOMED OWL file at {inpath_owl}. Using static defaults. Error: {e}"
+        )
+        ontology_block_opener, prefixes_tags = (
+            DEFAULT_ONTOLOGY_BLOCK_OPENER,
+            DEFAULT_PREFIXES_TAGS,
+        )
 
     return ontology_block_opener, prefixes_tags
 
 
 def _get_labels(inpath: Union[Path, str]) -> List[str]:
     """Get labels from SNOMED release"""
-    df = pd.read_csv(inpath, sep='\t', dtype=str)
+    df = pd.read_csv(inpath, sep="\t", dtype=str)
     label_triples: List[str] = []
     # Remove special chars from labels
     #  - alternatively i could escape but we don't need full SNOMED label representation
-    df['term'] = df['term'].str.replace(r'[^\w\s]', '', regex=True)
+    df["term"] = df["term"].str.replace(r"[^\w\s]", "", regex=True)
     # Get triples
     for row in df.itertuples():
         # can't use rdfs:label CURIE because : is the SNOMED prefix.
         # noinspection PyUnresolvedReferences false_positive_for_named_tuples
         label_triples.append(
-            f'AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :{row.conceptId} "{row.term}")')
+            f'AnnotationAssertion(<http://www.w3.org/2000/01/rdf-schema#label> :{row.conceptId} "{row.term}")'
+        )
     return label_triples
 
 
 def build_snomed(
-    inpath_owl: Union[Path, str], inpath_labels: Union[Path, str], outpath: Union[Path, str], include_labels=True
+    inpath_owl: Union[Path, str],
+    inpath_labels: Union[Path, str],
+    outpath: Union[Path, str],
+    include_labels: bool = True,
 ) -> None:
     """Builds a representation of SNOMED in OWL functional syntax.
 
@@ -151,41 +191,92 @@ def build_snomed(
     _write(outpath, ontology_block_opener, prefixes_tags, axioms, label_triples)
 
 
-def cli():
-    """Command line interface."""
-    parser = ArgumentParser(prog='Build SNOMED.', description=DESC)
-    # a. Choose explicit paths
-    parser.add_argument(
-        '-i', '--inpath-owl', required=False, type=str, help='Path to SNOMED release OWL expression file.')
-    parser.add_argument(
-        '-I', '--inpath-labels', required=False, type=str, help='Path to SNOMED definition file for labels.')
-    parser.add_argument('-o', '--outpath', required=False, type=str, help='Outpath.')
-    # b. Choose defaults in config by module name
-    parser.add_argument(
-        '-m', '--by-module-name', required=False, type=str, help='If specified, then will consult the '
-        'DEFAULTS config and use the supplied args. If you pass this with other args, the values in the DEFAULTS will '
-        'be replaced by what you pass.')
-    d: Dict = vars(parser.parse_args())
+def _validate_module_name(module: str) -> None:
+    """Validate that the module name exists in DEFAULTS."""
+    if module not in DEFAULTS:
+        raise ValueError(
+            f"Module '{module}' not found in DEFAULTS. Available modules: {list(DEFAULTS.keys())}"
+        )
 
-    if set(d.values()) == {None}:  # no args; iter all modules in config
-        for d in DEFAULTS.values():
-            build_snomed(**d)
 
+def _resolve_config_arguments(args_dict: Dict[str, Any]) -> Dict[str, Any]:
+    """Resolve configuration arguments, handling module-based defaults and user overrides."""
     # Handle module-based defaults
-    module = d.get('by_module_name')
+    module = args_dict.get("by_module_name")
     if module:
-        if module not in DEFAULTS:
-            raise ValueError(f"Module '{module}' not found in DEFAULTS.")
+        _validate_module_name(module)
         # Start with module defaults
         config_defaults = DEFAULTS[module]
         # Override defaults with any user-supplied values
-        d['inpath_owl'] = d.get('inpath_owl') or config_defaults.get('inpath_owl')
-        d['inpath_labels'] = d.get('inpath_labels') or config_defaults.get('inpath_labels')
-        d['outpath'] = d.get('outpath') or config_defaults.get('outpath')
-    del d['by_module_name']
+        args_dict["inpath_owl"] = args_dict.get("inpath_owl") or config_defaults.get(
+            "inpath_owl"
+        )
+        args_dict["inpath_labels"] = args_dict.get(
+            "inpath_labels"
+        ) or config_defaults.get("inpath_labels")
+        args_dict["outpath"] = args_dict.get("outpath") or config_defaults.get(
+            "outpath"
+        )
 
-    return build_snomed(**d)
+    # Remove module name from args before passing to build function
+    if "by_module_name" in args_dict:
+        del args_dict["by_module_name"]
+
+    return args_dict
 
 
-if __name__ == '__main__':
+def _run_all_modules() -> None:
+    """Run build_snomed for all modules in DEFAULTS."""
+    for module_config in DEFAULTS.values():
+        build_snomed(**module_config)
+
+
+def _create_argument_parser() -> ArgumentParser:
+    """Create and configure the argument parser."""
+    parser = ArgumentParser(prog="Build SNOMED.", description=DESC)
+    # a. Choose explicit paths
+    parser.add_argument(
+        "-i",
+        "--inpath-owl",
+        required=False,
+        type=str,
+        help="Path to SNOMED release OWL expression file.",
+    )
+    parser.add_argument(
+        "-I",
+        "--inpath-labels",
+        required=False,
+        type=str,
+        help="Path to SNOMED definition file for labels.",
+    )
+    parser.add_argument("-o", "--outpath", required=False, type=str, help="Outpath.")
+    # b. Choose defaults in config by module name
+    parser.add_argument(
+        "-m",
+        "--by-module-name",
+        required=False,
+        type=str,
+        help="If specified, then will consult the "
+        "DEFAULTS config and use the supplied args. If you pass this with other args, the values in the DEFAULTS will "
+        "be replaced by what you pass.",
+    )
+    return parser
+
+
+def cli() -> Optional[None]:
+    """Command line interface."""
+    parser = _create_argument_parser()
+    args_dict: Dict = vars(parser.parse_args())
+
+    # If no arguments provided, run all modules
+    if set(args_dict.values()) == {None}:
+        _run_all_modules()
+        return
+
+    # Resolve configuration and run specific module
+    resolved_args = _resolve_config_arguments(args_dict)
+    return build_snomed(**resolved_args)
+
+
+if __name__ == "__main__":
     cli()
