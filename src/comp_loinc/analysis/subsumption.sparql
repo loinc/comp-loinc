@@ -1,0 +1,37 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+
+SELECT
+  ?child
+  ?parent
+  ?child_class_type
+  ?child_is_term_or_part
+  ?parent_class_type
+  ?parent_is_term_or_part
+WHERE {
+  {
+    ## class hierarchy
+    ?child rdfs:subClassOf ?parent .
+    BIND(owl:Class      AS ?child_class_type) .
+    BIND("term"         AS ?child_is_term_or_part) .
+    BIND(owl:Class      AS ?parent_class_type) .
+    BIND("term"         AS ?parent_is_term_or_part) .
+  }
+  UNION
+  {
+    ## property hierarchy (covers Object, Data & Annotation)
+    ?child rdfs:subPropertyOf ?parent .
+    ?child rdf:type ?ctype .
+    ?parent rdf:type ?ptype .
+    FILTER(
+      ?ctype IN (owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty)
+      && ?ptype IN (owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty)
+    ) .
+    BIND(?ctype            AS ?child_class_type) .
+    BIND("part"            AS ?child_is_term_or_part) .
+    BIND(?ptype            AS ?parent_class_type) .
+    BIND("part"            AS ?parent_is_term_or_part) .
+  }
+}
+ORDER BY ?child ?parent
