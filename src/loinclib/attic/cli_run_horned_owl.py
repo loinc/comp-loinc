@@ -22,25 +22,25 @@ from comp_loinc import comploinc_cli
 #     # ,'--help'
 # ]
 
-sys.argv = [
-    "cli_run",
-    "--fast-run",
-    "build",
-    "lt-supplementary-def",
-    # "--pickle",
-    # ,'--supl'
-    # ,'--help'
-]
-
 # sys.argv = [
 #     "cli_run",
 #     "--fast-run",
 #     "build",
-#     "default",
+#     "lt-supplementary-def",
 #     # "--pickle",
 #     # ,'--supl'
 #     # ,'--help'
 # ]
+
+sys.argv = [
+    "cli_run",
+    #"--fast-run",
+    "build",
+    "default",
+    # "--pickle",
+    # ,'--supl'
+    # ,'--help'
+]
 
 
 # sys.argv = ['cli_run',
