@@ -6,6 +6,7 @@ loinc-term-primary-def.owl
 loinc-term-supplementary-def.owl
 loinc-terms-list-all.owl
 snomed-parts.owl
+group_*.owl
 
 # Imports
 !catalog-v001.xml

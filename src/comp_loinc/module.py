@@ -1,10 +1,13 @@
 """Module: Provided a given builder configuration, set up a module where that build will be encapsulated. """
+
 import logging
 import typing as t
 
+from linkml_runtime.linkml_model import SchemaDefinition
+
 import comp_loinc.datamodel.comp_loinc as v2
 from comp_loinc.datamodel.comp_loinc import Entity
-
+from loinclib import NodeType
 
 logger = logging.getLogger("Module")
 
@@ -26,10 +29,12 @@ logger = logging.getLogger("Module")
 
 class Module:
     """Module"""
+
     from comp_loinc import Runtime
 
     def __init__(self, *, name: str, runtime: Runtime):
         from comp_loinc import Runtime
+
         logger.info(f"Starting: {name}")
         self.name = name
         self.runtime: Runtime = runtime
