@@ -183,7 +183,7 @@ a class appears in 3 subtrees, once at depth 3, and in two subtrees at depth 2, 
 depth 2, and once at depth 3. 
 
 **Disaggregating major subtrees**  
-CompLOINC and LOINC have more than 1 top-level branches (AKA subhierachies or subtrees).
+CompLOINC and LOINC have more than 1 top-level branches (AKA subhierarchies or subtrees).
 
 | Terminology | Hierarchy name   | Root URI                        |
 |-------------|------------------|---------------------------------|
@@ -275,12 +275,12 @@ axis, while the grouping class http://comploinc/group/component-system/LP7795-0-
 classes will reside at the root of CompLOINC. However, for these classification depth analyses, we are comparing against 
 other subtrees that have a single root, e.g. LoincPart or LoincTerm. Therefore, for the depths to be consistent along 
 class types (terms, parts, groups), we have included "master grouping classes" just for this analysis. The top level for
-all grouping clases is http://comploinc/group/ ("GRP"), and the children of this class are all of the roots of each 
+all grouping classes is http://comploinc/group/ ("GRP"), and the children of this class are all of the roots of each 
 property axis, e.g. http://comploinc/group/component/ ("GRP_CMP"), http://comploinc/group/component-system/ ("GRP_SYS"),
 and so on.
 
 ## LOINC representation
-LOINC itself does not have an `.owl` representaiton, but for this analysis we constructed one. The following are some 
+LOINC itself does not have an `.owl` representation, but for this analysis we constructed one. The following are some 
 caveats about the representation, by class type.
 
 **Terms**  
@@ -708,7 +708,7 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 ## Changes, by data processing stage
 The following tables shows details in regards to total counts and percentages remaining of classes, subclass axioms, and
 roots at various sequential stages of data preparation. The We start with the raw inputs queried by the ontology, 
-including all class types. Then, a few transient grouping clases just for this analysis were added to LOINC and 
+including all class types. Then, a few transient grouping classes just for this analysis were added to LOINC and 
 CompLOINC. Next, we filter out the classes types that are not needed for one of the sub-analyses. The filter is some 
 combination of terms, parts, and/or groups. Finally, we remove any dangling classes, as well as any dangling subtrees 
 that were caused by the previous filtration step.  
