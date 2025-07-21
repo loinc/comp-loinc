@@ -1,8 +1,9 @@
+import typing
 from enum import StrEnum
 
 import pandas as pd
 
-from loinclib import LoinclibGraph, Node, Configuration
+from loinclib import LoinclibGraph, Node, Configuration, EdgeType
 from loinclib.snomed_schema_v2 import SnomedNodeType, SnomedEdges, SnomedProperties
 
 
@@ -39,7 +40,7 @@ class SnomedLoader:
             sep="\t",
         )
 
-    def load_selected_relations(self, *types_: StrEnum) -> None:
+    def load_selected_relations(self, *types_: EdgeType) -> None:
         """Populates graph with node-(EDGE)->node's, for 1+ EDGEs (`*types_`)."""
         loaded_relationships = self.graph.loaded_sources.get(
             SnomedSources.relations, {}
@@ -77,7 +78,7 @@ class SnomedLoader:
 
             type_ = None
             try:
-                type_ = SnomedEdges(type_id)
+                type_ = self._get_snomed_edge_type(type_id)
             except ValueError:
                 pass
 
@@ -104,6 +105,14 @@ class SnomedLoader:
 
         for type_ in types_:
             loaded_relationships[type_] = True
+
+
+    def _get_snomed_edge_type(self, concept_id: str) -> typing.Optional[SnomedEdges]:
+        for type_ in SnomedEdges:
+            if type_.value.name == concept_id:
+                return type_
+        return None
+
 
     def load_fully_specified_names(self):
         """Populate SNOMED concept nodes in graph with their FSN (Fully Specified Names), and add any missing nodes in the process."""

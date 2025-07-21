@@ -93,12 +93,12 @@ class Loinc(YAMLRoot):
     class_name: ClassVar[str] = "Loinc"
     class_model_uri: ClassVar[URIRef] = LOINC.Loinc
 
-    codes: Optional[
-        Union[Union[str, LoincTermId], List[Union[str, LoincTermId]]]
-    ] = empty_list()
-    parts: Optional[
-        Union[Union[str, LoincPartId], List[Union[str, LoincPartId]]]
-    ] = empty_list()
+    codes: Optional[Union[Union[str, LoincTermId], List[Union[str, LoincTermId]]]] = (
+        empty_list()
+    )
+    parts: Optional[Union[Union[str, LoincPartId], List[Union[str, LoincPartId]]]] = (
+        empty_list()
+    )
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if not isinstance(self.codes, list):
@@ -128,9 +128,9 @@ class Entity(YAMLRoot):
     id: Union[str, EntityId] = None
     entity_label: Optional[str] = None
     entity_description: Optional[str] = None
-    sub_class_of: Optional[
-        Union[Union[str, EntityId], List[Union[str, EntityId]]]
-    ] = empty_list()
+    sub_class_of: Optional[Union[Union[str, EntityId], List[Union[str, EntityId]]]] = (
+        empty_list()
+    )
     equivalent_class: Optional[
         Union[Union[str, EntityId], List[Union[str, EntityId]]]
     ] = empty_list()
@@ -298,16 +298,16 @@ class LoincTerm(LoincEntity):
     supplementary_class: Optional[Union[str, LoincPartId]] = None
     supplementary_category: Optional[Union[str, LoincPartId]] = None
     supplementary_search: Optional[Union[str, LoincPartId]] = None
-    primary_rad_anatomic_location_imaging_focus: Optional[
-        Union[str, LoincPartId]
-    ] = None
+    primary_rad_anatomic_location_imaging_focus: Optional[Union[str, LoincPartId]] = (
+        None
+    )
     primary_rad_anatomic_location_laterality: Optional[Union[str, LoincPartId]] = None
     primary_rad_anatomic_location_laterality_presence: Optional[
         Union[str, LoincPartId]
     ] = None
-    primary_rad_anatomic_location_region_imaged: Optional[
-        Union[str, LoincPartId]
-    ] = None
+    primary_rad_anatomic_location_region_imaged: Optional[Union[str, LoincPartId]] = (
+        None
+    )
     primary_rad_guidance_for_action: Optional[Union[str, LoincPartId]] = None
     primary_rad_guidance_for_approach: Optional[Union[str, LoincPartId]] = None
     primary_rad_guidance_for_object: Optional[Union[str, LoincPartId]] = None

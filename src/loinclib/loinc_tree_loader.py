@@ -1,4 +1,5 @@
 """LOINC tree files loader."""
+
 import logging
 from enum import StrEnum
 
@@ -7,7 +8,11 @@ from pandas import DataFrame
 
 from loinclib import LoinclibGraph
 from loinclib.loinc_schema import LoincNodeType, LoincPartProps
-from loinclib.loinc_tree_schema import LoincDanglingNlpEdges, LoincTreeEdges, LoincTreeProps
+from loinclib.loinc_tree_schema import (
+    LoincDanglingNlpEdges,
+    LoincTreeEdges,
+    LoincTreeProps,
+)
 
 
 logger = logging.getLogger("LoincTreeLoader")
@@ -72,27 +77,41 @@ class LoincTreeLoader:
         return node
 
     def load_nlp_tree(
-        self, source: LoincTreeSource = LoincTreeSource.nlp_tree, default_similarity_threshold: float = 0.5
+        self,
+        source: LoincTreeSource = LoincTreeSource.nlp_tree,
+        default_similarity_threshold: float = 0.5,
     ):
         """Load tree data from our internal NLP matches SSSOM file to add dangling parts to the hierarchy."""
         # Read data
         if source in self.graph.loaded_sources:
             return
         try:
-            df: pd.DataFrame = self.read_nlp_source(LoincTreeSource.nlp_tree).fillna('')
+            df: pd.DataFrame = self.read_nlp_source(LoincTreeSource.nlp_tree).fillna("")
         except FileNotFoundError:
-            logger.warning(f"File not found: {source}. Skipping NLP-based tree loading.")
+            logger.warning(
+                f"File not found: {source}. Skipping NLP-based tree loading."
+            )
             return
 
         # Formatting
-        df['curator_approved'] = df['curator_approved'].apply(lambda x:
-            x if isinstance(x, bool) else True if x.lower() == 'true' else False if x.lower() == 'false' else '')
-        for col in ['subject_id', 'object_id']:
+        df["curator_approved"] = df["curator_approved"].apply(
+            lambda x: (
+                x
+                if isinstance(x, bool)
+                else (
+                    True
+                    if x.lower() == "true"
+                    else False if x.lower() == "false" else ""
+                )
+            )
+        )
+        for col in ["subject_id", "object_id"]:
             df[col] = df[col].str.replace("https://loinc.org/", "")  # URI to code
 
         # Add to hierarchy
         similarity_threshold: float = self.config.config["loinc_nlp_tree"].get(
-            "similarity_threshold", default_similarity_threshold)
+            "similarity_threshold", default_similarity_threshold
+        )
         for tpl in df.itertuples():
             # @formatter:off
             (
@@ -107,15 +126,19 @@ class LoincTreeLoader:
                 confidence,
                 subject_dangling_tf,
                 object_dangling_tf,
-                curator_approved_tf
+                curator_approved_tf,
             ) = tpl
             # @formatter:on
             # if curator_approved is an invalid or null value, revert to confidence over threshold
-            if curator_approved_tf == False or (curator_approved_tf != True and confidence < similarity_threshold):
+            if curator_approved_tf == False or (
+                curator_approved_tf != True and confidence < similarity_threshold
+            ):
                 continue
             child_node = self._getsert_node(child_code, child_code_text)
             parent_node = self._getsert_node(parent_code, parent_code_text)
-            child_node.add_edge_single(type_=LoincDanglingNlpEdges.nlp_parent, to_node=parent_node)
+            child_node.add_edge_single(
+                type_=LoincDanglingNlpEdges.nlp_parent, to_node=parent_node
+            )
 
         self.graph.loaded_sources[source] = {}
 
@@ -189,9 +212,9 @@ class LoincTreeLoader:
 
     def read_nlp_source(self, source: LoincTreeSource) -> DataFrame:
         path = self.config.get_curation_dir_path() / source.value
-        df = pd.read_csv(path, sep="\t", comment="#").fillna('')
+        df = pd.read_csv(path, sep="\t", comment="#").fillna("")
         # - filter non-match rows
-        df = df[df['object_id'] != '']
+        df = df[df["object_id"] != ""]
         return df
 
     def read_source(self, source: LoincTreeSource) -> DataFrame:

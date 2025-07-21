@@ -9,6 +9,7 @@ todo's:
 TODO: #1 Do I actually want a_minus_b or intersection? I thought I found that they were the same for my purposes, but
  now I'm not so sure.
 """
+
 import os
 import logging
 from argparse import ArgumentParser
@@ -23,12 +24,13 @@ from upsetplot import from_contents, UpSet
 
 logger = logging.getLogger(__name__)
 
-from comp_loinc.analysis.utils import bundle_inpaths_and_update_abs_paths, cli_add_inpath_args, _subclass_axioms_and_totals
+from comp_loinc.analysis.utils import bundle_inpaths_and_update_abs_paths, cli_add_inpath_args, \
+    _subclass_axioms_and_totals
 
 THIS_DIR = Path(os.path.abspath(os.path.dirname(__file__)))
 PROJECT_ROOT = THIS_DIR.parent.parent.parent
-MISSING_AXIOMS_PATH = PROJECT_ROOT / 'output' / 'tmp' / 'missing_comploinc_axioms.tsv'
-DESC = 'Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED.'
+MISSING_AXIOMS_PATH = PROJECT_ROOT / "output" / "tmp" / "missing_comploinc_axioms.tsv"
+DESC = "Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."
 DEFAULTS = {
     'loinc-path': 'output/tmp/subclass-rels-loinc.tsv',
     'loinc-snomed-path': 'output/tmp/subclass-rels-loinc-snomed.tsv',
@@ -142,7 +144,7 @@ def _make_tables(tots_df: pd.DataFrame, ont_sets: Dict[str, Set[Tuple[str, str]]
 
     # Render & save
     template = Template(md_template)
-    tots_table = tabulate(tots_df, headers='keys', tablefmt='pipe', showindex=False)
+    tots_table = tabulate(tots_df, headers="keys", tablefmt="pipe", showindex=False)
     rendered_comparisons = {}
     for ont_a_name in comparison_tables:
         rendered_comparisons[ont_a_name] = {}
@@ -174,7 +176,8 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
         missing_from_comploinc = all_elements - ont_sets["CompLOINC"]
         logger.debug(
             f"- Elements missing from CompLOINC: "
-            f"{len(missing_from_comploinc)} ({len(missing_from_comploinc) / len(all_elements) * 100:.2f}%)")
+            f"{len(missing_from_comploinc)} ({len(missing_from_comploinc) / len(all_elements) * 100:.2f}%)"
+        )
 
         # Find where these missing elements exist
         missing_elements_source = {}
@@ -197,17 +200,24 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
 
         rows = []
         for axiom, sources in missing_elements_source.items():
-            rows.append({
-                'child': axiom[0], 'parent': axiom[1], 'in_loinc': 'LOINC' in sources,
-                'in_loinc-snomed': 'LOINC-SNOMED' in sources})
+            rows.append(
+                {
+                    "child": axiom[0],
+                    "parent": axiom[1],
+                    "in_loinc": "LOINC" in sources,
+                    "in_loinc-snomed": "LOINC-SNOMED" in sources,
+                }
+            )
         missing_df = pd.DataFrame(rows)
         try:
-            missing_df.to_csv(MISSING_AXIOMS_PATH, index=False, sep='\t')
+            missing_df.to_csv(MISSING_AXIOMS_PATH, index=False, sep="\t")
         except FileNotFoundError:
             logger.debug("Could not save missing axioms to tmp directory; doesn't exist.")
 
 
-def _make_upset_plot(ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
+def _make_upset_plot(
+    ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]
+):
     """Make upset plot showing relationships between ontology subclass axioms.
 
     Args:
@@ -226,7 +236,7 @@ def _make_upset_plot(ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[P
     # Create the plot
     fig = plt.figure(figsize=(12, 8))
     # fig = plt.figure(figsize=(12, 8), constrained_layout=True)  # alternative layout; doesn't seem any different
-    upset = UpSet(upset_data, sort_by='cardinality', show_percentages=True)
+    upset = UpSet(upset_data, sort_by="cardinality", show_percentages=True)
     upset.plot(fig=fig)
     # Add title and adjust layout
     # plt.suptitle("Ontology Subclass Axiom Overlap", fontsize=16)
@@ -235,7 +245,7 @@ def _make_upset_plot(ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[P
     plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
 
     # Save
-    plt.savefig(outpath, dpi=300, bbox_inches='tight')
+    plt.savefig(outpath, dpi=300, bbox_inches="tight")
     plt.close()
 
 
@@ -279,5 +289,5 @@ def cli():
     return subclass_rel_analysis(**d)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()

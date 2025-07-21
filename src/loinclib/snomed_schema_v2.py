@@ -1,38 +1,54 @@
 """SNOMED Schema"""
 
-from enum import StrEnum
+from dataclasses import dataclass
+
+from loinclib import NodeType, EdgeType, PropertyType, NodeTypeArgs, PropertyTypeArgs, EdgeTypeArgs
 
 
-class SnomedNodeType(StrEnum):
-    """SNOMED Node Types"""
-
-    Concept = "Concept"
-
-
-class SnomedProperties(StrEnum):
-    """SNOMED Properties"""
-
-    concept_id = ""
-    fully_specified_name = "900000000000003001"
+@dataclass(kw_only=True)
+class SnomedNodeTypeArgs(NodeTypeArgs):
+  pass
 
 
-class SnomedEdges(StrEnum):
-    """SNOMED Edges"""
+class SnomedNodeType(NodeType):
+  """SNOMED Node Types"""
 
-    is_a = "116680003"
-    maps_to = "maps_to"  # this maps external ids to one and only one SNOMED concept
+  Concept = SnomedNodeTypeArgs(name="Concept", id_prefix="sct")
 
-    # the following edges are used in the LOINC SNOMED module
-    component = "246093002"
-    technique = "246501002"
-    property = "370130000"
-    scale_type = "370132008"
-    specimen_substance = "370133003"
-    time_aspect = "370134009"
-    inheres_in = "704319004"
-    precondition = "704326004"
-    direct_site = "704327008"
 
+@dataclass(kw_only=True)
+class SnomedPropertiesArgs(PropertyTypeArgs):
+  pass
+
+
+class SnomedProperties(PropertyType):
+  """SNOMED Properties"""
+
+  concept_id = SnomedPropertiesArgs(name="")
+  fully_specified_name = SnomedPropertiesArgs(name="900000000000003001")
+
+
+@dataclass(kw_only=True)
+class SnomedEdgesArgs(EdgeTypeArgs):
+  pass
+
+
+class SnomedEdges(EdgeType):
+  """SNOMED Edges"""
+
+  is_a = SnomedEdgesArgs(name="116680003")
+  maps_to = SnomedEdgesArgs(name="maps_to")  # this maps external ids to one and only one SNOMED concept
+
+  # the following edges are used in the LOINC SNOMED module
+  component = SnomedEdgesArgs(name="246093002")
+  technique = SnomedEdgesArgs(name="246501002")
+  property = SnomedEdgesArgs(name="370130000")
+  scale_type = SnomedEdgesArgs(name="370132008")
+  specimen_substance = SnomedEdgesArgs(name="370133003")
+  time_aspect = SnomedEdgesArgs(name="370134009")
+  inheres_in = SnomedEdgesArgs(name="704319004")
+  precondition = SnomedEdgesArgs(name="704326004")
+  direct_site = SnomedEdgesArgs(name="704327008")
 
 #   loinc snomed relationships
 #   08:05 $ csvtool -t TAB  col 8 xsct2_Relationship_Snapshot_LO1010000_20231015.txt | sort | uniq -c

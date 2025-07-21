@@ -1,25 +1,25 @@
 loinc:
   release:
     default: '2.80'
-    '2.67':
-      version: '2.67'
-      path: 'loinc_release/2.67' # runtime home directory-relative path
-    '2.78':
-      version:  '2.78'
-      path: 'loinc_release/Loinc_2.78'
-      classes: 'data/loinc_classes.csv'
+#    '2.67':
+#      version: '2.67'
+#      path: 'loinc_release/2.67' # runtime home directory-relative path
+#    '2.78':
+#      version:  '2.78'
+#      path: 'loinc_release/Loinc_2.78'
+#      classes: 'data/loinc_classes.csv'
     '2.80':
       version:  '2.80'
-      path: 'loinc_release/Loinc_2.80'
+      path: 'sources/loinc/Loinc_2.80'
       classes: 'data/loinc_classes.csv'
 
 loinc_tree:
   release:
     default: '2.80'
-    '2.78':
-      tree_path: 'loinc_trees/2.78'
+#    '2.78':
+#      tree_path: 'loinc_trees/2.78'
     '2.80':
-      tree_path: 'loinc_trees/2.80'
+      tree_path: 'sources/loinc_trees/2.80'
 
 loinc_nlp_tree:
   similarity_threshold: 0.5
@@ -27,28 +27,33 @@ loinc_nlp_tree:
 
 snomed:
   release:
-    default: 'INT_20240801'
-    INT_20240801:
+    default: 'INT_20250101'
+#    INT_20240801:
+#      files:
+#        description: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_INT_20240801.txt'
+#        relationship: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_INT_20240801.txt'
+#        owl: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_sRefset_OWLExpressionSnapshot_INT_20240801.txt'
+    INT_20250101:
       files:
-        description: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_INT_20240801.txt'
-        relationship: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_INT_20240801.txt'
-        owl: 'snomed_release/SnomedCT_InternationalRF2_PRODUCTION_20240801T120000Z/Snapshot/Terminology/sct2_sRefset_OWLExpressionSnapshot_INT_20240801.txt'
+        description: 'sources/snomed/SnomedCT_InternationalRF2_PRODUCTION_20250101T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_INT_20250101.txt'
+        relationship: 'sources/snomed/SnomedCT_InternationalRF2_PRODUCTION_20250101T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_INT_20250101.txt'
+        owl: 'sources/snomed/SnomedCT_InternationalRF2_PRODUCTION_20250101T120000Z/Snapshot/Terminology/sct2_sRefset_OWLExpressionSnapshot_INT_20250101.txt'
 
 loinc_snomed:
   release:
     default: '1.0'
-    '20231015':
-      files:
-        description: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Description_Snapshot-en_LO1010000_20231015.txt'
-        identifier: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Identifier_Snapshot_LO1010000_20231015.txt'
-        relationship: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Relationship_Snapshot_LO1010000_20231015.txt'
-        part_mapping: 'loinc_snomed_release/part-mappings_0.0.3.tsv'
+#    '20231015':
+#      files:
+#        description: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Description_Snapshot-en_LO1010000_20231015.txt'
+#        identifier: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Identifier_Snapshot_LO1010000_20231015.txt'
+#        relationship: 'loinc_snomed_release/20231015/Snapshot/Terminology/xsct2_Relationship_Snapshot_LO1010000_20231015.txt'
+#        part_mapping: 'loinc_snomed_release/20231015/part-mappings_0.0.3.tsv'
     '1.0':
       files:
-        description: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_LO1010000_20250321.txt'
-        identifier: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Identifier_Snapshot_LO1010000_20250321.txt'
-        relationship: 'loinc_snomed_release/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_LO1010000_20250321.txt'
-        part_mapping: 'loinc_snomed_release/part-mappings_0.0.3.tsv'
+        description: 'sources/loinc_ontology/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_LO1010000_20250321.txt'
+        identifier: 'sources/loinc_ontology/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Identifier_Snapshot_LO1010000_20250321.txt'
+        relationship: 'sources/loinc_ontology/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_LO1010000_20250321.txt'
+        part_mapping: 'sources/loinc_ontology/1.0/part-mappings_0.0.3.tsv'
 
 prop_use:
   pickle: 'tmp/prop_use_pickle.pkl'

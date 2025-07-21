@@ -6,8 +6,9 @@ prefixes:
   loinc_property: http://loinc.org/property/
   owl: http://www.w3.org/2002/07/owl#
   rdfs: http://www.w3.org/2000/01/rdf-schema#
-  sct: http://snomed.info/sct
-  comploinc: http://comploinc/
+  sct: http://snomed.info/sct/
+  comploinc: https://comploinc/
+  xsd: http://www.w3.org/2001/XMLSchema#
 default_prefix: loinc
 default_range: string
 imports:
@@ -16,18 +17,18 @@ imports:
 
 classes:
 
-  Loinc:
-    description: A container of Loinc term and part instances.
-    attributes:
-      codes:
-        description: Holds a list of LOINC term instances.
-        multivalued: true
-        range: LoincTerm
-      parts:
-        description: Holds a list of LOINC part instances.
-        multivalued: true
-        range: LoincPart
-    class_uri: owl:Class
+#  Loinc:
+#    description: A container of Loinc term and part instances.
+#    attributes:
+#      codes:
+#        description: Holds a list of LOINC term instances.
+#        multivalued: true
+#        range: LoincTerm
+#      parts:
+#        description: Holds a list of LOINC part instances.
+#        multivalued: true
+#        range: LoincPart
+#    class_uri: owl:Class
 
   Entity:
     attributes:
@@ -78,7 +79,6 @@ classes:
         slot_uri: loinc:class_title
         annotations:
           owl: AnnotationAssertion
-
       class_abbreviation:
         slot_uri: loinc:class_abbreviation
         annotations:
@@ -139,8 +139,6 @@ classes:
         annotations:
           owl: ObjectSomeValuesFrom
 
-
-
       # 3
       primary_time_aspect:
         slot_uri: loinc_property:TIME_ASPCT
@@ -181,7 +179,7 @@ classes:
       # for supplementary model slots: https://loinc.org/kb/enriched-linkages-between-loinc-terms-and-loinc-parts/#detailedmodel
 
       supplementary_property:
-        slot_uri: loinc_property:PROPERTY-supplementary
+        slot_uri: loinc_property:PROPERTY
         multivalued: false
         range: LoincPart
         required: false
@@ -189,7 +187,7 @@ classes:
           owl: ObjectSomeValuesFrom
 
       supplementary_scale_typ:
-        slot_uri: loinc_property:SCALE_TYP-supplementary
+        slot_uri: loinc_property:SCALE_TYP
         multivalued: false
         range: LoincPart
         required: false
@@ -197,7 +195,7 @@ classes:
           owl: ObjectSomeValuesFrom
 
       supplementary_method_typ:
-        slot_uri: loinc_property:METHOD_TYP-supplementary
+        slot_uri: loinc_property:METHOD_TYP
         multivalued: false
         range: LoincPart
         required: false
