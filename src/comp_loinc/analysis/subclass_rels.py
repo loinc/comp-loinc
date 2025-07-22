@@ -32,10 +32,10 @@ PROJECT_ROOT = THIS_DIR.parent.parent.parent
 MISSING_AXIOMS_PATH = PROJECT_ROOT / "output" / "tmp" / "missing_comploinc_axioms.tsv"
 DESC = "Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."
 DEFAULTS = {
-    'loinc-path': 'output/tmp/subclass-rels-loinc.tsv',
-    'loinc-snomed-path': 'output/tmp/subclass-rels-loinc-snomed.tsv',
-    'comploinc-primary-path': 'output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv',
-    'comploinc-supplementary-path': 'output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv',
+    'loinc-path': 'output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv',
+    'loinc-snomed-path': 'subclass-rels-loinc-snomed-indirect-sc-axioms-included.tsv',
+    'comploinc-primary-path': 'output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv',
+    'comploinc-supplementary-path': 'output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv',
     'outpath-md': 'documentation/analyses/class-depth/depth.md',
     'outpath-upset-plot': 'documentation/analyses/class-depth',
 }
