@@ -414,3 +414,33 @@ start-app:
 # - Testing -------------------------------------------------------------------------------------------------------------
 test:
 	python -m unittest discover
+
+# TODO temp
+direct.ttl: chain.ttl
+	robot reason \
+	  --input $< \
+	  --output $@
+
+direct2.ttl: chain.ttl
+	robot reason \
+	  --input $< \
+	  --include-indirect false \
+	  --output $@
+
+indirect.ttl: chain.ttl
+	robot reason \
+	  --input $< \
+	  --include-indirect true \
+	  --output $@
+
+.PHONY: check
+check: direct.ttl direct2.ttl indirect.ttl
+	@echo "=== direct.ttl ==="
+	grep "subClassOf" direct.ttl
+	md5 direct.ttl
+	@echo "=== direct2.ttl ==="
+	grep "subClassOf" direct2.ttl
+	md5 direct2.ttl
+	@echo "\n=== indirect.ttl ==="
+	grep "subClassOf" indirect.ttl
+	md5 indirect.ttl
