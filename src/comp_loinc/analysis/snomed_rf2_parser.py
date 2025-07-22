@@ -180,10 +180,10 @@ def build_snomed(
     outpath: Union[Path, str],
     include_labels: bool = True,
 ) -> None:
-    """Builds a representation of SNOMED in OWL functional syntax.
+    """Builds a representation of a SNOMED module in OWL functional syntax.
 
     Args:
-        inpath_owl: Path to SNOMED release OWL expression file.
+        inpath_owl: Path to SNOMED module release OWL expression file.
         outpath: Path to output file.
     """
     ontology_block_opener, prefixes_tags, axioms = _get_expressions(inpath_owl)
