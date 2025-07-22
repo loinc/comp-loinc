@@ -186,6 +186,17 @@ terms and groups will be counted multiple times in the depths counts.
 
 More information about LOINC groups can be found here: https://loinc.org/groups/
 
+## LOINC-SNOMED Ontology representation
+This representation is used not only for class depth analysis, but also for subclass axiom intersection analysis. In 
+order to do these analyses, we also rendered LOINC-SNOMED Ontology in OWL. We did this by utilizing the 
+`OWLExpressionSnapshot` files in each of the SNOMED and LOINC-SNOMED RF2 (Release Format 2) releases. This was done 
+essentially by taking all of the values in the `owlExpression` column and placing them in a new `.owl` file, then 
+wrapping it in an ontology tag, and adding a header with prefix tags.
+
+After converting the whole of SNOMED to OWL, and the LOINC-SNOMED Ontology module to OWL, we then extracted the relevant
+ancestor closure from SNOMED for the set of ancestors in LOINC-SNOMED. We then merged that closure with the LOINC-SNOMED
+module, and finally reasoned using `robot reason` (default reasoner = ELK).  
+
 ---
 
 {% for title, table_and_plot_path in figs_by_title.items() %}
