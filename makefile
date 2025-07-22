@@ -191,10 +191,19 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 
 # - Comparisons: LOINC-SNOMED Ontology
 # -- SNOMED representation
-# ROBOT_JAVA_ARGS='-Xmx...G': for some reason runs out of memory even on simple query: Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+# ROBOT_JAVA_ARGS='-Xmx12GG': for some reason even if has 8G, runs out of memory even on simple query: Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+#$(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
+#	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name snomed --outpath $@.tmp
+#	ROBOT_JAVA_ARGS='-Xmx12G' robot query --input $@.tmp --update src/comp_loinc/analysis/remove-jellyfish-sting.sparql --output $@
+#	rm -f $@.tmp
 $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
 	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name snomed --outpath $@.tmp
-	ROBOT_JAVA_ARGS='-Xmx16G' robot query --input $@.tmp --update src/comp_loinc/analysis/remove-jellyfish-sting.sparql --output $@
+	robot remove \
+		--input $@.tmp \
+		--term-file src/comp_loinc/analysis/remove-strange-jellyfish-root-classes.txt \
+		--select "self descendants" \
+		--trim true \
+		--output $@
 	rm -f $@.tmp
 
 # todo: consider if there is value in using this to extract in place of -unreasoned for building LOINC-SNOMED Ontology
