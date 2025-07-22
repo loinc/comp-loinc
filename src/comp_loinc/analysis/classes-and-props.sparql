@@ -1,0 +1,12 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+
+SELECT DISTINCT ?entity WHERE {
+  { ?entity a owl:Class           }
+  UNION
+  { ?entity a owl:ObjectProperty  }
+  UNION
+  { ?entity a owl:DatatypeProperty }
+  UNION
+  { ?entity a owl:AnnotationProperty }
+}

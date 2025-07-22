@@ -57,17 +57,28 @@ class Configuration:
         relationship_path = self.config["snomed"]["release"][release_version]["files"][
             "owl"
         ]
-        return (self.home_path / relationship_path).absolute()
+        path = (self.home_path / relationship_path).absolute()
+        if not path.exists():
+            raise FileNotFoundError(f"SNOMED OWL file not found: {path}")
+        return path
 
     def get_snomed_description_path(self) -> Path:
         default = self.config["snomed"]["release"]["default"]
         path = self.config["snomed"]["release"][default]["files"]["description"]
-        return (self.home_path / path).absolute()
+        full_path = (self.home_path / path).absolute()
+        if not full_path.exists():
+            raise FileNotFoundError(f"SNOMED description file not found: {full_path}")
+        return full_path
 
     def get_loinc_snomed_description_path(self) -> Path:
         default = self.config["loinc_snomed"]["release"]["default"]
         path = self.config["loinc_snomed"]["release"][default]["files"]["description"]
-        return self.home_path / path
+        full_path = self.home_path / path
+        if not full_path.exists():
+            raise FileNotFoundError(
+                f"LOINC-SNOMED description file not found: {full_path}"
+            )
+        return full_path
 
     def get_loinc_snomed_identifier_path(self) -> Path:
         default = self.config["loinc_snomed"]["release"]["default"]
@@ -84,6 +95,16 @@ class Configuration:
         path = self.config["loinc_snomed"]["release"][default]["files"]["part_mapping"]
         return self.home_path / path
 
+    def get_loinc_snomed_owl_path(self) -> Path:
+        release_version = self.config["loinc_snomed"]["release"]["default"]
+        relationship_path = self.config["loinc_snomed"]["release"][release_version][
+            "files"
+        ]["owl"]
+        path = (self.home_path / relationship_path).absolute()
+        if not path.exists():
+            raise FileNotFoundError(f"LOINC-SNOMED OWL file not found: {path}")
+        return path
+
     def get_curation_dir_path(self):
         try:
             return self.home_path / self.config["loinc_nlp_tree"]["curation_dir_path"]
@@ -94,7 +115,7 @@ class Configuration:
         return self.config["logging"]
 
     def get_prop_use_pickle(self) -> Path:
-      return self.home_path / self.config["prop_use"]["pickle"]
+        return self.home_path / self.config["prop_use"]["pickle"]
 
     def get_loinc_default_dir_name(self) -> str:
         """Return directory name of the default LOINC release."""
@@ -104,7 +125,6 @@ class Configuration:
         if idx != -1:
             return path_str[idx + len(marker) :]
         return path_str
-
 
 
 def cli() -> None:

@@ -1,8 +1,9 @@
 # Default build, run: `make all -B`
 # todo: Ideally would change pipeline to use `make all` instead of `make all -B`. Leaving -B out is preferred whenever possible, because it will theoretically only update targets and their prereqs that are outdated. But if the codebase changes, these files will be outdated but they will not appear so to make, which means we must execute using -B.
+# todo: It'd be great if we also did `--annotate-inferred-axioms true` for all of our `indirect-included` variant .owl's, or in general.
 
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
-	chebi-subsets start-app
+	chebi-subsets start-app test
 DEFAULT_BUILD_DIR=output/build-default
 DANGLING_DIR=output/analysis/dangling
 LOINC_OWL_DIR=output/analysis/loinc
@@ -38,12 +39,6 @@ endef
 # 1: The input file; 2: the query; 3: the output file
 define robot_query
 robot query -i $(1) --query $(2) $(3)
-endef
-
-# Run ROBOT reasoner
-# 1: The input file; 2: the output file
-define robot_reason
-robot reason --input $(1) --output $(2)
 endef
 
 # Core modules ---------------------------------------------------------------------------------------------------------
@@ -122,16 +117,17 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all
 
 # build flavors
 # todo: consider: '--equivalent-classes-allowed asserted-only' instead
+# todo: Drop the 'merged' from the name? shouldn't it be obvious by the fact that it says 'comploinc'? though i guess there is a comploinc.owl in owl-files/
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/
 	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed none,))
 	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --output $@
 
-# build flavors: including inferred subclass axioms
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/
+# build flavors: including indirect subclass axioms
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/
 	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed asserted-only,))
 	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --include-indirect true --output $@
 
-merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-$(flavor).owl) $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-$(flavor).owl)
+merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-$(flavor).owl) $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-$(flavor).owl)
 
 # Analysis / Stats  ----------------------------------------------------------------------------------------------------
 # - defs & dirs
@@ -148,7 +144,7 @@ PREFIXES_METRICS=\
 	--prefix 'LOINC_PART_GRP_CMP_SYS: http://comploinc//group/component-system/LP' \
 	--prefix 'LOINC_PROP: http://loinc.org/property/' \
 	--prefix 'COMPLOINC_AXIOM: https://comploinc-axioms\#' \
-	--prefix 'SNOMED: http://snomed.info/'
+	--prefix 'SNOMED: http://snomed.info/id/'
 
 input/analysis/:
 	mkdir -p $@
@@ -174,7 +170,7 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/:
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/:
 	mkdir -p $@
 
-$(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/:
+$(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/:
 	mkdir -p $@
 
 documentation/analyses/class-depth/:
@@ -196,31 +192,67 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 
 # - Comparisons: LOINC-SNOMED Ontology
 # -- SNOMED representation
-# Todo: Connect this to the pipeline(s). which ones? (i) class depth, (ii) subclass axioms, (iii) other(s)?
+# ROBOT_JAVA_ARGS='-Xmx12GG': for some reason even if has 8G, runs out of memory even on simple query: Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+#$(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
+#	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name snomed --outpath $@.tmp
+#	ROBOT_JAVA_ARGS='-Xmx12G' robot query --input $@.tmp --update src/comp_loinc/analysis/remove-jellyfish-sting.sparql --output $@
+#	rm -f $@.tmp
 $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
-	python src/comp_loinc/analysis/snomed.py --outpath $@
+	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name snomed --outpath $@.tmp
+	robot remove \
+		--input $@.tmp \
+		--term-file src/comp_loinc/analysis/remove-strange-jellyfish-root-classes.txt \
+		--select "self descendants" \
+		--trim true \
+		--output $@
+	rm -f $@.tmp
 
+# todo: consider if there is value in using this to extract in place of -unreasoned for building LOINC-SNOMED Ontology
 # FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
-$(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
-	$(call robot_reason,$<,$@)
+#$(SNOMED_OWL_DIR)/snomed-reasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn
+	#robot reason --input $< --output $@
+
+# Extract ancestors: See https://robot.obolibrary.org/extract (ChEBI goal in this makefile also has more info)
+$(LOINC_SNOMED_OWL_DIR)/related-snomed-ancestor-closure.owl: $(LOINC_SNOMED_OWL_DIR)/snomed-with-loinc-snomed-full-unreasoned.ofn $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module-classes-and-props.txt
+	robot extract --method BOT \
+	--input $(LOINC_SNOMED_OWL_DIR)/snomed-with-loinc-snomed-full-unreasoned.ofn \
+	--term-file $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module-classes-and-props.txt --output $@
 
 # -- LOINC-SNOMED representation
-# Todo: if needed temporarily to make subclass rels / labels until this is ready, use instead as source: output/analysis/snomed/bak/snomed-parts-reasoned.owl instead of loinc-snomed-reasoned.owl
-# Todo: Structure this properly https://github.com/loinc/comp-loinc/issues/194
-# Todo: Change SNOMED-LOINC representation: (1) build SNOMED, (2) subset it by LOINC mappings
-# Todo: - how subset those mappings? involves mapped parts and terms. check notes
-# Todo: robot merge? What other inputs does this need?
-$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl: $(DEFAULT_BUILD_DIR)/snomed-parts.owl | $(LOINC_SNOMED_OWL_DIR)
-	robot merge --input $(DEFAULT_BUILD_DIR)/snomed-parts.owl --output $@
+# Intermediate file: We don't actually care about full SNOMED enhanced by LOINC-SNOMED Ontology. This is just a temporary step to be used in `robot extract`
+$(LOINC_SNOMED_OWL_DIR)/snomed-with-loinc-snomed-full-unreasoned.ofn: $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn
+	robot merge --input $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn --input $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn --output $@
 
-$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl | $(LOINC_SNOMED_OWL_DIR)
-	$(call robot_reason,$<,$@)
+# Representation of LOINC-SNOMED Ontology module (lacks ancestors from SNOMED)
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn: | $(LOINC_SNOMED_OWL_DIR)
+	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name loinc-snomed --outpath $@
 
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module-classes-and-props.txt: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn
+	$(call robot_query,$<,src/comp_loinc/analysis/classes-and-props.sparql,$@.tmp)
+	grep '^http' $@.tmp | sort > $@
+	rm -f $@.tmp
+
+# Full representation of LOINC-SNOMED Ontology: combines the LOINC-SNOMED module with ancestor classes from SNOMED proper
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl: $(LOINC_SNOMED_OWL_DIR)/related-snomed-ancestor-closure.owl $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn
+	robot merge --input $(LOINC_SNOMED_OWL_DIR)/related-snomed-ancestor-closure.owl --input $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-module.ofn --output $@
+
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl
+	robot reason --input $< --output $@
+
+$(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned-indirect-sc-axioms-included.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl
+	robot reason --input $< --include-indirect true --output $@
+
+# uses `subclass-rels.sparql` instead of `subclass-rels.sparql` SNOMED uses data property hierarchies, not just subClassOf as is the case with our constructed LOINC representation of the part hierarchy obtained from the tree browser (and improted into CompLOINC)
+# todo: use reasoned or unreasoned?
 output/tmp/subclass-rels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
+output/tmp/subclass-rels-loinc-snomed-indirect-sc-axioms-included.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned-indirect-sc-axioms-included.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+# querying unreasoned also fine
 output/tmp/labels-loinc-snomed.tsv: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: LOINC
 $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_OWL_DIR)
@@ -245,15 +277,20 @@ $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl: $(DEFAULT_BUILD_DIR)/l
 $(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.owl $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl $(LOINC_OWL_DIR)/loinc-groups.owl | $(LOINC_OWL_DIR)
 	robot merge --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(DEFAULT_BUILD_DIR)/loinc-part-hierarchy-all.owl --input $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl --input $(LOINC_OWL_DIR)/loinc-groups.owl --output $@
 
-# loinc-reasoned.owl: Not including, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons.
+# loinc-reasoned.owl: Not including plain reasoned, because the LOINC release is not reasoned, so it doesn't make sense for us to use this for our comparisons. Reasoning is only necessary for indirect sc axioms analysis.
 #$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)
 #	robot reason --input $< --output $@
+$(LOINC_OWL_DIR)/loinc-reasoned-indirect-sc-axioms-included.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
+	robot reason --input $< --include-indirect true --output $@
 
 output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
+output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv: $(LOINC_OWL_DIR)/loinc-reasoned-indirect-sc-axioms-included.owl
+	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
 output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: CompLOINC
 output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
@@ -262,28 +299,29 @@ output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-
 output/tmp/subclass-rels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
-output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-primary.owl
+output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-all-primary.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
-output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/inferred-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
+output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 output/tmp/labels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
-	$(call robot_query,$<,src/comp_loinc/labels.sparql,$@)
+	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: all
 output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv
 	cat $^ > $@
 
-documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv
+# todo: these indirect-included TSVs are inconsistently named. one says indirect-sc-axioms-included
+documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv
 	python src/comp_loinc/analysis/subclass_rels.py \
-	--loinc-path output/tmp/subclass-rels-loinc.tsv \
-	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
-	--comploinc-primary-path output/tmp/subclass-rels-comploinc-inferred-included-primary.tsv \
-	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-inferred-included-supplementary.tsv \
+	--loinc-path output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv \
+	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed-indirect-sc-axioms-included.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv \
 	--outpath-md documentation/subclass-analysis.md \
 	--outpath-upset-plot documentation/upset.png
 
@@ -372,3 +410,7 @@ start-app-debug:
 start-app:
 	#gunicorn comp_loinc.analysis.app:server --bind 0.0.0.0:$PORT  # this is the version of the command used on render.com
 	gunicorn src.comp_loinc.analysis.app:server
+
+# - Testing -------------------------------------------------------------------------------------------------------------
+test:
+	python -m unittest discover

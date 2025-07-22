@@ -53,6 +53,7 @@ loinc_snomed:
         description: 'sources/loinc_ontology/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Description_Snapshot-en_LO1010000_20250321.txt'
         identifier: 'sources/loinc_ontology/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Identifier_Snapshot_LO1010000_20250321.txt'
         relationship: 'sources/loinc_ontology/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_Relationship_Snapshot_LO1010000_20250321.txt'
+        owl: 'sources/loinc_ontology/1.0/SnomedCT_LOINCExtension_PRODUCTION_LO1010000_20250321T120000Z/Snapshot/Terminology/sct2_sRefset_OWLExpressionSnapshot_LO1010000_20250321.txt'
         part_mapping: 'sources/loinc_ontology/1.0/part-mappings_0.0.3.tsv'
 
 prop_use:

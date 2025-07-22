@@ -45,6 +45,8 @@ def _disaggregate_classes_from_class_list(classes: Set, includes_angle_brackets=
                 classes_by_type['terms'].add(cls)
         elif any([cls.startswith(f'{b}{x}') for x in CL_GROUPING_CLASS_URI_STEMS]):
             classes_by_type['groups'].add(cls)
+        elif cls.startswith(f'{b}http://snomed.info/id/'):
+            classes_by_type['terms'].add(cls)
         else:
             classes_by_type['other'].add(cls)
 
