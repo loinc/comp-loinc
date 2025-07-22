@@ -143,7 +143,7 @@ PREFIXES_METRICS=\
 	--prefix 'LOINC_PART_GRP_CMP_SYS: http://comploinc//group/component-system/LP' \
 	--prefix 'LOINC_PROP: http://loinc.org/property/' \
 	--prefix 'COMPLOINC_AXIOM: https://comploinc-axioms\#' \
-	--prefix 'SNOMED: http://snomed.info/'
+	--prefix 'SNOMED: http://snomed.info/id/'
 
 input/analysis/:
 	mkdir -p $@
@@ -191,9 +191,10 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 
 # - Comparisons: LOINC-SNOMED Ontology
 # -- SNOMED representation
+# ROBOT_JAVA_ARGS='-Xmx...G': for some reason runs out of memory even on simple query: Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
 $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
 	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name snomed --outpath $@.tmp
-	robot query --input $@.tmp --update src/comp_loinc/analysis/remove-jellyfish-sting.sparql --output $@
+	ROBOT_JAVA_ARGS='-Xmx16G' robot query --input $@.tmp --update src/comp_loinc/analysis/remove-jellyfish-sting.sparql --output $@
 	rm -f $@.tmp
 
 # todo: consider if there is value in using this to extract in place of -unreasoned for building LOINC-SNOMED Ontology
