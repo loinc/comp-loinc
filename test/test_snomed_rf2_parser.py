@@ -93,9 +93,10 @@ class TestSnomedRF2Parser(unittest.TestCase):
         df = pd.DataFrame(test_data)
         df.to_csv(self.temp_owl_file, sep="\t", index=False)
 
-        with patch(
-            "src.comp_loinc.analysis.snomed_rf2_parser._borrow_ontology_block_opener_and_prefixes_from_snomed"
-        ) as mock_borrow:
+        module_path = "src.comp_loinc.analysis.snomed_rf2_parser._borrow_ontology_block_opener_and_prefixes_from_snomed"
+        if "src" not in sys.path:
+            sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
+        with patch(module_path) as mock_borrow:
             mock_borrow.return_value = (
                 DEFAULT_ONTOLOGY_BLOCK_OPENER,
                 DEFAULT_PREFIXES_TAGS,
