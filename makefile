@@ -192,7 +192,9 @@ documentation/stats-dangling.md: curation/nlp-matches.sssom.tsv
 # - Comparisons: LOINC-SNOMED Ontology
 # -- SNOMED representation
 $(SNOMED_OWL_DIR)/snomed-unreasoned.ofn: | $(SNOMED_OWL_DIR)
-	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name snomed --outpath $@
+	python src/comp_loinc/analysis/snomed_rf2_parser.py --by-module-name snomed --outpath $@.tmp
+	robot query --input $@.tmp --update src/comp_loinc/analysis/remove-jellyfish-sting.sparql --output $@
+	rm -f $@.tmp
 
 # todo: consider if there is value in using this to extract in place of -unreasoned for building LOINC-SNOMED Ontology
 # FYI: if not .ofn, get: https://robot.obolibrary.org/errors#invalid-element-error due to :-namespace and inlining of annotation prop refs. So if we want RDF/XML, we should use a SNOMED prefix rather than:.
