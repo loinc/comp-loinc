@@ -3,14 +3,13 @@
 import os
 import tempfile
 import unittest
-from pathlib import Path
-from unittest.mock import Mock, patch
-from typing import List, Tuple
+from unittest.mock import patch
 
 import pandas as pd
 
 # Import the module we're testing
 try:
+    # noinspection PyProtectedMember
     from src.comp_loinc.analysis.snomed_rf2_parser import (
         _get_expressions,
         _get_labels,
@@ -29,6 +28,7 @@ except ImportError:
     import sys
 
     sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
+    # noinspection PyProtectedMember
     from comp_loinc.analysis.snomed_rf2_parser import (
         _get_expressions,
         _get_labels,
@@ -43,6 +43,7 @@ except ImportError:
         DEFAULTS,
     )
 
+MODULE_PATH = "src.comp_loinc.analysis.snomed_rf2_parser"
 
 class TestSnomedRF2Parser(unittest.TestCase):
     """Test cases for SNOMED RF2 parser functions"""
@@ -93,7 +94,7 @@ class TestSnomedRF2Parser(unittest.TestCase):
         df = pd.DataFrame(test_data)
         df.to_csv(self.temp_owl_file, sep="\t", index=False)
 
-        module_path = "src.comp_loinc.analysis.snomed_rf2_parser._borrow_ontology_block_opener_and_prefixes_from_snomed"
+        module_path = "._borrow_ontology_block_opener_and_prefixes_from_snomed"
         if "src" not in sys.path:
             sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
         with patch(module_path) as mock_borrow:
@@ -203,7 +204,7 @@ class TestSnomedRF2Parser(unittest.TestCase):
         self.assertEqual(resolved["outpath"], "/path/to/output.ofn")
         self.assertNotIn("by_module_name", resolved)
 
-    @patch("src.comp_loinc.analysis.snomed_rf2_parser._get_expressions")
+    @patch(f"{MODULE_PATH}._get_expressions")
     def test_borrow_ontology_block_opener_success(self, mock_get_expressions):
         """Test _borrow_ontology_block_opener_and_prefixes_from_snomed when file exists"""
         mock_get_expressions.return_value = (
@@ -219,7 +220,7 @@ class TestSnomedRF2Parser(unittest.TestCase):
         self.assertEqual(ontology, "test_ontology")
         self.assertEqual(prefixes, ["test_prefix"])
 
-    @patch("src.comp_loinc.analysis.snomed_rf2_parser._get_expressions")
+    @patch(f"{MODULE_PATH}._get_expressions")
     def test_borrow_ontology_block_opener_file_not_found(self, mock_get_expressions):
         """Test _borrow_ontology_block_opener_and_prefixes_from_snomed when file doesn't exist"""
         mock_get_expressions.side_effect = FileNotFoundError("File not found")
@@ -234,7 +235,7 @@ class TestSnomedRF2Parser(unittest.TestCase):
         mock_print.assert_called_once()
         self.assertIn("Warning: SNOMED OWL file not found", mock_print.call_args[0][0])
 
-    @patch("src.comp_loinc.analysis.snomed_rf2_parser._get_expressions")
+    @patch(f"{MODULE_PATH}._get_expressions")
     def test_borrow_ontology_block_opener_empty_data_error(self, mock_get_expressions):
         """Test _borrow_ontology_block_opener_and_prefixes_from_snomed with empty data"""
         mock_get_expressions.side_effect = pd.errors.EmptyDataError("No data")
