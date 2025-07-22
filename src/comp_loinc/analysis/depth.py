@@ -23,7 +23,7 @@ from comp_loinc.analysis.utils import (
     CL_GROUPING_CLASS_URI_STEMS,
     _disaggregate_classes_from_class_list,
     _get_parent_child_lookups,
-    bundle_inpaths_and_update_abs_paths,
+    bundle_inpaths_and_update_abs_paths_no_source_flavors,
     cli_add_inpath_args,
     _filter_classes,
     _subclass_axioms_and_totals,
@@ -1020,7 +1020,7 @@ def analyze_class_depth(
         outdir_plots,
         labels_path,
         outpath_counts_tsv,
-    ) = bundle_inpaths_and_update_abs_paths(
+    ) = bundle_inpaths_and_update_abs_paths_no_source_flavors(
         # Inpaths to bundle into `terminologies`
         loinc_path,
         loinc_snomed_path,

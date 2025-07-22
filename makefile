@@ -1,6 +1,6 @@
 # Default build, run: `make all -B`
 # todo: Ideally would change pipeline to use `make all` instead of `make all -B`. Leaving -B out is preferred whenever possible, because it will theoretically only update targets and their prereqs that are outdated. But if the codebase changes, these files will be outdated but they will not appear so to make, which means we must execute using -B.
-# todo: It'd be great if we also did `--annotate-inferred-axioms true` for all of our `indirect-included` variant .owl's, or in general.
+# todo: inconsistent naming: some artefacts have *indirect-indluded in their name, while others have *indirect-sc-axioms-included
 
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
 	chebi-subsets start-app test
@@ -40,6 +40,11 @@ endef
 define robot_query
 robot query -i $(1) --query $(2) $(3)
 endef
+
+define robot_query_20g
+ROBOT_JAVA_ARGS='-Xmx20G' robot query -i $(1) --query $(2) $(3)
+endef
+
 
 # Core modules ---------------------------------------------------------------------------------------------------------
 MODULE_FILES = \
@@ -123,9 +128,10 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-%.owl: $(DEFA
 	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --output $@
 
 # build flavors: including indirect subclass axioms
+# todo: rm imports files after. these imports files in owl-files/ are copied into $(DEFAULT_BUILD_DIR) during execution: catalog-v001-%.xml comploinc-%.owl
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/
 	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed asserted-only,))
-	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --include-indirect true --output $@
+	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --include-indirect true --remove-redundant-subclass-axioms false --annotate-inferred-axioms true --output $@
 
 merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-$(flavor).owl) $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-$(flavor).owl)
 
@@ -240,7 +246,7 @@ $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc
 	robot reason --input $< --output $@
 
 $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned-indirect-sc-axioms-included.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl
-	robot reason --input $< --include-indirect true --output $@
+	robot reason --input $< --include-indirect true --remove-redundant-subclass-axioms false --annotate-inferred-axioms true --output $@
 
 # uses `subclass-rels.sparql` instead of `subclass-rels.sparql` SNOMED uses data property hierarchies, not just subClassOf as is the case with our constructed LOINC representation of the part hierarchy obtained from the tree browser (and improted into CompLOINC)
 # todo: use reasoned or unreasoned?
@@ -281,7 +287,7 @@ $(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.
 #$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)
 #	robot reason --input $< --output $@
 $(LOINC_OWL_DIR)/loinc-reasoned-indirect-sc-axioms-included.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
-	robot reason --input $< --include-indirect true --output $@
+	robot reason --input $< --include-indirect true --remove-redundant-subclass-axioms false --annotate-inferred-axioms true --output $@
 
 output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
@@ -293,17 +299,13 @@ output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: CompLOINC
-output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
+# The apples-to-applies "LOINC & LOINC-SNOMED content only" variations ran fine with 12g. But the 'all' variations needed more 20g.
+output/tmp/subclass-rels-comploinc-indirect-included-%.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-%.owl
+	$(call robot_query_20g,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/subclass-rels-comploinc-%.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-%.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
-output/tmp/subclass-rels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
-	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
-
-output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-all-primary.owl
-	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
-
-output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
-	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
@@ -315,22 +317,26 @@ output/tmp/labels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-r
 output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv
 	cat $^ > $@
 
-# todo: these indirect-included TSVs are inconsistently named. one says indirect-sc-axioms-included
-documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv
+# Todo: all of these flavors are supposed to be used for "apples to apples" comparisons, e.g. LOINC-SNOMED vs CompLOINC (LOINC-SNOMED content only). They are passed here, but the script doesn't use them.
+documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned-indirect-sc-axioms-included.owl $(foreach model,$(FLAVORS),output/tmp/subclass-rels-comploinc-indirect-included-$(flavor).tsv)
 	python src/comp_loinc/analysis/subclass_rels.py \
 	--loinc-path output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv \
 	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed-indirect-sc-axioms-included.tsv \
-	--comploinc-primary-path output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv \
-	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv \
+	--comploinc-all-primary-path output/tmp/subclass-rels-comploinc-indirect-included-all-primary.tsv \
+	--comploinc-all-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-all-supplementary.tsv \
+	--comploinc-LOINC-primary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINC-primary.tsv \
+	--comploinc-LOINC-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINC-supplementary.tsv \
+	--comploinc-LOINCSNOMED-primary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINCSNOMED-primary.tsv \
+	--comploinc-LOINCSNOMED-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINCSNOMED-supplementary.tsv \
 	--outpath-md documentation/subclass-analysis.md \
 	--outpath-upset-plot documentation/upset.png
 
-documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
+documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-all-primary.tsv output/tmp/subclass-rels-comploinc-all-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
 	python src/comp_loinc/analysis/depth.py \
 	--loinc-path output/tmp/subclass-rels-loinc.tsv \
 	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
-	--comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
-	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-all-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-all-supplementary.tsv \
 	--labels-path output/tmp/labels-all-terminologies.tsv \
 	--outpath-md documentation/analyses/class-depth/depth.md \
 	--outdir-plots documentation/analyses/class-depth

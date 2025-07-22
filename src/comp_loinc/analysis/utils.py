@@ -103,6 +103,40 @@ def _filter_classes(
 
 
 def bundle_inpaths_and_update_abs_paths(
+    loinc_path: Union[Path, str],
+    loinc_snomed_path: Union[Path, str],
+    comploinc_all_primary_path: Union[Path, str],
+    comploinc_all_supplementary_path: Union[Path, str],
+    comploinc_LOINC_primary_path: Union[Path, str],
+    comploinc_LOINC_supplementary_path: Union[Path, str],
+    comploinc_LOINCSNOMED_primary_path: Union[Path, str],
+    comploinc_LOINCSNOMED_supplementary_path: Union[Path, str],
+    terminology_inclusions: List[str],
+    dont_convert_paths_to_abs=False,
+    *args
+):  # -> Tuple[Dict[str, Path], ...]  # would keep this typedef, but it trips up PyCharm
+    """Bundle inpath arguments into dict, adding titles as dict keys. Also can update relative paths to absolute"""
+    terminology_inclusions: Set[str] = set(terminology_inclusions)
+    terminologies: Dict[str, Path] = {
+        'LOINC': loinc_path,
+        'LOINC-SNOMED': loinc_snomed_path,
+        'CompLOINC-all-Primary': comploinc_all_primary_path,
+        'CompLOINC-all-Supplementary': comploinc_all_supplementary_path,
+        'CompLOINC-LOINC-Primary': comploinc_LOINC_primary_path,
+        'CompLOINC-LOINC-Supplementary': comploinc_LOINC_supplementary_path,
+        'CompLOINC-LOINCSNOMED-Primary': comploinc_LOINCSNOMED_primary_path,
+        'CompLOINC-LOINCSNOMED-Supplementary': comploinc_LOINCSNOMED_supplementary_path,
+    }
+    terminologies = {k: v for k, v in terminologies.items() if k in terminology_inclusions}
+    if not dont_convert_paths_to_abs:
+        terminologies = {k: PROJECT_ROOT / Path(v) for k, v in terminologies.items()}
+        processed_args = tuple(PROJECT_ROOT / Path(arg) for arg in args)
+    else:
+        processed_args = args
+    return terminologies, *processed_args
+
+
+def bundle_inpaths_and_update_abs_paths_no_source_flavors(
     loinc_path: Union[Path, str], loinc_snomed_path: Union[Path, str], comploinc_primary_path: Union[Path, str],
     comploinc_supplementary_path: Union[Path, str], dont_convert_paths_to_abs=False, *args
 ):  # -> Tuple[Dict[str, Path], ...]  # would keep this typedef, but it trips up PyCharm
@@ -121,7 +155,7 @@ def bundle_inpaths_and_update_abs_paths(
     return terminologies, *processed_args
 
 
-def cli_add_inpath_args(parser: ArgumentParser, defaults: Dict[str, str]):
+def cli_add_inpath_args(parser: ArgumentParser, defaults: Dict[str, str], use_only_2_comploinc_variations=True):
     """Add some common CLI args"""
     parser.add_argument(
         '-l', '--loinc-path', type=str, default=defaults.get('loinc-path'),
@@ -129,15 +163,31 @@ def cli_add_inpath_args(parser: ArgumentParser, defaults: Dict[str, str]):
     parser.add_argument(
         '-L', '--loinc-snomed-path', type=str, default=defaults.get('loinc-snomed-path'),
         help='Path to TSV containing subclass axioms / relationships for LOINC-SNOMED Ontology.')
-    parser.add_argument(
-        '-p', '--comploinc-primary-path', type=str, default=defaults.get('comploinc-primary-path'),
-        help='Path to TSV containing subclass axioms / relationships for CompLOINC (variation using the primary part '
-             'model).')
-    parser.add_argument(
-        '-s', '--comploinc-supplementary-path', type=str,
-        default=defaults.get('comploinc-supplementary-path'),
-        help='Path to TSV containing subclass axioms / relationships for CompLOINC (variation using the supplementary '
-             'part model).')
+    if use_only_2_comploinc_variations:
+        parser.add_argument(
+            '-p', '--comploinc-primary-path', type=str, default=defaults.get('comploinc-primary-path'),
+            help='Path to TSV containing subclass axioms / relationships for CompLOINC (variation using the primary '
+                 'part model).')
+        parser.add_argument(
+            '-s', '--comploinc-supplementary-path', type=str,
+            default=defaults.get('comploinc-supplementary-path'),
+            help='Path to TSV containing subclass axioms / relationships for CompLOINC (variation using the '
+                 'supplementary part model).')
+    else:
+        # Dynamically add arguments for all comploinc keys
+        for key in defaults.keys():
+            if key.startswith('comploinc'):
+                # Extract flavor from middle parts (e.g. "all-supplementary" from "comploinc-all-supplementary-path")
+                parts = key.split('-')
+                if len(parts) >= 3:
+                    flavor = '-'.join(parts[1:-1])  # Everything between "comploinc" and "path"
+                else:
+                    flavor = key.replace('comploinc-', '').replace('-path', '')
+                
+                parser.add_argument(
+                    f'--{key}', type=str, default=defaults.get(key),
+                    help=f'Path to TSV containing subclass axioms / relationships for CompLOINC flavor: {flavor}'
+                )
     parser.add_argument(
         '-r', '--dont-convert-paths-to-abs', required=False, action='store_true',
         help='Set this flag if the all the paths you are passing absolute paths, rather than relative paths, relative'
