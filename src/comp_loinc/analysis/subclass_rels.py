@@ -45,19 +45,23 @@ This analysis shows set totals, intersections, and differences for direct subcla
 LOINC-SNOMED Ontology. "Direct" means a direct parent/child relationship, as opposed to "indirect", meaning 2+ degree 
 ancestor relationship.  
 
+## Data preparation
+The only subclass axioms that were removed were those containing anyonymous class expressions (bnodes) within 
+LOINC-SNOMED Ontology.
+
 ## Total subclass axioms
 {{ tot_table }}
 
-## Comparison: Upset plot
-![Upset plot](upset.png)
-
+## Comparison: Upset plots
 In this upset plot, we observe both CompLOINC's large count of subclass axioms, and its nearly full inclusion of 
 subclass axioms from sources. In the upset plot, horizontal bars represent the proportion of each terminology's subclass
 axioms relative to the total number of unique subclass axioms across all three resources. Vertical bars represent the 
 proportion of subclass axioms belonging to specific combinations of terminology resources, with each column showing a 
 distinct intersection pattern as indicated by the connected dots below.
 
-## Comparison: Merged table
+![Upset plot](upset.png)
+
+## Comparison: Merged tables
 Cell formatting: (%intersection/a) / (n intersection) / (%intersection/b)
 
 Where 'a' is the ontology represented by the row, and 'b' is the ontology represented by the column. 'n intersection' is 

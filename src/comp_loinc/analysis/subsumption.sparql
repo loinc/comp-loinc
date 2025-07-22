@@ -13,6 +13,8 @@ WHERE {
   {
     ## class hierarchy
     ?child rdfs:subClassOf ?parent .
+    # Filter out blank nodes
+    FILTER(!isBlank(?child) && !isBlank(?parent))
     BIND(owl:Class      AS ?child_class_type) .
     BIND("term"         AS ?child_is_term_or_part) .
     BIND(owl:Class      AS ?parent_class_type) .
@@ -27,6 +29,8 @@ WHERE {
     FILTER(
       ?ctype IN (owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty)
       && ?ptype IN (owl:ObjectProperty, owl:DatatypeProperty, owl:AnnotationProperty)
+      # Filter out blank nodes
+      && !isBlank(?child) && !isBlank(?parent)
     ) .
     BIND(?ctype            AS ?child_class_type) .
     BIND("part"            AS ?child_is_term_or_part) .
