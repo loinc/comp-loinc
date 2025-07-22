@@ -1,6 +1,6 @@
 # Default build, run: `make all -B`
 # todo: Ideally would change pipeline to use `make all` instead of `make all -B`. Leaving -B out is preferred whenever possible, because it will theoretically only update targets and their prereqs that are outdated. But if the codebase changes, these files will be outdated but they will not appear so to make, which means we must execute using -B.
-# todo: It'd be great if we also did `--annotate-inferred-axioms true` for all of our `indirect-included` variant .owl's, or in general.
+# todo: inconsistent naming: some artefacts have *indirect-indluded in their name, while others have *indirect-sc-axioms-included
 
 .PHONY: all build modules grouping dangling merge-reason stats additional-outputs alternative-hierarchies \
 	chebi-subsets start-app test
@@ -41,6 +41,11 @@ define robot_query
 robot query -i $(1) --query $(2) $(3)
 endef
 
+define robot_query_20g
+ROBOT_JAVA_ARGS='-Xmx20G' robot query -i $(1) --query $(2) $(3)
+endef
+
+
 # Core modules ---------------------------------------------------------------------------------------------------------
 MODULE_FILES = \
 	$(DEFAULT_BUILD_DIR)/loinc-snomed-equiv.owl \
@@ -77,6 +82,7 @@ output/tmp/.grouping-modules-built: | output/tmp/
 	mv -f output/group_components.owl $(DEFAULT_BUILD_DIR)/group_components.owl
 	mv -f output/group_systems.owl $(DEFAULT_BUILD_DIR)/group_systems.owl
 	mv -f output/group_components_systems.owl $(DEFAULT_BUILD_DIR)/group_components_systems.owl
+	touch $@
 
 grouping: output/tmp/.grouping-modules-built
 
@@ -123,9 +129,10 @@ $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-%.owl: $(DEFA
 	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --output $@
 
 # build flavors: including indirect subclass axioms
+# todo: rm imports files after. these imports files in owl-files/ are copied into $(DEFAULT_BUILD_DIR) during execution: catalog-v001-%.xml comploinc-%.owl
 $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-%.owl: $(DEFAULT_BUILD_DIR)/catalog-v001-%.xml $(DEFAULT_BUILD_DIR)/comploinc-%.owl $(DEFAULT_BUILD_DIR)/comploinc-axioms.owl output/tmp/.main-modules-built output/tmp/.grouping-modules-built | $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/
 	$(eval EQUIV_FLAG := $(if $(filter true,$(STRICT)),--equivalent-classes-allowed asserted-only,))
-	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --include-indirect true --output $@
+	robot --catalog $(DEFAULT_BUILD_DIR)/catalog-v001-$*.xml merge -i $(DEFAULT_BUILD_DIR)/comploinc-$*.owl reason $(EQUIV_FLAG) --include-indirect true --remove-redundant-subclass-axioms false --annotate-inferred-axioms true --output $@
 
 merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merged-reasoned-all-supplementary.owl $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-$(flavor).owl) $(foreach flavor,$(FLAVORS),$(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-$(flavor).owl)
 
@@ -134,14 +141,13 @@ merge-reason: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/canonical/comploinc-merge
 TEMPLATE_AXIOMS_ENTITIES=src/comp_loinc/analysis/stats-main-axioms-entities.md.j2
 TEMPLATE_MISC=src/comp_loinc/analysis/stats-misc.md.j2
 # todo: for https://loinc.org/category/, maybe it'd be better to add a CompLOINC URI since even though this is part of LOINC and not CompLOINC the ontology, it is CompLOINC the project that ontologises these classes
+# todo: Joe made the root of all groups "https://comploinc/group" rather than "https://comploinc/group/", but the latter would probably be better.
 PREFIXES_METRICS=\
 	--prefix 'LOINC_CATEGORY: https://loinc.org/category/' \
 	--prefix 'LOINC_GROUP: https://loinc.org/LG' \
 	--prefix 'LOINC_PART: https://loinc.org/LP' \
 	--prefix 'LOINC_TERM: https://loinc.org/' \
-	--prefix 'LOINC_PART_GRP_CMP: http://comploinc//group/component/LP' \
-	--prefix 'LOINC_PART_GRP_SYS: http://comploinc//group/system/LP' \
-	--prefix 'LOINC_PART_GRP_CMP_SYS: http://comploinc//group/component-system/LP' \
+	--prefix 'COMPLOINC_GROUP: https://comploinc/group' \
 	--prefix 'LOINC_PROP: http://loinc.org/property/' \
 	--prefix 'COMPLOINC_AXIOM: https://comploinc-axioms\#' \
 	--prefix 'SNOMED: http://snomed.info/id/'
@@ -240,7 +246,7 @@ $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned.owl: $(LOINC_SNOMED_OWL_DIR)/loinc
 	robot reason --input $< --output $@
 
 $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-reasoned-indirect-sc-axioms-included.owl: $(LOINC_SNOMED_OWL_DIR)/loinc-snomed-unreasoned.owl
-	robot reason --input $< --include-indirect true --output $@
+	robot reason --input $< --include-indirect true --remove-redundant-subclass-axioms false --annotate-inferred-axioms true --output $@
 
 # uses `subclass-rels.sparql` instead of `subclass-rels.sparql` SNOMED uses data property hierarchies, not just subClassOf as is the case with our constructed LOINC representation of the part hierarchy obtained from the tree browser (and improted into CompLOINC)
 # todo: use reasoned or unreasoned?
@@ -265,9 +271,9 @@ $(LOINC_OWL_DIR)/loinc-groups.owl: output/tmp/loinc-groups.robot.tsv | $(LOINC_O
 
 output/tmp/loinc-groups.robot.tsv: | output/tmp/
 	python src/comp_loinc/analysis/loinc_groups.py \
-	--group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/Group.csv\
-	--parent-group-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/ParentGroup.csv\
-    --group-loinc-terms-path loinc_release/$(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/GroupLoincTerms.csv\
+	--group-path $(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/Group.csv \
+	--parent-group-path $(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/ParentGroup.csv \
+    --group-loinc-terms-path $(LOINC_DEFAULT_DIR)/AccessoryFiles/GroupFile/GroupLoincTerms.csv \
 	--outpath $@
 
 $(LOINC_OWL_DIR)/loinc-terms-list-all-sans-sc-axioms.owl: $(DEFAULT_BUILD_DIR)/loinc-terms-list-all.owl | $(LOINC_OWL_DIR)
@@ -281,7 +287,7 @@ $(LOINC_OWL_DIR)/loinc-unreasoned.owl: $(DEFAULT_BUILD_DIR)/loinc-part-list-all.
 #$(LOINC_OWL_DIR)/loinc-reasoned.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl | $(LOINC_OWL_DIR)
 #	robot reason --input $< --output $@
 $(LOINC_OWL_DIR)/loinc-reasoned-indirect-sc-axioms-included.owl: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
-	robot reason --input $< --include-indirect true --output $@
+	robot reason --input $< --include-indirect true --remove-redundant-subclass-axioms false --annotate-inferred-axioms true --output $@
 
 output/tmp/subclass-rels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
@@ -293,17 +299,13 @@ output/tmp/labels-loinc.tsv: $(LOINC_OWL_DIR)/loinc-unreasoned.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
 
 # - Comparisons: CompLOINC
-output/tmp/subclass-rels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
+# The apples-to-applies "LOINC & LOINC-SNOMED content only" variations ran fine with 12g. But the 'all' variations needed more 20g.
+output/tmp/subclass-rels-comploinc-indirect-included-%.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-%.owl
+	$(call robot_query_20g,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
+
+output/tmp/subclass-rels-comploinc-%.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-%.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
-output/tmp/subclass-rels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-supplementary.owl
-	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
-
-output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-all-primary.owl
-	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
-
-output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl
-	$(call robot_query,$<,src/comp_loinc/analysis/subclass-rels.sparql,$@)
 
 output/tmp/labels-comploinc-primary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-reasoned/comploinc-merged-reasoned-all-primary.owl
 	$(call robot_query,$<,src/comp_loinc/analysis/labels.sparql,$@)
@@ -315,22 +317,27 @@ output/tmp/labels-comploinc-supplementary.tsv: $(DEFAULT_BUILD_DIR)/merged-and-r
 output/tmp/labels-all-terminologies.tsv: output/tmp/labels-loinc.tsv output/tmp/labels-loinc-snomed.tsv output/tmp/labels-comploinc-primary.tsv output/tmp/labels-comploinc-supplementary.tsv
 	cat $^ > $@
 
-# todo: these indirect-included TSVs are inconsistently named. one says indirect-sc-axioms-included
-documentation/subclass-analysis.md documentation/upset.png output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv
+# todo: there are multiple upset plot outputs; would be nice to have them in the declaration as a multi-target goal
+documentation/subclass-analysis.md output/tmp/missing_comploinc_axioms.tsv: output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv output/tmp/subclass-rels-loinc-snomed-indirect-sc-axioms-included.tsv $(foreach flavor,$(FLAVORS),output/tmp/subclass-rels-comploinc-indirect-included-$(flavor).tsv)
 	python src/comp_loinc/analysis/subclass_rels.py \
 	--loinc-path output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv \
 	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed-indirect-sc-axioms-included.tsv \
-	--comploinc-primary-path output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv \
-	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv \
+	--comploinc-all-primary-path output/tmp/subclass-rels-comploinc-indirect-included-all-primary.tsv \
+	--comploinc-all-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-all-supplementary.tsv \
+	--comploinc-LOINC-primary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINC-primary.tsv \
+	--comploinc-LOINC-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINC-supplementary.tsv \
+	--comploinc-LOINCSNOMED-primary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINCSNOMED-primary.tsv \
+	--comploinc-LOINCSNOMED-supplementary-path output/tmp/subclass-rels-comploinc-indirect-included-LOINCSNOMED-supplementary.tsv \
 	--outpath-md documentation/subclass-analysis.md \
-	--outpath-upset-plot documentation/upset.png
+	--outdir-upset-plots documentation
 
-documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-primary.tsv output/tmp/subclass-rels-comploinc-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
+# todo: has multiple outputs; would be nice to have them in the declaration as a multi-target goal. But unlike 'subclass-analysis.md', these outputs are dynamic.
+documentation/analyses/class-depth/depth.md: output/tmp/subclass-rels-loinc.tsv output/tmp/subclass-rels-loinc-snomed.tsv output/tmp/subclass-rels-comploinc-all-primary.tsv output/tmp/subclass-rels-comploinc-all-supplementary.tsv output/tmp/labels-all-terminologies.tsv | documentation/analyses/class-depth/
 	python src/comp_loinc/analysis/depth.py \
 	--loinc-path output/tmp/subclass-rels-loinc.tsv \
 	--loinc-snomed-path output/tmp/subclass-rels-loinc-snomed.tsv \
-	--comploinc-primary-path output/tmp/subclass-rels-comploinc-primary.tsv \
-	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-supplementary.tsv \
+	--comploinc-primary-path output/tmp/subclass-rels-comploinc-all-primary.tsv \
+	--comploinc-supplementary-path output/tmp/subclass-rels-comploinc-all-supplementary.tsv \
 	--labels-path output/tmp/labels-all-terminologies.tsv \
 	--outpath-md documentation/analyses/class-depth/depth.md \
 	--outdir-plots documentation/analyses/class-depth
@@ -344,7 +351,8 @@ stats: documentation/stats.md
 # Additional outputs ---------------------------------------------------------------------------------------------------
 # - Alternative hierarchies --------------------------------------------------------------------------------------------
 # - ChEBI subsets
-PART_MAPPINGS=loinc_release/Loinc_2.78/AccessoryFiles/PartFile/PartRelatedCodeMapping.csv
+# todo: get from the config
+PART_MAPPINGS=sources/loinc/Loinc_2.80/AccessoryFiles/PartFile/PartRelatedCodeMapping.csv
 CHEBI_URI=http://purl.obolibrary.org/obo/chebi/chebi.owl.gz
 CHEBI_OWL=input/analysis/chebi.owl
 CHEBI_MODULE=output/analysis/chebi_module.txt

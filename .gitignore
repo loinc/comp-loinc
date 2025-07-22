@@ -176,3 +176,7 @@ dmypy.json
 
 # AI
 .claude/settings.local.json
+
+# Linters
+.flake8
+.ruff.toml

@@ -7,8 +7,8 @@ from pathlib import Path
 
 import typer
 
-LOINC_RELEASE_DIR_NAME = "loinc_release"
-LOINC_TREES_DIR_NAME = "loinc_trees"
+LOINC_RELEASE_DIR_NAME = "sources/loinc"
+LOINC_TREES_DIR_NAME = "sources/loinc_trees"
 
 COMPLOINC_OUT_DIR_NAME = "comploinc_out"
 

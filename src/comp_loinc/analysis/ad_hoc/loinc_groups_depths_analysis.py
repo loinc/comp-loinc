@@ -17,7 +17,8 @@ import matplotlib.pyplot as plt
 
 THIS_FILE = Path(__file__)
 PROJ_DIR = THIS_FILE.parent.parent.parent.parent.parent
-INPATH = str(PROJ_DIR / 'loinc_release/Loinc_2.80/AccessoryFiles/GroupFile/Group.csv')
+# Todo: need to get from the config
+INPATH = str(PROJ_DIR / 'sources/loinc/Loinc_2.80/AccessoryFiles/GroupFile/Group.csv')
 
 df = pd.read_csv(INPATH)
 parent_child_map = {}

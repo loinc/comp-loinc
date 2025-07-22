@@ -32,7 +32,8 @@ from pathlib import Path
 import pandas as pd
 
 PROJ_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
-PATH = PROJ_DIR / 'loinc_release/Loinc_2.80/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv'
+# todo: get from config
+PATH = PROJ_DIR / 'sources/loinc/Loinc_2.80/AccessoryFiles/PartFile/LoincPartLink_Supplementary.csv'
 
 
 df = pd.read_csv(PATH)
