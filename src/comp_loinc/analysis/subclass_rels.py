@@ -14,7 +14,7 @@ import os
 import logging
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import Dict, Set, Tuple, Union
+from typing import Dict, List, Optional, Set, Tuple, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -34,10 +34,42 @@ DESC = "Analysis for totals and overlap of subclass axioms / relationships betwe
 DEFAULTS = {
     'loinc-path': 'output/tmp/subclass-rels-loinc-indirect-sc-axioms-included.tsv',
     'loinc-snomed-path': 'subclass-rels-loinc-snomed-indirect-sc-axioms-included.tsv',
-    'comploinc-primary-path': 'output/tmp/subclass-rels-comploinc-indirect-included-primary.tsv',
-    'comploinc-supplementary-path': 'output/tmp/subclass-rels-comploinc-indirect-included-supplementary.tsv',
+    'comploinc-all-primary-path': 'output/tmp/subclass-rels-comploinc-all-primary.tsv',
+    'comploinc-all-supplementary-path': 'output/tmp/subclass-rels-comploinc-all-supplementary.tsv',
+    'comploinc-LOINC-primary-path': 'output/tmp/subclass-rels-comploinc-LOINC-primary.tsv',
+    'comploinc-LOINC-supplementary-path': 'output/tmp/subclass-rels-comploinc-LOINC-supplementary.tsv',
+    'comploinc-LOINCSNOMED-primary-path': 'output/tmp/subclass-rels-comploinc-LOINCSNOMED-primary.tsv',
+    'comploinc-LOINCSNOMED-supplementary-path': 'output/tmp/subclass-rels-comploinc-LOINCSNOMED-supplementary.tsv',
     'outpath-md': 'documentation/analyses/class-depth/depth.md',
     'outpath-upset-plot': 'documentation/analyses/class-depth',
+}
+VARIATIONS: Dict[str, List[str]] = {
+    'All sources, simple comparison': [
+        'LOINC',
+        'LOINC-SNOMED',
+        'CompLOINC-all-Primary',
+        'CompLOINC-all-Supplementary',
+    ],
+    'LOINC-specific enhancements': [
+        'LOINC',
+        'CompLOINC-LOINC-Primary',
+        'CompLOINC-LOINC-Supplementary',
+    ],
+    'LOINC-SNOMED-specific enhancements': [
+        'LOINC-SNOMED',
+        'CompLOINC-LOINCSNOMED-Primary',
+        'CompLOINC-LOINCSNOMED-Supplementary',
+    ],
+    'All sources, with CompLOINC disaggregations': [
+        'LOINC',
+        'LOINC-SNOMED',
+        'CompLOINC-all-Primary',
+        'CompLOINC-all-Supplementary',
+        'CompLOINC-LOINC-Primary',
+        'CompLOINC-LOINC-Supplementary',
+        'CompLOINC-LOINCSNOMED-Primary',
+        'CompLOINC-LOINCSNOMED-Supplementary',
+    ],
 }
 md_template = """
 # Subclass axiom analysis
@@ -94,7 +126,7 @@ Meaning of table headers:
 """
 
 
-def _make_tables(tots_df: pd.DataFrame, ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
+def _write_markdown(tots_df: pd.DataFrame, ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]):
     """Calculate and save tables
 
     todo: logic is similar for each for loop, iterating over ont_sets.items() 2x. Should we abstract?
@@ -163,7 +195,9 @@ def _make_tables(tots_df: pd.DataFrame, ont_sets: Dict[str, Set[Tuple[str, str]]
         f.write(markdown_output)
 
 
-def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
+def _interrogate_missing_axioms(
+    ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str] = MISSING_AXIOMS_PATH
+):
     """Analyze and save information about missing axioms in each data source.
 
     Args:
@@ -214,13 +248,13 @@ def _interrogate_missing_axioms(ont_sets: Dict[str, Set[Tuple[str, str]]]):
             )
         missing_df = pd.DataFrame(rows)
         try:
-            missing_df.to_csv(MISSING_AXIOMS_PATH, index=False, sep="\t")
+            missing_df.to_csv(outpath, index=False, sep="\t")
         except FileNotFoundError:
             logger.debug("Could not save missing axioms to tmp directory; doesn't exist.")
 
 
 def _make_upset_plot(
-    ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str]
+    ont_sets: Dict[str, Set[Tuple[str, str]]], outpath: Union[Path, str], variation_name: Optional[str] = None
 ):
     """Make upset plot showing relationships between ontology subclass axioms.
 
@@ -239,6 +273,8 @@ def _make_upset_plot(
 
     # Create the plot
     fig = plt.figure(figsize=(12, 8))
+    title = f"SC axioms: {variation_name}" if variation_name else "SubClass Axiom intersections"
+    fig.suptitle(title, fontsize=16)
     # fig = plt.figure(figsize=(12, 8), constrained_layout=True)  # alternative layout; doesn't seem any different
     upset = UpSet(upset_data, sort_by="cardinality", show_percentages=True)
     upset.plot(fig=fig)
@@ -254,29 +290,61 @@ def _make_upset_plot(
 
 
 def subclass_rel_analysis(
-    loinc_path: Union[Path, str], loinc_snomed_path: Union[Path, str], comploinc_primary_path: Union[Path, str],
-    comploinc_supplementary_path: Union[Path, str], outpath_md: Union[Path, str], outpath_upset_plot: Union[Path, str],
-    dont_convert_paths_to_abs=False
+    loinc_path: Union[Path, str],
+    loinc_snomed_path: Union[Path, str],
+    comploinc_all_primary_path: Union[Path, str],
+    comploinc_all_supplementary_path: Union[Path, str],
+    comploinc_LOINC_primary_path: Union[Path, str],
+    comploinc_LOINC_supplementary_path: Union[Path, str],
+    comploinc_LOINCSNOMED_primary_path: Union[Path, str],
+    comploinc_LOINCSNOMED_supplementary_path: Union[Path, str],
+    outpath_md: Union[Path, str],
+    outpath_upset_plot: Union[Path, str],
+    dont_convert_paths_to_abs=False,
+    variations: Dict[str, List[str]] = VARIATIONS,
 ):
     """Analysis for totals and overlap of subclass axioms / relationships between LOINC, CompLOINC, and LOINC-SNOMED."""
     terminologies: Dict[str, Path]
-    terminologies, outpath_md, outdir_plots = bundle_inpaths_and_update_abs_paths(
-        loinc_path, loinc_snomed_path, comploinc_primary_path, comploinc_supplementary_path, dont_convert_paths_to_abs,
-        outpath_md, outpath_upset_plot)
+    tots_dfs: List[pd.DataFrame] = []
+    ont_sets_list: List[Dict[str, Set[Tuple[str, str]]]] = []
+    for variation_name, terminology_inclusions in variations.items():
+        variation_filename_stem = variation_name.replace(',', '').replace(' ', '-').lower()
+        # Calculate intermediate vars
+        terminologies, outpath_md, outdir_plots = bundle_inpaths_and_update_abs_paths(
+            loinc_path, loinc_snomed_path,
+            comploinc_all_primary_path,
+            comploinc_all_supplementary_path,
+            comploinc_LOINC_primary_path,
+            comploinc_LOINC_supplementary_path,
+            comploinc_LOINCSNOMED_primary_path,
+            comploinc_LOINCSNOMED_supplementary_path,
+            terminology_inclusions, dont_convert_paths_to_abs, outpath_md, outpath_upset_plot)
 
-    # todo: do I want 2 sets of outputs, 1 per part model? maybe not
-    # for mdl in ('primary', 'supplementary'):
+        # Core calculations
+        tots_df, ont_sets = _subclass_axioms_and_totals(terminologies)
+        tots_dfs.append(tots_df)
+        ont_sets_list.append(ont_sets)
 
-    tots_df, ont_sets = _subclass_axioms_and_totals(terminologies)
-    _make_tables(tots_df, ont_sets, outpath_md)
-    _make_upset_plot(ont_sets, outpath_upset_plot)
-    _interrogate_missing_axioms(ont_sets)
+        # Plots
+        outpath_upset_plot = str(outpath_upset_plot).replace('.png', f'_{variation_filename_stem}.png')
+        _make_upset_plot(ont_sets, outpath_upset_plot, variation_name)
+
+        # Missing axioms analysis: for ad hoc troubleshooting
+        missing_axioms_outpath = str(MISSING_AXIOMS_PATH).replace('.tsv', f'_{variation_filename_stem}.tsv')
+        _interrogate_missing_axioms(ont_sets, missing_axioms_outpath)
+
+    # TODO temp: update markdown
+    #  - get all plots
+    #  - mention that these tables are only for the 'simple comparison'
+    # TODO: refactor. just include table for the simple comparison?
+    # todo: include other variations
+    _write_markdown(tots_dfs[0], ont_sets_list[0], outpath_md)
 
 
 def cli():
     """Command line interface."""
     parser = ArgumentParser(prog='Subclass axiom analysis.', description=DESC)
-    cli_add_inpath_args(parser, DEFAULTS)
+    cli_add_inpath_args(parser, DEFAULTS, use_only_2_comploinc_variations=False)
     parser.add_argument(
         '-m', '--outpath-md', type=str, default=DEFAULTS['outpath-md'],
         help='Outpath for markdown file containing results.')
