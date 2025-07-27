@@ -8,9 +8,9 @@
 | Metric | Value |
 | ------ | ----- |
 | Annotation properties | 13 |
-| Axioms | 1689913 |
-| Logical axioms | 484643 |
-| Classes | 241874 |
+| Axioms | 1712225 |
+| Logical axioms | 623404 |
+| Classes | 241742 |
 | Object properties | 56 |
 | Data properties | 0 |
 | Individuals | 0 |
@@ -18,81 +18,153 @@
 ## Axiom types
 | Metric | Value |
 | ------ | ----- |
-| AnnotationAssertion | 963329 |
-| EquivalentClasses | 123324 |
+| AnnotationAssertion | 847012 |
+| EquivalentClasses | 125274 |
 | SubObjectPropertyOf | 55 |
-| Declaration | 241941 |
-| SubClassOf | 361264 |
+| Declaration | 241809 |
+| SubClassOf | 498075 |
 
 
 ## Entity namespaces counts
 | Metric | Value |
 | ------ | ----- |
+| prefix_unknown | 5891 |
 | owl | 1 |
 | rdf | 1 |
-| LOINC_PART_GRP_CMP | 2462 |
-| LOINC_PART_GRP_SYS | 1697 |
-| SNOMED | 1 |
+| COMPLOINC_GROUP | 24225 |
 | rdfs | 1 |
 | LOINC_PART | 116185 |
 | LOINC_PROP | 47 |
-| LOINC_PART_GRP_CMP_SYS | 18116 |
-| LOINC_TERM | 103424 |
+| LOINC_TERM | 95452 |
 | COMPLOINC_AXIOM | 9 |
 
 
 ## Axiom namespaces counts
 | Metric | Value |
 | ------ | ----- |
-| owl | 1020 |
-| LOINC_PART_GRP_CMP | 20345 |
-| LOINC_PART_GRP_SYS | 13868 |
-| rdfs | 241867 |
-| SNOMED | 5890 |
-| LOINC_PART | 1227021 |
-| LOINC_PROP | 858727 |
-| LOINC_PART_GRP_CMP_SYS | 104012 |
-| LOINC_TERM | 1283396 |
+| prefix_unknown | 81370 |
+| owl | 1923 |
+| COMPLOINC_GROUP | 138297 |
+| rdfs | 125550 |
+| LOINC_PART | 1179773 |
+| LOINC_PROP | 830392 |
+| LOINC_TERM | 1501294 |
 | COMPLOINC_AXIOM | 72 |
 
 
 # Subclass axiom analysis
-This analysis shows set totals, intersections, and differences for direct subclass axioms in LOINC, CompLOINC, and 
-LOINC-SNOMED Ontology. "Direct" means a direct parent/child relationship, as opposed to "indirect", meaning 2+ degree 
-ancestor relationship.  
+This analysis shows set totals, intersections, and differences for subclass axioms in LOINC, CompLOINC, and
+LOINC-SNOMED Ontology. This includes both direct and indirect axioms, "direct" meaning a direct parent/child
+relationship, as opposed to "indirect", meaning a 2+ degree ancestor/descendant relationship.
+
+## Data preparation
+The only subclass axioms that were removed were those containing anonymous class expressions (bnodes) within
+LOINC-SNOMED Ontology.
 
 ## Total subclass axioms
-|              | n       |
-|:-------------|:--------|
-| LOINC        | 120,334 |
-| LOINC-SNOMED | 11,385  |
-| CompLOINC    | 361,264 |
+| Terminology                         | n       |
+|:------------------------------------|:--------|
+| LOINC                               | 0       |
+| LOINC-SNOMED                        | 290,693 |
+| CompLOINC-all-Primary               | 370,410 |
+| CompLOINC-all-Supplementary         | 569,385 |
+| CompLOINC-LOINC-Primary             | 364,724 |
+| CompLOINC-LOINC-Supplementary       | 563,919 |
+| CompLOINC-LOINCSNOMED-Primary       | 7,078   |
+| CompLOINC-LOINCSNOMED-Supplementary | 184,634 |
 
-## Comparison: Upset plot
-![Upset plot](upset.png)
+## Comparison: Upset plots
+Horizontal bars represent the proportion of each terminology's subclass axioms relative to the total number of unique 
+subclass axioms across all three resources. Vertical bars represent the proportion of subclass axioms belonging to 
+specific combinations of terminology resources, with each column showing a distinct intersection pattern as indicated by
+the connected dots below.
 
-In this upset plot, we observe both CompLOINC's large count of subclass axioms, and its nearly full inclusion of 
-subclass axioms from sources. In the upset plot, horizontal bars represent the proportion of each terminology's subclass
-axioms relative to the total number of unique subclass axioms across all three resources. Vertical bars represent the 
-proportion of subclass axioms belonging to specific combinations of terminology resources, with each column showing a 
-distinct intersection pattern as indicated by the connected dots below.
 
-## Comparison: Merged table
+### SC axioms: All sources, simple comparison
+
+![Upset plot](upset-plot_all-sources-simple-comparison.png)
+
+
+| Intersection                                                       | Count   | Percentage   |
+|:-------------------------------------------------------------------|:--------|:-------------|
+| CompLOINC-all-Primary ∩ CompLOINC-all-Supplementary                | 352,984 | 40.4%        |
+| LOINC-SNOMED                                                       | 289,127 | 33.1%        |
+| CompLOINC-all-Supplementary                                        | 214,835 | 24.6%        |
+| CompLOINC-all-Primary                                              | 15,860  | 1.8%         |
+| LOINC-SNOMED ∩ CompLOINC-all-Primary ∩ CompLOINC-all-Supplementary | 1,566   | 0.2%         |
+
+
+### SC axioms: LOINC-specific enhancements
+
+![Upset plot](upset-plot_loinc-specific-enhancements.png)
+
+
+| Intersection                                            | Count   | Percentage   |
+|:--------------------------------------------------------|:--------|:-------------|
+| CompLOINC-LOINC-Primary ∩ CompLOINC-LOINC-Supplementary | 349,118 | 60.2%        |
+| CompLOINC-LOINC-Supplementary                           | 214,801 | 37.1%        |
+| CompLOINC-LOINC-Primary                                 | 15,606  | 2.7%         |
+
+
+### SC axioms: LOINC-SNOMED-specific enhancements
+
+![Upset plot](upset-plot_loinc-snomed-specific-enhancements.png)
+
+
+| Intersection                                                        | Count   | Percentage   |
+|:--------------------------------------------------------------------|:--------|:-------------|
+| LOINC-SNOMED                                                        | 290,693 | 61.0%        |
+| CompLOINC-LOINCSNOMED-Supplementary                                 | 178,611 | 37.5%        |
+| CompLOINC-LOINCSNOMED-Primary ∩ CompLOINC-LOINCSNOMED-Supplementary | 6,023   | 1.3%         |
+| CompLOINC-LOINCSNOMED-Primary                                       | 1,055   | 0.2%         |
+
+
+### SC axioms: All sources, with CompLOINC disaggregations, top 10
+
+![Upset plot](upset-plot_all-sources-with-comploinc-disaggregations.png)
+
+![Upset plot](upset-plot_all-sources-with-comploinc-disaggregations-untruncated.png)
+
+
+| Intersection                                                                                                                                                                        | Count   | Percentage   |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:--------|:-------------|
+| CompLOINC-all-Primary ∩ CompLOINC-all-Supplementary ∩ CompLOINC-LOINC-Primary ∩ CompLOINC-LOINC-Supplementary                                                                       | 342,308 | 39.1%        |
+| LOINC-SNOMED                                                                                                                                                                        | 289,127 | 33.1%        |
+| CompLOINC-all-Supplementary ∩ CompLOINC-LOINC-Supplementary ∩ CompLOINC-LOINCSNOMED-Supplementary                                                                                   | 177,817 | 20.3%        |
+| CompLOINC-all-Supplementary ∩ CompLOINC-LOINC-Supplementary                                                                                                                         | 36,984  | 4.2%         |
+| CompLOINC-all-Primary ∩ CompLOINC-LOINC-Primary                                                                                                                                     | 14,570  | 1.7%         |
+| CompLOINC-all-Primary ∩ CompLOINC-all-Supplementary ∩ CompLOINC-LOINC-Primary ∩ CompLOINC-LOINC-Supplementary ∩ CompLOINC-LOINCSNOMED-Primary ∩ CompLOINC-LOINCSNOMED-Supplementary | 6,002   | 0.7%         |
+| CompLOINC-all-Primary ∩ CompLOINC-all-Supplementary                                                                                                                                 | 3,849   | 0.4%         |
+| LOINC-SNOMED ∩ CompLOINC-all-Primary ∩ CompLOINC-all-Supplementary                                                                                                                  | 1,566   | 0.2%         |
+| CompLOINC-all-Primary ∩ CompLOINC-LOINC-Primary ∩ CompLOINC-LOINCSNOMED-Primary                                                                                                     | 1,034   | 0.1%         |
+| CompLOINC-all-Primary ∩ CompLOINC-all-Supplementary ∩ CompLOINC-LOINC-Primary ∩ CompLOINC-LOINC-Supplementary ∩ CompLOINC-LOINCSNOMED-Supplementary                                 | 793     | 0.1%         |
+
+
+
+## Comparison: Merged tables
+The following table only applies to the "All sources, simple comparison" variation. The other upset plot / intersection
+analysis variations are not represented.
+
 Cell formatting: (%intersection/a) / (n intersection) / (%intersection/b)
 
-Where 'a' is the ontology represented by the row, and 'b' is the ontology represented by the column. 'n intersection' is 
-the total number of subclass axioms in the intersection of the two ontologies. '%intersection/' is the percentage of 
-subclass axioms in the intersection of the two ontologies, relative to the total number of subclass axioms in the 
-ontology. 
+Where 'a' is the ontology represented by the row, and 'b' is the ontology represented by the column. 'n intersection' is
+the total number of subclass axioms in the intersection of the two ontologies. '%intersection/' is the percentage of
+subclass axioms in the intersection of the two ontologies, relative to the total number of subclass axioms in the
+ontology.
 
-|              | LOINC                   | LOINC-SNOMED          | CompLOINC               |
-|:-------------|:------------------------|:----------------------|:------------------------|
-| LOINC        | -                       | 0.0% / 0 / 0.0%       | 99.2% / 119,410 / 33.1% |
-| LOINC-SNOMED | 0.0% / 0 / 0.0%         | -                     | 96.1% / 10,937 / 3.0%   |
-| CompLOINC    | 33.1% / 119,410 / 99.2% | 3.0% / 10,937 / 96.1% | -                       |
+|                             | LOINC           | LOINC-SNOMED        | CompLOINC-all-Primary   | CompLOINC-all-Supplementary   |
+|:----------------------------|:----------------|:--------------------|:------------------------|:------------------------------|
+| LOINC                       | -               | 0.0% / 0 / 0.0%     | 0.0% / 0 / 0.0%         | 0.0% / 0 / 0.0%               |
+| LOINC-SNOMED                | 0.0% / 0 / 0.0% | -                   | 0.5% / 1,566 / 0.4%     | 0.5% / 1,566 / 0.3%           |
+| CompLOINC-all-Primary       | 0.0% / 0 / 0.0% | 0.4% / 1,566 / 0.5% | -                       | 95.7% / 354,550 / 62.3%       |
+| CompLOINC-all-Supplementary | 0.0% / 0 / 0.0% | 0.3% / 1,566 / 0.5% | 62.3% / 354,550 / 95.7% | -                             |
 
 ## Comparison: Individual tables
-Meaning of table headers:  
+The following table only applies to the "All sources, simple comparison" variation. The other upset plot / intersection
+analysis variations are not represented.
+
+Meaning of table headers:
+
 "a vs b": 'a' is the ontology on the left side of the comparison, and 'b' is the one on the right side.
 - **tot a**: Total number of subclass axioms for ontology on left side of the comparison.
 - **% (a-b)**: The percentage of "a - b" (the set difference of a and b) over the total number of axioms in a.
@@ -109,14 +181,21 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 100.0%    |    120334 |  120334 |              0 |   11385 |     11385 | 100.0%    |
+| 0.0%      |         0 |       0 |              0 |  290693 |    290693 | 100.0%    |
 
 
-#### vs CompLOINC
+#### vs CompLOINC-all-Primary
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 0.8%      |       924 |  120334 |         119410 |  361264 |    241854 | 66.9%     |
+| 0.0%      |         0 |       0 |              0 |  370410 |    370410 | 100.0%    |
+
+
+#### vs CompLOINC-all-Supplementary
+
+| % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
+|:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
+| 0.0%      |         0 |       0 |              0 |  569385 |    569385 | 100.0%    |
 
 
 
@@ -126,31 +205,69 @@ Meaning of table headers:
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 100.0%    |     11385 |   11385 |              0 |  120334 |    120334 | 100.0%    |
+| 100.0%    |    290693 |  290693 |              0 |       0 |         0 | 0.0%      |
 
 
-#### vs CompLOINC
+#### vs CompLOINC-all-Primary
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 3.9%      |       448 |   11385 |          10937 |  361264 |    350327 | 97.0%     |
+| 99.5%     |    289127 |  290693 |           1566 |  370410 |    368844 | 99.6%     |
+
+
+#### vs CompLOINC-all-Supplementary
+
+| % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
+|:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
+| 99.5%     |    289127 |  290693 |           1566 |  569385 |    567819 | 99.7%     |
 
 
 
-### CompLOINC
+### CompLOINC-all-Primary
 
 #### vs LOINC
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 66.9%     |    241854 |  361264 |         119410 |  120334 |       924 | 0.8%      |
+| 100.0%    |    370410 |  370410 |              0 |       0 |         0 | 0.0%      |
 
 
 #### vs LOINC-SNOMED
 
 | % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
 |:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
-| 97.0%     |    350327 |  361264 |          10937 |   11385 |       448 | 3.9%      |
+| 99.6%     |    368844 |  370410 |           1566 |  290693 |    289127 | 99.5%     |
+
+
+#### vs CompLOINC-all-Supplementary
+
+| % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
+|:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
+| 4.3%      |     15860 |  370410 |         354550 |  569385 |    214835 | 37.7%     |
+
+
+
+### CompLOINC-all-Supplementary
+
+#### vs LOINC
+
+| % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
+|:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
+| 100.0%    |    569385 |  569385 |              0 |       0 |         0 | 0.0%      |
+
+
+#### vs LOINC-SNOMED
+
+| % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
+|:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
+| 99.7%     |    567819 |  569385 |           1566 |  290693 |    289127 | 99.5%     |
+
+
+#### vs CompLOINC-all-Primary
+
+| % (a-b)   |   n (a-b) |   tot a |   intersection |   tot b |   n (b-a) | % (b-a)   |
+|:----------|----------:|--------:|---------------:|--------:|----------:|:----------|
+| 37.7%     |    214835 |  569385 |         354550 |  370410 |     15860 | 4.3%      |
 
 
 
@@ -162,10 +279,10 @@ Similarity threshold: 0.5
 | Part | n | Percentage |
 |----------|-------|------------|
 | All parts | 72740 | 100% |
-| Non-dangling | 38951 | 53.5% |
-| Dangling | 33789 | 46.5% |
-| (Dangling >= threshold) / dangling | 17955 | 53.1% |
-| (Dangling >= threshold) / all | 17955 | 24.7% |
+| Non-dangling | 53861 | 74.0% |
+| Dangling | 18879 | 26.0% |
+| (Dangling >= threshold) / dangling | 12099 | 64.1% |
+| (Dangling >= threshold) / all | 12099 | 16.6% |
 # Classification depth analysis 
 This measures how deep into the hierarchy each class is. E.g. if the root of the hierarchy is TermA, and we have axioms
 (TermC subClassOf TermB) and (TermB subClassOf TermA), then TermC is at depth 3, TermB is at depth 2, and TermA is at 
@@ -189,7 +306,7 @@ CompLOINC and LOINC have more than 1 top-level branches (AKA subhierarchies or s
 |-------------|------------------|---------------------------------|
 | CompLOINC   | SNOMED-Inspired  | https://loinc.org/138875005     |
 | CompLOINC   | LoincTerm        | https://loinc.org/LoincTerm     |
-| CompLOINC   | CompLOINC Groups | http://comploinc/group          |
+| CompLOINC   | CompLOINC Groups | https://comploinc/group          |
 | CompLOINC   | LoincPart        | https://loinc.org/LoincPart     |
 | LOINC       | LOINC Categories | https://loinc.org/LoincCategory |
 | LOINC       | LOINC Groups     | https://loinc.org/LoincGroup    |
@@ -210,8 +327,8 @@ labels. They are parents only of groups, not terms. From https://loinc.org/group
 identifies the general purpose of the group, such as "Flowsheet", "Reportable microbiology" or "Document ontology 
 grouped by role and subject matter domain".'
 - *CompLOINC Groups*: CompLOINC has a novel grouping class hierarchy. It does not utilize LOINC groups or categories in 
-the LOINC release. The top level class is "http://comploinc/group", followed by a major group branch for each "property 
-axis" (that is, a single part property or combination thereof), e.g. "http://comploinc/group/component/". Then, groups 
+the LOINC release. The top level class is "https://comploinc/group", followed by a major group branch for each "property 
+axis" (that is, a single part property or combination thereof), e.g. "https://comploinc/group/component/". Then, groups 
 which are defined via these properties descend from there. 
 
 **Two sets of outputs**  
@@ -269,15 +386,15 @@ removed.
 This particular analysis makes small modifications to the CompLOINC representation with respect to groups. In the 
 CompLOINC .owl artefacts, there are many top-level grouping classes at the root of the ontology. These top level 
 grouping classes come in various sets, one for each LOINC property or combination of properties used to construct the 
-groups. For example, the grouping class http://comploinc/group/component/LP16066-0 falls under the "component" property 
-axis, while the grouping class http://comploinc/group/component-system/LP7795-0-LP310005-6 falls under the 
+groups. For example, the grouping class https://comploinc/group/component/LP16066-0 falls under the "component" property 
+axis, while the grouping class https://comploinc/group/component-system/LP7795-0-LP310005-6 falls under the 
 "component+system" property (combination) axis. If these parts for these properties have no parents, then these grouping
 classes will reside at the root of CompLOINC. However, for these classification depth analyses, we are comparing against 
 other subtrees that have a single root, e.g. LoincPart or LoincTerm. Therefore, for the depths to be consistent along 
 class types (terms, parts, groups), we have included "master grouping classes" just for this analysis. The top level for
-all grouping classes is http://comploinc/group/ ("GRP"), and the children of this class are all of the roots of each 
-property axis, e.g. http://comploinc/group/component/ ("GRP_CMP"), http://comploinc/group/component-system/ ("GRP_SYS"),
-and so on.
+all grouping classes is https://comploinc/group/ ("GRP"), and the children of this class are all of the roots of each 
+property axis, e.g. https://comploinc/group/component/ ("GRP_CMP"),
+https://comploinc/group/component-system/ ("GRP_SYS"), and so on.
 
 ## LOINC representation
 LOINC itself does not have an `.owl` representation, but for this analysis we constructed one. The following are some 
@@ -303,6 +420,17 @@ terms and groups will be counted multiple times in the depths counts.
 
 More information about LOINC groups can be found here: https://loinc.org/groups/
 
+## LOINC-SNOMED Ontology representation
+This representation is used not only for class depth analysis, but also for subclass axiom intersection analysis. In 
+order to do these analyses, we also rendered LOINC-SNOMED Ontology in OWL. We did this by utilizing the 
+`OWLExpressionSnapshot` files in each of the SNOMED and LOINC-SNOMED RF2 (Release Format 2) releases. This was done 
+essentially by taking all of the values in the `owlExpression` column and placing them in a new `.owl` file, then 
+wrapping it in an ontology tag, and adding a header with prefix tags.
+
+After converting the whole of SNOMED to OWL, and the LOINC-SNOMED Ontology module to OWL, we then extracted the relevant
+ancestor closure from SNOMED for the set of ancestors in LOINC-SNOMED. We then merged that closure with the LOINC-SNOMED
+module, and finally reasoned using `robot reason` (default reasoner = ELK).  
+
 ---
 
 
@@ -312,31 +440,31 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 |   Depth |   LOINC | LOINC-SNOMED   | CompLOINC-Primary   | CompLOINC-Supplementary   |
 |---------|---------|----------------|---------------------|---------------------------|
-|       1 |       0 | 1              | 2                   | 2                         |
-|       2 |       0 | 10             | 14                  | 14                        |
-|       3 |       0 | 67             | 216                 | 216                       |
-|       4 |       0 | 394            | 43,085              | 47,815                    |
-|       5 |       0 | 815            | 40,624              | 37,256                    |
-|       6 |       0 | 1,649          | 15,714              | 12,216                    |
-|       7 |       0 | 2,033          | 7,475               | 4,727                     |
-|       8 |       0 | 1,955          | 4,170               | 2,929                     |
-|       9 |       0 | 1,998          | 2,509               | 2,185                     |
-|      10 |       0 | 2,289          | 2,408               | 2,314                     |
-|      11 |       0 | 2,632          | 2,718               | 2,710                     |
-|      12 |       0 | 2,180          | 2,358               | 2,356                     |
-|      13 |       0 | 1,191          | 1,314               | 1,314                     |
-|      14 |       0 | 1,226          | 1,291               | 1,291                     |
-|      15 |       0 | 611            | 610                 | 610                       |
-|      16 |       0 | 630            | 651                 | 651                       |
-|      17 |       0 | 876            | 895                 | 895                       |
-|      18 |       0 | 1,506          | 1,519               | 1,519                     |
-|      19 |       0 | 1,291          | 1,303               | 1,303                     |
-|      20 |       0 | 701            | 705                 | 705                       |
-|      21 |       0 | 492            | 492                 | 492                       |
-|      22 |       0 | 56             | 56                  | 56                        |
-|      23 |       0 | 9              | 9                   | 9                         |
-|      24 |       0 | 2              | 2                   | 2                         |
-|      25 |       0 | 1              | 1                   | 1                         |
+|       1 |       0 | 1              | 1                   | 1                         |
+|       2 |       0 | 12             | 4                   | 4                         |
+|       3 |       0 | 11,367         | 88                  | 88                        |
+|       4 |       0 | 12,546         | 50,791              | 53,488                    |
+|       5 |       0 | 9,786          | 37,483              | 33,444                    |
+|       6 |       0 | 7,356          | 8,431               | 7,403                     |
+|       7 |       0 | 5,323          | 1,286               | 932                       |
+|       8 |       0 | 3,528          | 187                 | 130                       |
+|       9 |       0 | 2,945          | 7                   | 3                         |
+|      10 |       0 | 2,911          | 0                   | 0                         |
+|      11 |       0 | 2,950          | 0                   | 0                         |
+|      12 |       0 | 2,362          | 0                   | 0                         |
+|      13 |       0 | 1,359          | 0                   | 0                         |
+|      14 |       0 | 1,383          | 0                   | 0                         |
+|      15 |       0 | 697            | 0                   | 0                         |
+|      16 |       0 | 693            | 0                   | 0                         |
+|      17 |       0 | 925            | 0                   | 0                         |
+|      18 |       0 | 1,550          | 0                   | 0                         |
+|      19 |       0 | 1,326          | 0                   | 0                         |
+|      20 |       0 | 716            | 0                   | 0                         |
+|      21 |       0 | 496            | 0                   | 0                         |
+|      22 |       0 | 57             | 0                   | 0                         |
+|      23 |       0 | 9              | 0                   | 0                         |
+|      24 |       0 | 2              | 0                   | 0                         |
+|      25 |       0 | 1              | 0                   | 0                         |
 
 
 
@@ -345,97 +473,97 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 |   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary |   CompLOINC-Supplementary |
 |---------|---------|----------------|---------------------|---------------------------|
-|       1 |       0 |         0.0041 |             0.0015  |                   0.0016  |
-|       2 |       0 |         0.041  |             0.011   |                   0.011   |
-|       3 |       0 |         0.27   |             0.17    |                   0.17    |
-|       4 |       0 |         1.6    |            33       |                  39       |
-|       5 |       0 |         3.3    |            31       |                  30       |
-|       6 |       0 |         6.7    |            12       |                   9.9     |
-|       7 |       0 |         8.3    |             5.7     |                   3.8     |
-|       8 |       0 |         7.9    |             3.2     |                   2.4     |
-|       9 |       0 |         8.1    |             1.9     |                   1.8     |
-|      10 |       0 |         9.3    |             1.9     |                   1.9     |
-|      11 |       0 |        11      |             2.1     |                   2.2     |
-|      12 |       0 |         8.9    |             1.8     |                   1.9     |
-|      13 |       0 |         4.8    |             1       |                   1.1     |
-|      14 |       0 |         5      |             0.99    |                   1       |
-|      15 |       0 |         2.5    |             0.47    |                   0.49    |
-|      16 |       0 |         2.6    |             0.5     |                   0.53    |
-|      17 |       0 |         3.6    |             0.69    |                   0.72    |
-|      18 |       0 |         6.1    |             1.2     |                   1.2     |
-|      19 |       0 |         5.2    |             1       |                   1.1     |
-|      20 |       0 |         2.8    |             0.54    |                   0.57    |
-|      21 |       0 |         2      |             0.38    |                   0.4     |
-|      22 |       0 |         0.23   |             0.043   |                   0.045   |
-|      23 |       0 |         0.037  |             0.0069  |                   0.0073  |
-|      24 |       0 |         0.0081 |             0.0015  |                   0.0016  |
-|      25 |       0 |         0.0041 |             0.00077 |                   0.00081 |
+|       1 |       0 |         0.0014 |              0.001  |                    0.001  |
+|       2 |       0 |         0.017  |              0.0041 |                    0.0042 |
+|       3 |       0 |        16      |              0.09   |                    0.092  |
+|       4 |       0 |        18      |             52      |                   56      |
+|       5 |       0 |        14      |             38      |                   35      |
+|       6 |       0 |        10      |              8.6    |                    7.8    |
+|       7 |       0 |         7.6    |              1.3    |                    0.98   |
+|       8 |       0 |         5      |              0.19   |                    0.14   |
+|       9 |       0 |         4.2    |              0.0071 |                    0.0031 |
+|      10 |       0 |         4.1    |              0      |                    0      |
+|      11 |       0 |         4.2    |              0      |                    0      |
+|      12 |       0 |         3.4    |              0      |                    0      |
+|      13 |       0 |         1.9    |              0      |                    0      |
+|      14 |       0 |         2      |              0      |                    0      |
+|      15 |       0 |         0.99   |              0      |                    0      |
+|      16 |       0 |         0.99   |              0      |                    0      |
+|      17 |       0 |         1.3    |              0      |                    0      |
+|      18 |       0 |         2.2    |              0      |                    0      |
+|      19 |       0 |         1.9    |              0      |                    0      |
+|      20 |       0 |         1      |              0      |                    0      |
+|      21 |       0 |         0.71   |              0      |                    0      |
+|      22 |       0 |         0.081  |              0      |                    0      |
+|      23 |       0 |         0.013  |              0      |                    0      |
+|      24 |       0 |         0.0028 |              0      |                    0      |
+|      25 |       0 |         0.0014 |              0      |                    0      |
 
 
 
 ## Number of classes (terms), by hierarchy
 ![Number of classes (terms), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms_totals.png)
 
-|   Depth |   LOINC | LOINC-SNOMED   | CompLOINC-Primary - LoincTerm   | CompLOINC-Primary - SNOMED-Inspired   | CompLOINC-Supplementary - LoincTerm   | CompLOINC-Supplementary - SNOMED-Inspired   |
-|---------|---------|----------------|---------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|
-|       1 |       0 | 1              | 1                               | 1                                     | 1                                     | 1                                           |
-|       2 |       0 | 10             | 4                               | 10                                    | 4                                     | 10                                          |
-|       3 |       0 | 67             | 151                             | 65                                    | 151                                   | 65                                          |
-|       4 |       0 | 394            | 42,716                          | 369                                   | 47,446                                | 369                                         |
-|       5 |       0 | 815            | 39,847                          | 777                                   | 36,479                                | 777                                         |
-|       6 |       0 | 1,649          | 14,115                          | 1,599                                 | 10,617                                | 1,599                                       |
-|       7 |       0 | 2,033          | 5,504                           | 1,971                                 | 2,756                                 | 1,971                                       |
-|       8 |       0 | 1,955          | 2,232                           | 1,938                                 | 991                                   | 1,938                                       |
-|       9 |       0 | 1,998          | 492                             | 2,017                                 | 168                                   | 2,017                                       |
-|      10 |       0 | 2,289          | 106                             | 2,302                                 | 12                                    | 2,302                                       |
-|      11 |       0 | 2,632          | 9                               | 2,709                                 | 1                                     | 2,709                                       |
-|      12 |       0 | 2,180          | 2                               | 2,356                                 | 0                                     | 2,356                                       |
-|      13 |       0 | 1,191          | 0                               | 1,314                                 | 0                                     | 1,314                                       |
-|      14 |       0 | 1,226          | 0                               | 1,291                                 | 0                                     | 1,291                                       |
-|      15 |       0 | 611            | 0                               | 610                                   | 0                                     | 610                                         |
-|      16 |       0 | 630            | 0                               | 651                                   | 0                                     | 651                                         |
-|      17 |       0 | 876            | 0                               | 895                                   | 0                                     | 895                                         |
-|      18 |       0 | 1,506          | 0                               | 1,519                                 | 0                                     | 1,519                                       |
-|      19 |       0 | 1,291          | 0                               | 1,303                                 | 0                                     | 1,303                                       |
-|      20 |       0 | 701            | 0                               | 705                                   | 0                                     | 705                                         |
-|      21 |       0 | 492            | 0                               | 492                                   | 0                                     | 492                                         |
-|      22 |       0 | 56             | 0                               | 56                                    | 0                                     | 56                                          |
-|      23 |       0 | 9              | 0                               | 9                                     | 0                                     | 9                                           |
-|      24 |       0 | 2              | 0                               | 2                                     | 0                                     | 2                                           |
-|      25 |       0 | 1              | 0                               | 1                                     | 0                                     | 1                                           |
+|   Depth |   LOINC | LOINC-SNOMED   | CompLOINC-Primary   | CompLOINC-Supplementary   |
+|---------|---------|----------------|---------------------|---------------------------|
+|       1 |       0 | 1              | 1                   | 1                         |
+|       2 |       0 | 12             | 4                   | 4                         |
+|       3 |       0 | 11,367         | 88                  | 88                        |
+|       4 |       0 | 12,546         | 50,791              | 53,488                    |
+|       5 |       0 | 9,786          | 37,483              | 33,444                    |
+|       6 |       0 | 7,356          | 8,431               | 7,403                     |
+|       7 |       0 | 5,323          | 1,286               | 932                       |
+|       8 |       0 | 3,528          | 187                 | 130                       |
+|       9 |       0 | 2,945          | 7                   | 3                         |
+|      10 |       0 | 2,911          | 0                   | 0                         |
+|      11 |       0 | 2,950          | 0                   | 0                         |
+|      12 |       0 | 2,362          | 0                   | 0                         |
+|      13 |       0 | 1,359          | 0                   | 0                         |
+|      14 |       0 | 1,383          | 0                   | 0                         |
+|      15 |       0 | 697            | 0                   | 0                         |
+|      16 |       0 | 693            | 0                   | 0                         |
+|      17 |       0 | 925            | 0                   | 0                         |
+|      18 |       0 | 1,550          | 0                   | 0                         |
+|      19 |       0 | 1,326          | 0                   | 0                         |
+|      20 |       0 | 716            | 0                   | 0                         |
+|      21 |       0 | 496            | 0                   | 0                         |
+|      22 |       0 | 57             | 0                   | 0                         |
+|      23 |       0 | 9              | 0                   | 0                         |
+|      24 |       0 | 2              | 0                   | 0                         |
+|      25 |       0 | 1              | 0                   | 0                         |
 
 
 
 ## % of classes (terms), by hierarchy
 ![% of classes (terms), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms_percentages.png)
 
-|   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary - LoincTerm |   CompLOINC-Primary - SNOMED-Inspired |   CompLOINC-Supplementary - LoincTerm |   CompLOINC-Supplementary - SNOMED-Inspired |
-|---------|---------|----------------|---------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|
-|       1 |       0 |         0.0041 |                         0.00095 |                                 0.004 |                                0.001  |                                       0.004 |
-|       2 |       0 |         0.041  |                         0.0038  |                                 0.04  |                                0.0041 |                                       0.04  |
-|       3 |       0 |         0.27   |                         0.14    |                                 0.26  |                                0.15   |                                       0.26  |
-|       4 |       0 |         1.6    |                        41       |                                 1.5   |                               48      |                                       1.5   |
-|       5 |       0 |         3.3    |                        38       |                                 3.1   |                               37      |                                       3.1   |
-|       6 |       0 |         6.7    |                        13       |                                 6.4   |                               11      |                                       6.4   |
-|       7 |       0 |         8.3    |                         5.2     |                                 7.9   |                                2.8    |                                       7.9   |
-|       8 |       0 |         7.9    |                         2.1     |                                 7.8   |                                1      |                                       7.8   |
-|       9 |       0 |         8.1    |                         0.47    |                                 8.1   |                                0.17   |                                       8.1   |
-|      10 |       0 |         9.3    |                         0.1     |                                 9.2   |                                0.012  |                                       9.2   |
-|      11 |       0 |        11      |                         0.0086  |                                11     |                                0.001  |                                      11     |
-|      12 |       0 |         8.9    |                         0.0019  |                                 9.4   |                                0      |                                       9.4   |
-|      13 |       0 |         4.8    |                         0       |                                 5.3   |                                0      |                                       5.3   |
-|      14 |       0 |         5      |                         0       |                                 5.2   |                                0      |                                       5.2   |
-|      15 |       0 |         2.5    |                         0       |                                 2.4   |                                0      |                                       2.4   |
-|      16 |       0 |         2.6    |                         0       |                                 2.6   |                                0      |                                       2.6   |
-|      17 |       0 |         3.6    |                         0       |                                 3.6   |                                0      |                                       3.6   |
-|      18 |       0 |         6.1    |                         0       |                                 6.1   |                                0      |                                       6.1   |
-|      19 |       0 |         5.2    |                         0       |                                 5.2   |                                0      |                                       5.2   |
-|      20 |       0 |         2.8    |                         0       |                                 2.8   |                                0      |                                       2.8   |
-|      21 |       0 |         2      |                         0       |                                 2     |                                0      |                                       2     |
-|      22 |       0 |         0.23   |                         0       |                                 0.22  |                                0      |                                       0.22  |
-|      23 |       0 |         0.037  |                         0       |                                 0.036 |                                0      |                                       0.036 |
-|      24 |       0 |         0.0081 |                         0       |                                 0.008 |                                0      |                                       0.008 |
-|      25 |       0 |         0.0041 |                         0       |                                 0.004 |                                0      |                                       0.004 |
+|   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary |   CompLOINC-Supplementary |
+|---------|---------|----------------|---------------------|---------------------------|
+|       1 |       0 |         0.0014 |              0.001  |                    0.001  |
+|       2 |       0 |         0.017  |              0.0041 |                    0.0042 |
+|       3 |       0 |        16      |              0.09   |                    0.092  |
+|       4 |       0 |        18      |             52      |                   56      |
+|       5 |       0 |        14      |             38      |                   35      |
+|       6 |       0 |        10      |              8.6    |                    7.8    |
+|       7 |       0 |         7.6    |              1.3    |                    0.98   |
+|       8 |       0 |         5      |              0.19   |                    0.14   |
+|       9 |       0 |         4.2    |              0.0071 |                    0.0031 |
+|      10 |       0 |         4.1    |              0      |                    0      |
+|      11 |       0 |         4.2    |              0      |                    0      |
+|      12 |       0 |         3.4    |              0      |                    0      |
+|      13 |       0 |         1.9    |              0      |                    0      |
+|      14 |       0 |         2      |              0      |                    0      |
+|      15 |       0 |         0.99   |              0      |                    0      |
+|      16 |       0 |         0.99   |              0      |                    0      |
+|      17 |       0 |         1.3    |              0      |                    0      |
+|      18 |       0 |         2.2    |              0      |                    0      |
+|      19 |       0 |         1.9    |              0      |                    0      |
+|      20 |       0 |         1      |              0      |                    0      |
+|      21 |       0 |         0.71   |              0      |                    0      |
+|      22 |       0 |         0.081  |              0      |                    0      |
+|      23 |       0 |         0.013  |              0      |                    0      |
+|      24 |       0 |         0.0028 |              0      |                    0      |
+|      25 |       0 |         0.0014 |              0      |                    0      |
 
 
 
@@ -444,31 +572,31 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 |   Depth | LOINC   | LOINC-SNOMED   | CompLOINC-Primary   | CompLOINC-Supplementary   |
 |---------|---------|----------------|---------------------|---------------------------|
-|       1 | 2       | 1              | 3                   | 3                         |
-|       2 | 61      | 10             | 17                  | 17                        |
-|       3 | 7,168   | 67             | 22,409              | 22,403                    |
-|       4 | 30,327  | 394            | 101,331             | 69,073                    |
-|       5 | 0       | 815            | 109,235             | 58,044                    |
-|       6 | 0       | 1,649          | 104,091             | 32,920                    |
-|       7 | 0       | 2,033          | 101,076             | 24,904                    |
-|       8 | 0       | 1,955          | 95,687              | 21,590                    |
-|       9 | 0       | 1,998          | 86,113              | 17,708                    |
-|      10 | 0       | 2,289          | 72,782              | 14,359                    |
-|      11 | 0       | 2,632          | 62,977              | 11,845                    |
-|      12 | 0       | 2,180          | 52,640              | 9,092                     |
-|      13 | 0       | 1,191          | 43,809              | 6,070                     |
-|      14 | 0       | 1,226          | 33,786              | 4,143                     |
-|      15 | 0       | 611            | 24,311              | 2,060                     |
-|      16 | 0       | 630            | 16,646              | 1,200                     |
-|      17 | 0       | 876            | 10,378              | 1,066                     |
-|      18 | 0       | 1,506          | 5,434               | 1,534                     |
-|      19 | 0       | 1,291          | 2,715               | 1,304                     |
-|      20 | 0       | 701            | 990                 | 705                       |
-|      21 | 0       | 492            | 526                 | 492                       |
-|      22 | 0       | 56             | 58                  | 56                        |
-|      23 | 0       | 9              | 9                   | 9                         |
-|      24 | 0       | 2              | 2                   | 2                         |
-|      25 | 0       | 1              | 1                   | 1                         |
+|       1 | 2       | 1              | 2                   | 2                         |
+|       2 | 61      | 12             | 7                   | 7                         |
+|       3 | 7,168   | 11,367         | 24,221              | 24,215                    |
+|       4 | 30,327  | 12,546         | 102,469             | 75,792                    |
+|       5 | 0       | 9,786          | 105,077             | 54,230                    |
+|       6 | 0       | 7,356          | 96,840              | 28,084                    |
+|       7 | 0       | 5,323          | 92,577              | 20,922                    |
+|       8 | 0       | 3,528          | 86,556              | 18,102                    |
+|       9 | 0       | 2,945          | 74,026              | 13,524                    |
+|      10 | 0       | 2,911          | 52,943              | 8,412                     |
+|      11 | 0       | 2,950          | 34,786              | 4,731                     |
+|      12 | 0       | 2,362          | 20,512              | 2,383                     |
+|      13 | 0       | 1,359          | 10,617              | 900                       |
+|      14 | 0       | 1,383          | 4,725               | 309                       |
+|      15 | 0       | 697            | 1,858               | 51                        |
+|      16 | 0       | 693            | 488                 | 0                         |
+|      17 | 0       | 925            | 72                  | 0                         |
+|      18 | 0       | 1,550          | 1                   | 0                         |
+|      19 | 0       | 1,326          | 0                   | 0                         |
+|      20 | 0       | 716            | 0                   | 0                         |
+|      21 | 0       | 496            | 0                   | 0                         |
+|      22 | 0       | 57             | 0                   | 0                         |
+|      23 | 0       | 9              | 0                   | 0                         |
+|      24 | 0       | 2              | 0                   | 0                         |
+|      25 | 0       | 1              | 0                   | 0                         |
 
 
 
@@ -477,97 +605,97 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 |   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary |   CompLOINC-Supplementary |
 |---------|---------|----------------|---------------------|---------------------------|
-|       1 |  0.0053 |         0.0041 |             0.00032 |                   0.001   |
-|       2 |  0.16   |         0.041  |             0.0018  |                   0.0057  |
-|       3 | 19      |         0.27   |             2.4     |                   7.5     |
-|       4 | 81      |         1.6    |            11       |                  23       |
-|       5 |  0      |         3.3    |            12       |                  19       |
-|       6 |  0      |         6.7    |            11       |                  11       |
-|       7 |  0      |         8.3    |            11       |                   8.3     |
-|       8 |  0      |         7.9    |            10       |                   7.2     |
-|       9 |  0      |         8.1    |             9.1     |                   5.9     |
-|      10 |  0      |         9.3    |             7.7     |                   4.8     |
-|      11 |  0      |        11      |             6.6     |                   3.9     |
-|      12 |  0      |         8.9    |             5.6     |                   3       |
-|      13 |  0      |         4.8    |             4.6     |                   2       |
-|      14 |  0      |         5      |             3.6     |                   1.4     |
-|      15 |  0      |         2.5    |             2.6     |                   0.69    |
-|      16 |  0      |         2.6    |             1.8     |                   0.4     |
-|      17 |  0      |         3.6    |             1.1     |                   0.35    |
-|      18 |  0      |         6.1    |             0.57    |                   0.51    |
-|      19 |  0      |         5.2    |             0.29    |                   0.43    |
-|      20 |  0      |         2.8    |             0.1     |                   0.23    |
-|      21 |  0      |         2      |             0.056   |                   0.16    |
-|      22 |  0      |         0.23   |             0.0061  |                   0.019   |
-|      23 |  0      |         0.037  |             0.00095 |                   0.003   |
-|      24 |  0      |         0.0081 |             0.00021 |                   0.00067 |
-|      25 |  0      |         0.0041 |             0.00011 |                   0.00033 |
+|       1 |  0.0053 |         0.0014 |             0.00028 |                   0.00079 |
+|       2 |  0.16   |         0.017  |             0.00099 |                   0.0028  |
+|       3 | 19      |        16      |             3.4     |                   9.6     |
+|       4 | 81      |        18      |            14       |                  30       |
+|       5 |  0      |        14      |            15       |                  22       |
+|       6 |  0      |        10      |            14       |                  11       |
+|       7 |  0      |         7.6    |            13       |                   8.3     |
+|       8 |  0      |         5      |            12       |                   7.2     |
+|       9 |  0      |         4.2    |            10       |                   5.4     |
+|      10 |  0      |         4.1    |             7.5     |                   3.3     |
+|      11 |  0      |         4.2    |             4.9     |                   1.9     |
+|      12 |  0      |         3.4    |             2.9     |                   0.95    |
+|      13 |  0      |         1.9    |             1.5     |                   0.36    |
+|      14 |  0      |         2      |             0.67    |                   0.12    |
+|      15 |  0      |         0.99   |             0.26    |                   0.02    |
+|      16 |  0      |         0.99   |             0.069   |                   0       |
+|      17 |  0      |         1.3    |             0.01    |                   0       |
+|      18 |  0      |         2.2    |             0.00014 |                   0       |
+|      19 |  0      |         1.9    |             0       |                   0       |
+|      20 |  0      |         1      |             0       |                   0       |
+|      21 |  0      |         0.71   |             0       |                   0       |
+|      22 |  0      |         0.081  |             0       |                   0       |
+|      23 |  0      |         0.013  |             0       |                   0       |
+|      24 |  0      |         0.0028 |             0       |                   0       |
+|      25 |  0      |         0.0014 |             0       |                   0       |
 
 
 
 ## Number of classes (terms, groups), by hierarchy
 ![Number of classes (terms, groups), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups_totals.png)
 
-|   Depth | LOINC - LOINC Categories   | LOINC - LOINC Groups   | LOINC-SNOMED   | CompLOINC-Primary - CompLOINC Groups   | CompLOINC-Primary - LoincTerm   | CompLOINC-Primary - SNOMED-Inspired   | CompLOINC-Supplementary - CompLOINC Groups   | CompLOINC-Supplementary - LoincTerm   | CompLOINC-Supplementary - SNOMED-Inspired   |
-|---------|----------------------------|------------------------|----------------|----------------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------------|
-|       1 | 1                          | 1                      | 1              | 1                                      | 1                               | 1                                     | 1                                            | 1                                     | 1                                           |
-|       2 | 16                         | 45                     | 10             | 3                                      | 4                               | 10                                    | 3                                            | 4                                     | 10                                          |
-|       3 | 7,130                      | 7,168                  | 67             | 22,193                                 | 151                             | 65                                    | 22,187                                       | 151                                   | 65                                          |
-|       4 | 30,327                     | 30,327                 | 394            | 100,519                                | 79,704                          | 369                                   | 21,258                                       | 47,446                                | 369                                         |
-|       5 | 0                          | 0                      | 815            | 107,919                                | 87,670                          | 777                                   | 20,788                                       | 36,479                                | 777                                         |
-|       6 | 0                          | 0                      | 1,649          | 102,254                                | 81,788                          | 1,599                                 | 20,704                                       | 10,617                                | 1,599                                       |
-|       7 | 0                          | 0                      | 2,033          | 99,103                                 | 78,928                          | 1,971                                 | 20,177                                       | 2,756                                 | 1,971                                       |
-|       8 | 0                          | 0                      | 1,955          | 93,749                                 | 75,088                          | 1,938                                 | 18,661                                       | 991                                   | 1,938                                       |
-|       9 | 0                          | 0                      | 1,998          | 84,096                                 | 68,573                          | 2,017                                 | 15,523                                       | 168                                   | 2,017                                       |
-|      10 | 0                          | 0                      | 2,289          | 70,480                                 | 58,435                          | 2,302                                 | 12,045                                       | 12                                    | 2,302                                       |
-|      11 | 0                          | 0                      | 2,632          | 60,268                                 | 51,133                          | 2,709                                 | 9,135                                        | 1                                     | 2,709                                       |
-|      12 | 0                          | 0                      | 2,180          | 50,284                                 | 43,548                          | 2,356                                 | 6,736                                        | 0                                     | 2,356                                       |
-|      13 | 0                          | 0                      | 1,191          | 42,495                                 | 37,739                          | 1,314                                 | 4,756                                        | 0                                     | 1,314                                       |
-|      14 | 0                          | 0                      | 1,226          | 32,495                                 | 29,643                          | 1,291                                 | 2,852                                        | 0                                     | 1,291                                       |
-|      15 | 0                          | 0                      | 611            | 23,701                                 | 22,251                          | 610                                   | 1,450                                        | 0                                     | 610                                         |
-|      16 | 0                          | 0                      | 630            | 15,995                                 | 15,446                          | 651                                   | 549                                          | 0                                     | 651                                         |
-|      17 | 0                          | 0                      | 876            | 9,483                                  | 9,312                           | 895                                   | 171                                          | 0                                     | 895                                         |
-|      18 | 0                          | 0                      | 1,506          | 3,915                                  | 3,900                           | 1,519                                 | 15                                           | 0                                     | 1,519                                       |
-|      19 | 0                          | 0                      | 1,291          | 1,412                                  | 1,411                           | 1,303                                 | 1                                            | 0                                     | 1,303                                       |
-|      20 | 0                          | 0                      | 701            | 285                                    | 285                             | 705                                   | 0                                            | 0                                     | 705                                         |
-|      21 | 0                          | 0                      | 492            | 34                                     | 34                              | 492                                   | 0                                            | 0                                     | 492                                         |
-|      22 | 0                          | 0                      | 56             | 2                                      | 2                               | 56                                    | 0                                            | 0                                     | 56                                          |
-|      23 | 0                          | 0                      | 9              | 0                                      | 0                               | 9                                     | 0                                            | 0                                     | 9                                           |
-|      24 | 0                          | 0                      | 2              | 0                                      | 0                               | 2                                     | 0                                            | 0                                     | 2                                           |
-|      25 | 0                          | 0                      | 1              | 0                                      | 0                               | 1                                     | 0                                            | 0                                     | 1                                           |
+|   Depth | LOINC - LOINC Categories   | LOINC - LOINC Groups   | LOINC-SNOMED   | CompLOINC-Primary - CompLOINC Groups   | CompLOINC-Primary - LoincTerm   | CompLOINC-Supplementary - CompLOINC Groups   | CompLOINC-Supplementary - LoincTerm   |
+|---------|----------------------------|------------------------|----------------|----------------------------------------|---------------------------------|----------------------------------------------|---------------------------------------|
+|       1 | 1                          | 1                      | 1              | 1                                      | 1                               | 1                                            | 1                                     |
+|       2 | 16                         | 45                     | 12             | 3                                      | 4                               | 3                                            | 4                                     |
+|       3 | 7,130                      | 7,168                  | 11,367         | 24,133                                 | 88                              | 24,127                                       | 88                                    |
+|       4 | 30,327                     | 30,327                 | 12,546         | 102,085                                | 80,165                          | 22,304                                       | 53,488                                |
+|       5 | 0                          | 0                      | 9,786          | 104,683                                | 84,291                          | 20,786                                       | 33,444                                |
+|       6 | 0                          | 0                      | 7,356          | 96,797                                 | 76,159                          | 20,681                                       | 7,403                                 |
+|       7 | 0                          | 0                      | 5,323          | 92,575                                 | 72,587                          | 19,990                                       | 932                                   |
+|       8 | 0                          | 0                      | 3,528          | 86,556                                 | 68,584                          | 17,972                                       | 130                                   |
+|       9 | 0                          | 0                      | 2,945          | 74,026                                 | 60,505                          | 13,521                                       | 3                                     |
+|      10 | 0                          | 0                      | 2,911          | 52,943                                 | 44,531                          | 8,412                                        | 0                                     |
+|      11 | 0                          | 0                      | 2,950          | 34,786                                 | 30,055                          | 4,731                                        | 0                                     |
+|      12 | 0                          | 0                      | 2,362          | 20,512                                 | 18,129                          | 2,383                                        | 0                                     |
+|      13 | 0                          | 0                      | 1,359          | 10,617                                 | 9,717                           | 900                                          | 0                                     |
+|      14 | 0                          | 0                      | 1,383          | 4,725                                  | 4,416                           | 309                                          | 0                                     |
+|      15 | 0                          | 0                      | 697            | 1,858                                  | 1,807                           | 51                                           | 0                                     |
+|      16 | 0                          | 0                      | 693            | 488                                    | 488                             | 0                                            | 0                                     |
+|      17 | 0                          | 0                      | 925            | 72                                     | 72                              | 0                                            | 0                                     |
+|      18 | 0                          | 0                      | 1,550          | 1                                      | 1                               | 0                                            | 0                                     |
+|      19 | 0                          | 0                      | 1,326          | 0                                      | 0                               | 0                                            | 0                                     |
+|      20 | 0                          | 0                      | 716            | 0                                      | 0                               | 0                                            | 0                                     |
+|      21 | 0                          | 0                      | 496            | 0                                      | 0                               | 0                                            | 0                                     |
+|      22 | 0                          | 0                      | 57             | 0                                      | 0                               | 0                                            | 0                                     |
+|      23 | 0                          | 0                      | 9              | 0                                      | 0                               | 0                                            | 0                                     |
+|      24 | 0                          | 0                      | 2              | 0                                      | 0                               | 0                                            | 0                                     |
+|      25 | 0                          | 0                      | 1              | 0                                      | 0                               | 0                                            | 0                                     |
 
 
 
 ## % of classes (terms, groups), by hierarchy
 ![% of classes (terms, groups), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups_percentages.png)
 
-|   Depth |   LOINC - LOINC Categories |   LOINC - LOINC Groups |   LOINC-SNOMED |   CompLOINC-Primary - CompLOINC Groups |   CompLOINC-Primary - LoincTerm |   CompLOINC-Primary - SNOMED-Inspired |   CompLOINC-Supplementary - CompLOINC Groups |   CompLOINC-Supplementary - LoincTerm |   CompLOINC-Supplementary - SNOMED-Inspired |
-|---------|----------------------------|------------------------|----------------|----------------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------------|
-|       1 |                     0.0027 |                 0.0027 |         0.0041 |                                0.00011 |                         0.00013 |                                 0.004 |                                      0.00056 |                                0.001  |                                       0.004 |
-|       2 |                     0.043  |                 0.12   |         0.041  |                                0.00033 |                         0.00054 |                                 0.04  |                                      0.0017  |                                0.0041 |                                       0.04  |
-|       3 |                    19      |                19      |         0.27   |                                2.4     |                         0.02    |                                 0.26  |                                     13       |                                0.15   |                                       0.26  |
-|       4 |                    81      |                81      |         1.6    |                               11       |                        11       |                                 1.5   |                                     12       |                               48      |                                       1.5   |
-|       5 |                     0      |                 0      |         3.3    |                               12       |                        12       |                                 3.1   |                                     12       |                               37      |                                       3.1   |
-|       6 |                     0      |                 0      |         6.7    |                               11       |                        11       |                                 6.4   |                                     12       |                               11      |                                       6.4   |
-|       7 |                     0      |                 0      |         8.3    |                               11       |                        11       |                                 7.9   |                                     11       |                                2.8    |                                       7.9   |
-|       8 |                     0      |                 0      |         7.9    |                               10       |                        10       |                                 7.8   |                                     11       |                                1      |                                       7.8   |
-|       9 |                     0      |                 0      |         8.1    |                                9.1     |                         9.2     |                                 8.1   |                                      8.8     |                                0.17   |                                       8.1   |
-|      10 |                     0      |                 0      |         9.3    |                                7.7     |                         7.8     |                                 9.2   |                                      6.8     |                                0.012  |                                       9.2   |
-|      11 |                     0      |                 0      |        11      |                                6.5     |                         6.9     |                                11     |                                      5.2     |                                0.001  |                                      11     |
-|      12 |                     0      |                 0      |         8.9    |                                5.5     |                         5.8     |                                 9.4   |                                      3.8     |                                0      |                                       9.4   |
-|      13 |                     0      |                 0      |         4.8    |                                4.6     |                         5.1     |                                 5.3   |                                      2.7     |                                0      |                                       5.3   |
-|      14 |                     0      |                 0      |         5      |                                3.5     |                         4       |                                 5.2   |                                      1.6     |                                0      |                                       5.2   |
-|      15 |                     0      |                 0      |         2.5    |                                2.6     |                         3       |                                 2.4   |                                      0.82    |                                0      |                                       2.4   |
-|      16 |                     0      |                 0      |         2.6    |                                1.7     |                         2.1     |                                 2.6   |                                      0.31    |                                0      |                                       2.6   |
-|      17 |                     0      |                 0      |         3.6    |                                1       |                         1.2     |                                 3.6   |                                      0.097   |                                0      |                                       3.6   |
-|      18 |                     0      |                 0      |         6.1    |                                0.43    |                         0.52    |                                 6.1   |                                      0.0085  |                                0      |                                       6.1   |
-|      19 |                     0      |                 0      |         5.2    |                                0.15    |                         0.19    |                                 5.2   |                                      0.00056 |                                0      |                                       5.2   |
-|      20 |                     0      |                 0      |         2.8    |                                0.031   |                         0.038   |                                 2.8   |                                      0       |                                0      |                                       2.8   |
-|      21 |                     0      |                 0      |         2      |                                0.0037  |                         0.0046  |                                 2     |                                      0       |                                0      |                                       2     |
-|      22 |                     0      |                 0      |         0.23   |                                0.00022 |                         0.00027 |                                 0.22  |                                      0       |                                0      |                                       0.22  |
-|      23 |                     0      |                 0      |         0.037  |                                0       |                         0       |                                 0.036 |                                      0       |                                0      |                                       0.036 |
-|      24 |                     0      |                 0      |         0.0081 |                                0       |                         0       |                                 0.008 |                                      0       |                                0      |                                       0.008 |
-|      25 |                     0      |                 0      |         0.0041 |                                0       |                         0       |                                 0.004 |                                      0       |                                0      |                                       0.004 |
+|   Depth |   LOINC - LOINC Categories |   LOINC - LOINC Groups |   LOINC-SNOMED |   CompLOINC-Primary - CompLOINC Groups |   CompLOINC-Primary - LoincTerm |   CompLOINC-Supplementary - CompLOINC Groups |   CompLOINC-Supplementary - LoincTerm |
+|---------|----------------------------|------------------------|----------------|----------------------------------------|---------------------------------|----------------------------------------------|---------------------------------------|
+|       1 |                     0.0027 |                 0.0027 |         0.0014 |                                0.00014 |                         0.00018 |                                      0.00064 |                                0.001  |
+|       2 |                     0.043  |                 0.12   |         0.017  |                                0.00042 |                         0.00073 |                                      0.0019  |                                0.0042 |
+|       3 |                    19      |                19      |        16      |                                3.4     |                         0.016   |                                     15       |                                0.092  |
+|       4 |                    81      |                81      |        18      |                               14       |                        15       |                                     14       |                               56      |
+|       5 |                     0      |                 0      |        14      |                               15       |                        15       |                                     13       |                               35      |
+|       6 |                     0      |                 0      |        10      |                               14       |                        14       |                                     13       |                                7.8    |
+|       7 |                     0      |                 0      |         7.6    |                               13       |                        13       |                                     13       |                                0.98   |
+|       8 |                     0      |                 0      |         5      |                               12       |                        12       |                                     12       |                                0.14   |
+|       9 |                     0      |                 0      |         4.2    |                               10       |                        11       |                                      8.7     |                                0.0031 |
+|      10 |                     0      |                 0      |         4.1    |                                7.5     |                         8.1     |                                      5.4     |                                0      |
+|      11 |                     0      |                 0      |         4.2    |                                4.9     |                         5.4     |                                      3       |                                0      |
+|      12 |                     0      |                 0      |         3.4    |                                2.9     |                         3.3     |                                      1.5     |                                0      |
+|      13 |                     0      |                 0      |         1.9    |                                1.5     |                         1.8     |                                      0.58    |                                0      |
+|      14 |                     0      |                 0      |         2      |                                0.67    |                         0.8     |                                      0.2     |                                0      |
+|      15 |                     0      |                 0      |         0.99   |                                0.26    |                         0.33    |                                      0.033   |                                0      |
+|      16 |                     0      |                 0      |         0.99   |                                0.069   |                         0.088   |                                      0       |                                0      |
+|      17 |                     0      |                 0      |         1.3    |                                0.01    |                         0.013   |                                      0       |                                0      |
+|      18 |                     0      |                 0      |         2.2    |                                0.00014 |                         0.00018 |                                      0       |                                0      |
+|      19 |                     0      |                 0      |         1.9    |                                0       |                         0       |                                      0       |                                0      |
+|      20 |                     0      |                 0      |         1      |                                0       |                         0       |                                      0       |                                0      |
+|      21 |                     0      |                 0      |         0.71   |                                0       |                         0       |                                      0       |                                0      |
+|      22 |                     0      |                 0      |         0.081  |                                0       |                         0       |                                      0       |                                0      |
+|      23 |                     0      |                 0      |         0.013  |                                0       |                         0       |                                      0       |                                0      |
+|      24 |                     0      |                 0      |         0.0028 |                                0       |                         0       |                                      0       |                                0      |
+|      25 |                     0      |                 0      |         0.0014 |                                0       |                         0       |                                      0       |                                0      |
 
 
 
@@ -576,31 +704,31 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 |   Depth | LOINC   | LOINC-SNOMED   | CompLOINC-Primary   | CompLOINC-Supplementary   |
 |---------|---------|----------------|---------------------|---------------------------|
-|       1 | 3       | 1              | 4                   | 4                         |
-|       2 | 29,800  | 10             | 29,605              | 29,605                    |
-|       3 | 10,843  | 67             | 26,303              | 26,297                    |
-|       4 | 38,733  | 394            | 110,854             | 78,596                    |
-|       5 | 3,735   | 815            | 115,845             | 64,654                    |
-|       6 | 11,474  | 1,649          | 123,168             | 51,997                    |
-|       7 | 19,887  | 2,033          | 131,840             | 55,668                    |
-|       8 | 24,922  | 1,955          | 129,859             | 55,762                    |
-|       9 | 21,787  | 1,998          | 118,213             | 49,808                    |
-|      10 | 12,833  | 2,289          | 99,935              | 41,512                    |
-|      11 | 7,702   | 2,632          | 86,235              | 35,103                    |
-|      12 | 3,634   | 2,180          | 72,627              | 29,079                    |
-|      13 | 1,191   | 1,191          | 62,086              | 24,347                    |
-|      14 | 134     | 1,226          | 48,980              | 19,337                    |
-|      15 | 10      | 611            | 37,462              | 15,211                    |
-|      16 | 0       | 630            | 27,250              | 11,804                    |
-|      17 | 0       | 876            | 18,832              | 9,520                     |
-|      18 | 0       | 1,506          | 12,145              | 8,245                     |
-|      19 | 0       | 1,291          | 8,321               | 6,910                     |
-|      20 | 0       | 701            | 5,176               | 4,891                     |
-|      21 | 0       | 492            | 3,289               | 3,255                     |
-|      22 | 0       | 56             | 1,275               | 1,273                     |
-|      23 | 0       | 9              | 120                 | 120                       |
-|      24 | 0       | 2              | 28                  | 28                        |
-|      25 | 0       | 1              | 8                   | 8                         |
+|       1 | 3       | 1              | 3                   | 3                         |
+|       2 | 31,022  | 12             | 31,269              | 31,269                    |
+|       3 | 13,639  | 11,367         | 30,744              | 30,738                    |
+|       4 | 35,075  | 12,546         | 107,665             | 80,988                    |
+|       5 | 2,995   | 9,786          | 108,799             | 57,952                    |
+|       6 | 9,792   | 7,356          | 108,008             | 39,252                    |
+|       7 | 18,805  | 5,323          | 113,339             | 41,684                    |
+|       8 | 23,995  | 3,528          | 112,272             | 43,818                    |
+|       9 | 21,244  | 2,945          | 96,473              | 35,971                    |
+|      10 | 12,690  | 2,911          | 66,772              | 22,241                    |
+|      11 | 7,684   | 2,950          | 43,202              | 13,147                    |
+|      12 | 3,634   | 2,362          | 24,495              | 6,366                     |
+|      13 | 1,192   | 1,359          | 11,856              | 2,139                     |
+|      14 | 134     | 1,383          | 4,861               | 445                       |
+|      15 | 10      | 697            | 1,868               | 61                        |
+|      16 | 0       | 693            | 488                 | 0                         |
+|      17 | 0       | 925            | 72                  | 0                         |
+|      18 | 0       | 1,550          | 1                   | 0                         |
+|      19 | 0       | 1,326          | 0                   | 0                         |
+|      20 | 0       | 716            | 0                   | 0                         |
+|      21 | 0       | 496            | 0                   | 0                         |
+|      22 | 0       | 57             | 0                   | 0                         |
+|      23 | 0       | 9              | 0                   | 0                         |
+|      24 | 0       | 2              | 0                   | 0                         |
+|      25 | 0       | 1              | 0                   | 0                         |
 
 
 
@@ -609,97 +737,97 @@ More information about LOINC groups can be found here: https://loinc.org/groups/
 
 |   Depth |   LOINC |   LOINC-SNOMED |   CompLOINC-Primary |   CompLOINC-Supplementary |
 |---------|---------|----------------|---------------------|---------------------------|
-|       1 |  0.0016 |         0.0041 |             0.00032 |                   0.00064 |
-|       2 | 16      |         0.041  |             2.3     |                   4.8     |
-|       3 |  5.8    |         0.27   |             2.1     |                   4.2     |
-|       4 | 21      |         1.6    |             8.7     |                  13       |
-|       5 |  2      |         3.3    |             9.1     |                  10       |
-|       6 |  6.1    |         6.7    |             9.7     |                   8.3     |
-|       7 | 11      |         8.3    |            10       |                   8.9     |
-|       8 | 13      |         7.9    |            10       |                   9       |
-|       9 | 12      |         8.1    |             9.3     |                   8       |
-|      10 |  6.9    |         9.3    |             7.9     |                   6.7     |
-|      11 |  4.1    |        11      |             6.8     |                   5.6     |
-|      12 |  1.9    |         8.9    |             5.7     |                   4.7     |
-|      13 |  0.64   |         4.8    |             4.9     |                   3.9     |
-|      14 |  0.072  |         5      |             3.9     |                   3.1     |
-|      15 |  0.0054 |         2.5    |             3       |                   2.4     |
-|      16 |  0      |         2.6    |             2.1     |                   1.9     |
-|      17 |  0      |         3.6    |             1.5     |                   1.5     |
-|      18 |  0      |         6.1    |             0.96    |                   1.3     |
-|      19 |  0      |         5.2    |             0.66    |                   1.1     |
-|      20 |  0      |         2.8    |             0.41    |                   0.79    |
-|      21 |  0      |         2      |             0.26    |                   0.52    |
-|      22 |  0      |         0.23   |             0.1     |                   0.2     |
-|      23 |  0      |         0.037  |             0.0095  |                   0.019   |
-|      24 |  0      |         0.0081 |             0.0022  |                   0.0045  |
-|      25 |  0      |         0.0041 |             0.00063 |                   0.0013  |
+|       1 |  0.0016 |         0.0014 |             0.00035 |                   0.00074 |
+|       2 | 17      |         0.017  |             3.6     |                   7.7     |
+|       3 |  7.5    |        16      |             3.6     |                   7.6     |
+|       4 | 19      |        18      |            12       |                  20       |
+|       5 |  1.6    |        14      |            13       |                  14       |
+|       6 |  5.4    |        10      |            13       |                   9.7     |
+|       7 | 10      |         7.6    |            13       |                  10       |
+|       8 | 13      |         5      |            13       |                  11       |
+|       9 | 12      |         4.2    |            11       |                   8.9     |
+|      10 |  7      |         4.1    |             7.7     |                   5.5     |
+|      11 |  4.2    |         4.2    |             5       |                   3.2     |
+|      12 |  2      |         3.4    |             2.8     |                   1.6     |
+|      13 |  0.66   |         1.9    |             1.4     |                   0.53    |
+|      14 |  0.074  |         2      |             0.56    |                   0.11    |
+|      15 |  0.0055 |         0.99   |             0.22    |                   0.015   |
+|      16 |  0      |         0.99   |             0.057   |                   0       |
+|      17 |  0      |         1.3    |             0.0084  |                   0       |
+|      18 |  0      |         2.2    |             0.00012 |                   0       |
+|      19 |  0      |         1.9    |             0       |                   0       |
+|      20 |  0      |         1      |             0       |                   0       |
+|      21 |  0      |         0.71   |             0       |                   0       |
+|      22 |  0      |         0.081  |             0       |                   0       |
+|      23 |  0      |         0.013  |             0       |                   0       |
+|      24 |  0      |         0.0028 |             0       |                   0       |
+|      25 |  0      |         0.0014 |             0       |                   0       |
 
 
 
 ## Number of classes (terms, groups, parts), by hierarchy
 ![Number of classes (terms, groups, parts), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups-parts_totals.png)
 
-|   Depth | LOINC - LOINC Categories   | LOINC - LOINC Groups   | LOINC - LoincPart   | LOINC-SNOMED   | CompLOINC-Primary - CompLOINC Groups   | CompLOINC-Primary - LoincPart   | CompLOINC-Primary - LoincTerm   | CompLOINC-Primary - SNOMED-Inspired   | CompLOINC-Supplementary - CompLOINC Groups   | CompLOINC-Supplementary - LoincPart   | CompLOINC-Supplementary - LoincTerm   | CompLOINC-Supplementary - SNOMED-Inspired   |
-|---------|----------------------------|------------------------|---------------------|----------------|----------------------------------------|---------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|
-|       1 | 1                          | 1                      | 1                   | 1              | 1                                      | 1                               | 1                               | 1                                     | 1                                            | 1                                     | 1                                     | 1                                           |
-|       2 | 16                         | 45                     | 29,739              | 10             | 3                                      | 29,590                          | 4                               | 412                                   | 3                                            | 29,590                                | 4                                     | 412                                         |
-|       3 | 7,130                      | 7,168                  | 3,675               | 67             | 22,193                                 | 3,930                           | 151                             | 458                                   | 22,187                                       | 3,930                                 | 151                                   | 458                                         |
-|       4 | 30,327                     | 30,327                 | 8,406               | 394            | 100,519                                | 9,749                           | 79,704                          | 2,405                                 | 21,258                                       | 9,749                                 | 47,446                                | 2,405                                       |
-|       5 | 0                          | 0                      | 3,735               | 815            | 107,919                                | 7,139                           | 87,670                          | 4,823                                 | 20,788                                       | 7,139                                 | 36,479                                | 4,823                                       |
-|       6 | 0                          | 0                      | 11,474              | 1,649          | 102,254                                | 20,365                          | 81,788                          | 12,019                                | 20,704                                       | 20,365                                | 10,617                                | 12,019                                      |
-|       7 | 0                          | 0                      | 19,887              | 2,033          | 99,103                                 | 32,465                          | 78,928                          | 20,546                                | 20,177                                       | 32,465                                | 2,756                                 | 20,546                                      |
-|       8 | 0                          | 0                      | 24,922              | 1,955          | 93,749                                 | 35,857                          | 75,088                          | 25,564                                | 18,661                                       | 35,857                                | 991                                   | 25,564                                      |
-|       9 | 0                          | 0                      | 21,787              | 1,998          | 84,096                                 | 33,913                          | 68,573                          | 27,540                                | 15,523                                       | 33,913                                | 168                                   | 27,540                                      |
-|      10 | 0                          | 0                      | 12,833              | 2,289          | 70,480                                 | 29,305                          | 58,435                          | 27,363                                | 12,045                                       | 29,305                                | 12                                    | 27,363                                      |
-|      11 | 0                          | 0                      | 7,702               | 2,632          | 60,268                                 | 25,875                          | 51,133                          | 25,470                                | 9,135                                        | 25,875                                | 1                                     | 25,470                                      |
-|      12 | 0                          | 0                      | 3,634               | 2,180          | 50,284                                 | 22,276                          | 43,548                          | 22,282                                | 6,736                                        | 22,276                                | 0                                     | 22,282                                      |
-|      13 | 0                          | 0                      | 1,191               | 1,191          | 42,495                                 | 19,552                          | 37,739                          | 19,582                                | 4,756                                        | 19,552                                | 0                                     | 19,582                                      |
-|      14 | 0                          | 0                      | 134                 | 1,226          | 32,495                                 | 16,469                          | 29,643                          | 16,485                                | 2,852                                        | 16,469                                | 0                                     | 16,485                                      |
-|      15 | 0                          | 0                      | 10                  | 611            | 23,701                                 | 13,750                          | 22,251                          | 13,761                                | 1,450                                        | 13,750                                | 0                                     | 13,761                                      |
-|      16 | 0                          | 0                      | 0                   | 630            | 15,995                                 | 11,245                          | 15,446                          | 11,255                                | 549                                          | 11,245                                | 0                                     | 11,255                                      |
-|      17 | 0                          | 0                      | 0                   | 876            | 9,483                                  | 9,340                           | 9,312                           | 9,349                                 | 171                                          | 9,340                                 | 0                                     | 9,349                                       |
-|      18 | 0                          | 0                      | 0                   | 1,506          | 3,915                                  | 8,222                           | 3,900                           | 8,230                                 | 15                                           | 8,222                                 | 0                                     | 8,230                                       |
-|      19 | 0                          | 0                      | 0                   | 1,291          | 1,412                                  | 6,902                           | 1,411                           | 6,909                                 | 1                                            | 6,902                                 | 0                                     | 6,909                                       |
-|      20 | 0                          | 0                      | 0                   | 701            | 285                                    | 4,885                           | 285                             | 4,891                                 | 0                                            | 4,885                                 | 0                                     | 4,891                                       |
-|      21 | 0                          | 0                      | 0                   | 492            | 34                                     | 3,250                           | 34                              | 3,255                                 | 0                                            | 3,250                                 | 0                                     | 3,255                                       |
-|      22 | 0                          | 0                      | 0                   | 56             | 2                                      | 1,270                           | 2                               | 1,273                                 | 0                                            | 1,270                                 | 0                                     | 1,273                                       |
-|      23 | 0                          | 0                      | 0                   | 9              | 0                                      | 118                             | 0                               | 120                                   | 0                                            | 118                                   | 0                                     | 120                                         |
-|      24 | 0                          | 0                      | 0                   | 2              | 0                                      | 27                              | 0                               | 28                                    | 0                                            | 27                                    | 0                                     | 28                                          |
-|      25 | 0                          | 0                      | 0                   | 1              | 0                                      | 8                               | 0                               | 8                                     | 0                                            | 8                                     | 0                                     | 8                                           |
+|   Depth | LOINC - LOINC Categories   | LOINC - LOINC Groups   | LOINC - LoincPart   | LOINC-SNOMED   | CompLOINC-Primary - CompLOINC Groups   | CompLOINC-Primary - LoincPart   | CompLOINC-Primary - LoincTerm   | CompLOINC-Supplementary - CompLOINC Groups   | CompLOINC-Supplementary - LoincPart   | CompLOINC-Supplementary - LoincTerm   |
+|---------|----------------------------|------------------------|---------------------|----------------|----------------------------------------|---------------------------------|---------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------|
+|       1 | 1                          | 1                      | 1                   | 1              | 1                                      | 1                               | 1                               | 1                                            | 1                                     | 1                                     |
+|       2 | 16                         | 45                     | 30,961              | 12             | 3                                      | 31,262                          | 4                               | 3                                            | 31,262                                | 4                                     |
+|       3 | 7,130                      | 7,168                  | 6,471               | 11,367         | 24,133                                 | 6,523                           | 88                              | 24,127                                       | 6,523                                 | 88                                    |
+|       4 | 30,327                     | 30,327                 | 4,748               | 12,546         | 102,085                                | 5,196                           | 80,165                          | 22,304                                       | 5,196                                 | 53,488                                |
+|       5 | 0                          | 0                      | 2,995               | 9,786          | 104,683                                | 3,722                           | 84,291                          | 20,786                                       | 3,722                                 | 33,444                                |
+|       6 | 0                          | 0                      | 9,792               | 7,356          | 96,797                                 | 11,168                          | 76,159                          | 20,681                                       | 11,168                                | 7,403                                 |
+|       7 | 0                          | 0                      | 18,805              | 5,323          | 92,575                                 | 20,762                          | 72,587                          | 19,990                                       | 20,762                                | 932                                   |
+|       8 | 0                          | 0                      | 23,995              | 3,528          | 86,556                                 | 25,716                          | 68,584                          | 17,972                                       | 25,716                                | 130                                   |
+|       9 | 0                          | 0                      | 21,244              | 2,945          | 74,026                                 | 22,447                          | 60,505                          | 13,521                                       | 22,447                                | 3                                     |
+|      10 | 0                          | 0                      | 12,690              | 2,911          | 52,943                                 | 13,829                          | 44,531                          | 8,412                                        | 13,829                                | 0                                     |
+|      11 | 0                          | 0                      | 7,684               | 2,950          | 34,786                                 | 8,416                           | 30,055                          | 4,731                                        | 8,416                                 | 0                                     |
+|      12 | 0                          | 0                      | 3,634               | 2,362          | 20,512                                 | 3,983                           | 18,129                          | 2,383                                        | 3,983                                 | 0                                     |
+|      13 | 0                          | 0                      | 1,192               | 1,359          | 10,617                                 | 1,239                           | 9,717                           | 900                                          | 1,239                                 | 0                                     |
+|      14 | 0                          | 0                      | 134                 | 1,383          | 4,725                                  | 136                             | 4,416                           | 309                                          | 136                                   | 0                                     |
+|      15 | 0                          | 0                      | 10                  | 697            | 1,858                                  | 10                              | 1,807                           | 51                                           | 10                                    | 0                                     |
+|      16 | 0                          | 0                      | 0                   | 693            | 488                                    | 0                               | 488                             | 0                                            | 0                                     | 0                                     |
+|      17 | 0                          | 0                      | 0                   | 925            | 72                                     | 0                               | 72                              | 0                                            | 0                                     | 0                                     |
+|      18 | 0                          | 0                      | 0                   | 1,550          | 1                                      | 0                               | 1                               | 0                                            | 0                                     | 0                                     |
+|      19 | 0                          | 0                      | 0                   | 1,326          | 0                                      | 0                               | 0                               | 0                                            | 0                                     | 0                                     |
+|      20 | 0                          | 0                      | 0                   | 716            | 0                                      | 0                               | 0                               | 0                                            | 0                                     | 0                                     |
+|      21 | 0                          | 0                      | 0                   | 496            | 0                                      | 0                               | 0                               | 0                                            | 0                                     | 0                                     |
+|      22 | 0                          | 0                      | 0                   | 57             | 0                                      | 0                               | 0                               | 0                                            | 0                                     | 0                                     |
+|      23 | 0                          | 0                      | 0                   | 9              | 0                                      | 0                               | 0                               | 0                                            | 0                                     | 0                                     |
+|      24 | 0                          | 0                      | 0                   | 2              | 0                                      | 0                               | 0                               | 0                                            | 0                                     | 0                                     |
+|      25 | 0                          | 0                      | 0                   | 1              | 0                                      | 0                               | 0                               | 0                                            | 0                                     | 0                                     |
 
 
 
 ## % of classes (terms, groups, parts), by hierarchy
 ![% of classes (terms, groups, parts), by hierarchy](analyses/class-depth/plot-class-depth_by-hierarchy_terms-groups-parts_percentages.png)
 
-|   Depth |   LOINC - LOINC Categories |   LOINC - LOINC Groups |   LOINC - LoincPart |   LOINC-SNOMED |   CompLOINC-Primary - CompLOINC Groups |   CompLOINC-Primary - LoincPart |   CompLOINC-Primary - LoincTerm |   CompLOINC-Primary - SNOMED-Inspired |   CompLOINC-Supplementary - CompLOINC Groups |   CompLOINC-Supplementary - LoincPart |   CompLOINC-Supplementary - LoincTerm |   CompLOINC-Supplementary - SNOMED-Inspired |
-|---------|----------------------------|------------------------|---------------------|----------------|----------------------------------------|---------------------------------|---------------------------------|---------------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------|---------------------------------------------|
-|       1 |                     0.0027 |                 0.0027 |             0.00067 |         0.0041 |                                0.00011 |                         0.00029 |                         0.00013 |                               0.00038 |                                      0.00056 |                               0.00029 |                                0.001  |                                     0.00038 |
-|       2 |                     0.043  |                 0.12   |            20       |         0.041  |                                0.00033 |                         8.6     |                         0.00054 |                               0.16    |                                      0.0017  |                               8.6     |                                0.0041 |                                     0.16    |
-|       3 |                    19      |                19      |             2.5     |         0.27   |                                2.4     |                         1.1     |                         0.02    |                               0.17    |                                     13       |                               1.1     |                                0.15   |                                     0.17    |
-|       4 |                    81      |                81      |             5.6     |         1.6    |                               11       |                         2.8     |                        11       |                               0.91    |                                     12       |                               2.8     |                               48      |                                     0.91    |
-|       5 |                     0      |                 0      |             2.5     |         3.3    |                               12       |                         2.1     |                        12       |                               1.8     |                                     12       |                               2.1     |                               37      |                                     1.8     |
-|       6 |                     0      |                 0      |             7.7     |         6.7    |                               11       |                         5.9     |                        11       |                               4.6     |                                     12       |                               5.9     |                               11      |                                     4.6     |
-|       7 |                     0      |                 0      |            13       |         8.3    |                               11       |                         9.4     |                        11       |                               7.8     |                                     11       |                               9.4     |                                2.8    |                                     7.8     |
-|       8 |                     0      |                 0      |            17       |         7.9    |                               10       |                        10       |                        10       |                               9.7     |                                     11       |                              10       |                                1      |                                     9.7     |
-|       9 |                     0      |                 0      |            15       |         8.1    |                                9.1     |                         9.8     |                         9.2     |                              10       |                                      8.8     |                               9.8     |                                0.17   |                                    10       |
-|      10 |                     0      |                 0      |             8.6     |         9.3    |                                7.7     |                         8.5     |                         7.8     |                              10       |                                      6.8     |                               8.5     |                                0.012  |                                    10       |
-|      11 |                     0      |                 0      |             5.2     |        11      |                                6.5     |                         7.5     |                         6.9     |                               9.6     |                                      5.2     |                               7.5     |                                0.001  |                                     9.6     |
-|      12 |                     0      |                 0      |             2.4     |         8.9    |                                5.5     |                         6.4     |                         5.8     |                               8.4     |                                      3.8     |                               6.4     |                                0      |                                     8.4     |
-|      13 |                     0      |                 0      |             0.8     |         4.8    |                                4.6     |                         5.7     |                         5.1     |                               7.4     |                                      2.7     |                               5.7     |                                0      |                                     7.4     |
-|      14 |                     0      |                 0      |             0.09    |         5      |                                3.5     |                         4.8     |                         4       |                               6.2     |                                      1.6     |                               4.8     |                                0      |                                     6.2     |
-|      15 |                     0      |                 0      |             0.0067  |         2.5    |                                2.6     |                         4       |                         3       |                               5.2     |                                      0.82    |                               4       |                                0      |                                     5.2     |
-|      16 |                     0      |                 0      |             0       |         2.6    |                                1.7     |                         3.3     |                         2.1     |                               4.3     |                                      0.31    |                               3.3     |                                0      |                                     4.3     |
-|      17 |                     0      |                 0      |             0       |         3.6    |                                1       |                         2.7     |                         1.2     |                               3.5     |                                      0.097   |                               2.7     |                                0      |                                     3.5     |
-|      18 |                     0      |                 0      |             0       |         6.1    |                                0.43    |                         2.4     |                         0.52    |                               3.1     |                                      0.0085  |                               2.4     |                                0      |                                     3.1     |
-|      19 |                     0      |                 0      |             0       |         5.2    |                                0.15    |                         2       |                         0.19    |                               2.6     |                                      0.00056 |                               2       |                                0      |                                     2.6     |
-|      20 |                     0      |                 0      |             0       |         2.8    |                                0.031   |                         1.4     |                         0.038   |                               1.9     |                                      0       |                               1.4     |                                0      |                                     1.9     |
-|      21 |                     0      |                 0      |             0       |         2      |                                0.0037  |                         0.94    |                         0.0046  |                               1.2     |                                      0       |                               0.94    |                                0      |                                     1.2     |
-|      22 |                     0      |                 0      |             0       |         0.23   |                                0.00022 |                         0.37    |                         0.00027 |                               0.48    |                                      0       |                               0.37    |                                0      |                                     0.48    |
-|      23 |                     0      |                 0      |             0       |         0.037  |                                0       |                         0.034   |                         0       |                               0.045   |                                      0       |                               0.034   |                                0      |                                     0.045   |
-|      24 |                     0      |                 0      |             0       |         0.0081 |                                0       |                         0.0078  |                         0       |                               0.011   |                                      0       |                               0.0078  |                                0      |                                     0.011   |
-|      25 |                     0      |                 0      |             0       |         0.0041 |                                0       |                         0.0023  |                         0       |                               0.003   |                                      0       |                               0.0023  |                                0      |                                     0.003   |
+|   Depth |   LOINC - LOINC Categories |   LOINC - LOINC Groups |   LOINC - LoincPart |   LOINC-SNOMED |   CompLOINC-Primary - CompLOINC Groups |   CompLOINC-Primary - LoincPart |   CompLOINC-Primary - LoincTerm |   CompLOINC-Supplementary - CompLOINC Groups |   CompLOINC-Supplementary - LoincPart |   CompLOINC-Supplementary - LoincTerm |
+|---------|----------------------------|------------------------|---------------------|----------------|----------------------------------------|---------------------------------|---------------------------------|----------------------------------------------|---------------------------------------|---------------------------------------|
+|       1 |                     0.0027 |                 0.0027 |             0.00069 |         0.0014 |                                0.00014 |                         0.00065 |                         0.00018 |                                      0.00064 |                               0.00065 |                                0.001  |
+|       2 |                     0.043  |                 0.12   |            21       |         0.017  |                                0.00042 |                        20       |                         0.00073 |                                      0.0019  |                              20       |                                0.0042 |
+|       3 |                    19      |                19      |             4.5     |        16      |                                3.4     |                         4.2     |                         0.016   |                                     15       |                               4.2     |                                0.092  |
+|       4 |                    81      |                81      |             3.3     |        18      |                               14       |                         3.4     |                        15       |                                     14       |                               3.4     |                               56      |
+|       5 |                     0      |                 0      |             2.1     |        14      |                               15       |                         2.4     |                        15       |                                     13       |                               2.4     |                               35      |
+|       6 |                     0      |                 0      |             6.8     |        10      |                               14       |                         7.2     |                        14       |                                     13       |                               7.2     |                                7.8    |
+|       7 |                     0      |                 0      |            13       |         7.6    |                               13       |                        13       |                        13       |                                     13       |                              13       |                                0.98   |
+|       8 |                     0      |                 0      |            17       |         5      |                               12       |                        17       |                        12       |                                     12       |                              17       |                                0.14   |
+|       9 |                     0      |                 0      |            15       |         4.2    |                               10       |                        15       |                        11       |                                      8.7     |                              15       |                                0.0031 |
+|      10 |                     0      |                 0      |             8.8     |         4.1    |                                7.5     |                         9       |                         8.1     |                                      5.4     |                               9       |                                0      |
+|      11 |                     0      |                 0      |             5.3     |         4.2    |                                4.9     |                         5.5     |                         5.4     |                                      3       |                               5.5     |                                0      |
+|      12 |                     0      |                 0      |             2.5     |         3.4    |                                2.9     |                         2.6     |                         3.3     |                                      1.5     |                               2.6     |                                0      |
+|      13 |                     0      |                 0      |             0.83    |         1.9    |                                1.5     |                         0.8     |                         1.8     |                                      0.58    |                               0.8     |                                0      |
+|      14 |                     0      |                 0      |             0.093   |         2      |                                0.67    |                         0.088   |                         0.8     |                                      0.2     |                               0.088   |                                0      |
+|      15 |                     0      |                 0      |             0.0069  |         0.99   |                                0.26    |                         0.0065  |                         0.33    |                                      0.033   |                               0.0065  |                                0      |
+|      16 |                     0      |                 0      |             0       |         0.99   |                                0.069   |                         0       |                         0.088   |                                      0       |                               0       |                                0      |
+|      17 |                     0      |                 0      |             0       |         1.3    |                                0.01    |                         0       |                         0.013   |                                      0       |                               0       |                                0      |
+|      18 |                     0      |                 0      |             0       |         2.2    |                                0.00014 |                         0       |                         0.00018 |                                      0       |                               0       |                                0      |
+|      19 |                     0      |                 0      |             0       |         1.9    |                                0       |                         0       |                         0       |                                      0       |                               0       |                                0      |
+|      20 |                     0      |                 0      |             0       |         1      |                                0       |                         0       |                         0       |                                      0       |                               0       |                                0      |
+|      21 |                     0      |                 0      |             0       |         0.71   |                                0       |                         0       |                         0       |                                      0       |                               0       |                                0      |
+|      22 |                     0      |                 0      |             0       |         0.081  |                                0       |                         0       |                         0       |                                      0       |                               0       |                                0      |
+|      23 |                     0      |                 0      |             0       |         0.013  |                                0       |                         0       |                         0       |                                      0       |                               0       |                                0      |
+|      24 |                     0      |                 0      |             0       |         0.0028 |                                0       |                         0       |                         0       |                                      0       |                               0       |                                0      |
+|      25 |                     0      |                 0      |             0       |         0.0014 |                                0       |                         0       |                         0       |                                      0       |                               0       |                                0      |
 
 
 
@@ -716,87 +844,87 @@ that were caused by the previous filtration step.
 ### Counts
 | filter               | stage                 | metric         | CompLOINC-Primary   | CompLOINC-Supplementary   | LOINC   | LOINC-SNOMED   |
 |----------------------|-----------------------|----------------|---------------------|---------------------------|---------|----------------|
-| terms                | 1: raw_input          | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
-| terms                | 1: raw_input          | roots          | 938                 | 932                       | 62      | 1              |
-| terms                | 1: raw_input          | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
-| terms                | 2: post_new_groupings | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
-| terms                | 2: post_new_groupings | roots          | 938                 | 932                       | 62      | 1              |
-| terms                | 2: post_new_groupings | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
-| terms                | 3: post_filters       | classes        | 103,412             | 103,412                   | 30,327  | 7,963          |
-| terms                | 3: post_filters       | roots          | 71                  | 71                        | 30,327  | 1              |
-| terms                | 3: post_filters       | subclass pairs | 120,819             | 147,034                   | 0       | 11,376         |
-| terms                | 4: post_pruning       | classes        | 103,104             | 103,104                   | 0       | 7,963          |
-| terms                | 4: post_pruning       | roots          | 2                   | 2                         | 0       | 1              |
-| terms                | 4: post_pruning       | subclass pairs | 120,387             | 146,602                   | 0       | 11,376         |
-| terms, groups        | 1: raw_input          | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
-| terms, groups        | 1: raw_input          | roots          | 938                 | 932                       | 62      | 1              |
-| terms, groups        | 1: raw_input          | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
-| terms, groups        | 2: post_new_groupings | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
-| terms, groups        | 2: post_new_groupings | roots          | 4                   | 4                         | 3       | 1              |
-| terms, groups        | 2: post_new_groupings | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
-| terms, groups        | 3: post_filters       | classes        | 125,609             | 125,603                   | 37,558  | 7,963          |
-| terms, groups        | 3: post_filters       | roots          | 72                  | 72                        | 2       | 1              |
-| terms, groups        | 3: post_filters       | subclass pairs | 277,664             | 215,553                   | 56,877  | 11,376         |
-| terms, groups        | 4: post_pruning       | classes        | 125,301             | 125,295                   | 37,558  | 7,963          |
-| terms, groups        | 4: post_pruning       | roots          | 3                   | 3                         | 2       | 1              |
-| terms, groups        | 4: post_pruning       | subclass pairs | 277,232             | 215,121                   | 56,877  | 11,376         |
-| terms, groups, parts | 1: raw_input          | classes        | 241,791             | 241,785                   | 153,742 | 7,963          |
-| terms, groups, parts | 1: raw_input          | roots          | 938                 | 932                       | 62      | 1              |
-| terms, groups, parts | 1: raw_input          | subclass pairs | 422,349             | 360,244                   | 177,265 | 11,376         |
-| terms, groups, parts | 2: post_new_groupings | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
-| terms, groups, parts | 2: post_new_groupings | roots          | 4                   | 4                         | 3       | 1              |
-| terms, groups, parts | 2: post_new_groupings | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
-| terms, groups, parts | 3: post_filters       | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
-| terms, groups, parts | 3: post_filters       | roots          | 4                   | 4                         | 3       | 1              |
-| terms, groups, parts | 3: post_filters       | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
-| terms, groups, parts | 4: post_pruning       | classes        | 241,795             | 241,789                   | 153,744 | 7,963          |
-| terms, groups, parts | 4: post_pruning       | roots          | 4                   | 4                         | 3       | 1              |
-| terms, groups, parts | 4: post_pruning       | subclass pairs | 444,545             | 382,434                   | 177,326 | 11,376         |
+| terms                | 1: raw_input          | classes        | 241,649             | 241,643                   | 153,742 | 47,135         |
+| terms                | 1: raw_input          | roots          | 1,831               | 1,825                     | 62      | 1              |
+| terms                | 1: raw_input          | subclass pairs | 381,394             | 496,152                   | 176,233 | 58,681         |
+| terms                | 2: post_new_groupings | classes        | 241,649             | 241,643                   | 153,742 | 47,135         |
+| terms                | 2: post_new_groupings | roots          | 1,831               | 1,825                     | 62      | 1              |
+| terms                | 2: post_new_groupings | subclass pairs | 381,394             | 496,152                   | 176,233 | 58,681         |
+| terms                | 3: post_filters       | classes        | 101,330             | 101,330                   | 30,327  | 47,135         |
+| terms                | 3: post_filters       | roots          | 4,281               | 4,281                     | 30,327  | 1              |
+| terms                | 3: post_filters       | subclass pairs | 102,028             | 299,321                   | 0       | 58,681         |
+| terms                | 4: post_pruning       | classes        | 95,441              | 95,441                    | 0       | 47,135         |
+| terms                | 4: post_pruning       | roots          | 1                   | 1                         | 0       | 1              |
+| terms                | 4: post_pruning       | subclass pairs | 100,360             | 297,653                   | 0       | 58,681         |
+| terms, groups        | 1: raw_input          | classes        | 241,649             | 241,643                   | 153,742 | 47,135         |
+| terms, groups        | 1: raw_input          | roots          | 1,831               | 1,825                     | 62      | 1              |
+| terms, groups        | 1: raw_input          | subclass pairs | 381,394             | 496,152                   | 176,233 | 58,681         |
+| terms, groups        | 2: post_new_groupings | classes        | 241,653             | 241,647                   | 153,744 | 47,135         |
+| terms, groups        | 2: post_new_groupings | roots          | 3                   | 3                         | 3       | 1              |
+| terms, groups        | 2: post_new_groupings | subclass pairs | 405,530             | 520,282                   | 176,294 | 58,681         |
+| terms, groups        | 3: post_filters       | classes        | 125,467             | 125,461                   | 37,558  | 47,135         |
+| terms, groups        | 3: post_filters       | roots          | 4,282               | 4,282                     | 2       | 1              |
+| terms, groups        | 3: post_filters       | subclass pairs | 252,662             | 367,414                   | 56,877  | 58,681         |
+| terms, groups        | 4: post_pruning       | classes        | 119,578             | 119,572                   | 37,558  | 47,135         |
+| terms, groups        | 4: post_pruning       | roots          | 2                   | 2                         | 2       | 1              |
+| terms, groups        | 4: post_pruning       | subclass pairs | 250,994             | 365,746                   | 56,877  | 58,681         |
+| terms, groups, parts | 1: raw_input          | classes        | 241,649             | 241,643                   | 153,742 | 47,135         |
+| terms, groups, parts | 1: raw_input          | roots          | 1,831               | 1,825                     | 62      | 1              |
+| terms, groups, parts | 1: raw_input          | subclass pairs | 381,394             | 496,152                   | 176,233 | 58,681         |
+| terms, groups, parts | 2: post_new_groupings | classes        | 241,653             | 241,647                   | 153,744 | 47,135         |
+| terms, groups, parts | 2: post_new_groupings | roots          | 3                   | 3                         | 3       | 1              |
+| terms, groups, parts | 2: post_new_groupings | subclass pairs | 405,530             | 520,282                   | 176,294 | 58,681         |
+| terms, groups, parts | 3: post_filters       | classes        | 241,653             | 241,647                   | 153,744 | 47,135         |
+| terms, groups, parts | 3: post_filters       | roots          | 3                   | 3                         | 3       | 1              |
+| terms, groups, parts | 3: post_filters       | subclass pairs | 405,530             | 520,282                   | 176,294 | 58,681         |
+| terms, groups, parts | 4: post_pruning       | classes        | 241,653             | 241,647                   | 153,744 | 47,135         |
+| terms, groups, parts | 4: post_pruning       | roots          | 3                   | 3                         | 3       | 1              |
+| terms, groups, parts | 4: post_pruning       | subclass pairs | 405,530             | 520,282                   | 176,294 | 58,681         |
 
 ### Percentages
 | filter               | stage                 | metric         |   CompLOINC-Primary |   CompLOINC-Supplementary |    LOINC |   LOINC-SNOMED |
 |----------------------|-----------------------|----------------|---------------------|---------------------------|----------|----------------|
-| terms                | 1: raw_input          | classes        |             100     |                   100     |   100    |            100 |
-| terms                | 1: raw_input          | roots          |             100     |                   100     |   100    |            100 |
-| terms                | 1: raw_input          | subclass pairs |             100     |                   100     |   100    |            100 |
-| terms                | 2: post_new_groupings | classes        |             100     |                   100     |   100    |            100 |
-| terms                | 2: post_new_groupings | roots          |             100     |                   100     |   100    |            100 |
-| terms                | 2: post_new_groupings | subclass pairs |             100     |                   100     |   100    |            100 |
-| terms                | 3: post_filters       | classes        |              42.8   |                    42.8   |    19.7  |            100 |
-| terms                | 3: post_filters       | roots          |               7.57  |                     7.62  | 48900    |            100 |
-| terms                | 3: post_filters       | subclass pairs |              28.6   |                    40.8   |     0    |            100 |
-| terms                | 4: post_pruning       | classes        |              42.6   |                    42.6   |     0    |            100 |
-| terms                | 4: post_pruning       | roots          |               0.213 |                     0.215 |     0    |            100 |
-| terms                | 4: post_pruning       | subclass pairs |              28.5   |                    40.7   |     0    |            100 |
-| terms, groups        | 1: raw_input          | classes        |             100     |                   100     |   100    |            100 |
-| terms, groups        | 1: raw_input          | roots          |             100     |                   100     |   100    |            100 |
-| terms, groups        | 1: raw_input          | subclass pairs |             100     |                   100     |   100    |            100 |
-| terms, groups        | 2: post_new_groupings | classes        |             100     |                   100     |   100    |            100 |
-| terms, groups        | 2: post_new_groupings | roots          |               0.426 |                     0.429 |     4.84 |            100 |
-| terms, groups        | 2: post_new_groupings | subclass pairs |             105     |                   106     |   100    |            100 |
-| terms, groups        | 3: post_filters       | classes        |              51.9   |                    51.9   |    24.4  |            100 |
-| terms, groups        | 3: post_filters       | roots          |               7.68  |                     7.73  |     3.23 |            100 |
-| terms, groups        | 3: post_filters       | subclass pairs |              65.7   |                    59.8   |    32.1  |            100 |
-| terms, groups        | 4: post_pruning       | classes        |              51.8   |                    51.8   |    24.4  |            100 |
-| terms, groups        | 4: post_pruning       | roots          |               0.32  |                     0.322 |     3.23 |            100 |
-| terms, groups        | 4: post_pruning       | subclass pairs |              65.6   |                    59.7   |    32.1  |            100 |
-| terms, groups, parts | 1: raw_input          | classes        |             100     |                   100     |   100    |            100 |
-| terms, groups, parts | 1: raw_input          | roots          |             100     |                   100     |   100    |            100 |
-| terms, groups, parts | 1: raw_input          | subclass pairs |             100     |                   100     |   100    |            100 |
-| terms, groups, parts | 2: post_new_groupings | classes        |             100     |                   100     |   100    |            100 |
-| terms, groups, parts | 2: post_new_groupings | roots          |               0.426 |                     0.429 |     4.84 |            100 |
-| terms, groups, parts | 2: post_new_groupings | subclass pairs |             105     |                   106     |   100    |            100 |
-| terms, groups, parts | 3: post_filters       | classes        |             100     |                   100     |   100    |            100 |
-| terms, groups, parts | 3: post_filters       | roots          |               0.426 |                     0.429 |     4.84 |            100 |
-| terms, groups, parts | 3: post_filters       | subclass pairs |             105     |                   106     |   100    |            100 |
-| terms, groups, parts | 4: post_pruning       | classes        |             100     |                   100     |   100    |            100 |
-| terms, groups, parts | 4: post_pruning       | roots          |               0.426 |                     0.429 |     4.84 |            100 |
-| terms, groups, parts | 4: post_pruning       | subclass pairs |             105     |                   106     |   100    |            100 |
+| terms                | 1: raw_input          | classes        |            100      |                  100      |   100    |            100 |
+| terms                | 1: raw_input          | roots          |            100      |                  100      |   100    |            100 |
+| terms                | 1: raw_input          | subclass pairs |            100      |                  100      |   100    |            100 |
+| terms                | 2: post_new_groupings | classes        |            100      |                  100      |   100    |            100 |
+| terms                | 2: post_new_groupings | roots          |            100      |                  100      |   100    |            100 |
+| terms                | 2: post_new_groupings | subclass pairs |            100      |                  100      |   100    |            100 |
+| terms                | 3: post_filters       | classes        |             41.9    |                   41.9    |    19.7  |            100 |
+| terms                | 3: post_filters       | roots          |            234      |                  235      | 48900    |            100 |
+| terms                | 3: post_filters       | subclass pairs |             26.8    |                   60.3    |     0    |            100 |
+| terms                | 4: post_pruning       | classes        |             39.5    |                   39.5    |     0    |            100 |
+| terms                | 4: post_pruning       | roots          |              0.0546 |                    0.0548 |     0    |            100 |
+| terms                | 4: post_pruning       | subclass pairs |             26.3    |                   60      |     0    |            100 |
+| terms, groups        | 1: raw_input          | classes        |            100      |                  100      |   100    |            100 |
+| terms, groups        | 1: raw_input          | roots          |            100      |                  100      |   100    |            100 |
+| terms, groups        | 1: raw_input          | subclass pairs |            100      |                  100      |   100    |            100 |
+| terms, groups        | 2: post_new_groupings | classes        |            100      |                  100      |   100    |            100 |
+| terms, groups        | 2: post_new_groupings | roots          |              0.164  |                    0.164  |     4.84 |            100 |
+| terms, groups        | 2: post_new_groupings | subclass pairs |            106      |                  105      |   100    |            100 |
+| terms, groups        | 3: post_filters       | classes        |             51.9    |                   51.9    |    24.4  |            100 |
+| terms, groups        | 3: post_filters       | roots          |            234      |                  235      |     3.23 |            100 |
+| terms, groups        | 3: post_filters       | subclass pairs |             66.2    |                   74.1    |    32.3  |            100 |
+| terms, groups        | 4: post_pruning       | classes        |             49.5    |                   49.5    |    24.4  |            100 |
+| terms, groups        | 4: post_pruning       | roots          |              0.109  |                    0.11   |     3.23 |            100 |
+| terms, groups        | 4: post_pruning       | subclass pairs |             65.8    |                   73.7    |    32.3  |            100 |
+| terms, groups, parts | 1: raw_input          | classes        |            100      |                  100      |   100    |            100 |
+| terms, groups, parts | 1: raw_input          | roots          |            100      |                  100      |   100    |            100 |
+| terms, groups, parts | 1: raw_input          | subclass pairs |            100      |                  100      |   100    |            100 |
+| terms, groups, parts | 2: post_new_groupings | classes        |            100      |                  100      |   100    |            100 |
+| terms, groups, parts | 2: post_new_groupings | roots          |              0.164  |                    0.164  |     4.84 |            100 |
+| terms, groups, parts | 2: post_new_groupings | subclass pairs |            106      |                  105      |   100    |            100 |
+| terms, groups, parts | 3: post_filters       | classes        |            100      |                  100      |   100    |            100 |
+| terms, groups, parts | 3: post_filters       | roots          |              0.164  |                    0.164  |     4.84 |            100 |
+| terms, groups, parts | 3: post_filters       | subclass pairs |            106      |                  105      |   100    |            100 |
+| terms, groups, parts | 4: post_pruning       | classes        |            100      |                  100      |   100    |            100 |
+| terms, groups, parts | 4: post_pruning       | roots          |              0.164  |                    0.164  |     4.84 |            100 |
+| terms, groups, parts | 4: post_pruning       | subclass pairs |            106      |                  105      |   100    |            100 |
 # Additional statistics
 ## Expressivity
 | Metric | Value |
 | ------ | ----- |
-| Expressivity | ALEH |
+| Expressivity | CINTEH |
 | OWL2 | True |
 | OWL2 DL | True |
 | OWL2 EL | True |
@@ -806,7 +934,7 @@ that were caused by the previous filtration step.
 ## Class expressions used
 | Metric | Value |
 | ------ | ----- |
-| Class | 1934078 |
-| ObjectSomeValuesFrom | 933920 |
-| ObjectIntersectionOf | 113078 |
+| Class | 2181183 |
+| ObjectSomeValuesFrom | 905585 |
+| ObjectIntersectionOf | 114230 |
 

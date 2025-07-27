@@ -109,6 +109,8 @@ If following the setup exactly, this configuration will not need to be modified.
 
 ## Outputs
 ### Modules:
+These are core files that are generated from the CompLOINC primary build. These are used to create the canonical version
+of CompLOINC as well as any other flavors.
 - `group_components_systems.owl`
 - `group_components.owl`
 - `group_systems.owl`
@@ -120,9 +122,21 @@ If following the setup exactly, this configuration will not need to be modified.
 - `loinc-terms-list-all.owl`
 - `snomed-parts.owl`
 
-### Merged & reasoned:
-There are a number if different ways in which these modules are merged in our analytical pipeline. See: [more](owl-files/comploinc-default/README.md)
+### Flavors
+The build pipeline generates 6 different "flavors", along the axes "sources included" (LOINC only, SNOMED-LOINC, and 
+'all'), and "part model" (primary, supplementary).
 
+Example "flavor file":  
+`output/build-default/merged-and-reasoned/indirect-sc-axioms-included/comploinc-merged-reasoned-all-supplementary.owl`
+
+### Merged & reasoned:
+There are a number if different ways in which these modules are merged in our analytical pipeline. See: 
+[more](owl-files/comploinc-default/README.md)
+
+There is also a variation of reasoned files with indirect subclass axioms included.
+
+### Source representations
+The analysis pipelines also generate OWL representations of LOINC-SNOMED Ontology and LOINC.
 
 ## Troubleshooting
 If there are errors related to `torch` while running CompLOINC or `nlp_taxonomification.py` specifically, try changing 

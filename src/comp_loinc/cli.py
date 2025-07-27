@@ -12,8 +12,8 @@ from comp_loinc.loinc_builder_steps import LoincBuilderSteps
 from comp_loinc.snomed_builder_steps import SnomedBuilderSteps
 from loinclib import Configuration
 
-LOINC_RELEASE_DIR_NAME = "loinc_release"
-LOINC_TREES_DIR_NAME = "loinc_trees"
+LOINC_RELEASE_DIR_NAME = "sources/loinc"
+LOINC_TREES_DIR_NAME = "sources/loinc_trees"
 COMPLOINC_OUT_DIR_NAME = "comploinc_out"
 logger = logging.getLogger("cl-cli")
 

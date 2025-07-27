@@ -19,11 +19,11 @@ from matplotlib import pyplot as plt, colormaps
 from matplotlib.colors import to_hex
 
 from comp_loinc.analysis.utils import (
+    CL_GROUP_URI_PREFIX_SANS_FINAL_SLASH,
     CLASS_TYPES,
-    CL_GROUPING_CLASS_URI_STEMS,
     _disaggregate_classes_from_class_list,
     _get_parent_child_lookups,
-    bundle_inpaths_and_update_abs_paths,
+    bundle_inpaths_and_update_abs_paths_no_source_flavors,
     cli_add_inpath_args,
     _filter_classes,
     _subclass_axioms_and_totals,
@@ -37,8 +37,8 @@ DEFAULTS = {
     # CLI args
     "loinc-path": "output/tmp/subclass-rels-loinc.tsv",
     "loinc-snomed-path": "output/tmp/subclass-rels-loinc-snomed.tsv",
-    "comploinc-primary-path": "output/tmp/subclass-rels-comploinc-primary.tsv",
-    "comploinc-supplementary-path": "output/tmp/subclass-rels-comploinc-supplementary.tsv",
+    "comploinc-primary-path": "output/tmp/subclass-rels-comploinc-all-primary.tsv",
+    "comploinc-supplementary-path": "output/tmp/subclass-rels-comploinc-all-supplementary.tsv",
     "labels-path": "output/tmp/labels-all-terminologies.tsv",
     "outpath-md": "documentation/analyses/class-depth/depth.md",
     "outdir-plots": "documentation/analyses/class-depth",
@@ -72,7 +72,7 @@ CompLOINC and LOINC have more than 1 top-level branches (AKA subhierarchies or s
 |-------------|------------------|---------------------------------|
 | CompLOINC   | SNOMED-Inspired  | https://loinc.org/138875005     |
 | CompLOINC   | LoincTerm        | https://loinc.org/LoincTerm     |
-| CompLOINC   | CompLOINC Groups | http://comploinc/group          |
+| CompLOINC   | CompLOINC Groups | https://comploinc/group          |
 | CompLOINC   | LoincPart        | https://loinc.org/LoincPart     |
 | LOINC       | LOINC Categories | https://loinc.org/LoincCategory |
 | LOINC       | LOINC Groups     | https://loinc.org/LoincGroup    |
@@ -93,8 +93,8 @@ labels. They are parents only of groups, not terms. From https://loinc.org/group
 identifies the general purpose of the group, such as "Flowsheet", "Reportable microbiology" or "Document ontology 
 grouped by role and subject matter domain".'
 - *CompLOINC Groups*: CompLOINC has a novel grouping class hierarchy. It does not utilize LOINC groups or categories in 
-the LOINC release. The top level class is "http://comploinc/group", followed by a major group branch for each "property 
-axis" (that is, a single part property or combination thereof), e.g. "http://comploinc/group/component/". Then, groups 
+the LOINC release. The top level class is "https://comploinc/group", followed by a major group branch for each "property 
+axis" (that is, a single part property or combination thereof), e.g. "https://comploinc/group/component/". Then, groups 
 which are defined via these properties descend from there. 
 
 **Two sets of outputs**  
@@ -152,15 +152,15 @@ removed.
 This particular analysis makes small modifications to the CompLOINC representation with respect to groups. In the 
 CompLOINC .owl artefacts, there are many top-level grouping classes at the root of the ontology. These top level 
 grouping classes come in various sets, one for each LOINC property or combination of properties used to construct the 
-groups. For example, the grouping class http://comploinc/group/component/LP16066-0 falls under the "component" property 
-axis, while the grouping class http://comploinc/group/component-system/LP7795-0-LP310005-6 falls under the 
+groups. For example, the grouping class https://comploinc/group/component/LP16066-0 falls under the "component" property 
+axis, while the grouping class https://comploinc/group/component-system/LP7795-0-LP310005-6 falls under the 
 "component+system" property (combination) axis. If these parts for these properties have no parents, then these grouping
 classes will reside at the root of CompLOINC. However, for these classification depth analyses, we are comparing against 
 other subtrees that have a single root, e.g. LoincPart or LoincTerm. Therefore, for the depths to be consistent along 
 class types (terms, parts, groups), we have included "master grouping classes" just for this analysis. The top level for
-all grouping classes is http://comploinc/group/ ("GRP"), and the children of this class are all of the roots of each 
-property axis, e.g. http://comploinc/group/component/ ("GRP_CMP"), http://comploinc/group/component-system/ ("GRP_SYS"),
-and so on.
+all grouping classes is https://comploinc/group/ ("GRP"), and the children of this class are all of the roots of each 
+property axis, e.g. https://comploinc/group/component/ ("GRP_CMP"),
+https://comploinc/group/component-system/ ("GRP_SYS"), and so on.
 
 ## LOINC representation
 LOINC itself does not have an `.owl` representation, but for this analysis we constructed one. The following are some 
@@ -229,8 +229,9 @@ ROOT_URI_LABEL_MAP = {
     "<https://loinc.org/LoincTerm>": "LoincTerm",
     "<https://loinc.org/LoincCategory>": "LOINC Categories",
     "<https://loinc.org/LoincGroup>": "LOINC Groups",
-    "<http://comploinc/group>": "CompLOINC Groups",
+    "<https://comploinc/group>": "CompLOINC Groups",
     "<https://loinc.org/LoincPart>": "LoincPart",
+    "<https://comploinc/LoincPart>": "LoincPart",
 }
 
 
@@ -588,11 +589,11 @@ def _add_synthetic_transient_groups_comploinc(
     Eventually we may do this in core CompLOINC, by adding these as actual classes. If so, we should remove this code,
     or easily deactivate it by setting the flag to false.
     E.g. "CMP_SYS" (component-system)
-    Examples: http://comploinc//group/component-system/LP7795-0-LP310005-6 http://comploinc//group/component/LP16066-0
+    Examples: https://comploinc/group/component-system/LP7795-0-LP310005-6 http://comploinc/group/component/LP16066-0
     """
     child_parents: Dict[str, Set[str]]
     parent_children: Dict[str, Set[str]]
-    master_group_uri = "http://comploinc/group"
+    master_group_uri = CL_GROUP_URI_PREFIX_SANS_FINAL_SLASH
     master_group_uri = (
         f"<{master_group_uri}>" if includes_angle_brackets else master_group_uri
     )
@@ -610,8 +611,8 @@ def _add_synthetic_transient_groups_comploinc(
         grouping_classes_by_prop[property_axis].append(uri)
     prop_axis_uris: List[str] = []
     for prop_axis, uris in grouping_classes_by_prop.items():
-        # prop_axis_uri: e.g. http://comploinc/group/component-system
-        prop_axis_uri = CL_GROUPING_CLASS_URI_STEMS[1] + "/" + prop_axis
+        # prop_axis_uri: e.g. https://comploinc/group/component-system
+        prop_axis_uri = CL_GROUP_URI_PREFIX_SANS_FINAL_SLASH + "/" + prop_axis
         prop_axis_uri = (
             f"<{prop_axis_uri}>" if includes_angle_brackets else prop_axis_uri
         )
@@ -747,7 +748,7 @@ def _save_plot(
     todo: For 'by hierarchy' change plot & lagend to be "TERMINOLOGY: SUBTREE" rather than "TERMINOLOGY - SUBTREE"
     """
     if stat not in ("totals", "percentages"):
-        raise ValueError(f'`stat` arg must be either "totals" or "percentages".')
+        raise ValueError('`stat` arg must be either "totals" or "percentages".')
     # logger.debug("Saving plot for stat %s with filter %s", stat, _filter)
     # Labels and paths
     class_types_str = f'{", ".join(_filter)}'
@@ -1020,7 +1021,7 @@ def analyze_class_depth(
         outdir_plots,
         labels_path,
         outpath_counts_tsv,
-    ) = bundle_inpaths_and_update_abs_paths(
+    ) = bundle_inpaths_and_update_abs_paths_no_source_flavors(
         # Inpaths to bundle into `terminologies`
         loinc_path,
         loinc_snomed_path,
@@ -1039,7 +1040,7 @@ def analyze_class_depth(
 
     # Get sets of axioms by ontology and grand total and by ontology set
     ont_sets: Dict[str, Set[Tuple[str, str]]]
-    tots_df, ont_sets = _subclass_axioms_and_totals(terminologies)
+    ont_sets, lens_by_ont = _subclass_axioms_and_totals(terminologies)
     # logger.debug("Loaded subclass axioms for %d ontologies", len(ont_sets))
 
     # Derive depths & save

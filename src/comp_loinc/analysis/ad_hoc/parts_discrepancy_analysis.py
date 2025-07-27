@@ -10,12 +10,13 @@ from typing import Set, Tuple
 import pandas as pd
 
 PROJ_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
-LOINC_RELEASE_DIR = PROJ_DIR / 'loinc_release' / 'Loinc_2.80'
+# todo: get from the config
+LOINC_RELEASE_DIR = PROJ_DIR / 'sources' / 'loinc' / 'Loinc_2.80'
 PART_DIR = LOINC_RELEASE_DIR / 'AccessoryFiles' / 'PartFile'
 IN_PARTS_RELEASE = PART_DIR / 'Part.csv'
 LINKS_PRIMARY_PATH = PART_DIR / 'LoincPartLink_Primary.csv'
 LINKS_SUPPL_PATH = PART_DIR / 'LoincPartLink_Supplementary.csv'
-TREE_DIR_PATH = PROJ_DIR / 'loinc_trees' / '2.80'
+TREE_DIR_PATH = PROJ_DIR / 'sources' / 'loinc_trees' / '2.80'
 CL_QUERIED_PATH = PROJ_DIR / 'output' / 'tmp' / 'cl-parts.tsv'
 # DANGLING_PATH = PROJ_DIR / 'curation' / 'nlp-matches.sssom.tsv'  # issues with non-matches removing IDs
 DANGLING_PATH = PROJ_DIR / 'output' / 'analysis' / 'dangling' / 'dangling.tsv'

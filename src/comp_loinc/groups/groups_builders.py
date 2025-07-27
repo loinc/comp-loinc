@@ -76,7 +76,7 @@ class Grouper:
         # print("debug")
 
     def _build_path(self, _property: Property, path: list[Property]):
-        print("in _build_path")
+        # print("in _build_path")
         if _property in path:
             self.process_path(path)
             return
