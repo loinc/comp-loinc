@@ -16,8 +16,9 @@ import networkx as nx
 # TAGS_KEY = '__TAGS__'
 
 
-class SchemaKeys(StrEnum):
-  TYPE_KEY = "type"
+class ElementKeys(StrEnum):
+  TYPE_KEY = "_type"
+  SOURCES_KEY = "_sources"
 
 
 class Schema:
@@ -147,7 +148,12 @@ class Schema:
 @dataclass(kw_only=True)
 class TypeArgs:
   name: str
+  abbr: t.Optional[str] = None
+  path: t.Optional[str] = None
 
+  def __post_init__(self):
+    if self.abbr is None:
+      self.abbr = self.name
 
 class Type(Enum):
   pass
@@ -309,16 +315,22 @@ class NodeHandler(PropertyOwnerHandler):
     node_id = self.get_id_from_code(code)
     return self.get_node_by_id(node_id)
 
-  def getsert_node_by_code(self, code: str) -> Node:
+  def getsert_node_by_code(self, code: str, source: str = None) -> Node:
     node = self.get_node_by_code(code)
-    if node:
-      return node
-    node_id = self.get_id_from_code(code)
-    graph = self.schema.graph.nx_graph
-    graph.add_node(node_id)
-    data = graph.nodes[node_id]
-    data[SchemaKeys.TYPE_KEY] = self.type_
-    node = Node(node_id=node_id, node_handler=self, properties=data)
+    if node is None:
+      graph = self.schema.graph.nx_graph
+      node_id = self.get_id_from_code(code)
+      graph.add_node(node_id)
+      data = graph.nodes[node_id]
+      data[ElementKeys.TYPE_KEY] = self.type_
+      node = Node(node_id=node_id, node_handler=self, properties=data)
+
+    if source is not None:
+      sources = node.get_property(ElementProps.sources)
+      if sources is None:
+        sources = set()
+        node.set_property(type_=ElementProps.sources, value=sources)
+      sources.add(source)
     return node
 
   def get_id_from_code(self, code: str) -> str:
@@ -342,27 +354,27 @@ class NodeHandler(PropertyOwnerHandler):
     to_edge_handlers[edge_handler.to_node_handler.type_] = edge_handler
 
   def get_out_edge_handler(
-      self, type_: EdgeType, to_node_type: NodeHandler
+      self, type_: EdgeType, to_node_handler: NodeHandler
   ) -> t.Optional[EdgeHandler]:
-    to_edge_types = self.out_edge_handlers.get(type_, {})
-    edge_type: EdgeHandler = to_edge_types.get(to_node_type.type_, None)
-    if edge_type:
-      return edge_type
+    to_edge_handlers_by_type = self.out_edge_handlers.get(type_, {})
+    edge_handler: EdgeHandler = to_edge_handlers_by_type.get(to_node_handler.type_, None)
+    if edge_handler:
+      return edge_handler
 
     if self.strict:
       raise ValueError(
-          f"Unknown edge type: {type_} to node type: {to_node_type.type_}"
+          f"Unknown edge type: {type_} to node type: {to_node_handler.type_}"
       )
 
-    edge_type = self.schema.create_edge_handler(
+    edge_handler = self.schema.create_edge_handler(
         type_=type_,
         from_node_handler=self,
-        to_node_handler=to_node_type,
+        to_node_handler=to_node_handler,
         strict=self.strict,
         dynamic=True,
     )
-    to_edge_types[to_node_type.type_] = edge_type
-    return edge_type
+    to_edge_handlers_by_type[to_node_handler.type_] = edge_handler
+    return edge_handler
 
   def get_all_out_edges(
       self, node_id
@@ -405,7 +417,7 @@ class EdgeHandler(PropertyOwnerHandler):
     for from_id, to_id, key, data in self.schema.graph.nx_graph.out_edges(
         nbunch=from_node_id, data=True, keys=True
     ):
-      if data[SchemaKeys.TYPE_KEY] == self.type_ and to_id == to_node_id:
+      if data[ElementKeys.TYPE_KEY] == self.type_ and to_id == to_node_id:
         edges.append(key)
 
     length = len(edges)
@@ -422,25 +434,25 @@ class EdgeHandler(PropertyOwnerHandler):
   def add_edge_single(
       self, from_node_id: str, to_node_id: str, error_if_duplicate=False
   ) -> int:
-    current_key = self.get_edge_single(
+    edge_key = self.get_edge_single(
         from_node_id=from_node_id, to_node_id=to_node_id
     )
     nx_graph = self.schema.nx_graph
-    if current_key is not None and error_if_duplicate:
-      data = nx_graph.out_edges[from_node_id, to_node_id, current_key]
+    if edge_key is not None and error_if_duplicate:
+      data = nx_graph.out_edges[from_node_id, to_node_id, edge_key]
       raise ValueError(
-          f"Duplicate edge type: {self.type_} from node id: {from_node_id} to node id: {to_node_id} with key: {current_key} and data: {data}"
+          f"Duplicate edge type: {self.type_} from node id: {from_node_id} to node id: {to_node_id} with key: {edge_key} and data: {data}"
       )
 
-    if current_key is not None:
-      return current_key
+    if edge_key is not None:
+      return edge_key
 
-    current_key = self.schema.graph.nx_graph.add_edge(
+    edge_key = self.schema.graph.nx_graph.add_edge(
         u_for_edge=from_node_id, v_for_edge=to_node_id
     )
-    data = nx_graph.out_edges[from_node_id, to_node_id, current_key]
-    data[SchemaKeys.TYPE_KEY] = self.type_
-    return current_key
+    data = nx_graph.out_edges[from_node_id, to_node_id, edge_key]
+    data[ElementKeys.TYPE_KEY] = self.type_
+    return edge_key
 
 
 class PropertyHandler(Handler):
@@ -467,7 +479,7 @@ class PropertyHandler(Handler):
 
   def get_value(self, element: Node | Edge) -> t.Any:
     properties = element.get_properties()
-    return properties.get(self.type_.name)
+    return properties.get(self.type_.name, None)
 
   def set_value(self, element: Node | Edge, value: t.Any) -> None:
     if value is None:
@@ -497,13 +509,14 @@ class LoinclibGraph:
   def get_node_by_id(self, *, node_id: str) -> t.Optional[Node]:
     node_data = self.nx_graph.nodes.get(node_id)
     if node_data:
-      type_ = node_data[SchemaKeys.TYPE_KEY]
+      type_ = node_data[ElementKeys.TYPE_KEY]
       node_handler = self.schema.get_node_handler(type_)
       return Node(node_id=node_id, node_handler=node_handler, properties=node_data)
+    return None
 
   def get_nodes(self, type_: NodeType) -> t.Iterator[Node]:
     for node, node_data in self.nx_graph.nodes.items():
-      node_type = node_data.get(SchemaKeys.TYPE_KEY, None)
+      node_type = node_data.get(ElementKeys.TYPE_KEY, None)
       if type_ is node_type:
         yield Node(
             node_id=node,
@@ -511,8 +524,8 @@ class LoinclibGraph:
             properties=node_data,
         )
 
-  def getsert_node(self, type_: NodeType, code: str) -> Node:
-    return self.schema.get_node_handler(type_).getsert_node_by_code(code=code)
+  def getsert_node(self, type_: NodeType, code: str, source: str = None) -> Node:
+    return self.schema.get_node_handler(type_).getsert_node_by_code(code=code, source=source)
 
   def pickle(self, path: Path = None):
 
@@ -527,6 +540,20 @@ class LoinclibGraph:
     else:
       with open(path, "wb") as f:
         pickle.dump(self.nx_graph, f)
+
+@dataclass(kw_only=True)
+class ElementSourceArgs:
+  name: str
+  abbr: t.Optional[str] = None
+
+  def __post_init__(self):
+    if self.abbr is None:
+      self.abbr = self.name
+
+
+class ElementProps(PropertyType):
+  type = PropertyTypeArgs(name="_type")
+  sources = PropertyTypeArgs(name="_sources")
 
 
 # todo: make abstract
@@ -556,21 +583,29 @@ class Node(Element):
     return self.node_handler.get_properties(self.node_id)
 
   def add_edge_single(
-      self, type_: EdgeType, to_node: Node, error_if_duplicate: bool = False
+      self, type_: EdgeType, to_node: Node, error_if_duplicate: bool = False, source: str = None
   ) -> Edge:
-    edge_type = self.node_handler.get_out_edge_handler(
-        type_=type_, to_node_type=to_node.node_handler
+    edge_handler = self.node_handler.get_out_edge_handler(
+        type_=type_, to_node_handler=to_node.node_handler
     )
-    key = edge_type.add_edge_single(
+    key = edge_handler.add_edge_single(
         from_node_id=self.node_id,
         to_node_id=to_node.node_id,
         error_if_duplicate=error_if_duplicate,
     )
-    return Edge(from_node=self, to_node=to_node, edge_key=key, edge_handler=edge_type)
+    edge = Edge(from_node=self, to_node=to_node, edge_key=key, edge_handler=edge_handler)
+    if source is not None:
+      sources: set = edge.get_property(ElementProps.sources)
+      if sources is None:
+        sources = set()
+        edge.set_property(type_=ElementProps.sources, value=sources)
+      sources.add(source)
+
+    return edge
 
   def get_edge_single(self, type_: EdgeType, to_node: Node) -> t.Optional[Edge]:
     edge_type = self.node_handler.get_out_edge_handler(
-        type_=type_, to_node_type=to_node.node_handler
+        type_=type_, to_node_handler=to_node.node_handler
     )
     key = edge_type.get_edge_single(
         from_node_id=self.node_id, to_node_id=to_node.node_id
@@ -589,7 +624,7 @@ class Node(Element):
       from_node = self.graph.get_node_by_id(node_id=from_id)
       to_node = self.graph.get_node_by_id(node_id=to_id)
       edge_type = self.node_handler.get_out_edge_handler(
-          type_=data[SchemaKeys.TYPE_KEY], to_node_type=to_node.node_handler
+          type_=data[ElementKeys.TYPE_KEY], to_node_handler=to_node.node_handler
       )
       yield Edge(
           from_node=from_node, to_node=to_node, edge_key=key, edge_handler=edge_type

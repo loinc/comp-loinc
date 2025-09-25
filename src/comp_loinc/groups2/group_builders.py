@@ -1,5 +1,4 @@
 import typing as t
-from enum import StrEnum
 
 import typer
 
@@ -7,10 +6,13 @@ import comp_loinc as cl
 import loinclib as ll
 from comp_loinc.groups2.group import Group
 from comp_loinc.groups2.groups import Groups
-from loinclib import LoincNodeType
+from loinclib import LoincNodeType, EdgeType
 from loinclib.graph import Node
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
+
+
+# from enum import StrEnum
 
 
 class Groups2BuilderSteps:
@@ -22,14 +24,12 @@ class Groups2BuilderSteps:
     self.runtime: t.Optional[cl.Runtime] = None
 
     self.property_strings: t.List[str] = []
-    self.property_edges: t.List[StrEnum] = []
-    self.not_property_edges: t.List[StrEnum] = []
+    self.property_edges: t.List[EdgeType] = []
+    self.not_property_edges: t.List[EdgeType] = []
 
     self.parent_strings: t.List[str] = []
-    self.parent_edges: t.List[StrEnum] = []
-    self.not_parent_edges: t.List[StrEnum] = []
-
-
+    self.parent_edges: t.List[EdgeType] = []
+    self.not_parent_edges: t.List[EdgeType] = []
 
   def setup_builder_cli(self, builder):
     builder.cli.command(
@@ -59,17 +59,20 @@ class Groups2BuilderSteps:
 
   def hello(self):
     module = self.runtime.current_module
-    grouper: Groups = module.runtime_objects.setdefault('grouper2', Groups(config=self.config, module=module))
+    grouper: Groups = module.runtime_objects.setdefault('grouper2', Groups( module=module))
     grouper.init()
     print("==================  GROUP 2 HELLO  =================")
 
   def group_properties(self,
       property_strings: t.Annotated[list[str], typer.Option("--properties",
                                                             help="One or more property strings. Full property URL, or last segment. Case insensitive")]):
+    """
+    Select the LOINC grouping properties.
+    """
     self.property_strings = property_strings
 
   def group_parents(self, parent_strings: t.Annotated[list[str], typer.Option("--parents",
-               help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
+                                                                              help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
     self.parent_strings = parent_strings
 
   def group_parse_loincs(self):
@@ -87,11 +90,8 @@ class Groups2BuilderSteps:
       properties = dict()
 
       for out_edge in out_edges:
-        type_ = out_edge.edge_type.type_
+        type_ = out_edge.handler.type_
         if self._use_property(type_):
-          pass
-        if type_ in self.property_edges:
-          part_number = out_edge.to_node.get_property(LoincPartProps.part_number)
           properties[type_] = out_edge.to_node
 
       key = Group.group_key(properties)
@@ -102,7 +102,6 @@ class Groups2BuilderSteps:
         group.loincs[loinc_node.get_property(LoincTermProps.loinc_number)] = loinc_node
         group.key = key
 
-      # print(key)
     print("debug")
 
   def group_roots(self):
@@ -121,8 +120,7 @@ class Groups2BuilderSteps:
 
     groups = self._get_groups()
 
-    seen_by_property: t.Dict[StrEnum, t.Set[str]] = dict()
-
+    seen_by_property: t.Dict[EdgeType, t.Set[str]] = dict()
 
     for key, group in groups.groups.copy().items():
       # if group.is_abstract():
@@ -131,19 +129,16 @@ class Groups2BuilderSteps:
         seen = seen_by_property.setdefault(prop, set())
         self._do_roots(prop, part_node, group, seen)
 
-
     for group in groups.groups.values():
-      if len(group.parent_groups) == 0 :
+      if len(group.parent_groups) == 0:
         for child_group in group.child_groups.values():
           if not child_group.is_complex():
             groups.roots[group.key] = group
 
-
     print("debug")
 
-
   def _do_roots(self,
-      prop: StrEnum,
+      prop: EdgeType,
       part_node: Node,
       child_group: Group,
       seen: t.Set[str],
@@ -175,9 +170,9 @@ class Groups2BuilderSteps:
   def _get_groups(self) -> Groups:
     current_module = self.runtime.current_module
     return self.runtime.current_module.runtime_objects.setdefault('groups',
-                                                                  Groups(config=self.config, module=current_module))
+                                                                  Groups(module=current_module))
 
-  def _use_property(self, prop: StrEnum):
+  def _use_property(self, prop: EdgeType):
     if prop in self.property_edges:
       return True
     if prop in self.not_property_edges:
@@ -185,16 +180,16 @@ class Groups2BuilderSteps:
 
     for property_string in self.property_strings:
       property_string = property_string.lower()
-      prop_name = prop.name.lower()
-      if prop_name == property_string:
+      prop_name = prop.value.name.lower()
+      if prop_name == property_string or prop_name.endswith(property_string):
         self.property_edges.append(prop)
-        self.property_edges.sort(key=lambda prop: prop.order)
+        self.property_edges.sort(key=lambda prop: prop.value.order)
         return True
 
     self.not_property_edges.append(prop)
     return False
 
-  def _use_parent(self, prop: StrEnum):
+  def _use_parent(self, prop: EdgeType):
     if prop in self.parent_edges:
       return True
     if prop in self.not_parent_edges:
@@ -202,8 +197,8 @@ class Groups2BuilderSteps:
 
     for parent_string in self.parent_strings:
       parent_string = parent_string.lower()
-      prop_name = prop.name.lower()
-      if prop_name == parent_string:
+      prop_name = prop.value.name.lower()
+      if prop_name == parent_string or prop_name.endswith(parent_string):
         self.parent_edges.append(prop)
         return True
 

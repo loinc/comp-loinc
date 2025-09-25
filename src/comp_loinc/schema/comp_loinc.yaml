@@ -49,6 +49,10 @@ classes:
         slot_uri: rdfs:subClassOf
         multivalued: true
         range: Entity
+      parent_of:  # for linking parent to children during runtime, as needed.
+        slot_uri: comploinc:parent_of
+        multivalued: true
+        range: Entity
       equivalent_class:
         annotations:
           owl: EquivalentClasses
@@ -625,6 +629,10 @@ classes:
         slot_uri: loinc:status
         annotations:
           owl: AnnotationAssertion
+
+      is_multiaxial:
+        slot_uri: comploinc:is_multiaxial
+        range: boolean
 
 
 slots:

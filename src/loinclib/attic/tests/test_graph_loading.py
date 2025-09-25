@@ -69,7 +69,7 @@ class TestLoading(TestCase):
         configuration = Configuration()
         runtime = Runtime(configuration=configuration)
         loinc_loader = LoincLoader(graph=runtime.graph, configuration=configuration)
-        loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
+        # loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
     def test_load_trees(self):
         configuration = Configuration()

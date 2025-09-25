@@ -3,9 +3,8 @@
 import logging
 import typing as t
 
-from linkml_runtime.linkml_model import SchemaDefinition
 
-import comp_loinc.datamodel.comp_loinc as v2
+
 from comp_loinc.datamodel.comp_loinc import Entity
 from loinclib import NodeType
 
@@ -38,7 +37,7 @@ class Module:
         logger.info(f"Starting: {name}")
         self.name = name
         self.runtime: Runtime = runtime
-        self.entities_by_type: t.Dict[t.Type[Entity], t.Dict[str, v2.Entity]] = dict()
+        self.entities_by_type: t.Dict[t.Type[Entity], t.Dict[str, Entity]] = dict()
         self._include_loinc_long_common_name = None  # flags for what to include
         self.runtime_objects: t.Dict[str, t.Any] = dict()
 

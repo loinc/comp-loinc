@@ -33,7 +33,7 @@ from loinclib.loinc_schema import (
 )
 from loinclib.loinc_snomed_loader import LoincSnomedLoader
 from loinclib.loinc_tree_loader import LoincTreeLoader
-from loinclib.loinc_tree_schema import LoincDanglingNlpEdges, LoincTreeProps
+from loinclib.loinc_tree_schema import LoincDanglingNlpEdges, LoincTreeProps, LoincTreeEdges
 
 logger = logging.getLogger("LoincBuilder")
 
@@ -159,6 +159,10 @@ class LoincBuilderSteps:
 
         count = 0
         for node in self.runtime.graph.get_nodes(LoincNodeType.LoincPart):
+
+            if node.get_property(LoincPartProps.is_multiaxial):
+                continue
+
             count += 1
             if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
                 break
@@ -357,6 +361,9 @@ class LoincBuilderSteps:
 
         count = 0
         for child_part_node in graph.get_nodes(type_=LoincNodeType.LoincPart):
+            if child_part_node.get_property(LoincPartProps.is_multiaxial):
+                continue
+
             count += 1
             if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
                 break
@@ -370,8 +377,9 @@ class LoincBuilderSteps:
 
             edge: Edge
             subclassable_edges = [
+                LoincTreeEdges.tree_parent,
                 LoincPartEdge.parent_comp_by_system,
-                LoincDanglingNlpEdges.nlp_parent,
+                #LoincDanglingNlpEdges.nlp_parent,
             ]
             for edge in child_part_node.get_all_out_edges():
                 if edge.handler.type_ in subclassable_edges:

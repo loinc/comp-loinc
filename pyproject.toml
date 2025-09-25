@@ -28,12 +28,11 @@ sssom = "^0.3.26"
 matplotlib = "*"
 networkx = "^3.1"
 numpy = "~1.24.3"  # Last 1.x version that's stable
-pandas = "~2.0.3"  # Compatible with numpy 1.x
+# Compatible with numpy 1.x
 py-horned-owl = "^1.2.0"
 PyYAML = "*"
 sentence_transformers = "*"
 setuptools = "*"  # depednency for sssom
-sssom = "^0.3.26"
 tabulate = "*"
 torch = [
     # Had difficulty / impossibility installing latest version of torch on Apple silicon. Used simpler version.

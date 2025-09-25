@@ -225,7 +225,7 @@ class GroupsBuilderSteps:
         loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()  # for search tags even if doing primary
         loinc_loader.load_accessory_files__part_file__part_csv()
         loinc_loader.load_loinc_table__loinc_csv()
-        loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
+        # loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
         loinc_tree_loader = LoincTreeLoader(
             config=self.config, graph=self.runtime.graph

@@ -70,7 +70,7 @@ class LoincTreeLoader:
         """Insert node if needed, else get, and return node."""
         node = self.graph.get_node_by_code(type_=LoincNodeType.LoincPart, code=code)
         if node is None:
-            node = self.graph.getsert_node(type_=LoincNodeType.LoincPart, code=code)
+            node = self.graph.getsert_node(type_=LoincNodeType.LoincPart, code=code, source="nlp")
             node.set_property(type_=LoincTreeProps.from_trees, value=False)
             node.set_property(type_=LoincPartProps.part_number, value=code)
             node.set_property(type_=LoincTreeProps.code_text, value=code_text)
@@ -179,11 +179,13 @@ class LoincTreeLoader:
             )
             if part_node is None:
                 part_node = self.graph.getsert_node(
-                    type_=LoincNodeType.LoincPart, code=code
+                    type_=LoincNodeType.LoincPart, code=code, source=f"tree.{source}"
                 )
                 part_node.set_property(type_=LoincTreeProps.from_trees, value=True)
                 part_node.set_property(type_=LoincPartProps.part_number, value=code)
             part_node.set_property(type_=LoincTreeProps.code_text, value=code_text)
+
+            part_node.set_property(type_=LoincPartProps.is_multiaxial, value=" | " in code_text)
 
             if parent_id:
                 parent_node = self.graph.get_node_by_code(
@@ -191,7 +193,7 @@ class LoincTreeLoader:
                 )
                 if parent_node is None:
                     parent_node = self.graph.getsert_node(
-                        type_=LoincNodeType.LoincPart, code=records_by_id[parent_id][1]
+                        type_=LoincNodeType.LoincPart, code=records_by_id[parent_id][1], source=f"tree.{source}"
                     )
                     parent_node.set_property(
                         type_=LoincTreeProps.from_trees, value=True
