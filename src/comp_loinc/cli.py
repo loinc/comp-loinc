@@ -12,6 +12,8 @@ from comp_loinc.groups2 import group_builders as g2builders
 from comp_loinc.snomed_builder_steps import SnomedBuilderSteps
 from loinclib import Configuration
 
+from .loinc_builder_steps import  LoincBuilderSteps
+
 
 LOINC_RELEASE_DIR_NAME = "sources/loinc"
 LOINC_TREES_DIR_NAME = "sources/loinc_trees"

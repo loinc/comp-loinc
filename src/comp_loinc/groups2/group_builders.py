@@ -11,7 +11,6 @@ from loinclib.graph import Node
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
 
-from src.comp_loinc.analysis.ad_hoc.loinc_groups_depths_analysis import group_id
 
 
 # from enum import StrEnum
