@@ -14,6 +14,7 @@ sys.argv = [
     "group-properties",
     "--properties",
     "primary_component",
+
     "--properties",
     "primary_system",
 
@@ -25,7 +26,8 @@ sys.argv = [
 
     "group-parse-loincs",
     "group-roots",
-    "group2-hello"
+
+    "save-owl"
     # ,'--help'
 ]
 

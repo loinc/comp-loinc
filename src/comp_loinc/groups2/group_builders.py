@@ -11,6 +11,8 @@ from loinclib.graph import Node
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
 
+from src.comp_loinc.analysis.ad_hoc.loinc_groups_depths_analysis import group_id
+
 
 # from enum import StrEnum
 
@@ -33,11 +35,6 @@ class Groups2BuilderSteps:
 
   def setup_builder_cli(self, builder):
     builder.cli.command(
-        "group2-hello",
-        help="Group 2 hello",
-    )(self.hello)
-
-    builder.cli.command(
         "group-properties",
         help="Specify the LOINC properties to use for grouping",
     )(self.group_properties)
@@ -57,11 +54,16 @@ class Groups2BuilderSteps:
         help="Build the root groups.",
     )(self.group_roots)
 
-  def hello(self):
-    module = self.runtime.current_module
-    grouper: Groups = module.runtime_objects.setdefault('grouper2', Groups( module=module))
-    grouper.init()
-    print("==================  GROUP 2 HELLO  =================")
+    # builder.cli.command(
+    #     "group2-save",
+    #     help="Group 2 hello",
+    # )(self.hello)
+
+  # def hello(self):
+  #   module = self.runtime.current_module
+  #   grouper: Groups = module.runtime_objects.setdefault('grouper2', Groups( module=module))
+  #   grouper.init()
+  #   print("==================  GROUP 2 HELLO  =================")
 
   def group_properties(self,
       property_strings: t.Annotated[list[str], typer.Option("--properties",
@@ -83,24 +85,26 @@ class Groups2BuilderSteps:
     loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
     loinc_loader.load_accessory_files__part_file__part_csv()
 
-    groups = self._get_groups()
+    groups = self._get_groups_object()
     for loinc_node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
       out_edges = loinc_node.get_all_out_edges()
 
       properties = dict()
 
+      # indexing the parts by group properties, per loinc
       for out_edge in out_edges:
         type_ = out_edge.handler.type_
         if self._use_property(type_):
           properties[type_] = out_edge.to_node
 
-      key = Group.group_key(properties)
 
-      if key is not None:
-        group = groups.groups.setdefault(key, Group())
+      group_key = Group.group_key(properties)
+
+      if group_key is not None:
+        group = groups.groups.setdefault(group_key, Group())
         group.properties = properties
         group.loincs[loinc_node.get_property(LoincTermProps.loinc_number)] = loinc_node
-        group.key = key
+        group.key = group_key
 
     print("debug")
 
@@ -118,22 +122,23 @@ class Groups2BuilderSteps:
     tree_loader.load_panel_tree()
     tree_loader.load_method_tree()
 
-    groups = self._get_groups()
+    groups_object = self._get_groups_object()
 
     seen_by_property: t.Dict[EdgeType, t.Set[str]] = dict()
 
-    for key, group in groups.groups.copy().items():
+
+    for key, group in groups_object.groups.copy().items():
       # if group.is_abstract():
       #   continue
       for prop, part_node in group.properties.items():
         seen = seen_by_property.setdefault(prop, set())
         self._do_roots(prop, part_node, group, seen)
 
-    for group in groups.groups.values():
+    for group in groups_object.groups.values():
       if len(group.parent_groups) == 0:
         for child_group in group.child_groups.values():
           if not child_group.is_complex():
-            groups.roots[group.key] = group
+            groups_object.roots[group.key] = group
 
     print("debug")
 
@@ -150,13 +155,13 @@ class Groups2BuilderSteps:
     seen.add(part_number)
 
     group_key = Group.group_key({prop: part_node})
-    groups = self._get_groups()
-    parent_group = groups.groups.get(group_key, None)
+    groups_object = self._get_groups_object()
+    parent_group = groups_object.groups.get(group_key, None)
     if parent_group is None:
       parent_group = Group()
       parent_group.properties[prop] = part_node
       parent_group.key = group_key
-      groups.groups[group_key] = parent_group
+      groups_object.groups[group_key] = parent_group
 
     parent_group.child_groups[child_group.key] = child_group
     child_group.parent_groups[parent_group.key] = parent_group
@@ -167,7 +172,7 @@ class Groups2BuilderSteps:
         parent_node = out_edge.to_node
         self._do_roots(prop, parent_node, parent_group, seen)
 
-  def _get_groups(self) -> Groups:
+  def _get_groups_object(self) -> Groups:
     current_module = self.runtime.current_module
     return self.runtime.current_module.runtime_objects.setdefault('groups',
                                                                   Groups(module=current_module))
