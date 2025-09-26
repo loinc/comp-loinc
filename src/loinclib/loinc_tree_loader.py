@@ -142,7 +142,7 @@ class LoincTreeLoader:
 
         self.graph.loaded_sources[source] = {}
 
-    def _load_tree(self, source: LoincTreeSource, from_nlp_source=False):
+    def _load_tree(self, source: LoincTreeSource, from_nlp_source=False, multi_axial=False):
         if source in self.graph.loaded_sources:
             return
 

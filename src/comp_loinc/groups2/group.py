@@ -10,6 +10,11 @@ from loinclib.loinc_tree_schema import LoincTreeProps
 
 class Group:
   def __init__(self):
+    self.__descendants_count = None
+    self.__ancestors_loincs_count = None
+
+    self.__depth = None
+
     self.properties: t.Dict[EdgeType, Node] = dict()
     self.loincs: t.Dict[str, Node] = dict()
     self.key = None
@@ -38,13 +43,63 @@ class Group:
       string += f" -- {type_.value.abbr}  {name}"
     return string
 
+  def get_descendants_loincs_count(self):
+    if self.__descendants_count is None:
+      self.__descendants_count = self._do_descendant_loincs_count(set())
+    return self.__descendants_count
+
+  def _do_descendant_loincs_count(self, seen_keys: set):
+    count = len(self.loincs)
+    seen_keys.add(self.get_key())
+
+    for key, child in self.child_groups.items():
+      if key in seen_keys:
+        continue
+      count += child._do_descendant_loincs_count(seen_keys)
+    return count
+
+  def get_ancestors_loincs_count(self):
+    if self.__ancestors_loincs_count is None:
+      self.__ancestors_loincs_count = self._do_ancestors_loincs_count()
+    return self.__ancestors_loincs_count
+
+  def _do_ancestors_loincs_count(self, seen_keys: set):
+    count = len(self.loincs)
+    seen_keys.add(self.get_key())
+    for key, parent in self.parent_groups.items():
+      if key in seen_keys:
+        continue
+      count += parent._do_ancestors_loincs_count(seen_keys)
+    return count
+
+  def get_group_depth(self):
+    if self.__depth is None:
+      self.__depth = self._do_depth(set())
+    return self.__depth
+
+  def _do_depth(self, seen_keys: set):
+    depth = 0
+    seen_keys.add(self.get_key())
+    for key, group in self.parent_groups.items():
+      if key in seen_keys:
+        continue
+      seen_keys.add(key)
+      depth = max(depth, group._do_depth(seen_keys))
+    return  depth
+
   def __str__(self):
     return self.__repr__()
 
   @classmethod
   def group_key(cls, properties: t.Dict[EdgeType, Node]):
     group_key: t.Optional[str] = None
-    for prop, part_node in properties.items():
+    prop: EdgeType
+
+    property_types = list(properties.keys())
+    property_types.sort(key=lambda x: x.value.name)
+    for prop in property_types:
+      part_node = properties[prop]
+    # for prop, part_node in properties.items():
       prefix = prop.value.abbr
       part_name = part_node.get_property(LoincPartProps.part_name)
       part_number = part_node.get_property(LoincPartProps.part_number)

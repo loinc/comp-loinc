@@ -7,7 +7,7 @@ import loinclib as ll
 from comp_loinc.groups2.group import Group
 from comp_loinc.groups2.groups import Groups
 from loinclib import LoincNodeType, EdgeType
-from loinclib.graph import Node
+from loinclib.graph import Node, Edge
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
 
@@ -53,6 +53,11 @@ class Groups2BuilderSteps:
         help="Build the root groups.",
     )(self.group_roots)
 
+    builder.cli.command(
+        "group-generate",
+        help="Generate the output groups.",
+    )(self.group_generate)
+
     # builder.cli.command(
     #     "group2-save",
     #     help="Group 2 hello",
@@ -85,7 +90,10 @@ class Groups2BuilderSteps:
     loinc_loader.load_accessory_files__part_file__part_csv()
 
     groups = self._get_groups_object()
+    loinc_counts = 0
+    group_counts = 0
     for loinc_node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
+      loinc_counts +=1
       out_edges = loinc_node.get_all_out_edges()
 
       properties = dict()
@@ -100,10 +108,13 @@ class Groups2BuilderSteps:
       group_key = Group.group_key(properties)
 
       if group_key is not None:
+        group_counts +=1
         group = groups.groups.setdefault(group_key, Group())
         group.properties = properties
         group.loincs[loinc_node.get_property(LoincTermProps.loinc_number)] = loinc_node
         group.key = group_key
+      else:
+        print("debug")
 
     print("debug")
 
@@ -115,6 +126,7 @@ class Groups2BuilderSteps:
 
     tree_loader: LoincTreeLoader = LoincTreeLoader(graph=self.runtime.graph, config=self.config)
     tree_loader.load_component_tree()
+    tree_loader.load_component_by_system_tree()
     tree_loader.load_system_tree()
     tree_loader.load_document_tree()
     tree_loader.load_class_tree()
@@ -141,6 +153,12 @@ class Groups2BuilderSteps:
 
     print("debug")
 
+
+  def group_generate(self):
+    groups: Groups = self.runtime.current_module.runtime_objects.get("groups")
+    for group in groups.roots.values():
+      print(f"{group} has descendants count:\n{group.get_descendants_loincs_count()}")
+
   def _do_roots(self,
       prop: EdgeType,
       part_node: Node,
@@ -165,8 +183,9 @@ class Groups2BuilderSteps:
     parent_group.child_groups[child_group.key] = child_group
     child_group.parent_groups[parent_group.key] = parent_group
 
+    out_edge: Edge
     for out_edge in part_node.get_all_out_edges():
-      type_ = out_edge.edge_type.type_
+      type_ = out_edge.handler.type_
       if self._use_parent(type_):
         parent_node = out_edge.to_node
         self._do_roots(prop, parent_node, parent_group, seen)

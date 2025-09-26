@@ -13,10 +13,10 @@ sys.argv = [
 
     "group-properties",
     "--properties",
-    "primary_component",
+    "/component",
 
     "--properties",
-    "primary_system",
+    "/system",
 
     "group-parents",
     "--parents",
@@ -26,6 +26,8 @@ sys.argv = [
 
     "group-parse-loincs",
     "group-roots",
+
+    "group-generate",
 
     "save-owl"
     # ,'--help'
