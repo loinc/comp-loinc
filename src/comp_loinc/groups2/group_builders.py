@@ -1,3 +1,4 @@
+import sys
 import typing as t
 
 import typer
@@ -10,7 +11,6 @@ from loinclib import LoincNodeType, EdgeType
 from loinclib.graph import Node, Edge
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
-
 
 
 # from enum import StrEnum
@@ -93,7 +93,7 @@ class Groups2BuilderSteps:
     loinc_counts = 0
     group_counts = 0
     for loinc_node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
-      loinc_counts +=1
+      loinc_counts += 1
       out_edges = loinc_node.get_all_out_edges()
 
       properties = dict()
@@ -104,11 +104,10 @@ class Groups2BuilderSteps:
         if self._use_property(type_):
           properties[type_] = out_edge.to_node
 
-
       group_key = Group.group_key(properties)
 
       if group_key is not None:
-        group_counts +=1
+        group_counts += 1
         group = groups.groups.setdefault(group_key, Group())
         group.properties = properties
         group.loincs[loinc_node.get_property(LoincTermProps.loinc_number)] = loinc_node
@@ -117,6 +116,16 @@ class Groups2BuilderSteps:
         print("debug")
 
     print("debug")
+
+    loinc_counts = 0
+    for group in groups.groups.values():
+      count = group.get_descendants_loincs_count()
+      loinc_counts += count
+
+    print("\n\n======= loinc counts from all groups =========")
+    print(loinc_counts)
+
+
 
   def group_roots(self):
     loinc_loader = ll.loinc_loader.LoincLoader(
@@ -137,7 +146,6 @@ class Groups2BuilderSteps:
 
     seen_by_property: t.Dict[EdgeType, t.Set[str]] = dict()
 
-
     for key, group in groups_object.groups.copy().items():
       # if group.is_abstract():
       #   continue
@@ -146,18 +154,34 @@ class Groups2BuilderSteps:
         self._do_roots(prop, part_node, group, seen)
 
     for group in groups_object.groups.values():
-      if len(group.parent_groups) == 0:
-        for child_group in group.child_groups.values():
-          if not child_group.is_complex():
-            groups_object.roots[group.key] = group
+      if len(group.parent_groups) == 0  and group.get_descendants_loincs_count() > 0 and len(group.child_groups) > 0:
+        # for child_group in group.child_groups.values():
+          # if not child_group.is_complex():
+          groups_object.roots[group.key] = group
 
     print("debug")
 
-
   def group_generate(self):
     groups: Groups = self.runtime.current_module.runtime_objects.get("groups")
+    loinc_counts = 0
     for group in groups.roots.values():
-      print(f"{group} has descendants count:\n{group.get_descendants_loincs_count()}")
+      count = group.get_descendants_loincs_count()
+      loinc_counts += count
+      print(f"{group} has descendants count:\n{count}")
+
+    print("\n\n======= loinc counts from root groups =========")
+    print(loinc_counts)
+
+    loinc_counts = 0
+    for group in groups.groups.values():
+      count = group.get_descendants_loincs_count()
+      loinc_counts += count
+
+    print("\n\n======= total counts with possible duplicates =========")
+    print(loinc_counts)
+
+    print("\n\n=============== root group count =================")
+    print(len(groups.roots))
 
   def _do_roots(self,
       prop: EdgeType,

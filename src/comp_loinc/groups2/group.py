@@ -60,7 +60,7 @@ class Group:
 
   def get_ancestors_loincs_count(self):
     if self.__ancestors_loincs_count is None:
-      self.__ancestors_loincs_count = self._do_ancestors_loincs_count()
+      self.__ancestors_loincs_count = self._do_ancestors_loincs_count(set())
     return self.__ancestors_loincs_count
 
   def _do_ancestors_loincs_count(self, seen_keys: set):
