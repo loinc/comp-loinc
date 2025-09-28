@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-07-19T09:52:12
+# Generation date: 2025-09-27T10:44:01
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -507,7 +507,10 @@ class LoincPart(LoincEntity):
     part_name: Optional[str] = None
     part_display_name: Optional[str] = None
     part_status: Optional[str] = None
-    is_multiaxial: Optional[Union[bool, Bool]] = None
+    is_multiaxial: Optional[Union[bool, Bool]] = False
+    is_component_by_system: Optional[Union[bool, Bool]] = False
+    is_tree: Optional[Union[bool, Bool]] = False
+    is_tree_component_by_system: Optional[Union[bool, Bool]] = False
 
     def __post_init__(self, *_: str, **kwargs: Any):
         if self._is_empty(self.id):
@@ -532,6 +535,15 @@ class LoincPart(LoincEntity):
 
         if self.is_multiaxial is not None and not isinstance(self.is_multiaxial, Bool):
             self.is_multiaxial = Bool(self.is_multiaxial)
+
+        if self.is_component_by_system is not None and not isinstance(self.is_component_by_system, Bool):
+            self.is_component_by_system = Bool(self.is_component_by_system)
+
+        if self.is_tree is not None and not isinstance(self.is_tree, Bool):
+            self.is_tree = Bool(self.is_tree)
+
+        if self.is_tree_component_by_system is not None and not isinstance(self.is_tree_component_by_system, Bool):
+            self.is_tree_component_by_system = Bool(self.is_tree_component_by_system)
 
         super().__post_init__(**kwargs)
 
@@ -779,3 +791,13 @@ slots.loincPart__part_status = Slot(uri=LOINC.status, name="loincPart__part_stat
 
 slots.loincPart__is_multiaxial = Slot(uri=COMPLOINC.is_multiaxial, name="loincPart__is_multiaxial", curie=COMPLOINC.curie('is_multiaxial'),
                    model_uri=LOINC.loincPart__is_multiaxial, domain=None, range=Optional[Union[bool, Bool]])
+
+slots.loincPart__is_component_by_system = Slot(uri=COMPLOINC.is_multiaxial, name="loincPart__is_component_by_system", curie=COMPLOINC.curie('is_multiaxial'),
+                   model_uri=LOINC.loincPart__is_component_by_system, domain=None, range=Optional[Union[bool, Bool]])
+
+slots.loincPart__is_tree = Slot(uri=COMPLOINC.is_multiaxial, name="loincPart__is_tree", curie=COMPLOINC.curie('is_multiaxial'),
+                   model_uri=LOINC.loincPart__is_tree, domain=None, range=Optional[Union[bool, Bool]])
+
+slots.loincPart__is_tree_component_by_system = Slot(uri=COMPLOINC.is_multiaxial, name="loincPart__is_tree_component_by_system", curie=COMPLOINC.curie('is_multiaxial'),
+                   model_uri=LOINC.loincPart__is_tree_component_by_system, domain=None, range=Optional[Union[bool, Bool]])
+

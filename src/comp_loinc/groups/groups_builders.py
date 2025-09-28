@@ -13,7 +13,7 @@ import loinclib as ll
 from comp_loinc.datamodel import LoincTerm, LoincPartId
 from comp_loinc.groups.property_use import Property, Part
 from comp_loinc.module import Module
-from comploinc_schame import ComploincNodeType
+from comp_loinc.comploinc_schema import ComploincNodeType
 from loinclib.loinc_schema import (
     LoincNodeType,
     LoincTermPrimaryEdges,

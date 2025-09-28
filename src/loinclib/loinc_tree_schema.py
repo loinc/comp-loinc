@@ -43,3 +43,4 @@ class LoincTreeProps(PropertyType):
 
   code_text = LoincTreePropsArgs(name="code_text")
   from_trees = LoincTreePropsArgs(name="from_trees")
+  from_trees_component_by_system = LoincTreePropsArgs(name="is_tree_component_by_system")

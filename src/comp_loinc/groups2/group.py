@@ -1,3 +1,4 @@
+from __future__ import annotations
 import typing as t
 
 from loinclib import Node, EdgeType
@@ -10,8 +11,10 @@ from loinclib.loinc_tree_schema import LoincTreeProps
 
 class Group:
   def __init__(self):
-    self.__descendants_count = None
+    self.__descendants_loincs_count = None
     self.__ancestors_loincs_count = None
+
+    self.__descendants_count = None
 
     self.__depth = None
 
@@ -44,9 +47,26 @@ class Group:
     return string
 
   def get_descendants_loincs_count(self):
+    if self.__descendants_loincs_count is None:
+      self.__descendants_loincs_count = self._do_descendant_loincs_count(set())
+    return self.__descendants_loincs_count
+
+  def get_descendants_count(self):
     if self.__descendants_count is None:
-      self.__descendants_count = self._do_descendant_loincs_count(set())
+      self.__descendants_count = self._do_descencents_count(self, set())
     return self.__descendants_count
+
+
+
+  def _do_descencents_count(self,group: Group, seen: set):
+    count = 1
+    if self.key in seen:
+      return count
+    seen.add(self.key)
+    for key, child in self.child_groups.items():
+      count += self._do_descencents_count(child, seen)
+    return count
+
 
   def _do_descendant_loincs_count(self, seen_keys: set):
     count = len(self.loincs)
@@ -90,22 +110,25 @@ class Group:
   def __str__(self):
     return self.__repr__()
 
+  def has_concrete_child(self):
+    return  any([ not child.is_abstract() for child in self.child_groups.values()])
+
   @classmethod
   def group_key(cls, properties: t.Dict[EdgeType, Node]):
     group_key: t.Optional[str] = None
-    prop: EdgeType
+    prop_type: EdgeType
 
     property_types = list(properties.keys())
     property_types.sort(key=lambda x: x.value.name)
-    for prop in property_types:
-      part_node = properties[prop]
+    for prop_type in property_types:
+      part_node = properties[prop_type]
     # for prop, part_node in properties.items():
-      prefix = prop.value.abbr
+      prefix = prop_type.value.abbr
       part_name = part_node.get_property(LoincPartProps.part_name)
       part_number = part_node.get_property(LoincPartProps.part_number)
       if group_key is None:
-        group_key = f"{prefix}:{part_number}"
+        group_key = f"{prefix}_{part_number}"
       else:
-        group_key = group_key + f"|{prefix}:{part_number}"
+        group_key = group_key + f"--{prefix}_{part_number}"
 
     return group_key

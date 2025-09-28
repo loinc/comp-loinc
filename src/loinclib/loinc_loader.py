@@ -5,7 +5,7 @@ import pandas as pd
 
 import loinclib.loinc_schema as LS
 from loinclib.config import Configuration
-from loinclib.graph import Node, LoinclibGraph
+from loinclib.graph import Node, LoinclibGraph, ElementProps
 from loinclib.loinc_schema import LoincPartEdge, LoincPartProps, LoincClassEdges
 
 
@@ -282,7 +282,14 @@ class LoincLoader:
         part_node = self.graph.getsert_node(LS.LoincNodeType.LoincPart, code,
                                             source=LoincElementSource.component_by_system)
         part_node.set_property(type_=LoincPartProps.part_number, value=code)
-        part_node.set_property(type_=LoincPartProps.from_hierarchy, value=True)  # todo: remove due to sources approach
+
+      sources = part_node.get_property(ElementProps.sources)
+      if sources is None:
+        sources = set()
+        part_node.set_property(type_=ElementProps.sources, value=sources)
+      sources.add(LoincElementSource.component_by_system)
+
+      part_node.set_property(type_=LoincPartProps.from_hierarchy, value=True)  # todo: remove due to sources approach
 
       part_node.set_property(
           type_=LS.LoincPartProps.code_text__from_comp_hierarch, value=code_text
@@ -301,12 +308,12 @@ class LoincLoader:
           parent_node.set_property(
               type_=LoincPartProps.part_number, value=immediate_parent
           )
-          parent_node.set_property(
-              type_=LoincPartProps.from_hierarchy, value=True
-          )
+        parent_node.set_property(
+            type_=LoincPartProps.from_hierarchy, value=True
+        )
 
         part_node.add_edge_single(
-            type_=LoincPartEdge.parent_comp_by_system, to_node=parent_node
+            type_=LoincPartEdge.parent_comp_by_system, to_node=parent_node, source=LoincElementSource.component_by_system
         )
 
     self.graph.loaded_sources[

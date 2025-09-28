@@ -20,7 +20,7 @@ from comp_loinc.datamodel import (
 )
 from comp_loinc.datamodel.comp_loinc import LoincTerm, SnomedConcept
 from comp_loinc.serializers import OwlSerializer
-from comploinc_schame import ComploincNodeType
+from comp_loinc.comploinc_schema import ComploincNodeType
 from loinclib import Configuration, SnomedEdges, Node, SnomedProperties, Edge
 from loinclib import LoincLoader
 from loinclib import LoincNodeType, LoincTermProps
@@ -361,8 +361,11 @@ class LoincBuilderSteps:
 
         count = 0
         for child_part_node in graph.get_nodes(type_=LoincNodeType.LoincPart):
+
             if child_part_node.get_property(LoincPartProps.is_multiaxial):
                 continue
+
+
 
             count += 1
             if self.configuration.fast_run and count > FAST_RUN_N_PARTS:

@@ -636,6 +636,11 @@ class Node(Element):
   def __str__(self):
     return f"Node: {self.node_id} with data {self.get_properties()}"
 
+  def __eq__(self, other):
+    if isinstance(other, Node):
+      return  self.node_id == other.node_id
+    return False
+
 
 class Edge(Element):
   def __init__(
@@ -646,6 +651,7 @@ class Edge(Element):
     self.to_node: Node = to_node
     self.edge_key = edge_key
     self.handler = edge_handler
+    self.properties = self.graph.nx_graph.get_edge_data(u=self.from_node.node_id, v=self.to_node.node_id, key=self.edge_key)
 
   def get_property(self, type_: PropertyType) -> t.Any:
     property_handler = self.handler.get_property_handler(type_)

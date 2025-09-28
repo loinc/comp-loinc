@@ -17,18 +17,18 @@ imports:
 
 classes:
 
-#  Loinc:
-#    description: A container of Loinc term and part instances.
-#    attributes:
-#      codes:
-#        description: Holds a list of LOINC term instances.
-#        multivalued: true
-#        range: LoincTerm
-#      parts:
-#        description: Holds a list of LOINC part instances.
-#        multivalued: true
-#        range: LoincPart
-#    class_uri: owl:Class
+  #  Loinc:
+  #    description: A container of Loinc term and part instances.
+  #    attributes:
+  #      codes:
+  #        description: Holds a list of LOINC term instances.
+  #        multivalued: true
+  #        range: LoincTerm
+  #      parts:
+  #        description: Holds a list of LOINC part instances.
+  #        multivalued: true
+  #        range: LoincPart
+  #    class_uri: owl:Class
 
   Entity:
     attributes:
@@ -49,7 +49,7 @@ classes:
         slot_uri: rdfs:subClassOf
         multivalued: true
         range: Entity
-      parent_of:  # for linking parent to children during runtime, as needed.
+      parent_of: # for linking parent to children during runtime, as needed.
         slot_uri: comploinc:parent_of
         multivalued: true
         range: Entity
@@ -633,6 +633,22 @@ classes:
       is_multiaxial:
         slot_uri: comploinc:is_multiaxial
         range: boolean
+        ifabsent: false
+
+      is_component_by_system:
+        slot_uri: comploinc:is_multiaxial
+        range: boolean
+        ifabsent: false
+
+      is_tree:
+        slot_uri: comploinc:is_multiaxial
+        range: boolean
+        ifabsent: false
+
+      is_tree_component_by_system:
+        slot_uri: comploinc:is_multiaxial
+        range: boolean
+        ifabsent: false
 
 
 slots:

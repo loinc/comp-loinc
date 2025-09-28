@@ -14,6 +14,7 @@ from loinclib.loinc_tree_schema import (
     LoincTreeProps,
 )
 
+from loinclib.graph import ElementProps
 
 logger = logging.getLogger("LoincTreeLoader")
 
@@ -64,11 +65,12 @@ class LoincTreeLoader:
         self.load_method_tree()
         self.load_panel_tree()
         self.load_system_tree()
-        self.load_nlp_tree()
+        self.load_nlp_tree() # TODO: fix once any cycles in the original trees are good.
 
     def _getsert_node(self, code: str, code_text: str):
         """Insert node if needed, else get, and return node."""
         node = self.graph.get_node_by_code(type_=LoincNodeType.LoincPart, code=code)
+        node = self.graph.getsert_node(type_=LoincNodeType.LoincPart, code=code)
         if node is None:
             node = self.graph.getsert_node(type_=LoincNodeType.LoincPart, code=code, source="nlp")
             node.set_property(type_=LoincTreeProps.from_trees, value=False)
@@ -142,7 +144,7 @@ class LoincTreeLoader:
 
         self.graph.loaded_sources[source] = {}
 
-    def _load_tree(self, source: LoincTreeSource, from_nlp_source=False, multi_axial=False):
+    def _load_tree(self, source: LoincTreeSource, from_nlp_source=False, multi_axial=False, component_by_system=False):
         if source in self.graph.loaded_sources:
             return
 
@@ -181,11 +183,21 @@ class LoincTreeLoader:
                 part_node = self.graph.getsert_node(
                     type_=LoincNodeType.LoincPart, code=code, source=f"tree.{source}"
                 )
-                part_node.set_property(type_=LoincTreeProps.from_trees, value=True)
                 part_node.set_property(type_=LoincPartProps.part_number, value=code)
-            part_node.set_property(type_=LoincTreeProps.code_text, value=code_text)
 
-            part_node.set_property(type_=LoincPartProps.is_multiaxial, value=" | " in code_text)
+            sources = part_node.get_property(ElementProps.sources)
+            if sources is None:
+              sources = set()
+              part_node.set_property(type_=ElementProps.sources, value=sources)
+            sources.add(f"tree.{source}")
+
+            part_node.set_property(type_=LoincTreeProps.from_trees, value=True)
+            part_node.set_property(type_=LoincTreeProps.code_text, value=code_text)
+            if component_by_system:
+              part_node.set_property(type_=LoincTreeProps.from_trees_component_by_system, value=True)
+            if multi_axial:
+              part_node.set_property(type_=LoincPartProps.is_multiaxial, value=" | " in code_text)
+
 
             if parent_id:
                 parent_node = self.graph.get_node_by_code(
@@ -196,18 +208,12 @@ class LoincTreeLoader:
                         type_=LoincNodeType.LoincPart, code=records_by_id[parent_id][1], source=f"tree.{source}"
                     )
                     parent_node.set_property(
-                        type_=LoincTreeProps.from_trees, value=True
-                    )
-                    parent_node.set_property(
                         type_=LoincPartProps.part_number,
                         value=records_by_id[parent_id][1],
                     )
-                parent_node.set_property(
-                    type_=LoincTreeProps.code_text, value=records_by_id[parent_id][2]
-                )
 
                 part_node.add_edge_single(
-                    type_=LoincTreeEdges.tree_parent, to_node=parent_node
+                    type_=LoincTreeEdges.tree_parent, to_node=parent_node, source=f"tree.{source}"
                 )
 
         self.graph.loaded_sources[source] = {}

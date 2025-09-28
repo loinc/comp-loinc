@@ -1,16 +1,21 @@
 import sys
 import typing as t
+from operator import truediv
 
 import typer
 
 import comp_loinc as cl
 import loinclib as ll
+from comp_loinc.datamodel.comp_loinc import LoincTerm, LoincPartId
 from comp_loinc.groups2.group import Group
 from comp_loinc.groups2.groups import Groups
 from loinclib import LoincNodeType, EdgeType
 from loinclib.graph import Node, Edge
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps
+from loinclib.loinc_tree_schema import LoincTreeProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
+from comp_loinc.comploinc_schema import ComploincNodeType
+from comp_loinc import root_classes
 
 
 # from enum import StrEnum
@@ -31,6 +36,8 @@ class Groups2BuilderSteps:
     self.parent_strings: t.List[str] = []
     self.parent_edges: t.List[EdgeType] = []
     self.not_parent_edges: t.List[EdgeType] = []
+
+    self.circles: set = set()
 
   def setup_builder_cli(self, builder):
     builder.cli.command(
@@ -86,7 +93,7 @@ class Groups2BuilderSteps:
         graph=self.runtime.graph, configuration=self.config
     )
     loinc_loader.load_accessory_files__part_file__loinc_part_link_primary_csv()
-    loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
+    # loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
     loinc_loader.load_accessory_files__part_file__part_csv()
 
     groups = self._get_groups_object()
@@ -112,8 +119,6 @@ class Groups2BuilderSteps:
         group.properties = properties
         group.loincs[loinc_node.get_property(LoincTermProps.loinc_number)] = loinc_node
         group.key = group_key
-      else:
-        print("debug")
 
     print("debug")
 
@@ -125,17 +130,15 @@ class Groups2BuilderSteps:
     print("\n\n======= loinc counts from all groups =========")
     print(loinc_counts)
 
-
-
   def group_roots(self):
     loinc_loader = ll.loinc_loader.LoincLoader(
         graph=self.runtime.graph, configuration=self.config
     )
-    loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
+    # loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
     tree_loader: LoincTreeLoader = LoincTreeLoader(graph=self.runtime.graph, config=self.config)
     tree_loader.load_component_tree()
-    tree_loader.load_component_by_system_tree()
+    # tree_loader.load_component_by_system_tree()
     tree_loader.load_system_tree()
     tree_loader.load_document_tree()
     tree_loader.load_class_tree()
@@ -146,54 +149,136 @@ class Groups2BuilderSteps:
 
     seen_by_property: t.Dict[EdgeType, t.Set[str]] = dict()
 
+    debug_counter = 0
     for key, group in groups_object.groups.copy().items():
+      debug_counter += 1
+      if debug_counter % 1000 == 0:
+        print(f"Root: {debug_counter}")
       # if group.is_abstract():
       #   continue
       for prop, part_node in group.properties.items():
-        seen = seen_by_property.setdefault(prop, set())
-        self._do_roots(prop, part_node, group, seen)
+        # seen = seen_by_property.setdefault(prop, set())
+        self._do_roots(prop, part_node, group, list())
 
-    for group in groups_object.groups.values():
-      if len(group.parent_groups) == 0  and group.get_descendants_loincs_count() > 0 and len(group.child_groups) > 0:
+    for key, group in groups_object.groups.items():
+      if (len(group.parent_groups) == 0
+          # and group.get_descendants_loincs_count() > 0
+          and len(group.child_groups) > 0):
         # for child_group in group.child_groups.values():
-          # if not child_group.is_complex():
-          groups_object.roots[group.key] = group
+        # if not child_group.is_complex():
+        groups_object.roots[key] = group
 
     print("debug")
 
   def group_generate(self):
     groups: Groups = self.runtime.current_module.runtime_objects.get("groups")
     loinc_counts = 0
-    for group in groups.roots.values():
-      count = group.get_descendants_loincs_count()
-      loinc_counts += count
-      print(f"{group} has descendants count:\n{count}")
+    # for group in groups.roots.values():
+    #   count = group.get_descendants_loincs_count()
+    #   loinc_counts += count
+    #   print(f"{group} has descendants count:\n{count}")
+    #
+    # print("\n\n======= loinc counts from root groups =========")
+    # print(loinc_counts)
+    #
+    # loinc_counts = 0
+    # for group in groups.groups.values():
+    #   count = group.get_descendants_loincs_count()
+    #   loinc_counts += count
+    #
+    # print("\n\n======= total counts with possible duplicates =========")
+    # print(loinc_counts)
+    #
+    # print("\n\n=============== root group count =================")
+    # print(len(groups.roots))
+    generated_count = 0
+    for key, group in groups.groups.items():
+      generated_count += 1
+      if generated_count % 1000 == 0:
+        print(f"Generated: {generated_count}")
+      self._do_generate(key, group)
+      # loinc_group = self.runtime.current_module.get_entity(entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{key}", entity_class=LoincTerm)
+      # if loinc_group is None:
+      #   loinc_group = self.runtime.current_module.getsert_entity(entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{key}", entity_class=LoincTerm)
+      #   edge_type: EdgeType
+      #   part_node: Node
+      #   for edge_type, part_node in group.properties.items():
+      #     part_id = LoincPartId(f"{LoincNodeType.LoincPart.value.id_prefix}:{part_node.get_property(LoincPartProps.part_number)}")
+      #     setattr(loinc_group, edge_type.name.lower(), part_id)
 
-    print("\n\n======= loinc counts from root groups =========")
-    print(loinc_counts)
+      circles = list(self.circles)
+      circles.sort()
+      for circle in circles:
+        print(f"Circle: {circle}")
 
-    loinc_counts = 0
-    for group in groups.groups.values():
-      count = group.get_descendants_loincs_count()
-      loinc_counts += count
+  def _do_generate(self, key: str, group: Group, parent_group: Group = None):
 
-    print("\n\n======= total counts with possible duplicates =========")
-    print(loinc_counts)
+    if self._can_generate(group=group, parent_group=parent_group):
+      loinc_group = self.runtime.current_module.get_entity(
+          entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{key}", entity_class=LoincTerm)
+      if loinc_group is not None:
+        return
 
-    print("\n\n=============== root group count =================")
-    print(len(groups.roots))
+      loinc_group = self.runtime.current_module.getsert_entity(
+          entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{key}", entity_class=LoincTerm)
+
+      edge_type: EdgeType
+      part_node: Node
+      label = ""
+      group_prefix = "G-"
+      for edge_type, part_node in group.properties.items():
+        group_prefix += edge_type.value.abbr
+      group_prefix += "--"
+
+      for edge_type, part_node in group.properties.items():
+        part_number = part_node.get_property(LoincPartProps.part_number)
+        part_id = LoincPartId(f"{LoincNodeType.LoincPart.value.id_prefix}:{part_number}")
+        setattr(loinc_group, edge_type.name.lower(), part_id)
+        name = part_node.get_property(LoincPartProps.part_name)
+        if name is not None:
+          name += f"_({part_node.get_property(LoincPartProps.part_display_name)})"
+        if name is None:
+          name = part_node.get_property(LoincTreeProps.code_text)
+
+        label += f"{group_prefix}{edge_type.value.abbr}_{name}_{part_number}--"
+      loinc_group.entity_label = label
+      if group.get_descendants_count() > 2 and len(group.parent_groups) == 0:
+        root_classes.group_tree_root(loinc_group, self.runtime.current_module)
+      else:
+        root_classes.group_single_root(loinc_group, self.runtime.current_module)
+
+    # seen_keys = set()
+    # for child_key, child_group in group.child_groups.items():
+    #   self._do_generate(child_key, group=child_group, parent_group=group, seen_keys=seen_keys)
+
+  def _can_generate(self, group: Group, parent_group: Group, ) -> bool:
+    return True
+    if parent_group is None:
+      return True
+    if not group.is_abstract():
+      return True
+
+    if group.has_concrete_child():
+      return True
+
+    return False
 
   def _do_roots(self,
       prop: EdgeType,
       part_node: Node,
       child_group: Group,
-      seen: t.Set[str],
+      seen: t.List[str],
   ):
     part_number = part_node.get_property(LoincPartProps.part_number)
 
     if part_number in seen:
+      i = seen.index(part_number)
+      sub = seen[i:]
+      sub.append(part_number)
+      self.circles.add(tuple(sub))
+      # print(f"Seen hit circle: with part number: {part_number} and path: {repr(seen)}")
       return
-    seen.add(part_number)
+    seen.append(part_number)
 
     group_key = Group.group_key({prop: part_node})
     groups_object = self._get_groups_object()
@@ -213,6 +298,8 @@ class Groups2BuilderSteps:
       if self._use_parent(type_):
         parent_node = out_edge.to_node
         self._do_roots(prop, parent_node, parent_group, seen)
+      else:
+        print("debug")
 
   def _get_groups_object(self) -> Groups:
     current_module = self.runtime.current_module

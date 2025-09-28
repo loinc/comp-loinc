@@ -26,7 +26,7 @@ typer = "^0.15.0"
 pandas = "^2.0.0"
 sssom = "^0.3.26"
 matplotlib = "*"
-networkx = "^3.1"
+networkx = "^3.5"
 numpy = "~1.24.3"  # Last 1.x version that's stable
 # Compatible with numpy 1.x
 py-horned-owl = "^1.2.0"

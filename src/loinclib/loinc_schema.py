@@ -237,6 +237,8 @@ class LoincPartProps(PropertyType):
   from_hierarchy = LoincPartPropsArgs(name="from_hierarchy")
 
   is_multiaxial = LoincPartPropsArgs(name="is_multiaxial")
+  is_component_by_system = LoincPartPropsArgs(name="is_component_by_system")
+
 
 @dataclass(kw_only=True)
 class LoincPartEdgeArgs(EdgeTypeArgs):
