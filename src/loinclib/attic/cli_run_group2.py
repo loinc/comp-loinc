@@ -25,11 +25,12 @@ sys.argv = [
     "tree_parent",
 
     "group-parse-loincs",
-    "group-roots",
 
-    "group-generate",
-
-    "save-owl"
+    # "group-roots",
+    #
+    # "group-generate",
+    #
+    # "save-owl"
     # ,'--help'
 ]
 
