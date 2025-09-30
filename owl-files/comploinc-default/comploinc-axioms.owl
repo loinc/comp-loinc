@@ -55,26 +55,26 @@ Declaration(ObjectProperty(<http://loinc.org/property/super-system>))
 Declaration(ObjectProperty(<http://loinc.org/property/system-core>))
 Declaration(ObjectProperty(<http://loinc.org/property/time-core>))
 Declaration(ObjectProperty(<http://loinc.org/property/time-modifier>))
-Declaration(ObjectProperty(<https://comploinc-axioms#has-loin-document-part>))
+Declaration(ObjectProperty(<https://comploinc-axioms#has-document-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-detailed-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-metadata-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-part>))
-Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-primary-part>))
-Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-radiology-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-semantic-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-supplementary-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-syntax-part>))
+Declaration(ObjectProperty(<https://comploinc-axioms#has-primary-part>))
+Declaration(ObjectProperty(<https://comploinc-axioms#has-radiology-part>))
 ############################
 #   Object Properties
 ############################
 
 # Object Property: <http://loinc.org/property/COMPONENT> (<http://loinc.org/property/COMPONENT>)
 
-SubObjectPropertyOf(<http://loinc.org/property/COMPONENT> <https://comploinc-axioms#has-loinc-primary-part>)
+SubObjectPropertyOf(<http://loinc.org/property/COMPONENT> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <http://loinc.org/property/METHOD_TYP> (<http://loinc.org/property/METHOD_TYP>)
 
-SubObjectPropertyOf(<http://loinc.org/property/METHOD_TYP> <https://comploinc-axioms#has-loinc-primary-part>)
+SubObjectPropertyOf(<http://loinc.org/property/METHOD_TYP> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <http://loinc.org/property/METHOD_TYP-supplementary> (<http://loinc.org/property/METHOD_TYP-supplementary>)
 
@@ -82,7 +82,7 @@ SubObjectPropertyOf(<http://loinc.org/property/METHOD_TYP-supplementary> <https:
 
 # Object Property: <http://loinc.org/property/PROPERTY> (<http://loinc.org/property/PROPERTY>)
 
-SubObjectPropertyOf(<http://loinc.org/property/PROPERTY> <https://comploinc-axioms#has-loinc-primary-part>)
+SubObjectPropertyOf(<http://loinc.org/property/PROPERTY> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <http://loinc.org/property/PROPERTY-supplementary> (<http://loinc.org/property/PROPERTY-supplementary>)
 
@@ -90,7 +90,7 @@ SubObjectPropertyOf(<http://loinc.org/property/PROPERTY-supplementary> <https://
 
 # Object Property: <http://loinc.org/property/SCALE_TYP> (<http://loinc.org/property/SCALE_TYP>)
 
-SubObjectPropertyOf(<http://loinc.org/property/SCALE_TYP> <https://comploinc-axioms#has-loinc-primary-part>)
+SubObjectPropertyOf(<http://loinc.org/property/SCALE_TYP> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <http://loinc.org/property/SCALE_TYP-supplementary> (<http://loinc.org/property/SCALE_TYP-supplementary>)
 
@@ -98,11 +98,11 @@ SubObjectPropertyOf(<http://loinc.org/property/SCALE_TYP-supplementary> <https:/
 
 # Object Property: <http://loinc.org/property/SYSTEM> (<http://loinc.org/property/SYSTEM>)
 
-SubObjectPropertyOf(<http://loinc.org/property/SYSTEM> <https://comploinc-axioms#has-loinc-primary-part>)
+SubObjectPropertyOf(<http://loinc.org/property/SYSTEM> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <http://loinc.org/property/TIME_ASPECT> (<http://loinc.org/property/TIME_ASPECT>)
 
-SubObjectPropertyOf(<http://loinc.org/property/TIME_ASPECT> <https://comploinc-axioms#has-loinc-primary-part>)
+SubObjectPropertyOf(<http://loinc.org/property/TIME_ASPECT> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <http://loinc.org/property/adjustment> (<http://loinc.org/property/adjustment>)
 
@@ -154,91 +154,91 @@ SubObjectPropertyOf(<http://loinc.org/property/count> <https://comploinc-axioms#
 
 # Object Property: <http://loinc.org/property/document-kind> (<http://loinc.org/property/document-kind>)
 
-SubObjectPropertyOf(<http://loinc.org/property/document-kind> <https://comploinc-axioms#has-loin-document-part>)
+SubObjectPropertyOf(<http://loinc.org/property/document-kind> <https://comploinc-axioms#has-document-part>)
 
 # Object Property: <http://loinc.org/property/document-role> (<http://loinc.org/property/document-role>)
 
-SubObjectPropertyOf(<http://loinc.org/property/document-role> <https://comploinc-axioms#has-loin-document-part>)
+SubObjectPropertyOf(<http://loinc.org/property/document-role> <https://comploinc-axioms#has-document-part>)
 
 # Object Property: <http://loinc.org/property/document-subject-matter-domain> (<http://loinc.org/property/document-subject-matter-domain>)
 
-SubObjectPropertyOf(<http://loinc.org/property/document-subject-matter-domain> <https://comploinc-axioms#has-loin-document-part>)
+SubObjectPropertyOf(<http://loinc.org/property/document-subject-matter-domain> <https://comploinc-axioms#has-document-part>)
 
 # Object Property: <http://loinc.org/property/document-type-of-service> (<http://loinc.org/property/document-type-of-service>)
 
-SubObjectPropertyOf(<http://loinc.org/property/document-type-of-service> <https://comploinc-axioms#has-loin-document-part>)
+SubObjectPropertyOf(<http://loinc.org/property/document-type-of-service> <https://comploinc-axioms#has-document-part>)
 
 # Object Property: <http://loinc.org/property/rad-anatomic-location-imaging-focus> (<http://loinc.org/property/rad-anatomic-location-imaging-focus>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-imaging-focus> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-imaging-focus> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-anatomic-location-laterality> (<http://loinc.org/property/rad-anatomic-location-laterality>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-laterality> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-laterality> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-anatomic-location-laterality-presence> (<http://loinc.org/property/rad-anatomic-location-laterality-presence>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-laterality-presence> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-laterality-presence> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-anatomic-location-region-imaged> (<http://loinc.org/property/rad-anatomic-location-region-imaged>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-region-imaged> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-anatomic-location-region-imaged> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-guidance-for-action> (<http://loinc.org/property/rad-guidance-for-action>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-action> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-action> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-guidance-for-approach> (<http://loinc.org/property/rad-guidance-for-approach>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-approach> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-approach> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-guidance-for-object> (<http://loinc.org/property/rad-guidance-for-object>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-object> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-object> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-guidance-for-presence> (<http://loinc.org/property/rad-guidance-for-presence>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-presence> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-guidance-for-presence> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-maneuver-maneuver-type> (<http://loinc.org/property/rad-maneuver-maneuver-type>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-maneuver-maneuver-type> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-maneuver-maneuver-type> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-modality-subtype> (<http://loinc.org/property/rad-modality-subtype>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-modality-subtype> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-modality-subtype> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-modality-type> (<http://loinc.org/property/rad-modality-type>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-modality-type> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-modality-type> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-pharmaceutical-route> (<http://loinc.org/property/rad-pharmaceutical-route>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-pharmaceutical-route> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-pharmaceutical-route> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-pharmaceutical-substance-given> (<http://loinc.org/property/rad-pharmaceutical-substance-given>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-pharmaceutical-substance-given> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-pharmaceutical-substance-given> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-reason-for-exam> (<http://loinc.org/property/rad-reason-for-exam>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-reason-for-exam> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-reason-for-exam> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-subject> (<http://loinc.org/property/rad-subject>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-subject> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-subject> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad-timing> (<http://loinc.org/property/rad-timing>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad-timing> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad-timing> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad_view_aggregation> (<http://loinc.org/property/rad_view_aggregation>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad_view_aggregation> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad_view_aggregation> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/rad_view_view_type> (<http://loinc.org/property/rad_view_view_type>)
 
-SubObjectPropertyOf(<http://loinc.org/property/rad_view_view_type> <https://comploinc-axioms#has-loinc-radiology-part>)
+SubObjectPropertyOf(<http://loinc.org/property/rad_view_view_type> <https://comploinc-axioms#has-radiology-part>)
 
 # Object Property: <http://loinc.org/property/super-system> (<http://loinc.org/property/super-system>)
 
@@ -256,9 +256,9 @@ SubObjectPropertyOf(<http://loinc.org/property/time-core> <https://comploinc-axi
 
 SubObjectPropertyOf(<http://loinc.org/property/time-modifier> <https://comploinc-axioms#has-loinc-detailed-part>)
 
-# Object Property: <https://comploinc-axioms#has-loin-document-part> (<https://comploinc-axioms#has-loin-document-part>)
+# Object Property: <https://comploinc-axioms#has-document-part> (<https://comploinc-axioms#has-document-part>)
 
-SubObjectPropertyOf(<https://comploinc-axioms#has-loin-document-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
+SubObjectPropertyOf(<https://comploinc-axioms#has-document-part> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <https://comploinc-axioms#has-loinc-detailed-part> (<https://comploinc-axioms#has-loinc-detailed-part>)
 
@@ -267,14 +267,6 @@ SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-detailed-part> <https://
 # Object Property: <https://comploinc-axioms#has-loinc-metadata-part> (<https://comploinc-axioms#has-loinc-metadata-part>)
 
 SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-metadata-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
-
-# Object Property: <https://comploinc-axioms#has-loinc-primary-part> (<https://comploinc-axioms#has-loinc-primary-part>)
-
-SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-primary-part> <https://comploinc-axioms#has-loinc-part>)
-
-# Object Property: <https://comploinc-axioms#has-loinc-radiology-part> (<https://comploinc-axioms#has-loinc-radiology-part>)
-
-SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-radiology-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
 
 # Object Property: <https://comploinc-axioms#has-loinc-semantic-part> (<https://comploinc-axioms#has-loinc-semantic-part>)
 
@@ -287,6 +279,14 @@ SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-supplementary-part> <htt
 # Object Property: <https://comploinc-axioms#has-loinc-syntax-part> (<https://comploinc-axioms#has-loinc-syntax-part>)
 
 SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-syntax-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
+
+# Object Property: <https://comploinc-axioms#has-primary-part> (<https://comploinc-axioms#has-primary-part>)
+
+SubObjectPropertyOf(<https://comploinc-axioms#has-primary-part> <https://comploinc-axioms#has-loinc-part>)
+
+# Object Property: <https://comploinc-axioms#has-radiology-part> (<https://comploinc-axioms#has-radiology-part>)
+
+SubObjectPropertyOf(<https://comploinc-axioms#has-radiology-part> <https://comploinc-axioms#has-primary-part>)
 
 
 )
