@@ -7,30 +7,7 @@ sys.argv = [
     "cli_run",
     "builder",
 
-    "set-module",
-    "-n",
-    "test",
-
-    "group-properties",
-    "--properties",
-    "/component",
-
-    "--properties",
-    "/system",
-
-    "group-parents",
-    "--parents",
-    "parent_comp_by_system",
-    "--parents",
-    "tree_parent",
-
-    "group-parse-loincs",
-
-    "group-roots",
-    #
-    # "group-generate",
-    #
-    # "save-owl"
+    "try-group-parts"
     # ,'--help'
 ]
 

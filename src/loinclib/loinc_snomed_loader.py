@@ -2,7 +2,7 @@ from enum import StrEnum
 
 import pandas as pd
 
-from loinclib import LoinclibGraph, SnomedNodeType, SnomedEdges, Configuration
+from loinclib import LoinclibGraph, SnomedNodeType, SnomedEdges, Configuration, GeneralEdgeType
 from loinclib.loinc_schema import LoincNodeType, LoincPartProps
 from loinclib.snomed_schema_v2 import SnomedProperties
 
@@ -105,6 +105,7 @@ class LoincSnomedLoader:
                 type_=SnomedNodeType.Concept, code=referenced_component_id
             )
             loinc_node.add_edge_single(type_=SnomedEdges.maps_to, to_node=snomed_node)
+            loinc_node.add_edge_single(type_=GeneralEdgeType.maps_to, to_node=snomed_node)
 
         self.graph.loaded_sources[LoincSnomedSources.identifier] = {}
 
@@ -182,6 +183,9 @@ class LoincSnomedLoader:
 
                 loinc_part.add_edge_single(
                     type_=SnomedEdges.maps_to, to_node=snomed_cocept
+                )
+                loinc_part.add_edge_single(
+                    type_=GeneralEdgeType.maps_to, to_node=snomed_cocept
                 )
 
         self.graph.loaded_sources[LoincSnomedSources.part_mapping] = {}

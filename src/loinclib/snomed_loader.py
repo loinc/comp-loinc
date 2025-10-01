@@ -3,7 +3,7 @@ from enum import StrEnum
 
 import pandas as pd
 
-from loinclib import LoinclibGraph, Node, Configuration, EdgeType
+from loinclib import LoinclibGraph, Node, Configuration, EdgeType, GeneralEdgeType
 from loinclib.snomed_schema_v2 import SnomedNodeType, SnomedEdges, SnomedProperties
 
 
@@ -102,6 +102,9 @@ class SnomedLoader:
                 )
 
                 from_node.add_edge_single(type_, to_node=to_node)
+
+                if type_ == SnomedEdges.is_a:
+                  from_node.add_edge_single(GeneralEdgeType.has_parent, to_node=to_node, source="snomed")
 
         for type_ in types_:
             loaded_relationships[type_] = True

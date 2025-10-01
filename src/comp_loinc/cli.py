@@ -11,6 +11,7 @@ from comp_loinc.groups.groups_builders import GroupsBuilderSteps
 from comp_loinc.groups2 import group_builders as g2builders
 from comp_loinc.snomed_builder_steps import SnomedBuilderSteps
 from loinclib import Configuration
+from loinclib.attic.tmp.try_steps import TryBuilders
 from loinclib.graph_commands import GraphCommands
 
 from .loinc_builder_steps import LoincBuilderSteps
@@ -104,6 +105,9 @@ class CompLoincCli:
     self.graph_commands = GraphCommands(config=self.config)
     self.graph_commands.setup_builder(self.builder_cli)
 
+    self.try_builders = TryBuilders(config=self.config)
+    self.try_builders.setup_builder_cli(self.builder_cli)
+
   def callback(
       self,
       *,
@@ -160,6 +164,9 @@ class CompLoincCli:
 
     self.graph_commands.config = self.config
     self.graph_commands.runtime = self.runtime
+
+    self.try_builders.config = self.config
+    self.try_builders.runtime = self.runtime
 
   def build(
       self,

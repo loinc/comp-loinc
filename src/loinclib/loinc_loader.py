@@ -4,6 +4,7 @@ from enum import StrEnum
 import pandas as pd
 
 import loinclib.loinc_schema as LS
+from loinclib import GeneralEdgeType
 from loinclib.config import Configuration
 from loinclib.graph import Node, LoinclibGraph, ElementProps
 from loinclib.loinc_schema import LoincPartEdge, LoincPartProps, LoincClassEdges
@@ -314,6 +315,9 @@ class LoincLoader:
 
         part_node.add_edge_single(
             type_=LoincPartEdge.parent_comp_by_system, to_node=parent_node, source=LoincElementSource.component_by_system
+        )
+        part_node.add_edge_single(
+            type_=GeneralEdgeType.has_parent, to_node=parent_node, source=LoincElementSource.component_by_system
         )
 
     self.graph.loaded_sources[

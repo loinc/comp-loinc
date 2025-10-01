@@ -184,10 +184,14 @@ class EdgeTypeArgs(TypeArgs):
 class EdgeType(Type):
   pass
 
+@dataclass(kw_only=True)
+class GeneralEdgeTypeArgs(EdgeTypeArgs):
+  pass
 
-# @dataclass(kw_only=True)
-# class PropertyTypeArgs(TypeArgs):
-#     pass
+class GeneralEdgeType(EdgeType):
+  has_parent = GeneralEdgeTypeArgs(name="has_parent")
+  maps_to = GeneralEdgeTypeArgs(name="maps_to")
+
 
 @dataclass(kw_only=True)
 class PropertyTypeArgs(TypeArgs):
@@ -299,6 +303,7 @@ class NodeHandler(PropertyOwnerHandler):
     self.curie_prefix = curie_prefix
     self.property_handlers: t.Dict[PropertyType, PropertyHandler] = dict()
     self.out_edge_handlers: t.Dict[EdgeType, t.Dict[NodeType, EdgeHandler]] = dict()
+    self.in_edge_handlers: t.Dict[EdgeType, t.Dict[NodeType, EdgeHandler]] = dict()
 
     flags = 0
     if url_regex_ignore_case:
@@ -376,6 +381,30 @@ class NodeHandler(PropertyOwnerHandler):
     to_edge_handlers_by_type[to_node_handler.type_] = edge_handler
     return edge_handler
 
+
+  def get_in_edge_handler(
+      self, type_: EdgeType, from_node_handler: NodeHandler
+  ) -> t.Optional[EdgeHandler]:
+    from_edge_handlers_by_type = self.in_edge_handlers.get(type_, {})
+    edge_handler: EdgeHandler = from_edge_handlers_by_type.get(from_node_handler.type_, None)
+    if edge_handler:
+      return edge_handler
+
+    if self.strict:
+      raise ValueError(
+          f"Unknown edge type: {type_} to node type: {from_node_handler.type_}"
+      )
+
+    edge_handler = self.schema.create_edge_handler(
+        type_=type_,
+        from_node_handler=from_node_handler,
+        to_node_handler=self,
+        strict=self.strict,
+        dynamic=True,
+    )
+    from_edge_handlers_by_type[from_node_handler.type_] = edge_handler
+    return edge_handler
+
   def get_all_out_edges(
       self, node_id
   ) -> t.Iterator[t.Tuple[str, str, int, t.Dict[PropertyType, t.Any]]]:
@@ -383,6 +412,13 @@ class NodeHandler(PropertyOwnerHandler):
     for tup in nx_graph.out_edges(nbunch=node_id, keys=True, data=True):
       yield tup
 
+
+  def get_all_in_edges(
+      self, node_id
+  ) -> t.Iterator[t.Tuple[str, str, int, t.Dict[PropertyType, t.Any]]]:
+    nx_graph = self.schema.graph.nx_graph
+    for tup in nx_graph.in_edges(nbunch=node_id, keys=True, data=True):
+      yield tup
 
 class EdgeHandler(PropertyOwnerHandler):
   def __init__(
@@ -627,8 +663,27 @@ class Node(Element):
           type_=data[ElementKeys.TYPE_KEY], to_node_handler=to_node.node_handler
       )
       yield Edge(
+          from_node=from_node, to_node=to_node, edge_key=key, edge_handler=edge_type)
+
+  def get_out_edges(self, *edge_types):
+    return [ edge for edge in self.get_all_out_edges() if edge.handler.type_ in edge_types ]
+
+  def get_all_in_edges(self):
+    for from_id, to_id, key, data in self.node_handler.get_all_in_edges(self.node_id):
+      from_node = self.graph.get_node_by_id(node_id=from_id)
+      to_node = self.graph.get_node_by_id(node_id=to_id)
+      edge_type = self.node_handler.get_in_edge_handler(
+          type_=data[ElementKeys.TYPE_KEY], from_node_handler=from_node.node_handler
+      )
+      yield Edge(
           from_node=from_node, to_node=to_node, edge_key=key, edge_handler=edge_type
       )
+
+  def get_in_edges(self, *edge_types):
+    return [ edge for edge in self.get_all_in_edges() if edge.handler.type_ in edge_types ]
+
+  def get_node_type(self):
+    return self.node_handler.type_
 
   def get_id_code(self):
     return self.node_handler.get_code_from_id()
