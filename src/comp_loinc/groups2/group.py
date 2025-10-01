@@ -193,6 +193,9 @@ class GroupPart:
   def get_node_type(self):
     return self.part_node.get_node_type()
 
+  def get_key(self):
+    return self.part_node.node_id
+
   def get_depth(self):
     if self.depth is None:
       parents = self.get_parents()

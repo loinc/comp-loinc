@@ -155,6 +155,7 @@ class TypeArgs:
     if self.abbr is None:
       self.abbr = self.name
 
+
 class Type(Enum):
   pass
 
@@ -184,9 +185,11 @@ class EdgeTypeArgs(TypeArgs):
 class EdgeType(Type):
   pass
 
+
 @dataclass(kw_only=True)
 class GeneralEdgeTypeArgs(EdgeTypeArgs):
   pass
+
 
 class GeneralEdgeType(EdgeType):
   has_parent = GeneralEdgeTypeArgs(name="has_parent")
@@ -381,7 +384,6 @@ class NodeHandler(PropertyOwnerHandler):
     to_edge_handlers_by_type[to_node_handler.type_] = edge_handler
     return edge_handler
 
-
   def get_in_edge_handler(
       self, type_: EdgeType, from_node_handler: NodeHandler
   ) -> t.Optional[EdgeHandler]:
@@ -412,13 +414,13 @@ class NodeHandler(PropertyOwnerHandler):
     for tup in nx_graph.out_edges(nbunch=node_id, keys=True, data=True):
       yield tup
 
-
   def get_all_in_edges(
       self, node_id
   ) -> t.Iterator[t.Tuple[str, str, int, t.Dict[PropertyType, t.Any]]]:
     nx_graph = self.schema.graph.nx_graph
     for tup in nx_graph.in_edges(nbunch=node_id, keys=True, data=True):
       yield tup
+
 
 class EdgeHandler(PropertyOwnerHandler):
   def __init__(
@@ -577,6 +579,7 @@ class LoinclibGraph:
       with open(path, "wb") as f:
         pickle.dump(self.nx_graph, f)
 
+
 @dataclass(kw_only=True)
 class ElementSourceArgs:
   name: str
@@ -666,7 +669,15 @@ class Node(Element):
           from_node=from_node, to_node=to_node, edge_key=key, edge_handler=edge_type)
 
   def get_out_edges(self, *edge_types):
-    return [ edge for edge in self.get_all_out_edges() if edge.handler.type_ in edge_types ]
+    return (edge for edge in self.get_all_out_edges() if edge.handler.type_ in edge_types)
+    # return [ edge for edge in self.get_all_out_edges() if edge.handler.type_ in edge_types ]
+
+  def get_all_out_nodes(self):
+    return (edge.to_node for edge in self.get_all_out_edges())
+
+  def get_out_nodes(self, *, edge_types: t.List[EdgeType], node_types: t.List[NodeType]):
+    return (edge.to_node for edge in self.get_out_edges() if edge.handler.type_ in edge_types and
+            edge.to_node.get_node_type() in node_types)
 
   def get_all_in_edges(self):
     for from_id, to_id, key, data in self.node_handler.get_all_in_edges(self.node_id):
@@ -680,7 +691,14 @@ class Node(Element):
       )
 
   def get_in_edges(self, *edge_types):
-    return [ edge for edge in self.get_all_in_edges() if edge.handler.type_ in edge_types ]
+    return (edge for edge in self.get_all_in_edges() if edge.handler.type_ in edge_types)
+
+  def get_all_in_nodes(self):
+    return (edge.to_node for edge in self.get_all_in_edges())
+
+  def get_in_nodes(self, *, edge_types: t.List[EdgeType], node_types: t.List[NodeType]):
+    return (edge.from_node for edge in self.get_in_edges() if edge.handler.type_ in edge_types and
+            edge.from_node.get_node_type() in node_types)
 
   def get_node_type(self):
     return self.node_handler.type_
@@ -693,7 +711,7 @@ class Node(Element):
 
   def __eq__(self, other):
     if isinstance(other, Node):
-      return  self.node_id == other.node_id
+      return self.node_id == other.node_id
     return False
 
 
@@ -706,7 +724,8 @@ class Edge(Element):
     self.to_node: Node = to_node
     self.edge_key = edge_key
     self.handler = edge_handler
-    self.properties = self.graph.nx_graph.get_edge_data(u=self.from_node.node_id, v=self.to_node.node_id, key=self.edge_key)
+    self.properties = self.graph.nx_graph.get_edge_data(u=self.from_node.node_id, v=self.to_node.node_id,
+                                                        key=self.edge_key)
 
   def get_property(self, type_: PropertyType) -> t.Any:
     property_handler = self.handler.get_property_handler(type_)

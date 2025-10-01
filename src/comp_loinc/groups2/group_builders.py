@@ -142,7 +142,21 @@ class Groups2BuilderSteps:
         print(group)
 
   def group_part_root_closure(self):
-    pass
+    seen: t.Set[str] = set()
+    for group_part in self._get_groups_object().group_parts.values():
+      self._do_group_part_root_closure(group_part, seen)
+
+
+  def _do_group_part_root_closure(self, group_part: GroupPart, seen: t.Set[str]):
+    if group_part.get_key() in seen:
+      return
+
+    
+
+    seen.add(group_part.get_key())
+
+
+
 
   def group_roots(self):
     loinc_loader = ll.loinc_loader.LoincLoader(
