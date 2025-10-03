@@ -679,9 +679,6 @@ class Node(Element):
     return (edge.to_node for edge in self.get_out_edges() if edge.handler.type_ in edge_types and
             edge.to_node.get_node_type() in node_types)
 
-  def get_out_nodes(self, *node_types: NodeType ):
-    return [edge.to_node for edge in self.get_all_out_edges() if edge.to_node.get_node_type() in node_types]
-
   def get_all_in_edges(self):
     for from_id, to_id, key, data in self.node_handler.get_all_in_edges(self.node_id):
       from_node = self.graph.get_node_by_id(node_id=from_id)
@@ -702,9 +699,6 @@ class Node(Element):
   def get_in_nodes(self, *, edge_types: t.List[EdgeType], node_types: t.List[NodeType]):
     return (edge.from_node for edge in self.get_in_edges() if edge.handler.type_ in edge_types and
             edge.from_node.get_node_type() in node_types)
-
-  def get_in_nodes(self, *node_types: NodeType ):
-    return [edge.from_node for edge in self.get_all_in_edges() if edge.from_node.get_node_type() in node_types]
 
   def get_node_type(self):
     return self.node_handler.type_
