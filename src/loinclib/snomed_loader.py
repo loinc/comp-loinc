@@ -88,14 +88,14 @@ class SnomedLoader:
 
             if type_ in types_:
                 from_node: Node = self.graph.getsert_node(
-                    type_=SnomedNodeType.Concept, code=source_id
+                    type_=SnomedNodeType.concept, code=source_id
                 )
                 from_node.set_property(
                     type_=SnomedProperties.concept_id, value=source_id
                 )
 
                 to_node: Node = self.graph.getsert_node(
-                    type_=SnomedNodeType.Concept, code=destination_id
+                    type_=SnomedNodeType.concept, code=destination_id
                 )
                 to_node.set_property(
                     type_=SnomedProperties.concept_id, value=destination_id
@@ -150,7 +150,7 @@ class SnomedLoader:
                 continue
 
             concept = self.graph.getsert_node(
-                type_=SnomedNodeType.Concept, code=concept_id
+                type_=SnomedNodeType.concept, code=concept_id
             )
             concept.set_property(type_=SnomedProperties.concept_id, value=concept_id)
             concept.set_property(type_=term_type, value=term)

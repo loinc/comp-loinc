@@ -71,7 +71,7 @@ class LoincSnomedLoader:
             ) = tpl
             # @formatter:on
 
-            snomed_node = self.graph.getsert_node(SnomedNodeType.Concept, concept_id)
+            snomed_node = self.graph.getsert_node(SnomedNodeType.concept, concept_id)
             snomed_node.set_property(
                 type_=SnomedProperties.fully_specified_name, value=term
             )
@@ -102,7 +102,7 @@ class LoincSnomedLoader:
                 type_=LoincNodeType.LoincTerm, code=alternate_identifier
             )
             snomed_node = self.graph.getsert_node(
-                type_=SnomedNodeType.Concept, code=referenced_component_id
+                type_=SnomedNodeType.concept, code=referenced_component_id
             )
             loinc_node.add_edge_single(type_=SnomedEdges.maps_to, to_node=snomed_node)
             loinc_node.add_edge_single(type_=GeneralEdgeType.maps_to, to_node=snomed_node)
@@ -131,10 +131,10 @@ class LoincSnomedLoader:
             # @formatter:on
 
             from_node = self.graph.getsert_node(
-                type_=SnomedNodeType.Concept, code=source_id
+                type_=SnomedNodeType.concept, code=source_id
             )
             to_node = self.graph.getsert_node(
-                type_=SnomedNodeType.Concept, code=destination_id
+                type_=SnomedNodeType.concept, code=destination_id
             )
             type_ = SnomedEdges(type_id)
             from_node.add_edge_single(type_=type_, to_node=to_node)
@@ -172,7 +172,7 @@ class LoincSnomedLoader:
                 )
 
                 snomed_cocept = self.graph.getsert_node(
-                    type_=SnomedNodeType.Concept, code=target_code
+                    type_=SnomedNodeType.concept, code=target_code
                 )
                 snomed_cocept.set_property(
                     type_=SnomedProperties.concept_id, value=target_code

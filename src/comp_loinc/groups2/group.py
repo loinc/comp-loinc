@@ -3,10 +3,11 @@ import typing as t
 from functools import reduce
 
 from comp_loinc.module import Module
-from loinclib import Node, EdgeType, GeneralEdgeType
+from loinclib import Node, EdgeType, GeneralEdgeType, NodeType
 from loinclib.loinc_schema import LoincPartProps
 from loinclib.loinc_tree_schema import LoincTreeProps
 
+from urllib.parse import quote_plus
 
 # from enum import StrEnum
 
@@ -29,17 +30,22 @@ class Group:
     self.__depth = None
 
     self.loincs: t.Dict[str, Node] = dict()
-    self.key = None
+    self._key = None
 
     self.parent_groups: t.Dict[str, Group] = dict()
     self.child_groups: t.Dict[str, Group] = dict()
+    self.properties: t.Dict[EdgeType, t.Dict[str, GroupProperty]] = {}
 
-    self.properties: t.Dict[EdgeType, t.Set[GroupProperty]] = {}
+    self.generated = False
 
-  def get_key(self):
-    if self.key is None:
-      self.key = self.group_key()
-    return self.key
+  def copy(self) -> Group:
+    copy = Group()
+    copy.loincs = dict(self.loincs)
+    copy.parent_groups = dict(self.parent_groups)
+    copy.child_groups = dict(self.child_groups)
+    copy.properties = dict(self.properties)
+    copy.generated = self.generated
+    return copy
 
   def is_abstract(self):
     return len(self.loincs) == 0
@@ -47,17 +53,6 @@ class Group:
   def is_complex(self):
     return len(self.properties) > 1
 
-  def __repr__(self):
-    string = f"{self.key}"
-    for type_, group_properties in self.properties.items():
-      for group_property in group_properties:
-        node = group_property.group_part.part_node
-        name = node.get_property(LoincPartProps.part_name)
-        if name is None:
-          name = f"TREE: {node.get_property(LoincTreeProps.code_text)}"
-
-        string += f" -- {type_.value.abbr}  {name}"
-    return string
 
   def get_descendants_loincs_count(self):
     if self.__descendants_loincs_count is None:
@@ -71,16 +66,16 @@ class Group:
 
   def _do_descencents_count(self, group: Group, seen: set):
     count = 1
-    if self.key in seen:
+    if self.key() in seen:
       return count
-    seen.add(self.key)
+    seen.add(self.key())
     for key, child in self.child_groups.items():
       count += self._do_descencents_count(child, seen)
     return count
 
   def _do_descendant_loincs_count(self, seen_keys: set):
     count = len(self.loincs)
-    seen_keys.add(self.get_key())
+    seen_keys.add(self.key())
 
     for key, child in self.child_groups.items():
       if key in seen_keys:
@@ -95,7 +90,7 @@ class Group:
 
   def _do_ancestors_loincs_count(self, seen_keys: set):
     count = len(self.loincs)
-    seen_keys.add(self.get_key())
+    seen_keys.add(self.key())
     for key, parent in self.parent_groups.items():
       if key in seen_keys:
         continue
@@ -109,7 +104,7 @@ class Group:
 
   def _do_depth(self, seen_keys: set):
     depth = 0
-    seen_keys.add(self.get_key())
+    seen_keys.add(self.key())
     for key, group in self.parent_groups.items():
       if key in seen_keys:
         continue
@@ -118,34 +113,48 @@ class Group:
     return depth
 
   def __str__(self):
-    return self.__repr__()
+    string = f"Group:\n"
+    for type_, group_properties in self.properties.items():
+      for key, group_property in group_properties.items():
+        string += f"{group_property}\n"
+    return string
 
   def has_concrete_child(self):
     return any([not child.is_abstract() for child in self.child_groups.values()])
 
-  def group_key(self) -> str:
-    if self.key is not None:
-      return self.key
+  def key(self) -> str:
+    if self._key is not None:
+      return self._key
 
     group_key: t.Optional[str] = None
     prop_type: EdgeType
 
     property_types = list(self.properties.keys())
-    property_types.sort(key=lambda x: x.value.name)
+    property_types.sort(key=lambda x: x.name)
     for prop_type in property_types:
-      type_prefix = prop_type.value.abbr + "_"
+      type_prefix = prop_type.name + "_"
       if group_key is None:
         group_key = type_prefix
       else:
         group_key += "--" + type_prefix
 
       group_properties = self.properties[prop_type]
+      keys =  list(group_properties.keys())
+      keys.sort()
 
-      for group_property in group_properties:
-        group_key += group_property.group_part.part_node.get_property(LoincPartProps.part_name) + "_"
+      for key in keys:
+        group_property = group_properties[key]
+
+        part_node = group_property.group_part.part_node
+        name = part_node.get_property(LoincPartProps.part_name)
+        if name is None:
+            name = f"TREE: {part_node.get_property(LoincTreeProps.code_text)}"
+
+        group_key += name + "_"
         group_key += group_property.group_part.part_node.get_property(LoincPartProps.part_number) + "_"
-    self.key = group_key
-    return self.key
+        group_key = quote_plus(group_key)
+    self._key = group_key
+    return self._key
 
 
 class GroupProperty:
@@ -159,6 +168,15 @@ class GroupProperty:
   def __hash__(self):
     return hash((self.edge_type, self.group_part.part_node.node_id))
 
+  def __str__(self):
+    return f"GroupProperty: {self.edge_type.name}: {self.group_part}"
+
+  def key(self):
+    return f"{self.edge_type.name}:{self.group_part.key()}"
+
+  def name(self):
+    return f""
+
 
 class GroupPart:
   def __init__(self, *, groups: Groups, part_node: Node):
@@ -167,27 +185,30 @@ class GroupPart:
     self.parents: t.Set[GroupPart] | None = None
     self.depth: float | None = None
     self.ancestors: t.Set[GroupPart] | None = None
+    self.group_properties: t.List[GroupProperty] = []
 
   def __eq__(self, other):
     return self.part_node == other.part_node
 
-  def get_parents(self) -> t.Set[GroupPart]:
+  def __hash__(self):
+    return hash(GroupPart) ^ hash(self.part_node.node_id)
+
+  def key(self):
+    return self.part_node.node_id
+
+  def get_parents(self, *parent_types: NodeType) -> t.Set[GroupPart]:
     if self.parents is None:
       self.parents = set()
-      for edge in self.part_node.get_all_out_edges():
-        if edge.handler.type_ == GeneralEdgeType.has_parent:
-          parent_node = edge.to_node
-          parent = self.groups.group_parts.setdefault(parent_node.node_id,
-                                                      GroupPart(part_node=parent_node, groups=self.groups))
-          self.parents.add(parent)
+      for parent_node in self.part_node.get_out_nodes(*parent_types):
+        self.parents.add(self.groups.group_parts.setdefault(parent_node.node_id, GroupPart(groups=self.groups, part_node=parent_node)))
     return self.parents
 
-  def get_ancestors(self) -> t.Set[GroupPart]:
+  def get_ancestors(self, *ancestor_types: NodeType) -> t.Set[GroupPart]:
     if self.ancestors is None:
       self.ancestors = set()
       self.ancestors.add(self)
-      for parent in self.get_parents():
-        self.ancestors.update(parent.get_ancestors())
+      for parent in self.get_parents(*ancestor_types):
+        self.ancestors.update(parent.get_ancestors(*ancestor_types))
     return self.ancestors
 
   def get_node_type(self):
@@ -206,3 +227,16 @@ class GroupPart:
     if self not in other.get_ancestors():
       raise ValueError(f"Group part: {other}, does not have this GroupPart as an ancestor: {self}")
     return self.depth / other.get_depth()
+
+  def __str__(self):
+    name = self.part_node.get_property(LoincPartProps.part_name)
+    if name is None:
+      name = f"TREE: {self.part_node.get_property(LoincTreeProps.code_text)}"
+    return f"GroupPart: {name}  {self.part_node.node_id}"
+
+
+  def name(self):
+    name = self.part_node.get_property(LoincPartProps.part_name)
+    if name is None:
+      name = f"TREE: {self.part_node.get_property(LoincTreeProps.code_text)}"
+    return f"GP {name} {self.part_node.node_id}"

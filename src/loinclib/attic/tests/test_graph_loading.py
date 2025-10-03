@@ -41,7 +41,7 @@ class TestLoading(TestCase):
         snomed_loader.load_selected_relations(SnomedEdges.is_a)
         #
         node = runtime.graph.get_node_by_code(
-            type_=SnomedNodeType.Concept, code="237334005"
+            type_=SnomedNodeType.concept, code="237334005"
         )
         for edge in node.get_all_out_edges():
             print(edge)
@@ -60,7 +60,7 @@ class TestLoading(TestCase):
         loinc_snomed_loader.load_relationship()
 
         node = runtime.graph.get_node_by_code(
-            type_=SnomedNodeType.Concept, code="40081010000107"
+            type_=SnomedNodeType.concept, code="40081010000107"
         )
         for edge in node.get_all_out_edges():
             print(edge)

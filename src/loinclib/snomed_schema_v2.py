@@ -13,7 +13,7 @@ class SnomedNodeTypeArgs(NodeTypeArgs):
 class SnomedNodeType(NodeType):
   """SNOMED Node Types"""
 
-  Concept = SnomedNodeTypeArgs(name="Concept", id_prefix="sct")
+  concept = SnomedNodeTypeArgs(name="Concept", id_prefix="sct")
 
 
 @dataclass(kw_only=True)
