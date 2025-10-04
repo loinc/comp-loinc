@@ -9,14 +9,13 @@ import loinclib as ll
 from comp_loinc.datamodel.comp_loinc import LoincTerm, LoincPartId
 from comp_loinc.groups2.group import Group, GroupProperty, GroupPart
 from comp_loinc.groups2.group import Groups
-from loinclib import LoincNodeType, EdgeType, SnomedNodeType
+from loinclib import LoincNodeType, EdgeType, SnomedNodeType, GeneralEdgeType
 from loinclib.graph import Node, Edge, NodeType
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps, LoincTermPrimaryEdges
 from loinclib.loinc_tree_schema import LoincTreeProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
 from comp_loinc.comploinc_schema import ComploincNodeType
 from comp_loinc import root_classes
-
 
 
 class Groups2BuilderSteps:
@@ -175,7 +174,8 @@ class Groups2BuilderSteps:
       if group_part.key() in seen_group_parts:
         continue
       seen_group_parts.add(group_part)
-      seen_group_parts.update(group_part.get_ancestors(*self.group_part_parent_types))
+      seen_group_parts.update(group_part.get_ancestors(parent_node_types=self.group_part_parent_types,
+                                                       edge_types=[GeneralEdgeType.has_parent]))
 
     print("debug")
 
@@ -262,31 +262,110 @@ class Groups2BuilderSteps:
 
   def group_generate(self,
       parent_group: t.Annotated[bool, typer.Option("--parent-group",
-                                                            help="Create the direct parent groups of a LOINC term")] = False):
+                                                   help="Create the direct parent groups of a LOINC term")] = False):
 
     if parent_group:
       self._do_parent_groups()
 
+    # groups = self._get_groups_object()
+    # for group in groups.groups.values():
+    #   if not group.generated:
+    #     continue
+    #
+    #   group_entity: LoincTerm
+    #   group_key = group.key()
+    #   group_entity = self.runtime.current_module.get_entity(entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{group_key}",entity_class=LoincTerm)
+    #   if group_entity is None:
+    #     group_entity = self.runtime.current_module.getsert_entity(entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{group_key}",entity_class=LoincTerm)
+    #     for property_type, properties in group.properties.items():
+    #       if len(properties) > 1:
+    #         raise ValueError(f"Generating groups with multiple values for a property is not supported yet: {property_type.value.name}, {properties}")
+    #       if len(properties) == 0:
+    #         raise ValueError(f"Properties do not have any values: {property_type.value.name}, {properties}")
+    #       p = list(properties.values())[0]
+    #       setattr(group_entity, property_type.name.lower(), p.group_part.part_node.node_id)
+    #   print("debug")
+
+  def _do_parent_groups(self):
     groups = self._get_groups_object()
-    for group in groups.groups.values():
-      if not group.generated:
+    all_groups = {}
+    duplicate_count = 0
+    group_count = 0
+    for group in set(groups.groups.values()):
+      if group.is_abstract() or group.generated:
         continue
 
-      group_entity: LoincTerm
-      group_key = group.key()
-      group_entity = self.runtime.current_module.get_entity(entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{group_key}",entity_class=LoincTerm)
-      if group_entity is None:
-        group_entity = self.runtime.current_module.getsert_entity(entity_id=f"{ComploincNodeType.group_node.value.id_prefix}:{group_key}",entity_class=LoincTerm)
-        for property_type, properties in group.properties.items():
-          if len(properties) > 1:
-            raise ValueError(f"Generating groups with multiple values for a property is not supported yet: {property_type.value.name}, {properties}")
-          if len(properties) == 0:
-            raise ValueError(f"Properties do not have any values: {property_type.value.name}, {properties}")
-          p = list(properties.values())[0]
-          setattr(group_entity, property_type.name.lower(), p.group_part.part_node.node_id)
-      print("debug")
+      group_builder_config: t.Dict[EdgeType, t.Set[GroupPart]] = dict()
+      for property_type, properties in group.properties.items():
+        parts = set()
+        for p in properties.values():
+          # parts.update(p.group_part.get_parents(parent_node_types=self.group_part_parent_types, edge_types=[GeneralEdgeType.has_parent]))
+          parts.update(self._get_part_parents(part=p.group_part, rounds=3, parent_node_types=self.group_part_parent_types,
+                                              edge_types=[GeneralEdgeType.has_parent]))
+        if len(parts) > 0:
+          group_builder_config[property_type] = parts
+      if len(group_builder_config) > 0:
+        new_groups = self._groups_builder(group_builder_config, set())
+        for group in new_groups:
+          if group.key() in all_groups:
+            duplicate_count += 1
+          else:
+            group_count += 1
+            all_groups[group.key()] = group
 
+    print(f"duplicate groups: {duplicate_count}")
+    print(f"groups: {group_count}")
+    print("debug")
 
+  def _get_part_parents(self, *, part: GroupPart, rounds: int, parent_node_types: t.List[NodeType],
+      edge_types: t.List[EdgeType]) -> t.Set[GroupPart]:
+    final_parts = set()
+    final_parts.add(part)
+    while rounds > 0:
+      round_parts = set()
+      for p in final_parts:
+        part_parents = set(p.get_parents(parent_node_types=parent_node_types, edge_types=edge_types))
+        if len(part_parents) == 0:
+          pass
+          # round_parts.add(part)
+        else:
+          round_parts.update(part_parents)
+      final_parts = round_parts
+      rounds -= 1
+    return final_parts
+
+  def _groups_builder(self, property_type_parts: t.Dict[EdgeType, t.Set[GroupPart]], generated_groups: t.Set[Group]) -> \
+      t.Set[Group]:
+    property_type = None
+    try:
+      property_type = next(iter(property_type_parts))
+    except StopIteration:
+      return generated_groups
+    parts = property_type_parts[property_type]
+    del property_type_parts[property_type]
+    part: GroupPart
+    groups: t.Set[Group] = set()
+    for part in parts:
+      if len(generated_groups) == 0:
+        group = Group()
+        group.generated = True
+        prop = GroupProperty(group_part=part, edge_type=property_type)
+        props = group.properties.setdefault(property_type, {})
+        props[prop.key()] = prop
+        groups.add(group)
+      else:
+        for group in generated_groups:
+          props = group.copy_properties()
+          prop = GroupProperty(group_part=part, edge_type=property_type)
+          type_props = props.setdefault(property_type, {})
+          type_props[prop.key()] = prop
+          g = Group()
+          g.generated = True
+          g.properties = props
+          groups.add(g)
+    return self._groups_builder(property_type_parts=property_type_parts, generated_groups=groups)
+
+    pass
     # groups: Groups = self.runtime.current_module.runtime_objects.get("groups")
     # loinc_counts = 0
     # # for group in groups.roots.values():
@@ -326,32 +405,6 @@ class Groups2BuilderSteps:
     #   circles.sort()
     #   for circle in circles:
     #     print(f"Circle: {circle}")
-
-  def _do_parent_groups(self):
-    groups = self._get_groups_object()
-    for group in set(groups.groups.values()):
-      if group.is_abstract():
-        continue
-
-
-      for property_type, properties in group.properties.items():
-
-        for p in properties.values():
-          for parent_part in p.group_part.get_parents():
-
-            group_property = GroupProperty(edge_type=property_type,group_part=parent_part)
-            parent_group_properties = generated_group.properties.setdefault(property_type, {})
-            parent_group_properties[group_property.key()] = group_property
-
-      if generated_group.key() not in groups.groups:
-        groups.groups[generated_group.key()] = generated_group
-        for property_type, properties in generated_group.properties.items():
-          for p in properties.values():
-            p.group_part.group_properties.append(p)
-
-
-  def _build_groups(self):
-    pass
 
   # def _do_generate(self, key: str, group: Group, parent_group: Group = None):
   #   if self._can_generate(group=group, parent_group=parent_group):

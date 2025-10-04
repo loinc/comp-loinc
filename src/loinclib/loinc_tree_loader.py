@@ -65,7 +65,7 @@ class LoincTreeLoader:
     self.load_method_tree()
     self.load_panel_tree()
     self.load_system_tree()
-    self.load_nlp_tree()  # TODO: fix once any cycles in the original trees are good.
+    self.load_nlp_tree()
 
   def _getsert_node(self, code: str, code_text: str):
     """Insert node if needed, else get, and return node."""

@@ -18,6 +18,11 @@ class Groups:
     self.roots: t.Dict[str, Group] = {}
 
     self.group_parts: t.Dict[str, GroupPart] = dict()
+    self.properties: t.Dict[str, LoincPartProps] = dict()
+
+
+
+
 
 
 class Group:
@@ -38,13 +43,10 @@ class Group:
 
     self.generated = False
 
-  def copy(self) -> Group:
-    copy = Group()
-    copy.loincs = dict(self.loincs)
-    copy.parent_groups = dict(self.parent_groups)
-    copy.child_groups = dict(self.child_groups)
-    copy.properties = dict(self.properties)
-    copy.generated = self.generated
+  def copy_properties(self) -> t.Dict[EdgeType, t.Dict[str, GroupProperty]]:
+    copy = {}
+    for edge_type, props in self.properties.items():
+      copy[edge_type] = dict(props)
     return copy
 
   def is_abstract(self):
@@ -125,11 +127,15 @@ class Group:
   def key(self) -> str:
     if self._key is not None:
       return self._key
+    self._key = Group.build_key(self.properties)
+    return self._key
 
+  @classmethod
+  def build_key(cls, properties):
     group_key: t.Optional[str] = None
     prop_type: EdgeType
 
-    property_types = list(self.properties.keys())
+    property_types = list(properties.keys())
     property_types.sort(key=lambda x: x.name)
     for prop_type in property_types:
       type_prefix = prop_type.name + "_"
@@ -138,7 +144,7 @@ class Group:
       else:
         group_key += "--" + type_prefix
 
-      group_properties = self.properties[prop_type]
+      group_properties = properties[prop_type]
       keys =  list(group_properties.keys())
       keys.sort()
 
@@ -148,13 +154,12 @@ class Group:
         part_node = group_property.group_part.part_node
         name = part_node.get_property(LoincPartProps.part_name)
         if name is None:
-            name = f"TREE: {part_node.get_property(LoincTreeProps.code_text)}"
+          name = f"TREE: {part_node.get_property(LoincTreeProps.code_text)}"
 
         group_key += name + "_"
         group_key += group_property.group_part.part_node.get_property(LoincPartProps.part_number) + "_"
         group_key = quote_plus(group_key)
-    self._key = group_key
-    return self._key
+    return group_key
 
 
 class GroupProperty:
@@ -196,19 +201,19 @@ class GroupPart:
   def key(self):
     return self.part_node.node_id
 
-  def get_parents(self, *parent_types: NodeType) -> t.Set[GroupPart]:
+  def get_parents(self, *, parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]) -> t.Set[GroupPart]:
     if self.parents is None:
       self.parents = set()
-      for parent_node in self.part_node.get_out_nodes(*parent_types):
+      for parent_node in self.part_node.get_out_nodes(node_types=parent_node_types, edge_types=edge_types):
         self.parents.add(self.groups.group_parts.setdefault(parent_node.node_id, GroupPart(groups=self.groups, part_node=parent_node)))
     return self.parents
 
-  def get_ancestors(self, *ancestor_types: NodeType) -> t.Set[GroupPart]:
+  def get_ancestors(self,*, parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]) -> t.Set[GroupPart]:
     if self.ancestors is None:
       self.ancestors = set()
       self.ancestors.add(self)
-      for parent in self.get_parents(*ancestor_types):
-        self.ancestors.update(parent.get_ancestors(*ancestor_types))
+      for parent in self.get_parents(parent_node_types=parent_node_types, edge_types=edge_types):
+        self.ancestors.update(parent.get_ancestors(parent_node_types=parent_node_types, edge_types=edge_types))
     return self.ancestors
 
   def get_node_type(self):
@@ -217,9 +222,9 @@ class GroupPart:
   def get_key(self):
     return self.part_node.node_id
 
-  def get_depth(self):
+  def get_depth(self, *,  parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]):
     if self.depth is None:
-      parents = self.get_parents()
+      parents = self.get_parents(parent_node_types=parent_node_types, edge_types=edge_types)
       self.depth = reduce(lambda d, p: d + p.get_depth(), parents, 1) / len(parents)
     return self.depth
 

@@ -668,7 +668,7 @@ class Node(Element):
       yield Edge(
           from_node=from_node, to_node=to_node, edge_key=key, edge_handler=edge_type)
 
-  def get_out_edges(self, *edge_types):
+  def get_out_edges(self, *, edge_types: t.List[EdgeType]) -> t.Generator[Edge]:
     return (edge for edge in self.get_all_out_edges() if edge.handler.type_ in edge_types)
     # return [ edge for edge in self.get_all_out_edges() if edge.handler.type_ in edge_types ]
 
@@ -676,7 +676,10 @@ class Node(Element):
     return (edge.to_node for edge in self.get_all_out_edges())
 
   def get_out_nodes(self, *, edge_types: t.List[EdgeType], node_types: t.List[NodeType]):
-    return (edge.to_node for edge in self.get_out_edges() if edge.handler.type_ in edge_types and
+    edges = list(self.get_out_edges(edge_types=edge_types))
+    # if len(edges) > 0:
+    #   print("debug")
+    return (edge.to_node for edge in edges if edge.handler.type_ in edge_types and
             edge.to_node.get_node_type() in node_types)
 
   def get_all_in_edges(self):
@@ -690,14 +693,14 @@ class Node(Element):
           from_node=from_node, to_node=to_node, edge_key=key, edge_handler=edge_type
       )
 
-  def get_in_edges(self, *edge_types):
+  def get_in_edges(self, *, edge_types: t.List[EdgeType]) -> t.Generator[Edge, None, None]:
     return (edge for edge in self.get_all_in_edges() if edge.handler.type_ in edge_types)
 
   def get_all_in_nodes(self):
     return (edge.to_node for edge in self.get_all_in_edges())
 
   def get_in_nodes(self, *, edge_types: t.List[EdgeType], node_types: t.List[NodeType]):
-    return (edge.from_node for edge in self.get_in_edges() if edge.handler.type_ in edge_types and
+    return (edge.from_node for edge in self.get_in_edges(edge_types=edge_types) if edge.handler.type_ in edge_types and
             edge.from_node.get_node_type() in node_types)
 
   def get_node_type(self):
