@@ -179,6 +179,27 @@ def get_by_name(cls, name: str) -> LoincTermPrimaryEdges:
 # 1 Property
 
 
+@dataclass(kw_only=True)
+class LoincTermDetailedEdgesArgs(LoincTermEdgesArgs):
+  pass
+
+class LoincTermDetailedEdges(LoincTermEdgeType):
+  detailed_analyte = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte", order=101, abbr="DET_An")
+  detailed_challenge = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/challenge", order=109, abbr="DET_Ch")
+  detailed_adjustment = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/adjustment", order=100, abbr="DET_Ad")
+  detailed_analyte_core = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-core", order=102, abbr="DET_AC")
+  detailed_analyte_divisor = LoincTermDetailedEdgesArgs(
+      name="http://loinc.org/property/analyte-divisor", order=103, abbr="DET_AD"
+  )
+  detailed_analyte_divisor_suffix = LoincTermDetailedEdgesArgs(
+      name="http://loinc.org/property/analyte-divisor-suffix", order=104, abbr="DET_ADS"
+  )
+  detailed_analyte_gene = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-gene", order=105, abbr="DET_AG")
+  detailed_analyte_numerator = LoincTermDetailedEdgesArgs(
+      name="http://loinc.org/property/analyte-numerator", order=106, abbr="DET_AN"
+  )
+  detailed_analyte_suffix = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-suffix", order=107, abbr="DET_AS")
+
 
 @dataclass(kw_only=True)
 class LoincTermSupplementaryEdgesArgs(LoincTermEdgesArgs):
