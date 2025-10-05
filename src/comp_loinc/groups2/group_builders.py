@@ -23,11 +23,12 @@ class Groups2BuilderSteps:
       self,
       config: ll.Configuration,
   ):
+    self._loinc_parsed = None
     self.config = config
     self.runtime: t.Optional[cl.Runtime] = None
 
-    self.property_strings: t.List[str] = []
-    self._used_edges: t.Dict[EdgeType, bool] = {}
+    self.group_property_strings: t.List[str] = []
+    self._used_group_edges: t.Dict[EdgeType, bool] = {}
     # self.not_property_edges: t.List[EdgeType] = []
 
     self.parent_strings: t.List[str] = []
@@ -35,81 +36,66 @@ class Groups2BuilderSteps:
     self.not_parent_edges: t.List[EdgeType] = []
 
     self.circles: set = set()
-    self.group_part_all_parent_types: t.Dict[str, NodeType] = {
+
+    self.__all_part_parent_types: t.Dict[str, NodeType] = {
       "loinc": LoincNodeType.LoincPart,
-      "snomed": SnomedNodeType.concept
+      "snomed": SnomedNodeType.Concept
     }
-    self.group_part_parent_types: t.List[NodeType] = []
+    self._part_parent_types: t.Dict[str, NodeType] = {}
 
-
-    self.group_all_model_types: t.Dict[str, type(EdgeType)] = {
-      "primary": LoincTermPrimaryEdges,
-      "detailed": LoincTermSupplementaryEdges
-
+    self.__all_part_parent_edge_types: t.Dict[str, type(EdgeType)] = {
+      "has_parent": GeneralEdgeType.has_parent
     }
+
+    self._part_parent_edge_types: t.Dict[str, EdgeType] = {
+      "has_parent": GeneralEdgeType.has_parent
+    }
+
   def setup_builder_cli(self, builder):
     builder.cli.command(
         "group-properties",
         help="Specify the LOINC properties to use for grouping",
     )(self.group_properties)
-    #
-    # builder.cli.command(
-    #     "parent-types",
-    #     help="Specify the parent type names to use for finding parent parts",
-    # )(self.group_parent_type)
 
     builder.cli.command(
-        "group-parse-loincs",
-        help="Parse LOINC definitions into base groups.",
-    )(self.group_parse_loincs)
-
-    # builder.cli.command(
-    #     "group-roots",
-    #     help="Build the root groups.",
-    # )(self.group_roots)
+        "part-parent-types",
+        help="Specify the part node types to consider as LOINC part parent).",
+    )(self.part_parent_types)
 
     builder.cli.command(
-        "part-ancestors",
-        help="Build the part ancestor closures (to support later group building).",
-    )(self.group_parts_root_closure)
+        "part-edge-types",
+        help="Specify the edge type to find nodes to consider as LOINC part parents).",
+    )(self.part_edge_types)
 
     builder.cli.command(
         "group-generate",
         help="Generate the output groups.",
     )(self.group_generate)
 
-    # builder.cli.command(
-    #     "group2-save",
-    #     help="Group 2 hello",
-    # )(self.hello)
-
-  # def hello(self):
-  #   module = self.runtime.current_module
-  #   grouper: Groups = module.runtime_objects.setdefault('grouper2', Groups( module=module))
-  #   grouper.init()
-  #   print("==================  GROUP 2 HELLO  =================")
-
   def group_properties(self,
-      property_strings: t.Annotated[list[str], typer.Option("--properties",
+      property_strings: t.Annotated[list[str], typer.Option("--property",
                                                             help="One or more property strings. Full property URL, or last segment. Case insensitive")]):
     """
     Select the LOINC grouping properties.
     """
-    self.property_strings = property_strings
+    self.group_property_strings = property_strings
 
-  def group_parent_type(self, parent_types: t.Annotated[list[str], typer.Option("--type",
-
-                                                                                help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
-    for parent_type in parent_types:
-      self.group_part_parent_types.append(self.group_part_all_parent_types.get(parent_type))
-
-  def group_model_type(self, parent_types: t.Annotated[list[str], typer.Option("--type",
+  def part_parent_types(self, parent_types: t.Annotated[list[str], typer.Option("--type",
 
                                                                                 help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
     for parent_type in parent_types:
-      self.group_part_parent_types.append(self.group_part_all_parent_types.get(parent_type))
+      self._part_parent_types[parent_type] = self.__all_part_parent_types.get(parent_type)
 
-  def group_parse_loincs(self):
+  def part_edge_types(self, edge_types: t.Annotated[list[str], typer.Option("--type",
+
+                                                                            help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
+    for edge_type in edge_types:
+      self._part_parent_edge_types[edge_type] = self.__all_part_parent_edge_types.get(edge_type)
+
+  def parse_loincs(self):
+    if self._loinc_parsed:
+      return
+    self._loinc_parsed = True
     loinc_loader = ll.loinc_loader.LoincLoader(
         graph=self.runtime.graph, configuration=self.config
     )
@@ -121,24 +107,31 @@ class Groups2BuilderSteps:
     loinc_counts = 0
     group_counts = 0
     for loinc_node in self.runtime.graph.get_nodes(LoincNodeType.LoincTerm):
+
+      loinc_number = loinc_node.get_property(LoincTermProps.loinc_number)
+
+      # if loinc_number == "4169-9":
+      #   print("4169-9")
+      #
+      # if loinc_node.node_id == 'loinc:4169-9':
+      #   print("dbug")
+
       loinc_counts += 1
       out_edges = loinc_node.get_out_edges()
 
       properties: t.Dict[EdgeType, t.Set[GroupPart]] = dict()
-      # group: Group = Group()
-      # indexing the parts by group properties, per loinc
 
       for out_edge in out_edges:
         type_ = out_edge.handler.type_
-        if self._use_edge(type_):
+        if self._use_group_property(type_):
           parts = properties.setdefault(type_, set())
           part = GroupPart(groups=groups, part_node=out_edge.to_node)
           part = groups.parts.setdefault(part.key(), part)
           parts.add(part)
 
-      group = Group(groups=groups)
+      group = Group(groups_object=groups)
       for edge, parts in properties.items():
-        prop = GroupProperty(groups=groups, edge_type=edge, group_parts=parts)
+        prop = GroupProperty(groups_object=groups, edge_type=edge, parts=parts)
         prop = groups.properties.setdefault(prop.key(), prop)
         group.properties[edge] = prop
       group_key = group.key()
@@ -146,26 +139,43 @@ class Groups2BuilderSteps:
       if group_key is not None:
         group_counts += 1
         group = groups.groups.setdefault(group_key, group)
+        group.add_referrer_to_properties()
         group.loincs[loinc_node.get_property(LoincTermProps.loinc_number)] = loinc_node
 
     print("debug")
 
-    loinc_counts = 0
-    for group in groups.groups.values():
-      count = group.get_descendants_loincs_count()
-      loinc_counts += count
+  # def group_parts_root_closure(self, parent_types: t.Annotated[list[str], typer.Option("--parent-type",
+  #                                                                                      help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
+  #   for parent_type in parent_types:
+  #     self._part_parent_types[parent_type] = self.__all_part_parent_types.get(parent_type)
+  #
+  #   loinc_loader = ll.loinc_loader.LoincLoader(graph=self.runtime.graph, configuration=self.config)
+  #   # loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
+  #
+  #   tree_loader: LoincTreeLoader = LoincTreeLoader(graph=self.runtime.graph, config=self.config)
+  #   tree_loader.load_all_trees()
+  #   # tree_loader.load_component_tree()
+  #   # # tree_loader.load_component_by_system_tree()
+  #   # tree_loader.load_system_tree()
+  #   # tree_loader.load_document_tree()
+  #   # tree_loader.load_class_tree()
+  #   # tree_loader.load_panel_tree()
+  #   # tree_loader.load_method_tree()
+  #
+  #   groups = self._get_groups_object()
+  #   seen_group_parts = set()
+  #   for group_part in set(groups.parts.values()):
+  #     if group_part.key() in seen_group_parts:
+  #       continue
+  #     seen_group_parts.add(group_part)
+  #     seen_group_parts.update(group_part.get_ancestors(parent_node_types=self._part_parent_types,
+  #                                                      edge_types=[GeneralEdgeType.has_parent]))
+  #
+  #   print("debug")
 
-    print("\n\n======= loinc counts from all groups =========")
-    print(loinc_counts)
-
-
-
-  def group_parts_root_closure(self, parent_types: t.Annotated[list[str], typer.Option("--parent-type",
-                                                                                       help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
-    for parent_type in parent_types:
-      self.group_part_parent_types.append(self.group_part_all_parent_types.get(parent_type))
-
+  def _do_closures(self):
     loinc_loader = ll.loinc_loader.LoincLoader(graph=self.runtime.graph, configuration=self.config)
+    loinc_loader.load_accessory_files__part_file__part_csv()
     # loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
 
     tree_loader: LoincTreeLoader = LoincTreeLoader(graph=self.runtime.graph, config=self.config)
@@ -178,14 +188,9 @@ class Groups2BuilderSteps:
     # tree_loader.load_panel_tree()
     # tree_loader.load_method_tree()
 
-    groups = self._get_groups_object()
-    seen_group_parts = set()
-    for group_part in set(groups.parts.values()):
-      if group_part.key() in seen_group_parts:
-        continue
-      seen_group_parts.add(group_part)
-      seen_group_parts.update(group_part.get_ancestors(parent_node_types=self.group_part_parent_types,
-                                                       edge_types=[GeneralEdgeType.has_parent]))
+    groups_object = self._get_groups_object()
+    groups_object.do_closure(part_parent_edge_types=list(self._part_parent_edge_types.values()),
+                             part_parent_node_types=list(self._part_parent_types.values()))
 
     print("debug")
 
@@ -193,93 +198,32 @@ class Groups2BuilderSteps:
       parent_group: t.Annotated[bool, typer.Option("--parent-group",
                                                    help="Create the direct parent groups of a LOINC term")] = False):
 
+
+    self.parse_loincs()
+    self._do_closures()
+
+    groups_object = self._get_groups_object()
+    edge_types = list(self._part_parent_edge_types.values())
+    node_types = list(self._part_parent_types.values())
+
+    generated_groups: t.Dict[str, Group] = {}
     if parent_group:
-      self._do_parent_groups()
+      for  group in groups_object.groups.values():
+        if group.generated:
+          continue
+        self._do_group_rounds(group=group,edge_types= edge_types,node_types= node_types, generated_groups=generated_groups, rounds=3)
 
-  def _do_parent_groups(self):
-    groups = self._get_groups_object()
-    all_groups = {}
-    duplicate_count = 0
-    group_count = 0
-    for group in set(groups.groups.values()):
-      if group.is_abstract() or group.generated:
-        continue
 
-      group_builder_config: t.Dict[EdgeType, t.Set[GroupPart]] = dict()
-      for edge_type, prop in group.properties.items():
-        parts = set()
-        for p in prop.parts:
-          # parts.update(p.group_part.get_parents(parent_node_types=self.group_part_parent_types, edge_types=[GeneralEdgeType.has_parent]))
-          parts.update(self._get_part_parents(part=p, rounds=1, parent_node_types=self.group_part_parent_types,
-                                              edge_types=[GeneralEdgeType.has_parent]))
-        if len(parts) > 0:
-          group_builder_config[edge_type] = parts
-      if len(group_builder_config) > 0:
-        new_groups = self._groups_builder(group_builder_config, set())
-        for group in new_groups:
-          if group.key() in all_groups:
-            duplicate_count += 1
-          else:
-            group_count += 1
-            all_groups[group.key()] = group
+    print(f"debug generated group counts: {len(generated_groups)}")
 
-    print(f"duplicate groups: {duplicate_count}")
-    print(f"groups: {group_count}")
-    print("debug")
-
-  def _get_part_parents(self, *, part: GroupPart, rounds: int, parent_node_types: t.List[NodeType],
-      edge_types: t.List[EdgeType]) -> t.Set[GroupPart]:
-    final_parts = set()
-    final_parts.add(part)
-    while rounds > 0:
-      round_parts = set()
-      for p in final_parts:
-        part_parents = set(p.get_parents(parent_node_types=parent_node_types, edge_types=edge_types))
-        if len(part_parents) == 0:
-          pass
-          # round_parts.add(part)
-        else:
-          round_parts.update(part_parents)
-      final_parts = round_parts
-      rounds -= 1
-    return final_parts
-
-  def _groups_builder(self, property_type_parts: t.Dict[EdgeType, t.Set[GroupPart]], generated_groups: t.Set[Group]) -> \
-      t.Set[Group]:
-    edge_type = None
-    try:
-      edge_type = next(iter(property_type_parts))
-    except StopIteration:
-      return generated_groups
-    parts = property_type_parts[edge_type]
-    del property_type_parts[edge_type]
-    groups = self._get_groups_object()
-    part: GroupPart
-    built_groups: t.Set[Group] = set()
-
-    if len(generated_groups) == 0:
-      group = Group(groups=groups)
-      group.generated = True
-      prop = GroupProperty(group_parts=parts, edge_type=edge_type, groups=groups)
-      prop = groups.properties.setdefault(prop.key(), prop)
-
-      group.properties.setdefault(edge_type, prop)
-      group = groups.groups.setdefault(group.key(), group)
-
-      built_groups.add(group)
+  def _do_group_rounds(self, group: Group,  generated_groups:  t.Dict[str, Group], rounds: int, edge_types, node_types):
+    if rounds > 0:
+      parent = group.get_parent(part_parent_edge_types=edge_types, part_parent_node_types=node_types)
+      if parent is None:
+        return
+      self._do_group_rounds(group=parent, generated_groups=generated_groups, rounds=rounds - 1, edge_types=edge_types, node_types=node_types)
     else:
-      for group in generated_groups:
-        prop = GroupProperty(group_parts=parts, edge_type=edge_type, groups=groups)
-        prop = groups.properties.setdefault(prop.key(), prop)
-        props = group.copy_properties()
-        props.setdefault(edge_type, prop)
-
-        g = Group(groups=groups)
-        g.generated = True
-        g.properties = props
-        g = groups.groups.setdefault(g.key(), g)
-        built_groups.add(g)
-    return self._groups_builder(property_type_parts=property_type_parts, generated_groups=built_groups)
+      generated_groups[group.key()] = group
 
 
   def _get_groups_object(self) -> Groups:
@@ -287,16 +231,17 @@ class Groups2BuilderSteps:
     return self.runtime.current_module.runtime_objects.setdefault('groups',
                                                                   Groups(module=current_module))
 
-  def _use_edge(self, edge: EdgeType):
-    use = self._used_edges.get(edge, None)
-    if use:
+  def _use_group_property(self, edge: EdgeType):
+    use = self._used_group_edges.get(edge, None)
+    if use is not None:
       return use
 
-    for property_string in self.property_strings:
+    for property_string in self.group_property_strings:
       property_string = property_string.lower()
-      prop_name = edge.value.name.lower()
+      prop_name = edge.name.lower()
       if prop_name == property_string or prop_name.endswith(property_string):
-        self._used_edges[edge] = True
-      else:
-        self._used_edges[edge] = False
-    return self._used_edges[edge]
+        self._used_group_edges[edge] = True
+        return True
+
+    self._used_group_edges[edge] = False
+    return False

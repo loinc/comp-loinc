@@ -12,22 +12,15 @@ sys.argv = [
   "test",
 
   "group-properties",
-  "--properties",
-  "/component",
-  "--properties",
-  "/system",
+  "--property",
+  "primary_component",
+  "--property",
+  "primary_system",
 
-  # "parent-types",
-
-  # "--type",
-  # "snomed",
-
-  "group-parse-loincs",
-
-  "part-ancestors",
-  "--parent-type",
+  "part-parent-types",
+  "--type",
   "loinc",
-  #
+
   "group-generate",
   "--parent-group",
   #

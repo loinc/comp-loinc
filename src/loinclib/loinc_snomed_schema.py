@@ -11,6 +11,6 @@ class LoincSnomedEdgesArgs(EdgeTypeArgs):
 
 class LoincSnomedEdges(EdgeType):
     """Edges for the LOINC-SNOMED ontology"""
-    pass
-
+    loinc_term_maps_to = LoincSnomedEdgesArgs(name="loinc_term_maps_to")
+    loinc_part_maps_to = LoincSnomedEdgesArgs(name="loinc_part_maps_to")
 

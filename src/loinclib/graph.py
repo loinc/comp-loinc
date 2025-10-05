@@ -16,6 +16,21 @@ import networkx as nx
 # TAGS_KEY = '__TAGS__'
 
 
+def _check_edge_types(*edge_types):
+  if edge_types is None:
+    raise ValueError(f"Edge is None")
+  for edge_type in edge_types:
+    if not isinstance(edge_type, EdgeType):
+      raise ValueError(f"Edge type: {edge_type} is not a type.")
+
+
+def _check_node_types(*node_types):
+  if node_types is None:
+    raise ValueError(f"Node is None")
+  for node_type in node_types:
+    if not isinstance(node_type, NodeType):
+      raise ValueError(f"Node type: {node_type} is not a type.")
+
 class ElementKeys(StrEnum):
   TYPE_KEY = "_type"
   SOURCES_KEY = "_sources"
@@ -471,7 +486,7 @@ class EdgeHandler(PropertyOwnerHandler):
 
   def add_edge_single(
       self, from_node_id: str, to_node_id: str, error_if_duplicate=False
-  ) -> int:
+  ) -> int | None:
     edge_key = self.get_edge_single(
         from_node_id=from_node_id, to_node_id=to_node_id
     )
@@ -542,6 +557,7 @@ class LoinclibGraph:
     self.schema = self.nx_graph.graph.setdefault("schema", Schema(self))
 
   def get_node_by_code(self, *, type_: NodeType, code: str) -> t.Optional[Node]:
+    _check_node_types(type_)
     return self.schema.get_node_handler(type_).get_node_by_code(code=code)
 
   def get_node_by_id(self, *, node_id: str) -> t.Optional[Node]:
@@ -553,6 +569,7 @@ class LoinclibGraph:
     return None
 
   def get_nodes(self, type_: NodeType) -> t.Iterator[Node]:
+    _check_node_types(type_)
     for node, node_data in self.nx_graph.nodes.items():
       node_type = node_data.get(ElementKeys.TYPE_KEY, None)
       if type_ is node_type:
@@ -604,6 +621,8 @@ class Element:
     pass
 
 
+
+
 class Node(Element):
   def __init__(self, *, node_id: str, node_handler: NodeHandler, properties: dict):
     super().__init__(graph=node_handler.schema.graph)
@@ -624,6 +643,7 @@ class Node(Element):
   def add_edge_single(
       self, type_: EdgeType, to_node: Node, error_if_duplicate: bool = False, source: str = None
   ) -> Edge:
+    _check_edge_types(type_)
     edge_handler = self.node_handler.get_out_edge_handler(
         type_=type_, to_node_handler=to_node.node_handler
     )
@@ -643,6 +663,7 @@ class Node(Element):
     return edge
 
   def get_edge_single(self, type_: EdgeType, to_node: Node) -> t.Optional[Edge]:
+    _check_edge_types(type_)
     edge_type = self.node_handler.get_out_edge_handler(
         type_=type_, to_node_handler=to_node.node_handler
     )
@@ -670,16 +691,30 @@ class Node(Element):
 
   def get_out_edges(self, *, edge_types: t.List[EdgeType] = None) -> t.Generator[Edge]:
     if edge_types:
+      _check_edge_types(*edge_types)
       return (edge for edge in self.__get_all_out_edges() if edge.handler.type_ in edge_types)
     else:
       return (edge for edge in self.__get_all_out_edges())
 
 
   def get_out_nodes(self, *, edge_types: t.List[EdgeType] = None, node_types: t.List[NodeType] = None):
+
     if node_types:
-      return (edge.to_node for edge in self.get_out_edges(edge_types=edge_types) if edge.to_node.get_node_type() in node_types)
+      _check_node_types(*node_types)
+
+      if edge_types:
+        _check_edge_types(*edge_types)
+        return (edge.to_node for edge in self.get_out_edges(edge_types=edge_types) if edge.to_node.get_node_type() in node_types)
+      else:
+        return (edge.to_node for edge in self.get_out_edges() if edge.to_node.get_node_type() in node_types)
+
     else:
-      return self.get_out_edges(edge_types=edge_types)
+      if edge_types:
+        _check_edge_types(*edge_types)
+        return (edge.to_node for edge in self.get_out_edges(edge_types=edge_types))
+
+      else:
+        return (edge.to_node for edge in self.get_out_edges())
 
   def __get_all_in_edges(self):
     for from_id, to_id, key, data in self.node_handler.get_all_in_edges(self.node_id):
@@ -693,14 +728,37 @@ class Node(Element):
       )
 
   def get_in_edges(self, *, edge_types: t.List[EdgeType] = None) -> t.Generator[Edge, None, None]:
+
     if edge_types:
+      _check_edge_types(*edge_types)
       return (edge for edge in self.__get_all_in_edges() if edge.handler.type_ in edge_types)
     else:
       return self.__get_all_in_edges()
 
 
   def get_in_nodes(self, *, edge_types: t.List[EdgeType] = None, node_types: t.List[NodeType] = None):
+
     if node_types:
+      _check_node_types(*node_types)
+
+      if edge_types:
+        _check_edge_types(*edge_types)
+        return (edge.from_node for edge in self.get_in_edges(edge_types=edge_types) if edge.from_node.get_node_type() in node_types)
+      else:
+        return (edge.from_node for edge in self.get_in_edges() if edge.from_node.get_node_type() in node_types)
+
+    else:
+      if edge_types:
+        _check_edge_types(*edge_types)
+        return (edge.from_node for edge in self.get_in_edges(edge_types=edge_types))
+
+      else:
+        return (edge.from_node for edge in self.get_in_edges())
+
+
+    if node_types:
+
+
       return (edge.from_node for edge in self.get_in_edges(edge_types=edge_types) if edge.from_node.get_node_type() in node_types)
     else:
       return (edge.from_node for edge in self.get_in_edges(edge_types=edge_types))

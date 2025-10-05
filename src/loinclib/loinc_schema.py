@@ -178,28 +178,28 @@ def get_by_name(cls, name: str) -> LoincTermPrimaryEdges:
 # 233 http://loinc.org/property/time-modifier
 # 1 Property
 
-
-@dataclass(kw_only=True)
-class LoincTermDetailedEdgesArgs(LoincTermEdgesArgs):
-  pass
-
-class LoincTermDetailedEdges(LoincTermEdgeType):
-  detailed_analyte = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte", order=101, abbr="DET_An")
-  detailed_challenge = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/challenge", order=109, abbr="DET_Ch")
-  detailed_adjustment = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/adjustment", order=100, abbr="DET_Ad")
-  detailed_analyte_core = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-core", order=102, abbr="DET_AC")
-  detailed_analyte_divisor = LoincTermDetailedEdgesArgs(
-      name="http://loinc.org/property/analyte-divisor", order=103, abbr="DET_AD"
-  )
-  detailed_analyte_divisor_suffix = LoincTermDetailedEdgesArgs(
-      name="http://loinc.org/property/analyte-divisor-suffix", order=104, abbr="DET_ADS"
-  )
-  detailed_analyte_gene = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-gene", order=105, abbr="DET_AG")
-  detailed_analyte_numerator = LoincTermDetailedEdgesArgs(
-      name="http://loinc.org/property/analyte-numerator", order=106, abbr="DET_AN"
-  )
-  detailed_analyte_suffix = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-suffix", order=107, abbr="DET_AS")
-
+#
+# @dataclass(kw_only=True)
+# class LoincTermDetailedEdgesArgs(LoincTermEdgesArgs):
+#   pass
+#
+# class LoincTermDetailedEdges(LoincTermEdgeType):
+#   detailed_analyte = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte", order=101, abbr="DET_An")
+#   detailed_challenge = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/challenge", order=109, abbr="DET_Ch")
+#   detailed_adjustment = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/adjustment", order=100, abbr="DET_Ad")
+#   detailed_analyte_core = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-core", order=102, abbr="DET_AC")
+#   detailed_analyte_divisor = LoincTermDetailedEdgesArgs(
+#       name="http://loinc.org/property/analyte-divisor", order=103, abbr="DET_AD"
+#   )
+#   detailed_analyte_divisor_suffix = LoincTermDetailedEdgesArgs(
+#       name="http://loinc.org/property/analyte-divisor-suffix", order=104, abbr="DET_ADS"
+#   )
+#   detailed_analyte_gene = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-gene", order=105, abbr="DET_AG")
+#   detailed_analyte_numerator = LoincTermDetailedEdgesArgs(
+#       name="http://loinc.org/property/analyte-numerator", order=106, abbr="DET_AN"
+#   )
+#   detailed_analyte_suffix = LoincTermDetailedEdgesArgs(name="http://loinc.org/property/analyte-suffix", order=107, abbr="DET_AS")
+#
 
 @dataclass(kw_only=True)
 class LoincTermSupplementaryEdgesArgs(LoincTermEdgesArgs):
@@ -332,3 +332,61 @@ class LoincClassEdgesArgs(EdgeTypeArgs):
 
 class LoincClassEdges(EdgeType):
   part = LoincClassEdgesArgs(name="part")
+
+
+
+# 18:37 $ csvtool   col 8 LoincPartLink_Primary.csv | sort | uniq -c
+# 104672 http://loinc.org/property/COMPONENT
+# 3619 http://loinc.org/property/document-kind
+# 1062 http://loinc.org/property/document-role
+# 3621 http://loinc.org/property/document-setting
+# 3082 http://loinc.org/property/document-subject-matter-domain
+# 2453 http://loinc.org/property/document-type-of-service
+# 57217 http://loinc.org/property/METHOD_TYP
+# 104672 http://loinc.org/property/PROPERTY
+# 6352 http://loinc.org/property/rad-anatomic-location-imaging-focus
+# 4175 http://loinc.org/property/rad-anatomic-location-laterality
+# 4153 http://loinc.org/property/rad-anatomic-location-laterality-presence
+# 7327 http://loinc.org/property/rad-anatomic-location-region-imaged
+# 1222 http://loinc.org/property/rad-guidance-for-action
+#   357 http://loinc.org/property/rad-guidance-for-approach
+#     489 http://loinc.org/property/rad-guidance-for-object
+# 1092 http://loinc.org/property/rad-guidance-for-presence
+#   444 http://loinc.org/property/rad-maneuver-maneuver-type
+# 1241 http://loinc.org/property/rad-modality-subtype
+# 6907 http://loinc.org/property/rad-modality-type
+# 2021 http://loinc.org/property/rad-pharmaceutical-route
+# 2526 http://loinc.org/property/rad-pharmaceutical-substance-given
+# 499 http://loinc.org/property/rad-reason-for-exam
+#   36 http://loinc.org/property/rad-subject
+# 2854 http://loinc.org/property/rad-timing
+# 3950 http://loinc.org/property/rad-view-aggregation
+# 1991 http://loinc.org/property/rad-view-view-type
+# 104672 http://loinc.org/property/SCALE_TYP
+# 104672 http://loinc.org/property/SYSTEM
+# 104672 http://loinc.org/property/TIME_ASPCT
+
+
+#
+# 18:38 $ csvtool   col 8 LoincPartLink_Supplementary.csv | sort | uniq -c
+# 209 http://loinc.org/property/adjustment
+# 93637 http://loinc.org/property/analyte
+# 104672 http://loinc.org/property/analyte-core
+# 5831 http://loinc.org/property/analyte-divisor
+# 25 http://loinc.org/property/analyte-divisor-suffix
+# 1763 http://loinc.org/property/analyte-gene
+# 435 http://loinc.org/property/analyte-numerator
+# 24221 http://loinc.org/property/analyte-suffix
+# 224973 http://loinc.org/property/category
+# 6717 http://loinc.org/property/challenge
+# 104672 http://loinc.org/property/CLASS
+# 156 http://loinc.org/property/count
+# 46201 http://loinc.org/property/METHOD_TYP
+# 93637 http://loinc.org/property/PROPERTY
+# 93637 http://loinc.org/property/SCALE_TYP
+# 278182 http://loinc.org/property/search
+# 23214 http://loinc.org/property/super-system
+# 71749 http://loinc.org/property/system-core
+# 93637 http://loinc.org/property/time-core
+# 236 http://loinc.org/property/time-modifier
+# 1 Property

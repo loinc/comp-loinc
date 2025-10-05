@@ -65,7 +65,6 @@ class SnomedLoader:
                 module_id,
                 source_id,
                 destination_id,
-                # relationship_id,
                 relationship_group,
                 type_id,
                 characteristic_type_id,
@@ -88,20 +87,20 @@ class SnomedLoader:
 
             if type_ in types_:
                 from_node: Node = self.graph.getsert_node(
-                    type_=SnomedNodeType.concept, code=source_id
+                    type_=SnomedNodeType.Concept, code=source_id
                 )
                 from_node.set_property(
                     type_=SnomedProperties.concept_id, value=source_id
                 )
 
                 to_node: Node = self.graph.getsert_node(
-                    type_=SnomedNodeType.concept, code=destination_id
+                    type_=SnomedNodeType.Concept, code=destination_id
                 )
                 to_node.set_property(
                     type_=SnomedProperties.concept_id, value=destination_id
                 )
 
-                from_node.add_edge_single(type_, to_node=to_node)
+                from_node.add_edge_single(type_, to_node=to_node, source="snomed")
 
                 if type_ == SnomedEdges.is_a:
                   from_node.add_edge_single(GeneralEdgeType.has_parent, to_node=to_node, source="snomed")
@@ -115,6 +114,12 @@ class SnomedLoader:
             if type_.value.name == concept_id:
                 return type_
         return None
+
+    def _get_snomed_property_type(self, concept_id: str)->typing.Optional[SnomedProperties]:
+      for type_ in SnomedProperties:
+        if type_.value.name == concept_id:
+          return type_
+      return None
 
 
     def load_fully_specified_names(self):
@@ -133,7 +138,7 @@ class SnomedLoader:
                 language_code,
                 type_id,  # e.g., Fully Specified Name, Preferred Term, Synonym
                 term,  # The term label
-                case_significance_id,  # Whethe capitalization is important, and if so in what way.
+                case_significance_id,  # Whether capitalization is important, and if so in what way.
             ) = tpl
             # @formatter:on
 
@@ -150,7 +155,7 @@ class SnomedLoader:
                 continue
 
             concept = self.graph.getsert_node(
-                type_=SnomedNodeType.concept, code=concept_id
+                type_=SnomedNodeType.Concept, code=concept_id
             )
             concept.set_property(type_=SnomedProperties.concept_id, value=concept_id)
             concept.set_property(type_=term_type, value=term)

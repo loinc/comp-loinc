@@ -13,7 +13,7 @@ class SnomedNodeTypeArgs(NodeTypeArgs):
 class SnomedNodeType(NodeType):
   """SNOMED Node Types"""
 
-  concept = SnomedNodeTypeArgs(name="Concept", id_prefix="sct")
+  Concept = SnomedNodeTypeArgs(name="Concept", id_prefix="sct")
 
 
 @dataclass(kw_only=True)
@@ -26,6 +26,11 @@ class SnomedProperties(PropertyType):
 
   concept_id = SnomedPropertiesArgs(name="")
   fully_specified_name = SnomedPropertiesArgs(name="900000000000003001")
+  synonym = SnomedPropertiesArgs(name="900000000000013009")
+
+  case_insensitive = SnomedPropertiesArgs(name="900000000000448009")
+  initial_character_case_insensitive = SnomedPropertiesArgs(name="900000000000020002")
+  case_sensitive = SnomedPropertiesArgs(name="900000000000017005")
 
 
 @dataclass(kw_only=True)
@@ -36,33 +41,53 @@ class SnomedEdgesArgs(EdgeTypeArgs):
 class SnomedEdges(EdgeType):
   """SNOMED Edges"""
 
-  is_a = SnomedEdgesArgs(name="116680003")
-  maps_to = SnomedEdgesArgs(name="maps_to")  # this maps external ids to one and only one SNOMED concept
+  is_a = SnomedEdgesArgs(name="116680003")  # 55370 116680003
 
   # the following edges are used in the LOINC SNOMED module
-  component = SnomedEdgesArgs(name="246093002")
-  technique = SnomedEdgesArgs(name="246501002")
-  property = SnomedEdgesArgs(name="370130000")
-  scale_type = SnomedEdgesArgs(name="370132008")
-  specimen_substance = SnomedEdgesArgs(name="370133003")
-  time_aspect = SnomedEdgesArgs(name="370134009")
-  inheres_in = SnomedEdgesArgs(name="704319004")
-  precondition = SnomedEdgesArgs(name="704326004")
-  direct_site = SnomedEdgesArgs(name="704327008")
+  component = SnomedEdgesArgs(name="246093002")  # 37371 246093002        http://loinc.org/property/COMPONENT, http://loinc.org/property/analyte-core
+  technique = SnomedEdgesArgs(name="246501002")  # 11809 246501002  	    http://loinc.org/property/METHOD_TYP
+  property = SnomedEdgesArgs(name="370130000")  # 40806 370130000   	    http://loinc.org/property/PROPERTY
+  scale_type = SnomedEdgesArgs(name="370132008")  # 38730 370132008       http://loinc.org/property/SCALE_TYP
+  specimen_substance = SnomedEdgesArgs(name="370133003")  # 3 370133003
+  time_aspect = SnomedEdgesArgs(name="370134009")  # 37782 370134009      http://loinc.org/property/TIME_ASPCT
+  using_device = SnomedEdgesArgs(name="424226004")  # 7 424226004
+  inheres_in = SnomedEdgesArgs(name="704319004")  # 2867 704319004
+  towards = SnomedEdgesArgs(name="704320005")  # 1224 704320005
+  characterizes = SnomedEdgesArgs(name="704321009")  # 821 704321009
+  process_agent = SnomedEdgesArgs(name="704322002")  # 759 704322002
+  process_duration = SnomedEdgesArgs(name="704323007")  # 826 704323007
+  process_output = SnomedEdgesArgs(name="704324001")  # 875 704324001
+  relative_to = SnomedEdgesArgs(name="704325000")  # 3158 704325000    http://loinc.org/property/analyte-divisor
+  precondition = SnomedEdgesArgs(name="704326004")  # 420 704326004
+  direct_site = SnomedEdgesArgs(name="704327008")  # 38742 704327008  http://loinc.org/property/SYSTEM
 
-#   loinc snomed relationships
-#   08:05 $ csvtool -t TAB  col 8 xsct2_Relationship_Snapshot_LO1010000_20231015.txt | sort | uniq -c
-#   27445   116680003  is-a
-#   23707   246093002
-#   6617    246501002
-#   23835   370130000
-#   23834   370132008
-#   3       370133003
-#   23782   370134009
-#   127     704319004
-#   378     704326004
-#   23220   704327008
-#   1       typeId
+
+
+
+
+
+# LOINC Ontology 2.0
+# 14:44 $ csvtool -t TAB  col 8 sct2_Relationship_Snapshot_LO1010000_20250921.txt | sort | uniq -c
+# 55370 116680003
+# 37371 246093002
+# 11809 246501002
+# 40806 370130000
+# 38730 370132008
+# 3 370133003
+# 37782 370134009
+# 7 424226004
+# 2867 704319004
+# 1224 704320005
+# 821 704321009
+# 759 704322002
+# 826 704323007
+# 875 704324001
+# 3158 704325000
+# 420 704326004
+# 38742 704327008
+# 1 typeId
+
+
 
 
 # international snomed relationships

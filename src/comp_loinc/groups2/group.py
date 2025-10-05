@@ -17,18 +17,54 @@ from urllib.parse import quote_plus
 
 class Groups:
   def __init__(self, module: Module):
+    self.closured = None
     self.module = module
-
-    self.roots: t.Dict[str, Group] = {}
 
     self.groups: t.Dict[str, Group] = dict()
     self.properties: t.Dict[str, GroupProperty] = dict()
     self.parts: t.Dict[str, GroupPart] = dict()
 
+    self.part_trees = {}
+    self.property_trees = {}
+    self.group_trees = {}
+
+
+
+  def do_closure(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]):
+    if self.closured:
+      return
+
+    self.closured = True
+
+    for part in set(self.parts.values()):
+      part.get_ancestors(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+
+    for prop in set(self.properties.values()):
+      prop.get_ancestors(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+
+    for group in set(self.groups.values()):
+      group.get_ancestors(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+
+    for part in self.parts.values():
+      parents = part.get_parents(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+      if len(parents) == 0 and len(part.children) > 0:
+        self.part_trees[part.key()] = part
+
+    for prop in self.properties.values():
+      parent = prop.get_parent(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+      if parent and len(prop.children) > 0:
+        self.property_trees[prop.key()] = prop
+
+    for group in self.groups.values():
+      parent = group.get_parent(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+      if parent and len(group.children) > 0:
+        self.group_trees[group.key()] = group
+
 
 class Group:
-  def __init__(self, groups: Groups):
-    self.groups = groups
+  def __init__(self, groups_object: Groups):
+    self._depth = None
+    self._groups_object = groups_object
     self.__descendants_loincs_count = None
     self.__ancestors_loincs_count = None
 
@@ -39,9 +75,11 @@ class Group:
     self.loincs: t.Dict[str, Node] = dict()
     self._key = None
 
-    self.parent_groups: t.Dict[str, Group] = dict()
-    self.child_groups: t.Dict[str, Group] = dict()
     self.properties: t.Dict[EdgeType, GroupProperty] = {}
+
+    self.__parent: Group | t.Type[...] = ...
+    self.children: t.Dict[str, Group] = {}
+    self._ancestors: t.Dict[str, Group] | None = None
 
     self.generated = False
 
@@ -54,72 +92,73 @@ class Group:
   def is_complex(self):
     return len(self.properties) > 1
 
+  def get_parent(self, *,  part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]) -> Group:
+    if self.__parent is ...:
+      properties = {}
+      for edge, prop in self.properties.items():
+        parent_prop = prop.get_parent(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+        if parent_prop:
+          parent_prop = self._groups_object.properties.setdefault(parent_prop.key(), parent_prop)
+          properties[edge] = parent_prop
+      if len(properties) > 0:
+        parent_group = Group(groups_object=self._groups_object)
+        parent_group.properties = properties
+        parent_key = parent_group.key()
+        if parent_key in self._groups_object.groups:
+          parent_group = self._groups_object.groups[parent_key]
+        else:
+          parent_group.generated = True
+          self._groups_object.groups[parent_key] = parent_group
+        self.__parent = parent_group
+        parent_group.children[self.key()] = self
+        parent_group.add_referrer_to_properties()
+      else:
+        self.__parent = None
+    return self.__parent
+
+  def get_ancestors(self, *,  part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]) -> t.Dict[str, Group]:
+    if self._ancestors is None:
+      self._ancestors = {}
+      parent_group = self.get_parent(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+      if parent_group:
+        self._ancestors = {parent_group.key(): parent_group}
+        self._ancestors.update(parent_group.get_ancestors(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types))
+    return self._ancestors
+
   def get_descendants_loincs_count(self):
-    if self.__descendants_loincs_count is None:
-      self.__descendants_loincs_count = self._do_descendant_loincs_count(set())
-    return self.__descendants_loincs_count
+    count = 0
+    for child in self.children.values():
+      count += child.get_descendants_loincs_count()
 
-  def get_descendants_count(self):
-    if self.__descendants_count is None:
-      self.__descendants_count = self._do_descencents_count(self, set())
-    return self.__descendants_count
-
-  def _do_descencents_count(self, group: Group, seen: set):
-    count = 1
-    if self.key() in seen:
-      return count
-    seen.add(self.key())
-    for key, child in self.child_groups.items():
-      count += self._do_descencents_count(child, seen)
     return count
 
-  def _do_descendant_loincs_count(self, seen_keys: set):
-    count = len(self.loincs)
-    seen_keys.add(self.key())
-
-    for key, child in self.child_groups.items():
-      if key in seen_keys:
-        continue
-      count += child._do_descendant_loincs_count(seen_keys)
+  def get_descendants_count(self):
+    count = len(self.children)
+    for child in self.children.values():
+      count += child.get_descendants_count()
     return count
 
   def get_ancestors_loincs_count(self):
-    if self.__ancestors_loincs_count is None:
-      self.__ancestors_loincs_count = self._do_ancestors_loincs_count(set())
-    return self.__ancestors_loincs_count
-
-  def _do_ancestors_loincs_count(self, seen_keys: set):
-    count = len(self.loincs)
-    seen_keys.add(self.key())
-    for key, parent in self.parent_groups.items():
-      if key in seen_keys:
-        continue
-      count += parent._do_ancestors_loincs_count(seen_keys)
+    count = 0
+    if self.__parent is not None and self.__parent is not ...:
+      count = len(self.loincs) + self.__parent.get_ancestors_loincs_count()
     return count
 
   def get_group_depth(self):
     if self.__depth is None:
-      self.__depth = self._do_depth(set())
+      self.__depth = 0
+      if self.__parent is not None and self.__parent is not ...:
+        self._depth = self.__parent.get_depth() + 1
     return self.__depth
-
-  def _do_depth(self, seen_keys: set):
-    depth = 0
-    seen_keys.add(self.key())
-    for key, group in self.parent_groups.items():
-      if key in seen_keys:
-        continue
-      seen_keys.add(key)
-      depth = max(depth, group._do_depth(seen_keys))
-    return depth
 
   def __str__(self):
     string = f"Group:\n"
     for type_, prop in self.properties.items():
-        string += f"{prop}\n"
+      string += f"{prop}\n"
     return string
 
   def has_concrete_child(self):
-    return any([not child.is_abstract() for child in self.child_groups.values()])
+    return any([not child.is_abstract() for child in self.children.values()])
 
   def key(self) -> str:
     if self._key is not None:
@@ -127,8 +166,12 @@ class Group:
     self._key = Group.build_key(self.properties)
     return self._key
 
+  def add_referrer_to_properties(self):
+    for prop in self.properties.values():
+      prop.referring_groups[self.key()] = self
+
   @classmethod
-  def build_key(cls, properties:t.Dict[EdgeType, GroupProperty]):
+  def build_key(cls, properties: t.Dict[EdgeType, GroupProperty]):
     group_key = None
     edge: EdgeType
 
@@ -146,13 +189,18 @@ class Group:
 
 
 class GroupProperty:
-  def __init__(self, edge_type: EdgeType, group_parts: t.Set[GroupPart], groups: Groups):
+  def __init__(self, edge_type: EdgeType, parts: t.Set[GroupPart], groups_object: Groups):
     self.edge_type: EdgeType = edge_type
-    self.parts: t.Set[GroupPart] = group_parts
+    self.parts: t.Set[GroupPart] = parts
     self._key = None
-    self.groups: Groups = groups
-    self.parent = ...
+    self._groups_object: Groups = groups_object
+    self.referring_groups: t.Dict[str, Group] = {}
+    self.__parent: GroupProperty | t.Type[...] = ...
     self.children: t.Dict[str, GroupProperty] = {}
+    self.ancestors: t.Dict[str, GroupProperty] = {}
+
+    for part in parts:
+      part.referring_properties[self.key()] = self
 
   def __eq__(self, other):
     return self.edge_type == other.edge_type and self.parts == other.parts
@@ -174,24 +222,33 @@ class GroupProperty:
       self._key = _key
     return self._key
 
-  def name(self):
-    return f""
-
-  def get_parent_property(self, *, parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]):
-    if self.parent is not ...:
-      return self.parent
-
-    for part in self.parts:
-      parent_parts = part.get_parents(parent_node_types=parent_node_types, edge_types=edge_types)
+  def get_parent(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]):
+    if self.__parent is ...:
+      parent_parts: t.Dict[str, GroupPart] = {}
+      for part in self.parts:
+        parent_parts.update(part.get_parents(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types))
       if len(parent_parts) > 0:
-        key = GroupProperty.property_key(edge_type=self.edge_type, parts=parent_parts)
-        self.parent = self.groups.properties.setdefault(key, GroupProperty(edge_type=self.edge_type,
-                                                                           group_parts=parent_parts,
-                                                                           groups=self.groups))
-        self.parent.children[self.key()] = self
+        parent_prop = GroupProperty(edge_type=self.edge_type,
+                                    parts=set(parent_parts.values()),
+                                    groups_object=self._groups_object)
+        parent_prop = self._groups_object.properties.setdefault(parent_prop.key(), parent_prop)
+        self.__parent = parent_prop
+        parent_prop.children[self.key()] = self
+        for parent_part in parent_parts.values():
+          parent_part.referring_properties[parent_prop.key()] = parent_prop
       else:
-        self.parent = None
-    return self.parent
+        self.__parent = None
+    return self.__parent
+
+  def get_ancestors(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]) -> t.Dict[
+    str, GroupProperty]:
+    if self.ancestors is None:
+      self.ancestors = {}
+      parent = self.get_parent(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
+      if parent is not None:
+        self.ancestors[parent.key()] = parent
+        self.ancestors.update(parent.get_ancestors(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types))
+    return self.ancestors
 
   @classmethod
   def property_key(cls, edge_type: EdgeType, parts: t.Set[GroupPart]):
@@ -207,10 +264,12 @@ class GroupPart:
   def __init__(self, *, groups: Groups, part_node: Node):
     self.part_node: Node = part_node
     self.groups = groups
-    self.parents: t.Set[GroupPart] | None = None
+    self.__parents: t.Dict[str, GroupPart] | None = None
+    self.children: t.Dict[str, GroupPart] = {}
+
     self.depth: float | None = None
-    self.ancestors: t.Set[GroupPart] | None = None
-    self.group_properties: t.List[GroupProperty] = []
+    self.ancestors: t.Dict[str, GroupPart] | None = None
+    self.referring_properties: t.Dict[str, GroupProperty] = {}
 
   def __eq__(self, other):
     return self.part_node == other.part_node
@@ -221,21 +280,24 @@ class GroupPart:
   def key(self):
     return self.part_node.node_id
 
-  def get_parents(self, *, parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]) -> t.Set[GroupPart]:
-    if self.parents is None:
-      self.parents = set()
-      for parent_node in self.part_node.get_out_nodes(node_types=parent_node_types, edge_types=edge_types):
-        parent_part = GroupPart(groups=self.groups, part_node=parent_node)
-        self.parents.add(
-            self.groups.parts.setdefault(parent_part.key(), parent_part))
-    return self.parents
+  def get_parents(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]) -> t.Dict[str, GroupPart]:
 
-  def get_ancestors(self, *, parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]) -> t.Set[GroupPart]:
+    if self.__parents is None:
+      self.__parents = {}
+      for parent_node in self.part_node.get_out_nodes(node_types=part_parent_node_types, edge_types=part_parent_edge_types):
+        parent = GroupPart(groups=self.groups, part_node=parent_node)
+        parent = self.groups.parts.setdefault(parent.key(), parent)
+        parent.children[self.key()] = self
+        self.__parents[parent.key()] = parent
+    return self.__parents
+
+  def get_ancestors(self, *,  part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]) -> t.Dict[
+    str, GroupPart]:
     if self.ancestors is None:
-      self.ancestors = set()
-      self.ancestors.add(self)
-      for parent in self.get_parents(parent_node_types=parent_node_types, edge_types=edge_types):
-        self.ancestors.update(parent.get_ancestors(parent_node_types=parent_node_types, edge_types=edge_types))
+      self.ancestors = {}
+      for parent in self.get_parents(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types).values():
+        self.ancestors[parent.key()] = parent
+        self.ancestors.update(parent.get_ancestors(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types))
     return self.ancestors
 
   def get_node_type(self) -> NodeType:
@@ -244,16 +306,16 @@ class GroupPart:
   def get_key(self):
     return self.part_node.node_id
 
-  def get_depth(self, *, parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]):
+  def get_depth(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]):
     if self.depth is None:
-      parents = self.get_parents(parent_node_types=parent_node_types, edge_types=edge_types)
+      parents = self.get_parents(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
       self.depth = reduce(lambda d, p: d + p.get_depth(), parents, 1) / len(parents)
     return self.depth
 
-  def get_depth_percent(self, *, other: GroupPart, parent_node_types: t.List[NodeType], edge_types: t.List[EdgeType]):
-    if self not in other.get_ancestors(parent_node_types=parent_node_types, edge_types=edge_types):
+  def get_depth_percent(self, *, other: GroupPart, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]):
+    if self not in other.get_ancestors(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types):
       raise ValueError(f"Group part: {other}, does not have this GroupPart as an ancestor: {self}")
-    return self.depth / other.get_depth(parent_node_types=parent_node_types, edge_types=edge_types)
+    return self.depth / other.get_depth(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
 
   def __str__(self):
     name = self.part_node.get_property(LoincPartProps.part_name)

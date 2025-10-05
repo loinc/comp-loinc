@@ -4,6 +4,7 @@ import pandas as pd
 
 from loinclib import LoinclibGraph, SnomedNodeType, SnomedEdges, Configuration, GeneralEdgeType
 from loinclib.loinc_schema import LoincNodeType, LoincPartProps
+from loinclib.loinc_snomed_schema import LoincSnomedEdges
 from loinclib.snomed_schema_v2 import SnomedProperties
 
 
@@ -19,44 +20,42 @@ class LoincSnomedLoader:
         self.config: Configuration = config
         self.graph = graph
 
-    def read_description(self):
-        return pd.read_csv(
-            self.config.get_loinc_snomed_description_path(),
-            dtype=str,
-            na_filter=False,
-            sep="\t",
+
+    def load_identifier(self):
+      if LoincSnomedSources.identifier in self.graph.loaded_sources:
+        return
+
+      for tpl in self.read_identifiers().itertuples():
+
+        (
+          index,
+          alternate_identifier,  # loinc term code
+          effective_time,
+          active,
+          module_id,
+          identifier_schema_id,  # loinc
+          referenced_component_id,
+        ) = tpl
+
+
+        loinc_node = self.graph.getsert_node(
+            type_=LoincNodeType.LoincTerm, code=alternate_identifier
+        )
+        snomed_node = self.graph.getsert_node(
+            type_=SnomedNodeType.Concept, code=referenced_component_id
         )
 
-    def read_identifiers(self):
-        return pd.read_csv(
-            self.config.get_loinc_snomed_identifier_path(),
-            dtype=str,
-            na_filter=False,
-            sep="\t",
-        )
+        loinc_node.add_edge_single(type_=LoincSnomedEdges.loinc_term_maps_to, to_node=snomed_node)
+        loinc_node.add_edge_single(type_=GeneralEdgeType.maps_to, to_node=snomed_node)
 
-    def read_relationship(self):
-        return pd.read_csv(
-            self.config.get_loinc_snomed_relationship_path(),
-            dtype=str,
-            na_filter=False,
-            sep="\t",
-        )
-
-    def read_part_mapping(self):
-        return pd.read_csv(
-            self.config.get_loinc_snomed_part_mapping_path(),
-            dtype=str,
-            na_filter=False,
-            sep="\t",
-        )
+      self.graph.loaded_sources[LoincSnomedSources.identifier] = {}
 
     def load_description(self):
         if LoincSnomedSources.description in self.graph.loaded_sources:
             return
 
         for tpl in self.read_description().itertuples():
-            # @formatter:off
+
             (
                 index,
                 id_,
@@ -69,11 +68,11 @@ class LoincSnomedLoader:
                 term,
                 case_significance_id,
             ) = tpl
-            # @formatter:on
 
-            snomed_node = self.graph.getsert_node(SnomedNodeType.concept, concept_id)
+            snomed_node = self.graph.getsert_node(SnomedNodeType.Concept, concept_id)
+            type_ = SnomedProperties(type_id)
             snomed_node.set_property(
-                type_=SnomedProperties.fully_specified_name, value=term
+                type_=type_, value=term
             )
             snomed_node.set_property(
                 type_=SnomedProperties.concept_id, value=concept_id
@@ -81,40 +80,13 @@ class LoincSnomedLoader:
 
         self.graph.loaded_sources[LoincSnomedSources.description] = {}
 
-    def load_identifier(self):
-        if LoincSnomedSources.identifier in self.graph.loaded_sources:
-            return
-
-        for tpl in self.read_identifiers().itertuples():
-            # @formatter:off
-            (
-                index,
-                alternate_identifier,  # loinc term code
-                effective_time,
-                active,
-                module_id,
-                identifier_schema_id,  # loinc
-                referenced_component_id,
-            ) = tpl
-            # @formatter:on
-
-            loinc_node = self.graph.getsert_node(
-                type_=LoincNodeType.LoincTerm, code=alternate_identifier
-            )
-            snomed_node = self.graph.getsert_node(
-                type_=SnomedNodeType.concept, code=referenced_component_id
-            )
-            loinc_node.add_edge_single(type_=SnomedEdges.maps_to, to_node=snomed_node)
-            loinc_node.add_edge_single(type_=GeneralEdgeType.maps_to, to_node=snomed_node)
-
-        self.graph.loaded_sources[LoincSnomedSources.identifier] = {}
 
     def load_relationship(self):
         if LoincSnomedSources.relation in self.graph.loaded_sources:
             return
 
         for tpl in self.read_relationship().itertuples():
-            # @formatter:off
+
             (
                 index,
                 id_,
@@ -128,13 +100,13 @@ class LoincSnomedLoader:
                 characteristic_type_id,
                 modifier_id,
             ) = tpl
-            # @formatter:on
+
 
             from_node = self.graph.getsert_node(
-                type_=SnomedNodeType.concept, code=source_id
+                type_=SnomedNodeType.Concept, code=source_id
             )
             to_node = self.graph.getsert_node(
-                type_=SnomedNodeType.concept, code=destination_id
+                type_=SnomedNodeType.Concept, code=destination_id
             )
             type_ = SnomedEdges(type_id)
             from_node.add_edge_single(type_=type_, to_node=to_node)
@@ -147,7 +119,7 @@ class LoincSnomedLoader:
             return
 
         for tpl in self.read_part_mapping().itertuples():
-            # @formatter:off
+
             (
                 index,
                 source_code,
@@ -161,7 +133,7 @@ class LoincSnomedLoader:
                 no_map_flag,
                 status,
             ) = tpl
-            # @formatter:on
+
 
             if target_code:
                 loinc_part = self.graph.getsert_node(
@@ -172,7 +144,7 @@ class LoincSnomedLoader:
                 )
 
                 snomed_cocept = self.graph.getsert_node(
-                    type_=SnomedNodeType.concept, code=target_code
+                    type_=SnomedNodeType.Concept, code=target_code
                 )
                 snomed_cocept.set_property(
                     type_=SnomedProperties.concept_id, value=target_code
@@ -189,3 +161,44 @@ class LoincSnomedLoader:
                 )
 
         self.graph.loaded_sources[LoincSnomedSources.part_mapping] = {}
+
+    def map_loinc_part_to_snomed_concept(self):
+
+      for loinc in self.graph.get_nodes(LoincNodeType.LoincTerm):
+        for snomed_node in  loinc.get_out_nodes(edge_types=[LoincSnomedEdges.loinc_term_maps_to], node_types=[SnomedNodeType.Concept]):
+          pass
+
+      pass
+
+
+    def read_description(self):
+      return pd.read_csv(
+          self.config.get_loinc_snomed_description_path(),
+          dtype=str,
+          na_filter=False,
+          sep="\t",
+      )
+
+    def read_identifiers(self):
+      return pd.read_csv(
+          self.config.get_loinc_snomed_identifier_path(),
+          dtype=str,
+          na_filter=False,
+          sep="\t",
+      )
+
+    def read_relationship(self):
+      return pd.read_csv(
+          self.config.get_loinc_snomed_relationship_path(),
+          dtype=str,
+          na_filter=False,
+          sep="\t",
+      )
+
+    def read_part_mapping(self):
+      return pd.read_csv(
+          self.config.get_loinc_snomed_part_mapping_path(),
+          dtype=str,
+          na_filter=False,
+          sep="\t",
+      )
