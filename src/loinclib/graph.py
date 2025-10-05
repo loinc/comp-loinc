@@ -208,7 +208,7 @@ class GeneralEdgeTypeArgs(EdgeTypeArgs):
 
 class GeneralEdgeType(EdgeType):
   has_parent = GeneralEdgeTypeArgs(name="has_parent")
-  maps_to = GeneralEdgeTypeArgs(name="maps_to")
+  mapped_to = GeneralEdgeTypeArgs(name="maps_to")
 
 
 @dataclass(kw_only=True)

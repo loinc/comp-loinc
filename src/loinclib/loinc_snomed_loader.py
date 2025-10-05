@@ -46,7 +46,7 @@ class LoincSnomedLoader:
         )
 
         loinc_node.add_edge_single(type_=LoincSnomedEdges.loinc_term_maps_to, to_node=snomed_node)
-        loinc_node.add_edge_single(type_=GeneralEdgeType.maps_to, to_node=snomed_node)
+        loinc_node.add_edge_single(type_=GeneralEdgeType.mapped_to, to_node=snomed_node)
 
       self.graph.loaded_sources[LoincSnomedSources.identifier] = {}
 
@@ -157,7 +157,7 @@ class LoincSnomedLoader:
                     type_=SnomedEdges.maps_to, to_node=snomed_cocept
                 )
                 loinc_part.add_edge_single(
-                    type_=GeneralEdgeType.maps_to, to_node=snomed_cocept
+                    type_=GeneralEdgeType.mapped_to, to_node=snomed_cocept
                 )
 
         self.graph.loaded_sources[LoincSnomedSources.part_mapping] = {}

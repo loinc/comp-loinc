@@ -21,8 +21,16 @@ sys.argv = [
   "--type",
   "loinc",
 
+  "part-parent-edges",
+  "--edge",
+  "has-parent",
+  "--edge",
+  "mapped-to",
+
   "group-generate",
   "--parent-group",
+  "--parent-rounds",
+  "3",
   #
   "save-owl"
 
