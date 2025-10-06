@@ -7,11 +7,11 @@ from comp_loinc import Runtime
 from comp_loinc.config import FAST_RUN_N_PARTS
 from comp_loinc.datamodel import SnomedConcept
 from loinclib import (
-    Configuration,
-    SnomedNodeType,
-    LoincNodeType,
-    SnomedEdges,
-    SnomedLoader,
+  Configuration,
+  SnomedNodeType,
+  LoincNodeType,
+  SnomedEdges,
+  SnomedLoader, GeneralEdgeType,
 )
 from loinclib.loinc_snomed_loader import LoincSnomedLoader
 from loinclib.snomed_schema_v2 import SnomedProperties
@@ -55,7 +55,8 @@ class SnomedBuilderSteps:
             if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
                 break
             for edge in part.get_all_out_edges():
-                if edge.handler.type_ is SnomedEdges.maps_to:
+
+                if edge.to_node.get_node_type() == SnomedNodeType.Concept:
                     concept: SnomedConcept = self.runtime.current_module.get_entity(
                         entity_id=edge.to_node.node_id, entity_class=SnomedConcept
                     )

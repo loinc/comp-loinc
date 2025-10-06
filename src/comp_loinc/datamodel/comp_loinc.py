@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-09-27T10:44:01
+# Generation date: 2025-10-06T13:51:10
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -112,6 +112,7 @@ class Entity(YAMLRoot):
 
     id: Union[str, EntityId] = None
     entity_label: Optional[str] = None
+    sources: Optional[Union[str, list[str]]] = empty_list()
     entity_description: Optional[str] = None
     sub_class_of: Optional[Union[Union[str, EntityId], list[Union[str, EntityId]]]] = empty_list()
     parent_of: Optional[Union[Union[str, EntityId], list[Union[str, EntityId]]]] = empty_list()
@@ -125,6 +126,10 @@ class Entity(YAMLRoot):
 
         if self.entity_label is not None and not isinstance(self.entity_label, str):
             self.entity_label = str(self.entity_label)
+
+        if not isinstance(self.sources, list):
+            self.sources = [self.sources] if self.sources is not None else []
+        self.sources = [v if isinstance(v, str) else str(v) for v in self.sources]
 
         if self.entity_description is not None and not isinstance(self.entity_description, str):
             self.entity_description = str(self.entity_description)
@@ -240,11 +245,11 @@ class LoincTerm(LoincEntity):
     primary_property: Optional[Union[str, LoincPartId]] = None
     primary_time_aspect: Optional[Union[str, LoincPartId]] = None
     primary_system: Optional[Union[str, LoincPartId]] = None
-    primary_scale_typ: Optional[Union[str, LoincPartId]] = None
-    primary_method_typ: Optional[Union[str, LoincPartId]] = None
+    primary_scale_type: Optional[Union[str, LoincPartId]] = None
+    primary_method_type: Optional[Union[str, LoincPartId]] = None
     supplementary_property: Optional[Union[str, LoincPartId]] = None
-    supplementary_scale_typ: Optional[Union[str, LoincPartId]] = None
-    supplementary_method_typ: Optional[Union[str, LoincPartId]] = None
+    supplementary_scale_type: Optional[Union[str, LoincPartId]] = None
+    supplementary_method_type: Optional[Union[str, LoincPartId]] = None
     supplementary_analyte: Optional[Union[str, LoincPartId]] = None
     supplementary_challenge: Optional[Union[str, LoincPartId]] = None
     supplementary_adjustment: Optional[Union[str, LoincPartId]] = None
@@ -330,20 +335,20 @@ class LoincTerm(LoincEntity):
         if self.primary_system is not None and not isinstance(self.primary_system, LoincPartId):
             self.primary_system = LoincPartId(self.primary_system)
 
-        if self.primary_scale_typ is not None and not isinstance(self.primary_scale_typ, LoincPartId):
-            self.primary_scale_typ = LoincPartId(self.primary_scale_typ)
+        if self.primary_scale_type is not None and not isinstance(self.primary_scale_type, LoincPartId):
+            self.primary_scale_type = LoincPartId(self.primary_scale_type)
 
-        if self.primary_method_typ is not None and not isinstance(self.primary_method_typ, LoincPartId):
-            self.primary_method_typ = LoincPartId(self.primary_method_typ)
+        if self.primary_method_type is not None and not isinstance(self.primary_method_type, LoincPartId):
+            self.primary_method_type = LoincPartId(self.primary_method_type)
 
         if self.supplementary_property is not None and not isinstance(self.supplementary_property, LoincPartId):
             self.supplementary_property = LoincPartId(self.supplementary_property)
 
-        if self.supplementary_scale_typ is not None and not isinstance(self.supplementary_scale_typ, LoincPartId):
-            self.supplementary_scale_typ = LoincPartId(self.supplementary_scale_typ)
+        if self.supplementary_scale_type is not None and not isinstance(self.supplementary_scale_type, LoincPartId):
+            self.supplementary_scale_type = LoincPartId(self.supplementary_scale_type)
 
-        if self.supplementary_method_typ is not None and not isinstance(self.supplementary_method_typ, LoincPartId):
-            self.supplementary_method_typ = LoincPartId(self.supplementary_method_typ)
+        if self.supplementary_method_type is not None and not isinstance(self.supplementary_method_type, LoincPartId):
+            self.supplementary_method_type = LoincPartId(self.supplementary_method_type)
 
         if self.supplementary_analyte is not None and not isinstance(self.supplementary_analyte, LoincPartId):
             self.supplementary_analyte = LoincPartId(self.supplementary_analyte)
@@ -561,6 +566,9 @@ slots.entity__id = Slot(uri=LOINC.id, name="entity__id", curie=LOINC.curie('id')
 slots.entity__entity_label = Slot(uri=RDFS.label, name="entity__entity_label", curie=RDFS.curie('label'),
                    model_uri=LOINC.entity__entity_label, domain=None, range=Optional[str])
 
+slots.entity__sources = Slot(uri=COMPLOINC.sources, name="entity__sources", curie=COMPLOINC.curie('sources'),
+                   model_uri=LOINC.entity__sources, domain=None, range=Optional[Union[str, list[str]]])
+
 slots.entity__entity_description = Slot(uri=RDFS.description, name="entity__entity_description", curie=RDFS.curie('description'),
                    model_uri=LOINC.entity__entity_description, domain=None, range=Optional[str])
 
@@ -615,20 +623,20 @@ slots.loincTerm__primary_time_aspect = Slot(uri=LOINC_PROPERTY.TIME_ASPCT, name=
 slots.loincTerm__primary_system = Slot(uri=LOINC_PROPERTY.SYSTEM, name="loincTerm__primary_system", curie=LOINC_PROPERTY.curie('SYSTEM'),
                    model_uri=LOINC.loincTerm__primary_system, domain=None, range=Optional[Union[str, LoincPartId]])
 
-slots.loincTerm__primary_scale_typ = Slot(uri=LOINC_PROPERTY.SCALE_TYP, name="loincTerm__primary_scale_typ", curie=LOINC_PROPERTY.curie('SCALE_TYP'),
-                   model_uri=LOINC.loincTerm__primary_scale_typ, domain=None, range=Optional[Union[str, LoincPartId]])
+slots.loincTerm__primary_scale_type = Slot(uri=LOINC_PROPERTY.SCALE_TYP, name="loincTerm__primary_scale_type", curie=LOINC_PROPERTY.curie('SCALE_TYP'),
+                   model_uri=LOINC.loincTerm__primary_scale_type, domain=None, range=Optional[Union[str, LoincPartId]])
 
-slots.loincTerm__primary_method_typ = Slot(uri=LOINC_PROPERTY.METHOD_TYP, name="loincTerm__primary_method_typ", curie=LOINC_PROPERTY.curie('METHOD_TYP'),
-                   model_uri=LOINC.loincTerm__primary_method_typ, domain=None, range=Optional[Union[str, LoincPartId]])
+slots.loincTerm__primary_method_type = Slot(uri=LOINC_PROPERTY.METHOD_TYP, name="loincTerm__primary_method_type", curie=LOINC_PROPERTY.curie('METHOD_TYP'),
+                   model_uri=LOINC.loincTerm__primary_method_type, domain=None, range=Optional[Union[str, LoincPartId]])
 
 slots.loincTerm__supplementary_property = Slot(uri=LOINC_PROPERTY.PROPERTY, name="loincTerm__supplementary_property", curie=LOINC_PROPERTY.curie('PROPERTY'),
                    model_uri=LOINC.loincTerm__supplementary_property, domain=None, range=Optional[Union[str, LoincPartId]])
 
-slots.loincTerm__supplementary_scale_typ = Slot(uri=LOINC_PROPERTY.SCALE_TYP, name="loincTerm__supplementary_scale_typ", curie=LOINC_PROPERTY.curie('SCALE_TYP'),
-                   model_uri=LOINC.loincTerm__supplementary_scale_typ, domain=None, range=Optional[Union[str, LoincPartId]])
+slots.loincTerm__supplementary_scale_type = Slot(uri=LOINC_PROPERTY.SCALE_TYP, name="loincTerm__supplementary_scale_type", curie=LOINC_PROPERTY.curie('SCALE_TYP'),
+                   model_uri=LOINC.loincTerm__supplementary_scale_type, domain=None, range=Optional[Union[str, LoincPartId]])
 
-slots.loincTerm__supplementary_method_typ = Slot(uri=LOINC_PROPERTY.METHOD_TYP, name="loincTerm__supplementary_method_typ", curie=LOINC_PROPERTY.curie('METHOD_TYP'),
-                   model_uri=LOINC.loincTerm__supplementary_method_typ, domain=None, range=Optional[Union[str, LoincPartId]])
+slots.loincTerm__supplementary_method_type = Slot(uri=LOINC_PROPERTY.METHOD_TYP, name="loincTerm__supplementary_method_type", curie=LOINC_PROPERTY.curie('METHOD_TYP'),
+                   model_uri=LOINC.loincTerm__supplementary_method_type, domain=None, range=Optional[Union[str, LoincPartId]])
 
 slots.loincTerm__supplementary_analyte = Slot(uri=LOINC_PROPERTY.analyte, name="loincTerm__supplementary_analyte", curie=LOINC_PROPERTY.curie('analyte'),
                    model_uri=LOINC.loincTerm__supplementary_analyte, domain=None, range=Optional[Union[str, LoincPartId]])

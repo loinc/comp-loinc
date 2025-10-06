@@ -14,7 +14,7 @@ from loinclib.loinc_tree_schema import (
   LoincTreeProps,
 )
 
-from loinclib.graph import ElementProps
+from loinclib.graph import GeneralProps
 
 logger = logging.getLogger("LoincTreeLoader")
 
@@ -60,7 +60,7 @@ class LoincTreeLoader:
     """Load all tree files"""
     self.load_class_tree()
     self.load_component_tree()
-    self.load_component_by_system_tree()
+    # self.load_component_by_system_tree()
     self.load_document_tree()
     self.load_method_tree()
     self.load_panel_tree()
@@ -176,6 +176,9 @@ class LoincTreeLoader:
       if not code.startswith("LP"):
         continue
 
+      # if code == "LP432811-0":
+      #   print("debug")
+
       part_node = self.graph.get_node_by_code(
           type_=LoincNodeType.LoincPart, code=code
       )
@@ -183,12 +186,14 @@ class LoincTreeLoader:
         part_node = self.graph.getsert_node(
             type_=LoincNodeType.LoincPart, code=code, source=f"tree.{source}"
         )
-        part_node.set_property(type_=LoincPartProps.part_number, value=code)
+      part_node.set_property(type_=LoincPartProps.part_number, value=code)
+      # if part_node.get_property(GeneralProps.label) is None:
+      part_node.set_property(type_=GeneralProps.label, value=code_text)
 
-      sources = part_node.get_property(ElementProps.sources)
+      sources = part_node.get_property(GeneralProps.sources)
       if sources is None:
         sources = set()
-        part_node.set_property(type_=ElementProps.sources, value=sources)
+        part_node.set_property(type_=GeneralProps.sources, value=sources)
       sources.add(f"tree.{source}")
 
       part_node.set_property(type_=LoincTreeProps.from_trees, value=True)

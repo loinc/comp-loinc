@@ -60,6 +60,7 @@ class Module:
         """Add entity"""
         if self.get_entity(entity.id, type(entity)) is not None and not replace:
             raise ValueError(f"Replacing entity {entity} not allowed.")
+        entity_type = type(entity)
         self.entities_by_type.setdefault(type(entity), {})[entity.id] = entity
 
     def get_entities_of_type(self, entity_class: t.Type[Entity]) -> t.Iterator[Entity]:

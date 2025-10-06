@@ -39,6 +39,11 @@ classes:
         slot_uri: rdfs:label
         annotations:
           owl: AnnotationAssertion
+      sources:
+        slot_uri: comploinc:sources
+        annotations:
+          owl: AnnotationAssertion
+        multivalued: true
       entity_description:
         slot_uri: rdfs:description
         annotations:
@@ -162,7 +167,7 @@ classes:
           owl: ObjectSomeValuesFrom
 
       # 5
-      primary_scale_typ:
+      primary_scale_type:
         slot_uri: loinc_property:SCALE_TYP
         multivalued: false
         range: LoincPart
@@ -171,7 +176,7 @@ classes:
           owl: ObjectSomeValuesFrom
 
       # 6
-      primary_method_typ:
+      primary_method_type:
         slot_uri: loinc_property:METHOD_TYP
         multivalued: false
         range: LoincPart
@@ -190,7 +195,7 @@ classes:
         annotations:
           owl: ObjectSomeValuesFrom
 
-      supplementary_scale_typ:
+      supplementary_scale_type:
         slot_uri: loinc_property:SCALE_TYP
         multivalued: false
         range: LoincPart
@@ -198,7 +203,7 @@ classes:
         annotations:
           owl: ObjectSomeValuesFrom
 
-      supplementary_method_typ:
+      supplementary_method_type:
         slot_uri: loinc_property:METHOD_TYP
         multivalued: false
         range: LoincPart

@@ -6,7 +6,7 @@ import pandas as pd
 import loinclib.loinc_schema as LS
 from loinclib import GeneralEdgeType
 from loinclib.config import Configuration
-from loinclib.graph import Node, LoinclibGraph, ElementProps
+from loinclib.graph import Node, LoinclibGraph, GeneralProps
 from loinclib.loinc_schema import LoincPartEdge, LoincPartProps, LoincClassEdges
 
 
@@ -139,6 +139,7 @@ class LoincLoader:
           type_=LS.LoincPartProps.part_type_name, value=part_type_name
       )
       node.set_property(type_=LS.LoincPartProps.part_name, value=part_name)
+      node.set_property(type_=GeneralProps.label, value=part_name)
       node.set_property(
           type_=LS.LoincPartProps.part_display_name, value=part_display_name
       )
@@ -284,10 +285,10 @@ class LoincLoader:
                                             source=LoincElementSource.component_by_system)
         part_node.set_property(type_=LoincPartProps.part_number, value=code)
 
-      sources = part_node.get_property(ElementProps.sources)
+      sources = part_node.get_property(GeneralProps.sources)
       if sources is None:
         sources = set()
-        part_node.set_property(type_=ElementProps.sources, value=sources)
+        part_node.set_property(type_=GeneralProps.sources, value=sources)
       sources.add(LoincElementSource.component_by_system)
 
       part_node.set_property(type_=LoincPartProps.from_hierarchy, value=True)  # todo: remove due to sources approach

@@ -1,10 +1,12 @@
 from fontTools.misc.bezierTools import namedtuple
 from networkx.classes import MultiDiGraph
+from rdflib.plugins.shared.jsonld.context import NODE_KEYS
 
 from comp_loinc import Runtime
 import typing as t
 
-from loinclib import Configuration, LoincLoader, LoincNodeType, Node, EdgeType, Edge, ElementProps, ElementKeys
+from loinclib import Configuration, LoincLoader, LoincNodeType, Node, EdgeType, Edge, GeneralProps, ElementKeys, \
+  GeneralEdgeType
 from loinclib.loinc_schema import LoincTermEdgeType, LoincTermPrimaryEdges, LoincPartProps, LoincPartEdge, \
   LoincTermSupplementaryEdges
 from loinclib.loinc_tree_loader import LoincTreeLoader
@@ -47,31 +49,39 @@ class GraphCommands:
 
     self.fix_graph_part_hierarchy()
 
-    # self.find_cycles_primary()
-    # self.find_cycles_supplemental()
+    self.find_cycles_primary()
+    self.find_cycles_supplemental()
     self.find_cycles_other()
 
     print(f"Seen parts: {len(self.seen_nodes)}")
 
   def find_cycles_primary(self):
-    print("============================= from primary  ========================")
+    # print("============================= from primary  ========================")
     self.seen_nodes = {}
+    # node_counter = 0
     for node in self.runtime.graph.get_nodes(type_=LoincNodeType.LoincTerm):
+      # node_counter += 1
+      # if (node_counter % 1000) == 0:
+      #   print(f"Node counter: {node_counter}")
       for edge in node.get_all_out_edges():
         if isinstance(edge.handler.type_, LoincTermPrimaryEdges):
           self._find_part_cycle_by_type(part_node=edge.to_node,
-                                        edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent],
+                                        edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent, GeneralEdgeType.has_parent],
                                         path=list(),
                                         seen=self.seen_nodes)
 
   def find_cycles_supplemental(self):
-    print("============================= from supplementary ========================")
+    # print("============================= from supplementary ========================")
     self.seen_nodes = {}
+    # node_counter = 0
     for node in self.runtime.graph.get_nodes(type_=LoincNodeType.LoincTerm):
+      # node_counter += 1
+      # if (node_counter % 1000) == 0:
+      #   print(f"Node counter: {node_counter}")
       for edge in node.get_all_out_edges():
         if isinstance(edge.handler.type_, LoincTermSupplementaryEdges):
           self._find_part_cycle_by_type(part_node=edge.to_node,
-                                        edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent],
+                                        edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent, GeneralEdgeType.has_parent],
                                         path=list(),
                                         seen=self.seen_nodes)
 
@@ -81,31 +91,31 @@ class GraphCommands:
     node_counter = 0
     for node in self.runtime.graph.get_nodes(type_=LoincNodeType.LoincPart):
       node_counter += 1
-      if (node_counter % 10) == 0:
+      if (node_counter % 1000) == 0:
         print(f"Node counter: {node_counter}")
       # print(f"Other: {node}")
       self._find_part_cycle_by_type(part_node=node,
-                                    edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent], path=list(),
+                                    edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent, GeneralEdgeType.has_parent], path=list(),
                                     seen=self.seen_nodes)
 
       self._find_part_cycle_any_type(part_node=node,
-                                    edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent], path=list(),
+                                    edge_types=[LoincTreeEdges.tree_parent, LoincPartEdge.parent_comp_by_system, LoincDanglingNlpEdges.nlp_parent, GeneralEdgeType.has_parent], path=list(),
                                     seen=self.seen_nodes)
 
   def _find_part_cycle_by_type(self, part_node: Node, edge_types: t.List[EdgeType], path: t.List[Node | Edge],
       seen: t.Dict[str, Node]):
-    # if part_node.node_id in seen:
-    #   return
+    if part_node.node_id in seen:
+      return
 
     if part_node in path:
       nice_path = ""
       for path_item in path:
         if isinstance(path_item, Node):
-          nice_path += f"Node: {path_item.get_property(LoincPartProps.part_number)}-{path_item.get_property(LoincPartProps.part_name or path_item.get_property(LoincTreeProps.code_text))}, sources: {path_item.get_property(ElementProps.sources)}\n"
+          nice_path += f"Node: {path_item.get_property(LoincPartProps.part_number)}-{path_item.get_property(LoincPartProps.part_name or path_item.get_property(LoincTreeProps.code_text))}, sources: {path_item.get_property(GeneralProps.sources)}\n"
         if isinstance(path_item, Edge):
-          nice_path += f"Edge: {path_item.handler.type_}- sources: {path_item.get_property(ElementProps.sources)}\n"
+          nice_path += f"Edge: {path_item.handler.type_}- sources: {path_item.get_property(GeneralProps.sources)}\n"
 
-      nice_path += f"Node: {part_node.get_property(LoincPartProps.part_number)}-{part_node.get_property(LoincPartProps.part_name or part_node.get_property(LoincTreeProps.code_text))}, sources: {part_node.get_property(ElementProps.sources)}\n"
+      nice_path += f"Node: {part_node.get_property(LoincPartProps.part_number)}-{part_node.get_property(LoincPartProps.part_name or part_node.get_property(LoincTreeProps.code_text))}, sources: {part_node.get_property(GeneralProps.sources)}\n"
       print(nice_path)
       print("========================")
       return
@@ -124,18 +134,18 @@ class GraphCommands:
 
   def _find_part_cycle_any_type(self, part_node: Node, edge_types: t.List[EdgeType], path: t.List[Node | Edge],
       seen: t.Dict[str, Node]):
-    # if part_node.node_id in seen:
-    #   return
+    if part_node.node_id in seen:
+      return
 
     if part_node in path:
       nice_path = ""
       for path_item in path:
         if isinstance(path_item, Node):
-          nice_path += f"Node: {path_item.get_property(LoincPartProps.part_number)}-{path_item.get_property(LoincPartProps.part_name or path_item.get_property(LoincTreeProps.code_text))}, sources: {path_item.get_property(ElementProps.sources)}\n"
+          nice_path += f"Node: {path_item.get_property(LoincPartProps.part_number)}-{path_item.get_property(LoincPartProps.part_name or path_item.get_property(LoincTreeProps.code_text))}, sources: {path_item.get_property(GeneralProps.sources)}\n"
         if isinstance(path_item, Edge):
-          nice_path += f"Edge: {path_item.handler.type_}- sources: {path_item.get_property(ElementProps.sources)}\n"
+          nice_path += f"Edge: {path_item.handler.type_}- sources: {path_item.get_property(GeneralProps.sources)}\n"
 
-      nice_path += f"Node: {part_node.get_property(LoincPartProps.part_number)}-{part_node.get_property(LoincPartProps.part_name or part_node.get_property(LoincTreeProps.code_text))}, sources: {part_node.get_property(ElementProps.sources)}\n"
+      nice_path += f"Node: {part_node.get_property(LoincPartProps.part_number)}-{part_node.get_property(LoincPartProps.part_name or part_node.get_property(LoincTreeProps.code_text))}, sources: {part_node.get_property(GeneralProps.sources)}\n"
       print(nice_path)
       print("========================")
       return
@@ -163,14 +173,17 @@ class GraphCommands:
     # ]
 
     edges_to_remove = {
+
       pid("LP30366-6"): {  # LP30366-6-Urinary bladder+Urethra
-        pid("LP30366-6"): LoincTreeEdges.tree_parent,
+        LoincTreeEdges.tree_parent: pid("LP30366-6"),
+        GeneralEdgeType.has_parent: pid("LP30366-6"),
       },
 
       pid("LP343630-2"): {  # LP343630-2-Lab report general comments
-        pid("LP343630-2"): LoincTreeEdges.tree_parent,
-      },
+        LoincTreeEdges.tree_parent: pid("LP343630-2"),
+        GeneralEdgeType.has_parent: pid("LP343630-2"),
 
+      },
     }
 
     nx_graph: MultiDiGraph = self.runtime.graph.nx_graph
@@ -178,8 +191,14 @@ class GraphCommands:
     to_process = list(nx_graph.out_edges(nbunch=edges_to_remove.keys(), data=True, keys=True))
 
     for out_edge in to_process:
-      from_edge = edges_to_remove.get(out_edge[0], None)
+      from_node = out_edge[0]
+      from_edge = edges_to_remove.get(from_node, None)
       if from_edge:
-        to_edge = from_edge.get(out_edge[1], None)
-        if to_edge and out_edge[3][ElementKeys.TYPE_KEY] == to_edge:
-          nx_graph.remove_edge(u=out_edge[0], v=out_edge[1], key=out_edge[2])
+        to_node = out_edge[1]
+        key = out_edge[2]
+        data = out_edge[3]
+        edge_type = data.get(ElementKeys.TYPE_KEY)
+        to_removed_node_ = from_edge.get(edge_type, None)
+
+        if to_removed_node_ and to_removed_node_ == to_node :
+          nx_graph.remove_edge(u=from_node, v=to_removed_node_, key=key)

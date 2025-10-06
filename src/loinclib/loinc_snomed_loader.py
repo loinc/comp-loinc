@@ -154,7 +154,7 @@ class LoincSnomedLoader:
                 )
 
                 loinc_part.add_edge_single(
-                    type_=SnomedEdges.maps_to, to_node=snomed_cocept
+                    type_=GeneralEdgeType.mapped_to, to_node=snomed_cocept
                 )
                 loinc_part.add_edge_single(
                     type_=GeneralEdgeType.mapped_to, to_node=snomed_cocept

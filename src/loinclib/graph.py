@@ -349,10 +349,10 @@ class NodeHandler(PropertyOwnerHandler):
       node = Node(node_id=node_id, node_handler=self, properties=data)
 
     if source is not None:
-      sources = node.get_property(ElementProps.sources)
+      sources = node.get_property(GeneralProps.sources)
       if sources is None:
         sources = set()
-        node.set_property(type_=ElementProps.sources, value=sources)
+        node.set_property(type_=GeneralProps.sources, value=sources)
       sources.add(source)
     return node
 
@@ -607,9 +607,10 @@ class ElementSourceArgs:
       self.abbr = self.name
 
 
-class ElementProps(PropertyType):
+class GeneralProps(PropertyType):
   type = PropertyTypeArgs(name="_type")
   sources = PropertyTypeArgs(name="_sources")
+  label = PropertyTypeArgs(name="_label")
 
 
 # todo: make abstract
@@ -654,13 +655,16 @@ class Node(Element):
     )
     edge = Edge(from_node=self, to_node=to_node, edge_key=key, edge_handler=edge_handler)
     if source is not None:
-      sources: set = edge.get_property(ElementProps.sources)
+      sources: set = edge.get_property(GeneralProps.sources)
       if sources is None:
         sources = set()
-        edge.set_property(type_=ElementProps.sources, value=sources)
+        edge.set_property(type_=GeneralProps.sources, value=sources)
       sources.add(source)
 
     return edge
+
+  def get_all_out_edges(self):
+    return self.get_out_edges()
 
   def get_edge_single(self, type_: EdgeType, to_node: Node) -> t.Optional[Edge]:
     _check_edge_types(type_)

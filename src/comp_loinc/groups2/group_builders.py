@@ -9,12 +9,13 @@ import typer
 
 import comp_loinc as cl
 import loinclib as ll
-from comp_loinc.datamodel import LoincTermId
+from comp_loinc.datamodel import LoincTermId, Entity
 from comp_loinc.datamodel.comp_loinc import LoincTerm, LoincPartId
 from comp_loinc.groups2.group import Group, GroupProperty, GroupPart
 from comp_loinc.groups2.group import Groups
 from loinclib import LoincNodeType, EdgeType, SnomedNodeType, GeneralEdgeType
 from loinclib.graph import Node, Edge, NodeType
+from loinclib.graph_commands import GraphCommands
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps, LoincTermPrimaryEdges, LoincTermSupplementaryEdges, \
   LoincTermPrimaryEdgesArgs
 from loinclib.loinc_tree_schema import LoincTreeProps
@@ -28,6 +29,7 @@ class Groups2BuilderSteps:
       self,
       config: ll.Configuration,
   ):
+    self.base_groups: t.Dict[str, Group] = None
     self._loinc_parsed = None
     self.config = config
     self.runtime: t.Optional[cl.Runtime] = None
@@ -118,6 +120,9 @@ class Groups2BuilderSteps:
 
       loinc_number = loinc_node.get_property(LoincTermProps.loinc_number)
 
+      if loinc_number == "77108-9":
+        print("debug")
+
       # if loinc_number == "4169-9":
       #   print("4169-9")
       #
@@ -131,7 +136,7 @@ class Groups2BuilderSteps:
 
       for out_edge in out_edges:
         type_ = out_edge.handler.type_
-        if self._use_group_property(type_):
+        if self._use_group_edge(type_):
           parts = properties.setdefault(type_, set())
           part = GroupPart(groups=groups, part_node=out_edge.to_node)
           part = groups.parts.setdefault(part.key(), part)
@@ -149,6 +154,10 @@ class Groups2BuilderSteps:
         group = groups.groups.setdefault(group_key, group)
         group.add_referrer_to_properties()
         group.loincs[loinc_node.get_property(LoincTermProps.loinc_number)] = loinc_node
+        group.from_loinc = True
+        group.sources.add(loinc_number)
+      else:
+        raise ValueError("group key is null")
 
     print("debug")
 
@@ -196,6 +205,11 @@ class Groups2BuilderSteps:
     # tree_loader.load_panel_tree()
     # tree_loader.load_method_tree()
 
+    graph_commands = GraphCommands(config=self.config)
+    graph_commands.runtime = self.runtime
+    graph_commands.configuration = self.config
+    graph_commands.fix_graph_part_hierarchy()
+
     groups_object = self._get_groups_object()
     groups_object.do_closure(part_parent_edge_types=list(self._part_parent_edge_types.values()),
                              part_parent_node_types=list(self._part_node_types.values()))
@@ -219,6 +233,8 @@ class Groups2BuilderSteps:
       self.generate_parent_groups(groups_object=groups_object, rounds=parent_rounds, edge_types=edge_types,
                                   node_types=node_types)
 
+    self.generate_base_groups(min_tree_size=100, tree_depth=2)
+
     self.populate_module()
     print(f"populated entities: {len(self.runtime.current_module.entities_by_type[LoincTerm])}")
 
@@ -226,7 +242,7 @@ class Groups2BuilderSteps:
 
   def generate_parent_groups(self, *, groups_object: Groups, rounds: int, edge_types, node_types):
     for group in groups_object.groups.values():
-      if group.generated:
+      if not group.from_loinc:
         continue
       parent: Group | None = None
       this_round = rounds
@@ -239,53 +255,87 @@ class Groups2BuilderSteps:
       if parent is not None:
         self.generated_groups[parent.key()] = parent
 
+  def generate_base_groups(self, min_tree_size, tree_depth):
+    groups_object = self._get_groups_object()
+
+    self.base_groups = {k: g for k, g in groups_object.group_trees.items() if g.get_descendants_count() > min_tree_size}
+    print(f"Initial size of base trees: {self.base_groups}")
+    round_groups = dict(self.base_groups)
+    next_groups = {}
+
+    while tree_depth > 0:
+      for key, group in round_groups.items():
+        if group.get_descendants_count() > min_tree_size:
+          next_groups.update(group.children)
+      self.base_groups.update(next_groups)
+      round_groups = next_groups
+      tree_depth -= 1
+      print(f"\tSize of base trees: {self.base_groups}")
+
   def populate_module(self):
     sorted_edges = self._get_used_edges_sorted()
     grouping_parent_entity = root_classes.groups_named(
-      grouping_name=" ".join([e.value.label_fragment for e in sorted_edges]), module=self.runtime.current_module)
-    sorted_edges_dict = {}
-    for edge in sorted_edges:
-      sorted_edges_dict[edge.name] = edge
+        grouping_name=" ".join([e.value.label_fragment for e in sorted_edges]), module=self.runtime.current_module)
+    self._do_populate_module(groups_dict=self.generated_groups, parent_entity=grouping_parent_entity)
 
-    for key, group in self.generated_groups.items():
+    base_parent_entity = root_classes.groups_named(
+        grouping_name=" ".join([e.value.label_fragment for e in sorted_edges]) + " Base Groups",
+        module=self.runtime.current_module)
+    self._do_populate_module(groups_dict=self.base_groups, parent_entity=base_parent_entity)
+
+  def _do_populate_module(self, groups_dict: t.Dict[str, Group], parent_entity: Entity):
+    for key, group in groups_dict.items():
       entities: t.List[LoincTerm] = []
       group_edges = list(group.properties.keys())
       group_edges.sort(key=lambda x: x.value.label_fragment)
-      entity_label = ""
 
       for edge in group_edges:
-        if len(entity_label) > 0:
-          entity_label += "  "
-        entity_label += edge.value.label_fragment
         parts = list(group.properties[edge].parts)
         parts.sort(key=lambda x: x.get_part_number())
         if len(entities) == 0:
           for part in parts:
             entity = LoincTerm(id=LoincTermId(""))
             setattr(entity, edge.name, LoincPartId(part.key()))
-            entity.entity_label = edge.value.label_fragment + part.name() + " " + part.get_part_number()
+            entity.entity_label = "LG  " + edge.value.label_fragment + " " + part.label()
+            for source in group.sources:
+              if source not in entity.sources:
+                entity.sources.append(source)
+
             entities.append(entity)
         else:
           next_entities: t.List[LoincTerm] = []
           for part in parts:
+            current_entity: Entity
             for current_entity in entities:
               properties = dataclasses.asdict(current_entity)
-              next_entity = LoincTerm(**properties)
+              next_entity: LoincTerm = LoincTerm(**properties)
               setattr(next_entity, edge.name, LoincPartId(part.key()))
-              next_entity.entity_label += "    " + edge.value.label_fragment + part.name() + " " + part.get_part_number()
+              next_entity.entity_label += "  ||  " + edge.value.label_fragment + part.label()
+              for source in group.sources:
+                if source not in next_entity.sources:
+                  next_entity.sources.append(source)
               next_entities.append(next_entity)
+
           entities = next_entities
       for entity in entities:
-        entity.id = LoincTermId(ComploincNodeType.group_node.value.id_prefix + ":" + urllib.parse.quote_plus(entity.entity_label))
-        entity.sub_class_of.append(grouping_parent_entity.id)
-        self.runtime.current_module.add_entity(entity, replace=True)
+        entity.id = LoincTermId(
+            ComploincNodeType.group_node.value.id_prefix + ":" + urllib.parse.quote_plus(entity.entity_label))
+        entity.sub_class_of.append(parent_entity.id)
+
+        module_entity = self.runtime.current_module.get_entity(entity_id=entity.id, entity_class=LoincTerm)
+        if module_entity:
+          for source in entity.sources:
+            if source not in module_entity.sources:
+              module_entity.sources.append(source)
+        else:
+          self.runtime.current_module.add_entity(entity)
 
   def _get_groups_object(self) -> Groups:
     current_module = self.runtime.current_module
     return self.runtime.current_module.runtime_objects.setdefault('groups',
                                                                   Groups(module=current_module))
 
-  def _use_group_property(self, edge: EdgeType):
+  def _use_group_edge(self, edge: EdgeType):
     use = self._used_group_edges.get(edge, None)
     if use is not None:
       return use
