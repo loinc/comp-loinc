@@ -10,5 +10,6 @@ class ComploincNodeTypeArgs(NodeTypeArgs):
 class ComploincNodeType(NodeType):
   root_node = ComploincNodeTypeArgs(name="root_node", id_prefix="comploinc")
   group_node = ComploincNodeTypeArgs(name="group_node", id_prefix="comploinc")
+  groupings = ComploincNodeTypeArgs(name="Groupings", id_prefix="comploinc")
 
 

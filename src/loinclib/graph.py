@@ -194,7 +194,7 @@ class NodeType(Type):
 
 @dataclass(kw_only=True)
 class EdgeTypeArgs(TypeArgs):
-  pass
+  label_fragment: str = None
 
 
 class EdgeType(Type):

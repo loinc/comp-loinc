@@ -74,12 +74,12 @@ class LoincTermPrimaryEdgesArgs(LoincTermEdgesArgs):
 
 class LoincTermPrimaryEdges(LoincTermEdgeType):
 
-  primary_component = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/COMPONENT", order=1, abbr="C")
+  primary_component = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/COMPONENT", order=1, abbr="C", label_fragment="COMPONENT: ")
   primary_property = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/PROPERTY", order=2, abbr="P")
   primary_time_aspect = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/TIME_ASPCT", order=3, abbr="TA")
-  primary_system = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/SYSTEM", order=4, abbr="S")
+  primary_system = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/SYSTEM", order=4, abbr="S", label_fragment="SYSTEM: ")
   primary_scale_type = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/SCALE_TYP", order=5, abbr="ST")
-  primary_method_type = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/METHOD_TYP", order=6, abbr="MT")
+  primary_method_type = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/METHOD_TYP", order=6, abbr="MT", label_fragment="METHOD: ")
 
   #Doc
   primary_document_kind = LoincTermPrimaryEdgesArgs(name="http://loinc.org/property/document-kind", order=10, abbr="DOC_K")

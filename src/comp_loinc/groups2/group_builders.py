@@ -1,6 +1,7 @@
 import dataclasses
 import sys
 import typing as t
+import urllib.parse
 import uuid
 from operator import truediv
 
@@ -14,7 +15,8 @@ from comp_loinc.groups2.group import Group, GroupProperty, GroupPart
 from comp_loinc.groups2.group import Groups
 from loinclib import LoincNodeType, EdgeType, SnomedNodeType, GeneralEdgeType
 from loinclib.graph import Node, Edge, NodeType
-from loinclib.loinc_schema import LoincPartProps, LoincTermProps, LoincTermPrimaryEdges, LoincTermSupplementaryEdges
+from loinclib.loinc_schema import LoincPartProps, LoincTermProps, LoincTermPrimaryEdges, LoincTermSupplementaryEdges, \
+  LoincTermPrimaryEdgesArgs
 from loinclib.loinc_tree_schema import LoincTreeProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
 from comp_loinc.comploinc_schema import ComploincNodeType
@@ -238,26 +240,45 @@ class Groups2BuilderSteps:
         self.generated_groups[parent.key()] = parent
 
   def populate_module(self):
+    sorted_edges = self._get_used_edges_sorted()
+    grouping_parent_entity = root_classes.groups_named(
+      grouping_name=" ".join([e.value.label_fragment for e in sorted_edges]), module=self.runtime.current_module)
+    sorted_edges_dict = {}
+    for edge in sorted_edges:
+      sorted_edges_dict[edge.name] = edge
+
     for key, group in self.generated_groups.items():
       entities: t.List[LoincTerm] = []
-      for edge, prop in group.properties.items():
+      group_edges = list(group.properties.keys())
+      group_edges.sort(key=lambda x: x.value.label_fragment)
+      entity_label = ""
+
+      for edge in group_edges:
+        if len(entity_label) > 0:
+          entity_label += "  "
+        entity_label += edge.value.label_fragment
+        parts = list(group.properties[edge].parts)
+        parts.sort(key=lambda x: x.get_part_number())
         if len(entities) == 0:
-          for part in prop.parts:
+          for part in parts:
             entity = LoincTerm(id=LoincTermId(""))
             setattr(entity, edge.name, LoincPartId(part.key()))
+            entity.entity_label = edge.value.label_fragment + part.name() + " " + part.get_part_number()
             entities.append(entity)
         else:
           next_entities: t.List[LoincTerm] = []
-          for part in prop.parts:
+          for part in parts:
             for current_entity in entities:
               properties = dataclasses.asdict(current_entity)
               next_entity = LoincTerm(**properties)
               setattr(next_entity, edge.name, LoincPartId(part.key()))
+              next_entity.entity_label += "    " + edge.value.label_fragment + part.name() + " " + part.get_part_number()
               next_entities.append(next_entity)
           entities = next_entities
       for entity in entities:
-        entity.id = LoincTermId("comploinc:" + str(uuid.uuid4()))
-        self.runtime.current_module.add_entity(entity)
+        entity.id = LoincTermId(ComploincNodeType.group_node.value.id_prefix + ":" + urllib.parse.quote_plus(entity.entity_label))
+        entity.sub_class_of.append(grouping_parent_entity.id)
+        self.runtime.current_module.add_entity(entity, replace=True)
 
   def _get_groups_object(self) -> Groups:
     current_module = self.runtime.current_module
@@ -277,3 +298,13 @@ class Groups2BuilderSteps:
         return True
     self._used_group_edges[edge] = False
     return False
+
+  def _get_grouping_name(self):
+    edges = list(self._used_group_edges.keys())
+    edges.sort(key=lambda x: x.value.label_fragment)
+    return " ".join([e.value.label_fragment for e in self._get_used_edges_sorted()])
+
+  def _get_used_edges_sorted(self):
+    edges = [e for e, truth in self._used_group_edges.items() if truth is True]
+    edges.sort(key=lambda x: x.value.label_fragment)
+    return edges

@@ -306,6 +306,9 @@ class GroupPart:
   def get_key(self):
     return self.part_node.node_id
 
+  def get_part_number(self):
+    return self.part_node.get_property(LoincPartProps.part_number)
+
   def get_depth(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]):
     if self.depth is None:
       parents = self.get_parents(part_parent_node_types=part_parent_node_types, part_parent_edge_types=part_parent_edge_types)
@@ -327,4 +330,5 @@ class GroupPart:
     name = self.part_node.get_property(LoincPartProps.part_name)
     if name is None:
       name = f"TREE: {self.part_node.get_property(LoincTreeProps.code_text)}"
-    return f"GP {name} {self.part_node.node_id}"
+    return f"{name}"
+

@@ -16,6 +16,8 @@ sys.argv = [
   "primary_component",
   "--property",
   "primary_system",
+  "--property",
+  "primary_method_type",
 
   "part-parent-types",
   "--type",
