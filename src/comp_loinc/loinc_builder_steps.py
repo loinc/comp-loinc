@@ -2,6 +2,7 @@
 
 import logging
 import typing as t
+import urllib.parse
 from pathlib import Path
 
 import funowl
@@ -136,8 +137,10 @@ class LoincBuilderSteps:
         continue
 
       loinc_number = node.get_property(LoincTermProps.loinc_number)
-      self.runtime.current_module.getsert_entity(entity_id=f"{LoincNodeType.LoincTerm.value.id_prefix}:{loinc_number}",
-                                                 entity_class=LoincTerm)
+      loinc_term: LoincTerm = self.runtime.current_module.getsert_entity(
+          entity_id=f"{LoincNodeType.LoincTerm.value.id_prefix}:{loinc_number}",
+          entity_class=LoincTerm)
+      loinc_term.loinc_number = loinc_number
 
     logger.info(f"Finished lt-inst-all")
 
@@ -209,7 +212,7 @@ class LoincBuilderSteps:
         continue
       long_name = node.get_property(LoincTermProps.long_common_name)
       class_ = node.get_property(LoincTermProps.class_)
-      loinc_term.entity_label = f"lt {long_name}"
+      loinc_term.entity_label = f"lt {long_name} ({class_}) {loinc_term.loinc_number}"
 
     loinc_part: LoincPart
     for loinc_part in self.runtime.current_module.get_entities_of_type(LoincPart):
@@ -223,11 +226,9 @@ class LoincBuilderSteps:
         continue
 
       # final_name = node.get_property(LoincPartProps.part_display_name)
-      label = "lp "+  node.get_property(GeneralProps.label)
+      label = "lp " + node.get_property(GeneralProps.label)
       type_name = node.get_property(LoincPartProps.part_type_name)
       label += f" ({type_name}) {node.get_property(LoincPartProps.part_number)}"
-
-
 
       loinc_part.entity_label = label
 
@@ -661,33 +662,11 @@ class LoincBuilderSteps:
     loinc_loader.load_loinc_table__loinc_csv()
     loinc_loader.load_loinc_classes()
 
-    loinc_term_top_entity = self.runtime.current_module.getsert_entity(
-        entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LoincTerm"
-    )
-
-    class_type_entity = self.runtime.current_module.getsert_entity(
-        entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Laboratory"
-    )
-    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
-
-    class_type_entity = self.runtime.current_module.getsert_entity(
-        entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Clinical"
-    )
-    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
-
-    class_type_entity = self.runtime.current_module.getsert_entity(
-        entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Claims_attachments"
-    )
-    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
-
-    class_type_entity = self.runtime.current_module.getsert_entity(
-        entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LTC___Surveys"
-    )
-    class_type_entity.sub_class_of.append(loinc_term_top_entity.id)
+    top_loinc_term_entity = root_classes.get_top_term_class(module=self.runtime.current_module)
 
     count = 0
-    loinc_term_entity: LoincTerm
-    for loinc_term_entity in self.runtime.current_module.get_entities_of_type(
+    loinc_term: LoincTerm
+    for loinc_term in self.runtime.current_module.get_entities_of_type(
         entity_class=LoincTerm
     ):
       count += 1
@@ -696,92 +675,31 @@ class LoincBuilderSteps:
       if count % 1000 == 0:
         logger.debug(f"Finished {count}")
       loinc_term_node = self.runtime.graph.get_node_by_id(
-          node_id=loinc_term_entity.id
+          node_id=loinc_term.id
       )
 
       if loinc_term_node is None:
         logger.warning(
-            f"LOINC term: {loinc_term_entity.id} not found in graph."
+            f"LOINC term: {loinc_term.id} not found in graph."
         )
-        if loinc_term_top_entity not in loinc_term_entity.sub_class_of:
-          loinc_term_entity.sub_class_of.append(loinc_term_top_entity)
+        if top_loinc_term_entity.id not in loinc_term.sub_class_of:
+          loinc_term.sub_class_of.append(top_loinc_term_entity.id)
         continue
 
       class_type = loinc_term_node.get_property(LoincTermProps.class_type)
       class_ = loinc_term_node.get_property(LoincTermProps.class_)
 
-      match class_type:  # todo: Possibly throw error if class_type is not a recognized case
-        case "1":
-          class_type = "LTC___Laboratory"
-        case "2":
-          class_type = "LTC___Clinical"
-        case "3":
-          class_type = "LTC___Claims_attachments"
-        case "4":
-          class_type = "LTC___Surveys"
+      class_type_entity = root_classes.get_term_class_type(class_type=class_type, module=self.runtime.current_module)
+      if top_loinc_term_entity.id not in class_type_entity.sub_class_of:
+        class_type_entity.sub_class_of.append(top_loinc_term_entity.id)
 
-      class_type_entity = self.runtime.current_module.getsert_entity(
-          entity_class=LoincTermClass, entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:{class_type}"
-      )
+      term_class = root_classes.get_term_class(term_class=class_, module=self.runtime.current_module,
+                                               class_type_entity=class_type_entity, graph=self.runtime.graph)
 
-      child_entity: LoincEntity = loinc_term_entity
-      while (
-          True
-      ):  # identify all ancestors and add class-oriented is_a subclass relationships
-        class_title = None
-        class_part_number = None
-        class_abbreviation = self._normalize_type_string(class_)
-
-        class_node = self.runtime.graph.get_node_by_code(
-            type_=LoincNodeType.LoincClass, code=class_
-        )
-        if class_node:
-          class_title = class_node.get_property(type_=LoincClassProps.title)
-          class_part_number = class_node.get_property(
-              type_=LoincClassProps.part_number
-          )
-
-        parent_entity: LoincTermClass = self.runtime.current_module.get_entity(
-            entity_class=LoincTermClass, entity_id=class_abbreviation
-        )
-        if (
-            parent_entity is not None
-        ):  # if parent found, set is_a relation and break
-          if parent_entity.id not in child_entity.sub_class_of:
-            child_entity.sub_class_of.append(parent_entity.id)
-          break
-
-        parent_entity: LoincTermClass = (
-          self.runtime.current_module.getsert_entity(
-              entity_class=LoincTermClass,  # instantiate parent "class" term if doesn't exist
-              entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:{class_abbreviation}",
-          )
-        )
-        parent_entity.class_title = class_title
-        parent_entity.class_part = class_part_number
-        parent_entity.class_abbreviation = class_abbreviation
-        parent_entity.entity_label = (
-          f"LTC   {class_title or class_abbreviation}"
-        )
-
-        if parent_entity.id not in child_entity.sub_class_of:
-          child_entity.sub_class_of.append(parent_entity.id)
-
-        child_entity = parent_entity
-        class_ = self._parent_class_string(class_abbreviation)
-        if class_ is None:
-          break
-      if class_type_entity.id not in child_entity.sub_class_of:
-        child_entity.sub_class_of.append(class_type_entity)
+      if term_class.id not in loinc_term.sub_class_of:
+        loinc_term.sub_class_of.append(term_class.id)
 
     logger.info(f"Finished lt-class-roots")
-
-  @staticmethod
-  def _normalize_type_string(type_string: str) -> t.Union[str, None]:
-    """Replaces spaces with underscores in type strings."""
-    if type_string is None:
-      return None
-    return type_string.replace(" ", "_")
 
   @staticmethod
   def _parent_class_string(class_string: str) -> t.Optional[str]:

@@ -1,9 +1,10 @@
 import urllib.parse
 
-from comp_loinc.datamodel import Entity
+from comp_loinc.datamodel import Entity, LoincTermClass
 from comp_loinc.module import Module
 from comp_loinc.comploinc_schema import ComploincNodeType
-from loinclib import LoincNodeType
+from loinclib import LoincNodeType, LoinclibGraph
+from loinclib.loinc_schema import LoincClassProps
 
 tree_root = f"{ComploincNodeType.root_node.value.id_prefix}:GroupTrees"
 group_root = f"{ComploincNodeType.root_node.value.id_prefix}:Groups"
@@ -83,6 +84,7 @@ def get_part_no_type() -> Entity:
 
 def get_part_type(part_type: str, module: Module) -> Entity:
   type_root = get_parts_type()
+
   part_type_parts = part_type.split(".")
   parent_part_entity: Entity | None = None
   part_name = None
@@ -105,3 +107,73 @@ def get_part_type(part_type: str, module: Module) -> Entity:
     parent_part_entity = part_entity
 
   return parent_part_entity
+
+
+def get_top_term_class(module: Module) -> Entity:
+  return module.getsert_entity(entity_id=f"{LoincNodeType.LoincClass.value.id_prefix}:LoincTerm", entity_class=Entity)
+
+
+laboratory_id = f"{ComploincNodeType.comploinc.value.id_prefix}:termclasstype/{urllib.parse.quote('ltct Laboratory')}"
+clinical_id = f"{ComploincNodeType.comploinc.value.id_prefix}:termclasstype/{urllib.parse.quote('ltct Clinical')}"
+claim_id = f"{ComploincNodeType.comploinc.value.id_prefix}:termclasstype/{urllib.parse.quote('ltct Claims_attachments')}"
+survey_id = f"{ComploincNodeType.comploinc.value.id_prefix}:termclasstype/{urllib.parse.quote('ltct Surveys')}"
+
+
+def get_term_class_type(class_type: str, module: Module) -> Entity:
+  entity = module.get_entity(entity_id=laboratory_id, entity_class=Entity)
+  if entity is None:
+    entity = module.getsert_entity(laboratory_id, entity_class=Entity)
+    entity.entity_label = 'ltct Laboratory'
+    entity = module.getsert_entity(clinical_id, entity_class=Entity)
+    entity.entity_label = 'ltct Clinical'
+    entity =module.getsert_entity(claim_id, entity_class=Entity)
+    entity.entity_label = 'ltct Claims_attachments'
+    entity = module.getsert_entity(survey_id, entity_class=Entity)
+    entity.entity_label = 'ltct Surveys'
+
+  match class_type:  # todo: Possibly throw error if class_type is not a recognized case
+    case "1":
+      class_type_entity = module.getsert_entity(entity_id=laboratory_id, entity_class=Entity)
+    case "2":
+      class_type_entity = module.getsert_entity(entity_id=clinical_id, entity_class=Entity)
+    case "3":
+      class_type_entity = module.getsert_entity(entity_id=claim_id, entity_class=Entity)
+    case "4":
+      class_type_entity = module.getsert_entity(entity_id=survey_id, entity_class=Entity)
+
+  return class_type_entity
+
+
+def get_term_class(term_class: str, module: Module, class_type_entity: Entity, graph: LoinclibGraph) -> Entity:
+  term_class_parts = term_class.split(".")
+  parent_class_entity: LoincTermClass | None = None
+  part_name = None
+  for part in term_class_parts:
+    if part_name is None:
+      part_name = "ltc " + part
+    else:
+      part_name += "." + part
+    class_entity = module.getsert_entity(
+      entity_id=f"{ComploincNodeType.comploinc.value.id_prefix}:termclass/{urllib.parse.quote(part_name)}",
+      entity_class=LoincTermClass)
+    class_entity.entity_label = part_name
+
+    if parent_class_entity:
+      if parent_class_entity.id not in class_entity.sub_class_of:
+        class_entity.sub_class_of.append(parent_class_entity.id)
+    else:
+      class_entity.sub_class_of.append(class_type_entity.id)
+
+    parent_class_entity = class_entity
+
+  class_node = graph.get_node_by_code(type_=LoincNodeType.LoincClass, code=term_class)
+  if class_node is None:
+    print("debug")
+  class_title = class_node.get_property(LoincClassProps.title)
+  class_part_number = class_node.get_property(LoincClassProps.part_number)
+
+  parent_class_entity.class_abbreviation = term_class
+  parent_class_entity.class_title = class_title
+  parent_class_entity.class_part = class_part_number
+
+  return parent_class_entity
