@@ -9,10 +9,6 @@ builder
   lp-inst-all
   l-label
   l-annotate
-  load-schema
-    --reload
-    -f
-    comp_loinc.yaml
   save-owl
   rm-module
     -n
@@ -25,11 +21,8 @@ builder
     loinc-part-hierarchy-all
   # todo: this includes the trees for now, split into two steps
   lp-part-hierarchy-all
-  lp-parent
-  load-schema
-    --reload
-    -f
-    comp_loinc.yaml
+  l-label
+  lp-roots
   save-owl
   rm-module
     -n
@@ -46,10 +39,6 @@ builder
   l-label
   l-annotate
   lt-class-roots
-  load-schema
-    --reload
-    -f
-    comp_loinc.yaml
   save-owl
   rm-module
     -n
@@ -63,12 +52,6 @@ builder
   lt-inst-all
     --active
   lt-primary-def
-  load-schema
-    --reload
-    -f
-    comp_loinc.yaml
-    --equivalent-term
-
   save-owl
   rm-module
     -n
@@ -82,11 +65,6 @@ builder
   lt-inst-all
     --active
   lt-supplementary-def
-  load-schema
-    --reload
-    -f
-    comp_loinc.yaml
-    --equivalent-term
   save-owl
   rm-module
           -n
@@ -98,10 +76,6 @@ builder
     -n
     loinc-snomed-equiv
   lp-sct-equiv
-  load-schema
-    --reload
-    -f
-    comp_loinc.yaml
   save-owl
   rm-module
     -n
@@ -115,10 +89,6 @@ builder
   sct-loinc-part-map-instances
   sct-close-isa
   sct-label
-  load-schema
-    --reload
-    -f
-    comp_loinc.yaml
   save-owl
   rm-module
     -n

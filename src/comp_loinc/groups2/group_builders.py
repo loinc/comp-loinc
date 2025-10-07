@@ -319,7 +319,7 @@ class Groups2BuilderSteps:
           entities = next_entities
       for entity in entities:
         entity.id = LoincTermId(
-            ComploincNodeType.group_node.value.id_prefix + ":" + urllib.parse.quote_plus(entity.entity_label))
+            ComploincNodeType.group_node.value.id_prefix + ":" + urllib.parse.quote(entity.entity_label))
         entity.sub_class_of.append(parent_entity.id)
 
         module_entity = self.runtime.current_module.get_entity(entity_id=entity.id, entity_class=LoincTerm)

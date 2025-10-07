@@ -8,6 +8,7 @@ prefixes:
   rdfs: http://www.w3.org/2000/01/rdf-schema#
   sct: http://snomed.info/sct/
   comploinc: https://comploinc/
+  comploinc_part_type: https://comploinc/parttype/
   xsd: http://www.w3.org/2001/XMLSchema#
 default_prefix: loinc
 default_range: string

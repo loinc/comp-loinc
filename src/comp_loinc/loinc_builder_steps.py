@@ -10,7 +10,7 @@ from linkml_owl.dumpers.owl_dumper import OWLDumper
 from linkml_runtime import SchemaView
 from linkml_runtime.linkml_model import ClassDefinition, SlotDefinition, Annotation
 
-from comp_loinc import Runtime
+from comp_loinc import Runtime, root_classes
 from comp_loinc.config import FAST_RUN_N_PARTS, FAST_RUN_N_TERMS
 from comp_loinc.datamodel import (
   LoincPart,
@@ -76,7 +76,7 @@ class LoincBuilderSteps:
     )(self.loinc_parts_all)
 
     builder.cli.command(
-        "lp-parent", help="Make LOINC parts a child of a grouper LoincPart class."
+        "lp-roots", help="Make LOINC parts a child of a grouper LoincPart class."
     )(self.loinc_parts_root_parent)
 
     builder.cli.command(
@@ -209,12 +209,12 @@ class LoincBuilderSteps:
         continue
       long_name = node.get_property(LoincTermProps.long_common_name)
       class_ = node.get_property(LoincTermProps.class_)
-      loinc_term.entity_label = f"LT {long_name}"
+      loinc_term.entity_label = f"lt {long_name}"
 
     loinc_part: LoincPart
     for loinc_part in self.runtime.current_module.get_entities_of_type(LoincPart):
-      if loinc_part.id == "loinc:LP432811-0":
-        print("debug")
+      # if loinc_part.id == "loinc:LP432811-0":
+      #   print("debug")
 
       node = self.runtime.graph.get_node_by_id(
           node_id=loinc_part.id
@@ -223,21 +223,13 @@ class LoincBuilderSteps:
         continue
 
       # final_name = node.get_property(LoincPartProps.part_display_name)
-      final_name = node.get_property(GeneralProps.label)
-      prefix = "LP"
-      # if final_name is None:
-      #     final_name = node.get_property(
-      #         LoincPartProps.code_text__from_comp_hierarch
-      #     )
-      #     prefix = "LPH"
-      # if final_name is None:
-      #     final_name = node.get_property(LoincTreeProps.code_text)
-      #     prefix = "LPT"
-      # if final_name is None:
-      #     final_name = f"{loinc_part.id}"
-      #     prefix = "LPNN"
+      label = "lp "+  node.get_property(GeneralProps.label)
+      type_name = node.get_property(LoincPartProps.part_type_name)
+      label += f" ({type_name}) {node.get_property(LoincPartProps.part_number)}"
 
-      loinc_part.entity_label = f"{prefix} {final_name}"
+
+
+      loinc_part.entity_label = label
 
   def entity_annotations(self):
     """Entity property annotations.
@@ -293,24 +285,83 @@ class LoincBuilderSteps:
       loinc_part.part_type_name = part_type
       loinc_part.part_display_name = part_display
 
-  def loinc_parts_root_parent(self):
+  def loinc_parts_root_parent(self,
+      small_tree: t.Annotated[
+        int,
+        typer.Option(
+            "--small-tree-size", help="The number below which a part sub tree will be considered small."
+        ),
+      ] = 10,
+      medium_tree: t.Annotated[
+        int,
+        typer.Option(
+            "--small-tree-size", help="The number below which a part sub tree will be considered small."
+        ),
+      ] = 100):
     """Make LOINC parts a child of a grouper LoincPart class."""
-    loinc_part_parent = self.runtime.current_module.get_entity(
-        entity_class=LoincPart, entity_id=f"{ComploincNodeType.root_node.value.id_prefix}:LoincPart"
-    )
-    if loinc_part_parent is None:
-      loinc_part_parent = LoincPart(id=f"{ComploincNodeType.root_node.value.id_prefix}:LoincPart")
-      self.runtime.current_module.add_entity(loinc_part_parent)
+
+    loinc_parts = root_classes.get_parts()
+    self.runtime.current_module.add_entity(entity=loinc_parts, replace=True)
+
+    parts_dangling = root_classes.get_parts_dangling()
+    self.runtime.current_module.add_entity(entity=parts_dangling, replace=True)
+    parts_dangling.sub_class_of.append(loinc_parts.id)
+
+    parts_tree = root_classes.get_parts_tree()
+    self.runtime.current_module.add_entity(entity=parts_tree, replace=True)
+    parts_tree.sub_class_of.append(loinc_parts.id)
+
+    parts_tree_small = root_classes.get_parts_tree_small()
+    self.runtime.current_module.add_entity(entity=parts_tree_small, replace=True)
+    parts_tree_small.sub_class_of.append(loinc_parts.id)
+
+    parts_tree_medium = root_classes.get_parts_tree_medium()
+    self.runtime.current_module.add_entity(entity=parts_tree_medium, replace=True)
+    parts_tree_medium.sub_class_of.append(loinc_parts.id)
+
+    loinc_part_no_type = root_classes.get_part_no_type()
+    self.runtime.current_module.add_entity(entity=loinc_part_no_type, replace=True)
+    loinc_part_no_type.sub_class_of.append(loinc_parts.id)
 
     part: LoincPart
     for part in self.runtime.current_module.get_entities_of_type(
         entity_class=LoincPart
     ):
-      if part == loinc_part_parent:
-        continue
-
+      size = self._tree_size(part, [])
       if len(part.sub_class_of) == 0:
-        part.sub_class_of.append(loinc_part_parent)
+        if len(part.parent_of) == 0:
+          part.sub_class_of.append(parts_dangling.id)
+        else:
+          if size < small_tree:
+            part.sub_class_of.append(parts_tree_small.id)
+          elif size < medium_tree:
+            part.sub_class_of.append(parts_tree_medium.id)
+          else:
+            part.sub_class_of.append(parts_tree.id)
+      elif len(part.sub_class_of) == 1:
+        # is this a type parent?
+        if "part_type/" in part.sub_class_of[0]:
+          if len(part.parent_of) == 0:
+            part.sub_class_of.append(parts_dangling.id)
+          else:
+            if size < small_tree:
+              part.sub_class_of.append(parts_tree_small.id)
+            elif size < medium_tree:
+              part.sub_class_of.append(parts_tree_medium.id)
+            else:
+              part.sub_class_of.append(parts_tree.id)
+      else:
+        pass
+
+  def _tree_size(self, part: LoincPart, seen: t.List[str]) -> int:
+    if part.id in seen:
+      return 0
+    size = len(part.parent_of)
+    seen.append(part.id)
+    for parent_id in part.parent_of:
+      parent_part = self.runtime.current_module.get_entity(entity_id=parent_id, entity_class=LoincPart)
+      size += self._tree_size(parent_part, seen)
+    return size
 
   def loinc_part_to_snomed_quivalence(self):
     """Generate LinkML entities for SNOMED<->LOINC part mappings from SNOMED(-LOINC) Ontology."""
@@ -344,19 +395,6 @@ class LoincBuilderSteps:
 
           part.equivalent_class.append(snomed_concept.id)
 
-  def _edge_to_subclassof(self, child_part: LoincPart, edge: Edge):
-    parent_part_node = edge.to_node
-
-    parent_part = self.runtime.current_module.get_entity(
-        entity_id=parent_part_node.node_id, entity_class=LoincPart
-    )
-    if parent_part is None:
-      parent_part = LoincPart(id=parent_part_node.node_id)
-      self.runtime.current_module.add_entity(parent_part)
-
-    if parent_part.id not in child_part.sub_class_of:
-      child_part.sub_class_of.append(parent_part.id)
-
   def loinc_part_hierarchy_all(self):
     """Asserts part hierarchy for all parts based on component hierarchy file."""
     graph = self.runtime.graph
@@ -365,7 +403,6 @@ class LoincBuilderSteps:
     loinc_loader.load_part_parents_from_accessory_files__component_hierarchy_by_system__component_hierarchy_by_system_csv()
     loinc_loader.load_accessory_files__part_file__loinc_part_link_primary_csv()
     loinc_loader.load_accessory_files__part_file__loinc_part_link_supplementary_csv()
-
 
     loinc_tree_loader = LoincTreeLoader(config=self.configuration, graph=graph)
     loinc_tree_loader.load_all_trees()
@@ -377,36 +414,49 @@ class LoincBuilderSteps:
     graph_commands.find_cycles_primary()
     graph_commands.find_cycles_supplemental()
 
-    count = 0
-    for child_part_node in graph.get_nodes(type_=LoincNodeType.LoincPart):
+    subclassable_edges = [  # TODO: SE: make this configurable
+      LoincTreeEdges.tree_parent,
+      LoincPartEdge.parent_comp_by_system,
+      LoincDanglingNlpEdges.nlp_parent,
+      GeneralEdgeType.has_parent
+    ]
 
-      if child_part_node.get_property(LoincPartProps.is_multiaxial):
+    parts_type_root = root_classes.get_parts_type()
+    self.runtime.current_module.add_entity(entity=parts_type_root, replace=True)
+
+    loinc_part_no_type = root_classes.get_part_no_type()
+
+    count = 0
+    for part_node in graph.get_nodes(type_=LoincNodeType.LoincPart):
+
+      if part_node.get_property(LoincPartProps.is_multiaxial):
         continue
 
       count += 1
       if self.configuration.fast_run and count > FAST_RUN_N_PARTS:
         break
 
-      child_part = self.runtime.current_module.get_entity(
-          entity_id=child_part_node.node_id, entity_class=LoincPart
+      part = self.runtime.current_module.getsert_entity(
+          entity_id=part_node.node_id, entity_class=LoincPart
       )
-      if child_part is None:
-        child_part = LoincPart(id=child_part_node.node_id)
-        self.runtime.current_module.add_entity(child_part)
+
+      part_type = part_node.get_property(LoincPartProps.part_type_name)
+      if part_type:
+        part_type_entity = root_classes.get_part_type(part_type=part_type, module=self.runtime.current_module)
+        if part_type_entity.id not in part.sub_class_of:
+          part.sub_class_of.append(part_type_entity.id)
+      else:
+        part.sub_class_of.append(loinc_part_no_type.id)
 
       edge: Edge
-      subclassable_edges = [
-        LoincTreeEdges.tree_parent,
-        LoincPartEdge.parent_comp_by_system,
-        LoincDanglingNlpEdges.nlp_parent,
-        GeneralEdgeType.has_parent
-      ]
-      for edge in child_part_node.get_all_out_edges():
+      for edge in part_node.get_all_out_edges():
         if edge.handler.type_ in subclassable_edges:
-          self._edge_to_subclassof(child_part, edge)
-
-  # def part_tree_hierarchy_all(self):
-  #   pass
+          parent_part = self.runtime.current_module.getsert_entity(entity_id=edge.to_node.node_id,
+                                                                   entity_class=LoincPart)
+          if parent_part.id not in part.sub_class_of:
+            part.sub_class_of.append(parent_part.id)
+          if part.id not in parent_part.parent_of:
+            parent_part.parent_of.append(part.id)
 
   def loinc_term_primary_def(self):
     """Gets graph representation of primary part model.
@@ -429,7 +479,7 @@ class LoincBuilderSteps:
       loinc_term_node = self.runtime.graph.get_node_by_id(node_id=loinc_term_id
                                                           )
 
-      loinc_number =  loinc_term.loinc_number
+      loinc_number = loinc_term.loinc_number
       if loinc_number == "77108-9":
         print("debug")
 

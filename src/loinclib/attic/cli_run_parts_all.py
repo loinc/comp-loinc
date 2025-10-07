@@ -11,7 +11,7 @@ sys.argv = [
     "-n",
     "loinc-part-hierarchy-all",
   "lp-part-hierarchy-all",
-  "lp-parent",
+  "lp-roots",
   "load-schema",
   "--reload",
   "-f",

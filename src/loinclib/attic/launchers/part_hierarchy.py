@@ -14,7 +14,8 @@ sys.argv = [
   "loinc-part-hierarchy-all",
 
   "lp-part-hierarchy-all",
-  "lp-parent",
+  "l-label",
+  "lp-roots",
   #
   "save-owl"
 

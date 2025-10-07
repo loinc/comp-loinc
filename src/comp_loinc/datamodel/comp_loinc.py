@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-10-06T13:51:10
+# Generation date: 2025-10-06T22:22:52
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -64,6 +64,7 @@ version = None
 
 # Namespaces
 COMPLOINC = CurieNamespace('comploinc', 'https://comploinc/')
+COMPLOINC_PART_TYPE = CurieNamespace('comploinc_part_type', 'https://comploinc/parttype/')
 LINKML = CurieNamespace('linkml', 'https://w3id.org/linkml/')
 LOINC = CurieNamespace('loinc', 'https://loinc.org/')
 LOINC_PROPERTY = CurieNamespace('loinc_property', 'http://loinc.org/property/')
