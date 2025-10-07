@@ -25,7 +25,7 @@ class SnomedProperties(PropertyType):
   """SNOMED Properties"""
 
   concept_id = SnomedPropertiesArgs(name="")
-  fully_specified_name = SnomedPropertiesArgs(name="900000000000003001")
+  ID_900000000000003001 = SnomedPropertiesArgs(name="fully_specified_name")
   synonym = SnomedPropertiesArgs(name="900000000000013009")
 
   case_insensitive = SnomedPropertiesArgs(name="900000000000448009")

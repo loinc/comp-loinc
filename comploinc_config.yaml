@@ -78,24 +78,25 @@ logging:
       level: DEBUG
 #      filters: [ allow_foo ]
       stream: ext://sys.stdout
-#    file:
-#      class: logging.handlers.RotatingFileHandler
-#      formatter: precise
-#      filename: logconfig.log
-#      maxBytes: 1024
-#      backupCount: 3
+    file:
+      class: logging.handlers.RotatingFileHandler
+      formatter: default
+      filename: comploinc.log
+      maxBytes: 1024
+      backupCount: 3
+      level: DEBUG
   disable_existing_loggers: False
   loggers:
     '':
-      level: WARN
-      handlers: [console]
+      level: INFO
+      handlers: [console, file]
     'LoincBuilder':
       level: INFO
-      handlers: [ console ]
+      handlers: [ console, file ]
       propagate: False
     'Module':
       level: INFO
-      handlers: [ console ]
+      handlers: [ console, file ]
       propagate: False
 #    cli_runtime:
 #      handlers: [console]

@@ -76,6 +76,11 @@ classes:
         slot_uri: sct:fully_specified_name
         annotations:
           owl: AnnotationAssertion
+
+      concept_id:
+        slot_uri: sct:concept_id
+        annotations:
+          owl: AnnotationAssertion
     annotations:
       owl: Class
 

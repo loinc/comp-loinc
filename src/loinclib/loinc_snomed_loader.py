@@ -2,7 +2,7 @@ from enum import StrEnum
 
 import pandas as pd
 
-from loinclib import LoinclibGraph, SnomedNodeType, SnomedEdges, Configuration, GeneralEdgeType
+from loinclib import LoinclibGraph, SnomedNodeType, SnomedEdges, Configuration, GeneralEdgeType, GeneralProps
 from loinclib.loinc_schema import LoincNodeType, LoincPartProps
 from loinclib.loinc_snomed_schema import LoincSnomedEdges
 from loinclib.snomed_schema_v2 import SnomedProperties
@@ -136,28 +136,25 @@ class LoincSnomedLoader:
 
 
             if target_code:
-                loinc_part = self.graph.getsert_node(
-                    type_=LoincNodeType.LoincPart, code=source_code
+                loinc_part_node = self.graph.getsert_node(
+                    type_=LoincNodeType.LoincPart, code=source_code, source="snomed-mappings"
                 )
-                loinc_part.set_property(
+                loinc_part_node.set_property(
                     type_=LoincPartProps.part_number, value=source_code
                 )
 
                 snomed_cocept = self.graph.getsert_node(
-                    type_=SnomedNodeType.Concept, code=target_code
+                    type_=SnomedNodeType.Concept, code=target_code, source="snomed-mappings"
                 )
                 snomed_cocept.set_property(
                     type_=SnomedProperties.concept_id, value=target_code
                 )
                 snomed_cocept.set_property(
-                    type_=SnomedProperties.fully_specified_name, value=target_display
+                    type_=SnomedProperties.ID_900000000000003001, value=target_display
                 )
 
-                loinc_part.add_edge_single(
-                    type_=GeneralEdgeType.mapped_to, to_node=snomed_cocept
-                )
-                loinc_part.add_edge_single(
-                    type_=GeneralEdgeType.mapped_to, to_node=snomed_cocept
+                loinc_part_node.add_edge_single(
+                    type_=GeneralEdgeType.mapped_to, to_node=snomed_cocept, source="snomed-mappings"
                 )
 
         self.graph.loaded_sources[LoincSnomedSources.part_mapping] = {}

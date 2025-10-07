@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-10-06T22:22:52
+# Generation date: 2025-10-07T10:33:14
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -161,6 +161,7 @@ class SnomedConcept(Entity):
 
     id: Union[str, SnomedConceptId] = None
     fully_specified_name: Optional[str] = None
+    concept_id: Optional[str] = None
 
     def __post_init__(self, *_: str, **kwargs: Any):
         if self._is_empty(self.id):
@@ -170,6 +171,9 @@ class SnomedConcept(Entity):
 
         if self.fully_specified_name is not None and not isinstance(self.fully_specified_name, str):
             self.fully_specified_name = str(self.fully_specified_name)
+
+        if self.concept_id is not None and not isinstance(self.concept_id, str):
+            self.concept_id = str(self.concept_id)
 
         super().__post_init__(**kwargs)
 
@@ -584,6 +588,9 @@ slots.entity__equivalent_class = Slot(uri=OWL.equivalentClass, name="entity__equ
 
 slots.snomedConcept__fully_specified_name = Slot(uri=SCT.fully_specified_name, name="snomedConcept__fully_specified_name", curie=SCT.curie('fully_specified_name'),
                    model_uri=LOINC.snomedConcept__fully_specified_name, domain=None, range=Optional[str])
+
+slots.snomedConcept__concept_id = Slot(uri=SCT.concept_id, name="snomedConcept__concept_id", curie=SCT.curie('concept_id'),
+                   model_uri=LOINC.snomedConcept__concept_id, domain=None, range=Optional[str])
 
 slots.loincTermClass__class_title = Slot(uri=LOINC.class_title, name="loincTermClass__class_title", curie=LOINC.curie('class_title'),
                    model_uri=LOINC.loincTermClass__class_title, domain=None, range=Optional[str])

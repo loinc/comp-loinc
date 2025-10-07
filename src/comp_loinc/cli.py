@@ -150,6 +150,8 @@ class CompLoincCli:
 
     logging.config.dictConfig(self.config.get_logging_configuration())
 
+    logging.info("CompLOINC work directory: %s", self.work_dir)
+
     self.loinc_builders.configuration = self.config
     self.snomed_builders.configuration = self.config
 

@@ -56,7 +56,7 @@ class SnomedLoader:
             return
 
         for tpl in self.read_relationship().itertuples():
-            # @formatter:off
+
             (
                 index,
                 id_,
@@ -70,7 +70,6 @@ class SnomedLoader:
                 characteristic_type_id,
                 modifier_id,
             ) = tpl
-            # @formatter:on
 
             if active == "0":
                 continue
@@ -100,10 +99,10 @@ class SnomedLoader:
                     type_=SnomedProperties.concept_id, value=destination_id
                 )
 
-                from_node.add_edge_single(type_, to_node=to_node, source="snomed")
+                from_node.add_edge_single(type_=type_, to_node=to_node, source="snomed")
 
                 if type_ == SnomedEdges.is_a:
-                  from_node.add_edge_single(GeneralEdgeType.has_parent, to_node=to_node, source="snomed")
+                  from_node.add_edge_single(type_=GeneralEdgeType.has_parent, to_node=to_node, source="snomed")
 
         for type_ in types_:
             loaded_relationships[type_] = True
@@ -140,18 +139,18 @@ class SnomedLoader:
                 term,  # The term label
                 case_significance_id,  # Whether capitalization is important, and if so in what way.
             ) = tpl
-            # @formatter:on
 
             if active == "0":
                 continue
 
             term_type = None
             try:
-                term_type = SnomedProperties(type_id)
-            except ValueError:
+
+                term_type = SnomedProperties[f"ID_{type_id}"]
+            except KeyError:
                 pass
 
-            if term_type is not SnomedProperties.fully_specified_name:
+            if term_type is not SnomedProperties.ID_900000000000003001:
                 continue
 
             concept = self.graph.getsert_node(

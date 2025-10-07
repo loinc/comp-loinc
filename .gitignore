@@ -180,3 +180,5 @@ dmypy.json
 # Linters
 .flake8
 .ruff.toml
+
+comploinc.log*

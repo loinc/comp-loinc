@@ -480,9 +480,9 @@ class LoincBuilderSteps:
       loinc_term_node = self.runtime.graph.get_node_by_id(node_id=loinc_term_id
                                                           )
 
-      loinc_number = loinc_term.loinc_number
-      if loinc_number == "77108-9":
-        print("debug")
+      # loinc_number = loinc_term.loinc_number
+      # if loinc_number == "77108-9":
+      #   print("debug")
 
       edge: Edge
       for edge in loinc_term_node.get_all_out_edges():
