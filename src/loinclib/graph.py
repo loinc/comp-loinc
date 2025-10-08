@@ -608,6 +608,7 @@ class ElementSourceArgs:
 
 
 class GeneralProps(PropertyType):
+  code = PropertyTypeArgs(name="code")
   type = PropertyTypeArgs(name="_type")
   sources = PropertyTypeArgs(name="_sources")
   label = PropertyTypeArgs(name="_label")

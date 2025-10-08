@@ -76,6 +76,8 @@ class LoincTreeLoader:
       node.set_property(type_=LoincTreeProps.from_trees, value=False)
       node.set_property(type_=LoincPartProps.part_number, value=code)
       node.set_property(type_=LoincTreeProps.code_text, value=code_text)
+      node.set_property(type_=GeneralProps.label, value=code_text)
+      node.set_property(type_=GeneralProps.code, value=code)
     return node
 
   def load_nlp_tree(
@@ -136,6 +138,7 @@ class LoincTreeLoader:
       ):
         continue
       child_node = self._getsert_node(child_code, child_code_text)
+      child_node.set_property(type_=GeneralProps.code, value=parent_code)
       parent_node = self._getsert_node(parent_code, parent_code_text)
       child_node.add_edge_single(
           type_=LoincDanglingNlpEdges.nlp_parent, to_node=parent_node
@@ -189,6 +192,7 @@ class LoincTreeLoader:
       part_node.set_property(type_=LoincPartProps.part_number, value=code)
       # if part_node.get_property(GeneralProps.label) is None:
       part_node.set_property(type_=GeneralProps.label, value=code_text)
+      part_node.set_property(type_=GeneralProps.code, value=code)
 
       sources = part_node.get_property(GeneralProps.sources)
       if sources is None:
@@ -213,6 +217,10 @@ class LoincTreeLoader:
           )
           parent_node.set_property(
               type_=LoincPartProps.part_number,
+              value=records_by_id[parent_id][1],
+          )
+          parent_node.set_property(
+              type_=GeneralProps.code,
               value=records_by_id[parent_id][1],
           )
 

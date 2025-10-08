@@ -3,7 +3,7 @@
 import logging
 import typing as t
 
-from comp_loinc import Runtime
+from comp_loinc import Runtime, root_classes
 from comp_loinc.config import FAST_RUN_N_PARTS
 from comp_loinc.datamodel import SnomedConcept
 from loinclib import (
@@ -91,9 +91,6 @@ class SnomedBuilderSteps:
             node_id=current_id
         )
 
-        if current_node is None:
-          print("debug")
-
         outs = list(current_node.get_out_edges())
 
         current_concept: SnomedConcept = self.runtime.current_module.getsert_entity(entity_id=current_id, entity_class=SnomedConcept)
@@ -117,6 +114,16 @@ class SnomedBuilderSteps:
       seen_set = seen_set.union(current_set)
       current_set = todo_set
       todo_set = set()
+
+    top_sct = root_classes.get_top_sct_class()
+    self.runtime.current_module.add_entity(entity=top_sct)
+
+    seen:SnomedConcept
+    for seen in seen_set:
+      concept = self.runtime.current_module.get_entity(entity_id=seen, entity_class=SnomedConcept)
+      if len(concept.sub_class_of) == 0:
+
+        concept.sub_class_of.append(top_sct.id)
 
   def check_cycles(self):
     for concept in self.runtime.current_module.get_entities_of_type(

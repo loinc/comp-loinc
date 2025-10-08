@@ -112,12 +112,20 @@ classes:
         slot_uri: loinc:loinc_number
         annotations:
           owl: AnnotationAssertion
+      fully_specified_name:
+        slot_uri: loinc:fully_specified_name
+        annotations:
+          owl: AnnotationAssertion
       long_common_name:
         slot_uri: loinc:long_common_name
         annotations:
           owl: AnnotationAssertion
       short_name:
         slot_uri: loinc:short_name
+        annotations:
+          owl: AnnotationAssertion
+      display_name:
+        slot_uri: loinc:display_name
         annotations:
           owl: AnnotationAssertion
       status:
@@ -130,6 +138,10 @@ classes:
           owl: AnnotationAssertion
       loinc_class_type:
         slot_uri: loinc:loinc_class_type
+        annotations:
+          owl: AnnotationAssertion
+      definition_description:
+        slot_uri: loinc:definition_description
         annotations:
           owl: AnnotationAssertion
 

@@ -3,7 +3,7 @@ import urllib.parse
 from comp_loinc.datamodel import Entity, LoincTermClass
 from comp_loinc.module import Module
 from comp_loinc.comploinc_schema import ComploincNodeType
-from loinclib import LoincNodeType, LoinclibGraph
+from loinclib import LoincNodeType, LoinclibGraph, SnomedNodeType
 from loinclib.loinc_schema import LoincClassProps
 
 tree_root = f"{ComploincNodeType.root_node.value.id_prefix}:GroupTrees"
@@ -11,9 +11,9 @@ group_root = f"{ComploincNodeType.root_node.value.id_prefix}:Groups"
 _groups_all = f"{ComploincNodeType.root_node.value.id_prefix}:GroupsAll"
 
 loinc_parts = "part/LoincPart"
-loinc_parts_tree = "part/LoincPartTree"
-loinc_parts_tree_small = "part/LoincPartTreeSmall"
-loinc_parts_tree_medium = "part/LoincPartTreeMedium"
+loinc_parts_tree = "part/LoincPartHierarchy"
+loinc_parts_tree_small = "part/LoincPartHierarchySmall"
+loinc_parts_tree_medium = "part/LoincPartHierarchyMedium"
 loinc_parts_dangling = "part/LoincPartDangling"
 loinc_parts_type = "part/LoincPartType"
 
@@ -167,8 +167,6 @@ def get_term_class(term_class: str, module: Module, class_type_entity: Entity, g
     parent_class_entity = class_entity
 
   class_node = graph.get_node_by_code(type_=LoincNodeType.LoincClass, code=term_class)
-  if class_node is None:
-    print("debug")
   class_title = class_node.get_property(LoincClassProps.title)
   class_part_number = class_node.get_property(LoincClassProps.part_number)
 
@@ -177,3 +175,8 @@ def get_term_class(term_class: str, module: Module, class_type_entity: Entity, g
   parent_class_entity.class_part = class_part_number
 
   return parent_class_entity
+
+def get_top_sct_class():
+  entity = Entity(id=f"{ComploincNodeType.comploinc.value.id_prefix}:SnomedConcept")
+  entity.entity_label = 'sct SnomedConcept'
+  return entity

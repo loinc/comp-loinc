@@ -111,6 +111,14 @@ class LoincLoader:
       )
       node.set_property(type_=LS.LoincTermProps.class_type, value=class_type)
       node.set_property(type_=LS.LoincTermProps.status, value=status)
+      node.set_property(type_=LS.LoincTermProps.short_name, value=short_name)
+      node.set_property(type_=LS.LoincTermProps.display_name, value=display_name)
+      if method_type:
+        node.set_property(type_=LS.LoincTermProps.fully_specified_name,
+                          value=f"{component}:{property_}:{time_aspect}:{system}:{scale_type}:{method_type}")
+      else:
+        node.set_property(type_=LS.LoincTermProps.fully_specified_name,
+                          value=f"{component}:{property_}:{time_aspect}:{system}:{scale_type}:")
 
       # edges
 
@@ -144,6 +152,7 @@ class LoincLoader:
           type_=LS.LoincPartProps.part_display_name, value=part_display_name
       )
       node.set_property(type_=LS.LoincPartProps.status, value=status)
+      node.set_property(type_=GeneralProps.code, value=part_number)
 
     self.graph.loaded_sources[LoincSources.AccessoryFiles__PartFile__PartCsv] = {}
 
@@ -315,7 +324,8 @@ class LoincLoader:
         )
 
         part_node.add_edge_single(
-            type_=LoincPartEdge.parent_comp_by_system, to_node=parent_node, source=LoincElementSource.component_by_system
+            type_=LoincPartEdge.parent_comp_by_system, to_node=parent_node,
+            source=LoincElementSource.component_by_system
         )
         part_node.add_edge_single(
             type_=GeneralEdgeType.has_parent, to_node=parent_node, source=LoincElementSource.component_by_system

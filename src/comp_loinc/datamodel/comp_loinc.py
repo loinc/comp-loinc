@@ -1,5 +1,5 @@
 # Auto generated from comp_loinc.yaml by pythongen.py version: 0.0.1
-# Generation date: 2025-10-07T10:33:14
+# Generation date: 2025-10-07T19:43:34
 # Schema: loinc-owl-core-schema
 #
 # id: https://loinc.org/core
@@ -241,11 +241,14 @@ class LoincTerm(LoincEntity):
 
     id: Union[str, LoincTermId] = None
     loinc_number: Optional[str] = None
+    fully_specified_name: Optional[str] = None
     long_common_name: Optional[str] = None
     short_name: Optional[str] = None
+    display_name: Optional[str] = None
     status: Optional[str] = None
     loinc_class: Optional[str] = None
     loinc_class_type: Optional[str] = None
+    definition_description: Optional[str] = None
     primary_component: Optional[Union[str, LoincPartId]] = None
     primary_property: Optional[Union[str, LoincPartId]] = None
     primary_time_aspect: Optional[Union[str, LoincPartId]] = None
@@ -313,11 +316,17 @@ class LoincTerm(LoincEntity):
         if self.loinc_number is not None and not isinstance(self.loinc_number, str):
             self.loinc_number = str(self.loinc_number)
 
+        if self.fully_specified_name is not None and not isinstance(self.fully_specified_name, str):
+            self.fully_specified_name = str(self.fully_specified_name)
+
         if self.long_common_name is not None and not isinstance(self.long_common_name, str):
             self.long_common_name = str(self.long_common_name)
 
         if self.short_name is not None and not isinstance(self.short_name, str):
             self.short_name = str(self.short_name)
+
+        if self.display_name is not None and not isinstance(self.display_name, str):
+            self.display_name = str(self.display_name)
 
         if self.status is not None and not isinstance(self.status, str):
             self.status = str(self.status)
@@ -327,6 +336,9 @@ class LoincTerm(LoincEntity):
 
         if self.loinc_class_type is not None and not isinstance(self.loinc_class_type, str):
             self.loinc_class_type = str(self.loinc_class_type)
+
+        if self.definition_description is not None and not isinstance(self.definition_description, str):
+            self.definition_description = str(self.definition_description)
 
         if self.primary_component is not None and not isinstance(self.primary_component, LoincPartId):
             self.primary_component = LoincPartId(self.primary_component)
@@ -604,11 +616,17 @@ slots.loincTermClass__class_part = Slot(uri=LOINC.class_part, name="loincTermCla
 slots.loincTerm__loinc_number = Slot(uri=LOINC.loinc_number, name="loincTerm__loinc_number", curie=LOINC.curie('loinc_number'),
                    model_uri=LOINC.loincTerm__loinc_number, domain=None, range=Optional[str])
 
+slots.loincTerm__fully_specified_name = Slot(uri=LOINC.fully_specified_name, name="loincTerm__fully_specified_name", curie=LOINC.curie('fully_specified_name'),
+                   model_uri=LOINC.loincTerm__fully_specified_name, domain=None, range=Optional[str])
+
 slots.loincTerm__long_common_name = Slot(uri=LOINC.long_common_name, name="loincTerm__long_common_name", curie=LOINC.curie('long_common_name'),
                    model_uri=LOINC.loincTerm__long_common_name, domain=None, range=Optional[str])
 
 slots.loincTerm__short_name = Slot(uri=LOINC.short_name, name="loincTerm__short_name", curie=LOINC.curie('short_name'),
                    model_uri=LOINC.loincTerm__short_name, domain=None, range=Optional[str])
+
+slots.loincTerm__display_name = Slot(uri=LOINC.display_name, name="loincTerm__display_name", curie=LOINC.curie('display_name'),
+                   model_uri=LOINC.loincTerm__display_name, domain=None, range=Optional[str])
 
 slots.loincTerm__status = Slot(uri=LOINC.status, name="loincTerm__status", curie=LOINC.curie('status'),
                    model_uri=LOINC.loincTerm__status, domain=None, range=Optional[str])
@@ -618,6 +636,9 @@ slots.loincTerm__loinc_class = Slot(uri=LOINC.loinc_class, name="loincTerm__loin
 
 slots.loincTerm__loinc_class_type = Slot(uri=LOINC.loinc_class_type, name="loincTerm__loinc_class_type", curie=LOINC.curie('loinc_class_type'),
                    model_uri=LOINC.loincTerm__loinc_class_type, domain=None, range=Optional[str])
+
+slots.loincTerm__definition_description = Slot(uri=LOINC.definition_description, name="loincTerm__definition_description", curie=LOINC.curie('definition_description'),
+                   model_uri=LOINC.loincTerm__definition_description, domain=None, range=Optional[str])
 
 slots.loincTerm__primary_component = Slot(uri=LOINC_PROPERTY.COMPONENT, name="loincTerm__primary_component", curie=LOINC_PROPERTY.curie('COMPONENT'),
                    model_uri=LOINC.loincTerm__primary_component, domain=None, range=Optional[Union[str, LoincPartId]])

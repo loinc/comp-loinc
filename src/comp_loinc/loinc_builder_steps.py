@@ -262,11 +262,20 @@ class LoincBuilderSteps:
       long_name = node.get_property(LoincTermProps.long_common_name)
       class_type = node.get_property(LoincTermProps.class_type)
       class_ = node.get_property(LoincTermProps.class_)
+      display_name = node.get_property(LoincTermProps.display_name)
+      fully_specified_name = node.get_property(LoincTermProps.fully_specified_name)
+      definition_description = node.get_property(LoincTermProps.definition_description)
+      short_name = node.get_property(LoincTermProps.short_name)
 
       loinc_term.long_common_name = long_name
       loinc_term.loinc_number = number
       loinc_term.loinc_class = class_
       loinc_term.loinc_class_type = class_type
+      loinc_term.display_name = display_name
+      loinc_term.fully_specified_name = fully_specified_name
+      loinc_term.definition_description = definition_description
+      loinc_term.short_name = short_name
+
 
     loinc_part: LoincPart
     for loinc_part in self.runtime.current_module.get_entities_of_type(LoincPart):
@@ -296,7 +305,7 @@ class LoincBuilderSteps:
       medium_tree: t.Annotated[
         int,
         typer.Option(
-            "--small-tree-size", help="The number below which a part sub tree will be considered small."
+            "--medium-tree-size", help="The number below which a part sub tree will be considered small."
         ),
       ] = 100):
     """Make LOINC parts a child of a grouper LoincPart class."""
@@ -323,6 +332,10 @@ class LoincBuilderSteps:
     loinc_part_no_type = root_classes.get_part_no_type()
     self.runtime.current_module.add_entity(entity=loinc_part_no_type, replace=True)
     loinc_part_no_type.sub_class_of.append(loinc_parts.id)
+
+    parts_type = root_classes.get_parts_type()
+    self.runtime.current_module.add_entity(entity=parts_type, replace=True)
+    parts_type.sub_class_of.append(loinc_parts.id)
 
     part: LoincPart
     for part in self.runtime.current_module.get_entities_of_type(

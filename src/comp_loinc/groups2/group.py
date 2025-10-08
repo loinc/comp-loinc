@@ -325,8 +325,13 @@ class GroupPart:
     return self.__parents
 
   def label(self):
-    _label = self.part_node.get_property(GeneralProps.label)
-    _label += " " + self.part_node.get_property(LoincPartProps.part_number)
+    _label = ""
+    _label += self.part_node.get_property(GeneralProps.label)
+    # code = self.part_node.get_property(GeneralProps.code)
+    # if code is None:
+    #   print("debug")
+    #   print(f"sources:{self.part_node.get_property(GeneralProps.sources)}", flush=True)
+    _label += " " + self.part_node.get_property(GeneralProps.code)
     return _label
 
   def get_ancestors(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]) -> \
@@ -348,7 +353,7 @@ class GroupPart:
     return self.part_node.node_id
 
   def get_part_number(self):
-    return self.part_node.get_property(LoincPartProps.part_number)
+    return self.part_node.get_property(GeneralProps.code)
 
   def get_depth(self, *, part_parent_node_types: t.List[NodeType], part_parent_edge_types: t.List[EdgeType]):
     if self.depth is None:
@@ -366,13 +371,13 @@ class GroupPart:
                                         part_parent_edge_types=part_parent_edge_types)
 
   def __str__(self):
-    name = self.part_node.get_property(LoincPartProps.part_name)
-    if name is None:
-      name = f"TREE: {self.part_node.get_property(LoincTreeProps.code_text)}"
+    name = self.part_node.get_property(GeneralProps.label)
+    # if name is None:
+    #   name = f"TREE: {self.part_node.get_property(LoincTreeProps.code_text)}"
     return f"GroupPart: {name}  {self.part_node.node_id}"
 
   def name(self):
-    name = self.part_node.get_property(LoincPartProps.part_name)
-    if name is None:
-      name = f"TREE: {self.part_node.get_property(LoincTreeProps.code_text)}"
+    name = self.part_node.get_property(GeneralProps.label)
+    # if name is None:
+    #   name = f"TREE: {self.part_node.get_property(LoincTreeProps.code_text)}"
     return f"{name}"

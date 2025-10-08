@@ -93,7 +93,9 @@ class OwlSerializer:
     iri = self.ontology.iri(entity.id, absolute=None)
     for prop in dir(entity):
       prop_value = getattr(entity, prop, None)
-      if prop_value is None:
+      if not isinstance(prop_value, str) and not isinstance(prop_value, list):
+        continue
+      if prop_value is None or len(prop_value) == 0:
         continue
 
       schema_class = self.schema.classes.get(type(entity).class_name, None)

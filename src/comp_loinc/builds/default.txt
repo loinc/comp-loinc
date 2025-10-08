@@ -1,6 +1,7 @@
 
 builder
 
+
 # build all loinc parts list ====================================================
 
   set-module
@@ -93,3 +94,74 @@ builder
   rm-module
     -n
     snomed-parts
+
+
+# Loinc part groups  =====================================
+  set-module
+    -n
+    loinc-groups
+   group-properties
+     --property
+     primary_component
+     --property
+     primary_system
+     --property
+     primary_method_type
+
+     part-parent-types
+     --type
+     loinc
+
+     part-parent-edges
+     --edge
+     has-parent
+     --edge
+     mapped-to
+
+     group-generate
+     --parent-group
+     --parent-rounds
+     5
+     --base-rounds
+     5
+     --base-minimum-size
+     25
+     #
+     save-owl
+
+
+
+# snomed part groups  =====================================
+#  set-module
+#    -n
+#    snomed-groups
+#   group-properties
+#     --property
+#     primary_component
+#     --property
+#     primary_system
+#     --property
+#     primary_method_type
+#
+#    part-parent-types
+#     --type
+#     snomed
+#
+#     part-parent-edges
+#     --edge
+#     has-parent
+#     --edge
+#     mapped-to
+#
+#     group-generate
+#     --parent-group
+#     --parent-rounds
+#     5
+#     --base-rounds
+#     5
+#     --base-minimum-size
+#     25
+#     #
+#     save-owl
+
+

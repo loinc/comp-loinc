@@ -22,6 +22,8 @@ class LoincTermPropsArgs(PropertyTypeArgs):
 class LoincTermProps(PropertyType):
   loinc_number = LoincTermPropsArgs(name="loinc_number")
   long_common_name = LoincTermPropsArgs(name="long_common_name")
+  display_name = LoincTermPropsArgs(name="display_name")
+  fully_specified_name = LoincTermPropsArgs(name="fully_specified_name")
   short_name = LoincTermPropsArgs(name="short_name")
   class_ = LoincTermPropsArgs(name="class")
   class_type = LoincTermPropsArgs(name="class_type")

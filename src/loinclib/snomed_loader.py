@@ -3,7 +3,7 @@ from enum import StrEnum
 
 import pandas as pd
 
-from loinclib import LoinclibGraph, Node, Configuration, EdgeType, GeneralEdgeType
+from loinclib import LoinclibGraph, Node, Configuration, EdgeType, GeneralEdgeType, GeneralProps
 from loinclib.snomed_schema_v2 import SnomedNodeType, SnomedEdges, SnomedProperties
 
 
@@ -86,23 +86,29 @@ class SnomedLoader:
 
             if type_ in types_:
                 from_node: Node = self.graph.getsert_node(
-                    type_=SnomedNodeType.Concept, code=source_id
+                    type_=SnomedNodeType.Concept, code=source_id, source="snomed-rels"
                 )
                 from_node.set_property(
                     type_=SnomedProperties.concept_id, value=source_id
                 )
+                from_node.set_property(
+                    type_=GeneralProps.code, value=source_id
+                )
 
                 to_node: Node = self.graph.getsert_node(
-                    type_=SnomedNodeType.Concept, code=destination_id
+                    type_=SnomedNodeType.Concept, code=destination_id ,source="snomed-rels"
                 )
                 to_node.set_property(
                     type_=SnomedProperties.concept_id, value=destination_id
                 )
+                to_node.set_property(
+                    type_=GeneralProps.code, value=destination_id
+                )
 
-                from_node.add_edge_single(type_=type_, to_node=to_node, source="snomed")
+                from_node.add_edge_single(type_=type_, to_node=to_node, source="snomed-rels")
 
                 if type_ == SnomedEdges.is_a:
-                  from_node.add_edge_single(type_=GeneralEdgeType.has_parent, to_node=to_node, source="snomed")
+                  from_node.add_edge_single(type_=GeneralEdgeType.has_parent, to_node=to_node, source="snomed-rels")
 
         for type_ in types_:
             loaded_relationships[type_] = True
@@ -153,10 +159,12 @@ class SnomedLoader:
             if term_type is not SnomedProperties.ID_900000000000003001:
                 continue
 
-            concept = self.graph.getsert_node(
-                type_=SnomedNodeType.Concept, code=concept_id
+            concept_node = self.graph.getsert_node(
+                type_=SnomedNodeType.Concept, code=concept_id, source="snomed-fsn"
             )
-            concept.set_property(type_=SnomedProperties.concept_id, value=concept_id)
-            concept.set_property(type_=term_type, value=term)
+            concept_node.set_property(type_=SnomedProperties.concept_id, value=concept_id)
+            concept_node.set_property(type_=term_type, value=term)
+            concept_node.set_property(type_=GeneralProps.code, value=concept_id)
+            concept_node.set_property(type_=GeneralProps.label, value=term)
 
         self.graph.loaded_sources[SnomedSources.fully_specified_name] = {}

@@ -13,11 +13,12 @@ from comp_loinc.datamodel import LoincTermId, Entity
 from comp_loinc.datamodel.comp_loinc import LoincTerm, LoincPartId
 from comp_loinc.groups2.group import Group, GroupProperty, GroupPart
 from comp_loinc.groups2.group import Groups
-from loinclib import LoincNodeType, EdgeType, SnomedNodeType, GeneralEdgeType
+from loinclib import LoincNodeType, EdgeType, SnomedNodeType, GeneralEdgeType, SnomedLoader, SnomedEdges, LoincLoader
 from loinclib.graph import Node, Edge, NodeType
 from loinclib.graph_commands import GraphCommands
 from loinclib.loinc_schema import LoincPartProps, LoincTermProps, LoincTermPrimaryEdges, LoincTermSupplementaryEdges, \
   LoincTermPrimaryEdgesArgs
+from loinclib.loinc_snomed_loader import LoincSnomedLoader
 from loinclib.loinc_tree_schema import LoincTreeProps
 from loinclib.loinc_tree_loader import LoincTreeLoader
 from comp_loinc.comploinc_schema import ComploincNodeType
@@ -96,6 +97,20 @@ class Groups2BuilderSteps:
     for parent_type in parent_types:
       self._part_node_types[parent_type] = self.__all_part_node_types.get(parent_type)
 
+    if "snomed" in parent_types:
+      snomed_loader = SnomedLoader(graph=self.runtime.graph, config=self.config)
+      snomed_loader.load_selected_relations(SnomedEdges.is_a)
+      snomed_loader.load_fully_specified_names()
+
+      loinc_snomed_loader = LoincSnomedLoader(config=self.config, graph=self.runtime.graph)
+      loinc_snomed_loader.load_part_mapping()
+
+      loinc_loader = LoincLoader(graph=self.runtime.graph, configuration=self.config)
+      loinc_loader.load_accessory_files__part_file__part_csv()
+
+
+
+
   def part_parent_edges(self, edge_types: t.Annotated[list[str], typer.Option("--edge",
 
                                                                               help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
@@ -120,8 +135,8 @@ class Groups2BuilderSteps:
 
       loinc_number = loinc_node.get_property(LoincTermProps.loinc_number)
 
-      if loinc_number == "77108-9":
-        print("debug")
+      # if loinc_number == "77108-9":
+      #   print("debug")
 
       # if loinc_number == "4169-9":
       #   print("4169-9")
@@ -159,7 +174,7 @@ class Groups2BuilderSteps:
       else:
         raise ValueError("group key is null")
 
-    print("debug")
+    # print("debug")
 
   # def group_parts_root_closure(self, parent_types: t.Annotated[list[str], typer.Option("--parent-type",
   #                                                                                      help="One or more parent edge strings. Full edge URL, or last segment. Case insensitive")]):
@@ -214,13 +229,19 @@ class Groups2BuilderSteps:
     groups_object.do_closure(part_parent_edge_types=list(self._part_parent_edge_types.values()),
                              part_parent_node_types=list(self._part_node_types.values()))
 
-    print("debug")
+    # print("debug")
 
   def group_generate(self,
       parent_group: t.Annotated[bool, typer.Option("--parent-group",
                                                    help="Create the direct parent groups of a LOINC term")] = False,
       parent_rounds: t.Annotated[int, typer.Option("--parent-rounds",
-                                                   help="How many parent lookups (i.e. parent, grandparent, etc.). Defaults to 1.")] = 1):
+                                                   help="How many parent lookups (i.e. parent, grandparent, etc.). Defaults to 1.")] = 1,
+      base_rounds: t.Annotated[int, typer.Option("--base-rounds",
+                                                 help="How many base/root lookups (tree root levels). Defaults to 3.")] = 3,
+      base_min_size: t.Annotated[int, typer.Option("--base-minimum-size",
+                                                   help="The minimum size of sub groups for a base group to be created. Defaults to 25")] = 25
+
+  ):
 
     self.parse_loincs()
     self._do_closures()
@@ -233,12 +254,12 @@ class Groups2BuilderSteps:
       self.generate_parent_groups(groups_object=groups_object, rounds=parent_rounds, edge_types=edge_types,
                                   node_types=node_types)
 
-    self.generate_base_groups(min_tree_size=100, tree_depth=2)
+    self.generate_base_groups(min_tree_size=base_min_size, tree_depth=base_rounds)
 
     self.populate_module()
-    print(f"populated entities: {len(self.runtime.current_module.entities_by_type[LoincTerm])}")
+    # print(f"populated entities: {len(self.runtime.current_module.entities_by_type[LoincTerm])}")
 
-    print(f"debug generated group counts: {len(self.generated_groups)}")
+    # print(f"debug generated group counts: {len(self.generated_groups)}")
 
   def generate_parent_groups(self, *, groups_object: Groups, rounds: int, edge_types, node_types):
     for group in groups_object.groups.values():
@@ -259,7 +280,7 @@ class Groups2BuilderSteps:
     groups_object = self._get_groups_object()
 
     self.base_groups = {k: g for k, g in groups_object.group_trees.items() if g.get_descendants_count() > min_tree_size}
-    print(f"Initial size of base trees: {self.base_groups}")
+    # print(f"Initial size of base trees: {self.base_groups}")
     round_groups = dict(self.base_groups)
     next_groups = {}
 
@@ -270,7 +291,7 @@ class Groups2BuilderSteps:
       self.base_groups.update(next_groups)
       round_groups = next_groups
       tree_depth -= 1
-      print(f"\tSize of base trees: {self.base_groups}")
+      # print(f"\tSize of base trees: {self.base_groups}")
 
   def populate_module(self):
     sorted_edges = self._get_used_edges_sorted()

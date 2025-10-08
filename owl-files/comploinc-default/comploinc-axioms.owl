@@ -16,7 +16,7 @@ Declaration(ObjectProperty(<http://loinc.org/property/PROPERTY-supplementary>))
 Declaration(ObjectProperty(<http://loinc.org/property/SCALE_TYP>))
 Declaration(ObjectProperty(<http://loinc.org/property/SCALE_TYP-supplementary>))
 Declaration(ObjectProperty(<http://loinc.org/property/SYSTEM>))
-Declaration(ObjectProperty(<http://loinc.org/property/TIME_ASPECT>))
+Declaration(ObjectProperty(<http://loinc.org/property/TIME_ASPCT>))
 Declaration(ObjectProperty(<http://loinc.org/property/adjustment>))
 Declaration(ObjectProperty(<http://loinc.org/property/analyte>))
 Declaration(ObjectProperty(<http://loinc.org/property/analyte-core>))
@@ -55,15 +55,15 @@ Declaration(ObjectProperty(<http://loinc.org/property/super-system>))
 Declaration(ObjectProperty(<http://loinc.org/property/system-core>))
 Declaration(ObjectProperty(<http://loinc.org/property/time-core>))
 Declaration(ObjectProperty(<http://loinc.org/property/time-modifier>))
+Declaration(ObjectProperty(<https://comploinc-axioms#has-detailed-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-document-part>))
-Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-detailed-part>))
-Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-metadata-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-part>))
-Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-semantic-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-supplementary-part>))
-Declaration(ObjectProperty(<https://comploinc-axioms#has-loinc-syntax-part>))
+Declaration(ObjectProperty(<https://comploinc-axioms#has-metadata-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-primary-part>))
 Declaration(ObjectProperty(<https://comploinc-axioms#has-radiology-part>))
+Declaration(ObjectProperty(<https://comploinc-axioms#has-semantic-part>))
+Declaration(ObjectProperty(<https://comploinc-axioms#has-syntax-part>))
 ############################
 #   Object Properties
 ############################
@@ -78,7 +78,7 @@ SubObjectPropertyOf(<http://loinc.org/property/METHOD_TYP> <https://comploinc-ax
 
 # Object Property: <http://loinc.org/property/METHOD_TYP-supplementary> (<http://loinc.org/property/METHOD_TYP-supplementary>)
 
-SubObjectPropertyOf(<http://loinc.org/property/METHOD_TYP-supplementary> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/METHOD_TYP-supplementary> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/PROPERTY> (<http://loinc.org/property/PROPERTY>)
 
@@ -86,7 +86,7 @@ SubObjectPropertyOf(<http://loinc.org/property/PROPERTY> <https://comploinc-axio
 
 # Object Property: <http://loinc.org/property/PROPERTY-supplementary> (<http://loinc.org/property/PROPERTY-supplementary>)
 
-SubObjectPropertyOf(<http://loinc.org/property/PROPERTY-supplementary> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/PROPERTY-supplementary> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/SCALE_TYP> (<http://loinc.org/property/SCALE_TYP>)
 
@@ -94,63 +94,63 @@ SubObjectPropertyOf(<http://loinc.org/property/SCALE_TYP> <https://comploinc-axi
 
 # Object Property: <http://loinc.org/property/SCALE_TYP-supplementary> (<http://loinc.org/property/SCALE_TYP-supplementary>)
 
-SubObjectPropertyOf(<http://loinc.org/property/SCALE_TYP-supplementary> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/SCALE_TYP-supplementary> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/SYSTEM> (<http://loinc.org/property/SYSTEM>)
 
 SubObjectPropertyOf(<http://loinc.org/property/SYSTEM> <https://comploinc-axioms#has-primary-part>)
 
-# Object Property: <http://loinc.org/property/TIME_ASPECT> (<http://loinc.org/property/TIME_ASPECT>)
+# Object Property: <http://loinc.org/property/TIME_ASPCT> (<http://loinc.org/property/TIME_ASPCT>)
 
-SubObjectPropertyOf(<http://loinc.org/property/TIME_ASPECT> <https://comploinc-axioms#has-primary-part>)
+SubObjectPropertyOf(<http://loinc.org/property/TIME_ASPCT> <https://comploinc-axioms#has-primary-part>)
 
 # Object Property: <http://loinc.org/property/adjustment> (<http://loinc.org/property/adjustment>)
 
-SubObjectPropertyOf(<http://loinc.org/property/adjustment> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/adjustment> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/analyte> (<http://loinc.org/property/analyte>)
 
-SubObjectPropertyOf(<http://loinc.org/property/analyte> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/analyte> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/analyte-core> (<http://loinc.org/property/analyte-core>)
 
-SubObjectPropertyOf(<http://loinc.org/property/analyte-core> <https://comploinc-axioms#has-loinc-syntax-part>)
+SubObjectPropertyOf(<http://loinc.org/property/analyte-core> <https://comploinc-axioms#has-syntax-part>)
 
 # Object Property: <http://loinc.org/property/analyte-divisor> (<http://loinc.org/property/analyte-divisor>)
 
-SubObjectPropertyOf(<http://loinc.org/property/analyte-divisor> <https://comploinc-axioms#has-loinc-syntax-part>)
+SubObjectPropertyOf(<http://loinc.org/property/analyte-divisor> <https://comploinc-axioms#has-syntax-part>)
 
 # Object Property: <http://loinc.org/property/analyte-divisor-suffix> (<http://loinc.org/property/analyte-divisor-suffix>)
 
-SubObjectPropertyOf(<http://loinc.org/property/analyte-divisor-suffix> <https://comploinc-axioms#has-loinc-syntax-part>)
+SubObjectPropertyOf(<http://loinc.org/property/analyte-divisor-suffix> <https://comploinc-axioms#has-syntax-part>)
 
 # Object Property: <http://loinc.org/property/analyte-numerator> (<http://loinc.org/property/analyte-numerator>)
 
-SubObjectPropertyOf(<http://loinc.org/property/analyte-numerator> <https://comploinc-axioms#has-loinc-syntax-part>)
+SubObjectPropertyOf(<http://loinc.org/property/analyte-numerator> <https://comploinc-axioms#has-syntax-part>)
 
 # Object Property: <http://loinc.org/property/analyte-suffix> (<http://loinc.org/property/analyte-suffix>)
 
-SubObjectPropertyOf(<http://loinc.org/property/analyte-suffix> <https://comploinc-axioms#has-loinc-syntax-part>)
+SubObjectPropertyOf(<http://loinc.org/property/analyte-suffix> <https://comploinc-axioms#has-syntax-part>)
 
 # Object Property: <http://loinc.org/property/analyte_gene> (<http://loinc.org/property/analyte_gene>)
 
-SubObjectPropertyOf(<http://loinc.org/property/analyte_gene> <https://comploinc-axioms#has-loinc-semantic-part>)
+SubObjectPropertyOf(<http://loinc.org/property/analyte_gene> <https://comploinc-axioms#has-semantic-part>)
 
 # Object Property: <http://loinc.org/property/category> (<http://loinc.org/property/category>)
 
-SubObjectPropertyOf(<http://loinc.org/property/category> <https://comploinc-axioms#has-loinc-metadata-part>)
+SubObjectPropertyOf(<http://loinc.org/property/category> <https://comploinc-axioms#has-metadata-part>)
 
 # Object Property: <http://loinc.org/property/challenge> (<http://loinc.org/property/challenge>)
 
-SubObjectPropertyOf(<http://loinc.org/property/challenge> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/challenge> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/class_> (<http://loinc.org/property/class_>)
 
-SubObjectPropertyOf(<http://loinc.org/property/class_> <https://comploinc-axioms#has-loinc-metadata-part>)
+SubObjectPropertyOf(<http://loinc.org/property/class_> <https://comploinc-axioms#has-metadata-part>)
 
 # Object Property: <http://loinc.org/property/count> (<http://loinc.org/property/count>)
 
-SubObjectPropertyOf(<http://loinc.org/property/count> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/count> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/document-kind> (<http://loinc.org/property/document-kind>)
 
@@ -242,43 +242,35 @@ SubObjectPropertyOf(<http://loinc.org/property/rad_view_view_type> <https://comp
 
 # Object Property: <http://loinc.org/property/super-system> (<http://loinc.org/property/super-system>)
 
-SubObjectPropertyOf(<http://loinc.org/property/super-system> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/super-system> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/system-core> (<http://loinc.org/property/system-core>)
 
-SubObjectPropertyOf(<http://loinc.org/property/system-core> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/system-core> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/time-core> (<http://loinc.org/property/time-core>)
 
-SubObjectPropertyOf(<http://loinc.org/property/time-core> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/time-core> <https://comploinc-axioms#has-detailed-part>)
 
 # Object Property: <http://loinc.org/property/time-modifier> (<http://loinc.org/property/time-modifier>)
 
-SubObjectPropertyOf(<http://loinc.org/property/time-modifier> <https://comploinc-axioms#has-loinc-detailed-part>)
+SubObjectPropertyOf(<http://loinc.org/property/time-modifier> <https://comploinc-axioms#has-detailed-part>)
+
+# Object Property: <https://comploinc-axioms#has-detailed-part> (<https://comploinc-axioms#has-detailed-part>)
+
+SubObjectPropertyOf(<https://comploinc-axioms#has-detailed-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
 
 # Object Property: <https://comploinc-axioms#has-document-part> (<https://comploinc-axioms#has-document-part>)
 
 SubObjectPropertyOf(<https://comploinc-axioms#has-document-part> <https://comploinc-axioms#has-primary-part>)
 
-# Object Property: <https://comploinc-axioms#has-loinc-detailed-part> (<https://comploinc-axioms#has-loinc-detailed-part>)
-
-SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-detailed-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
-
-# Object Property: <https://comploinc-axioms#has-loinc-metadata-part> (<https://comploinc-axioms#has-loinc-metadata-part>)
-
-SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-metadata-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
-
-# Object Property: <https://comploinc-axioms#has-loinc-semantic-part> (<https://comploinc-axioms#has-loinc-semantic-part>)
-
-SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-semantic-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
-
 # Object Property: <https://comploinc-axioms#has-loinc-supplementary-part> (<https://comploinc-axioms#has-loinc-supplementary-part>)
 
 SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-supplementary-part> <https://comploinc-axioms#has-loinc-part>)
 
-# Object Property: <https://comploinc-axioms#has-loinc-syntax-part> (<https://comploinc-axioms#has-loinc-syntax-part>)
+# Object Property: <https://comploinc-axioms#has-metadata-part> (<https://comploinc-axioms#has-metadata-part>)
 
-SubObjectPropertyOf(<https://comploinc-axioms#has-loinc-syntax-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
+SubObjectPropertyOf(<https://comploinc-axioms#has-metadata-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
 
 # Object Property: <https://comploinc-axioms#has-primary-part> (<https://comploinc-axioms#has-primary-part>)
 
@@ -287,6 +279,14 @@ SubObjectPropertyOf(<https://comploinc-axioms#has-primary-part> <https://comploi
 # Object Property: <https://comploinc-axioms#has-radiology-part> (<https://comploinc-axioms#has-radiology-part>)
 
 SubObjectPropertyOf(<https://comploinc-axioms#has-radiology-part> <https://comploinc-axioms#has-primary-part>)
+
+# Object Property: <https://comploinc-axioms#has-semantic-part> (<https://comploinc-axioms#has-semantic-part>)
+
+SubObjectPropertyOf(<https://comploinc-axioms#has-semantic-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
+
+# Object Property: <https://comploinc-axioms#has-syntax-part> (<https://comploinc-axioms#has-syntax-part>)
+
+SubObjectPropertyOf(<https://comploinc-axioms#has-syntax-part> <https://comploinc-axioms#has-loinc-supplementary-part>)
 
 
 )
