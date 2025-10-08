@@ -122,7 +122,6 @@ class SnomedBuilderSteps:
     for seen in seen_set:
       concept = self.runtime.current_module.get_entity(entity_id=seen, entity_class=SnomedConcept)
       if len(concept.sub_class_of) == 0:
-
         concept.sub_class_of.append(top_sct.id)
 
   def check_cycles(self):
