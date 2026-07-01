@@ -1,3 +1,6 @@
+> [!WARNING]
+> This repository is not actively being maintained. As a result, there may be vulnerabilities with several of its dependencies. The code remains viable but strongly encourage users review all dependencies before use.
+
 # CompLOINC
 Computational LOINC (in OWL).
 
